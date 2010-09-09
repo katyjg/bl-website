@@ -1,0 +1,38 @@
+{% extends "wp-root.html" %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+
+{% block "page-content" %}
+
+<div id="headline">
+	<div class="wrapper">
+		<h2>{{ feincms_page.title }}</h2>
+	</div>
+</div>
+
+<div id="pagebody">
+	<div class="wrapper">
+        <div id="bodyContent" class="col-12">
+        {% feincms_navigation of feincms_page as toplevel level=1 %}
+<div class="sitemap">
+            {% for p in toplevel %} 
+                <a href="{{ p.get_absolute_url }}">{{ p.title }}</a>
+                {% feincms_navigation of p as level level=2 %}
+                <ul>{% for l in level %}
+                    <li>
+                    <a href="{{ l.get_absolute_url }}">{{ l.title }}</a>
+                    {% feincms_navigation of l as ssublevel level=4 %}
+                    {% if ssublevel %}
+                    {% feincms_navigation of l as sublevel level=3 %}
+                    {% if sublevel %}<ul>{% for sp in sublevel %}
+                        <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
+                    {% endfor %}</ul>{% endif %}{% endif %}
+                    </li>
+                {% endfor %}</ul>
+            {% endfor %}
+</div>
+        </div>
+	</div>
+</div>
+<br class="clear">
+
+{% endblock %}

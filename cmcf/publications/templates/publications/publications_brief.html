@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load truncate_filters %}
+{% block "page-content" %}
+<h2><span><a href="/publications/">Recent Publications &raquo;</a></span></h2>
+<ul class="hr-list">
+{% for publication in publication_list %}
+    <li>
+    {{ publication.first_author }}{% if publication.authors %}, et al.{% endif %}
+    ({{ publication.year }}).
+    <a title="View Reference", href="/publications/#{{ publication.slug }}">{{ publication.title|truncate_chars:95 }}</a>
+    <i>{{publication.journal}}, {{ publication.volume }}</i> {% if publication.issue %}({{publication.issue}}){% endif %}{% if publication.pages %}, {{ publication.pages }}{% endif %}. 
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
+
+
+
+				
+

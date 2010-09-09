@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}glossary.css" />
+{% endblock %}
+
+{% block content %}
+    <dl class="glossary term_detail">
+        <dt><a {{ object.slug }}>{{ object.title }}</a></dt>
+        {% for synonym in object.synonyms.all  %}
+            <dt class="synonym">{{ synonym.title }}</dt>
+        {% endfor %}
+        <dd class="definition">{{ object.description }}</dd>
+    </dl>
+{% endblock %}

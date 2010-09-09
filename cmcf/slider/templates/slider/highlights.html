@@ -1,0 +1,38 @@
+<div class="coda-slider-wrapper">
+	<div class="coda-slider preload" id="coda-slider-1">
+		
+		{% for post in news_list %}
+		<div class="panel">
+			<div class="panel-wrapper" >
+				{% if post.highlight or post.publish %}
+    			<div class="slider-image">
+                    <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
+                        <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" />
+                    </a>
+                </div>
+				<div class="slider-content"><h1>{{ post.title }}</h1>
+				<p>{{ post.tease|safe }}</p></div>
+				<div class="slider-links">{% if post.link %}<a href={{post.link}}>Original Publication</a>{% endif %}</div>
+				{% endif %}
+				
+				{% if post.photo_highlight %}
+				<div class="image">
+                    <a href="/images" title="Go to Photo Gallery">
+                        <img src="/media/uploads/photologue/photos/{{ post.image_filename }}" alt="" />
+                    </a>
+                </div>
+				<h1>{{ post.title }}</h1>
+				<p class="date">Added on {{ post.date_added|date:"Y F d" }}</p>
+				<p class="date">{{ post.caption|safe }}</p>
+            	{% endif %}
+			</div><!-- .panel-wrapper -->
+		</div><!-- .panel -->
+		{% endfor %}
+
+	</div><!-- .coda-slider -->
+</div><!-- .coda-slider-wrapper -->
+
+<!--<a href="/research-highlights/{{post.publish.year}}/{{post.publish|date:"b"}}/{{post.publish.day}}/{{post.slug}}/" title="View this post">-->
+
+
+

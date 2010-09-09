@@ -1,0 +1,59 @@
+<div class="calendar">
+<h2><span>Week of {% for day in calendar %}{% if forloop.first %}{{day.0}} to {% endif %}{% if forloop.last %}{{day.0}}{% endif %}{% endfor %}</span></h2>
+<div><a class="prev" href='{% url scheduler.anyweek day=prev_week %}' title="Previous Week"><img src="/media/img/prev.png"></a>
+<a class="current" href='{% url scheduler.thisweek %}'>Back to Current Week</a>
+<a class="next" href='{% url scheduler.anyweek day=next_week %}' title="Next Week"><img src="/media/img/next.png"></a></div>
+<table>
+<thead>
+<tr>
+<th class="date" scope="col" abbr="Date">Date</th>
+<th class="date" scope="col" abbr="Shift">Shift</th>
+{% for bl in beamlines %}
+<th class="beamline" scope="col" abbr="{{bl.name}}">{{bl.name}}</th>
+{% endfor %}
+<th class="oncall" scope="col" abbr="On Call">On Call</th>
+</tr>
+</thead>
+<tbody>
+    {% for day in calendar %}
+        <tr>
+        <td rowspan=3 class="column1">{{day.0}}</td>
+        <td class="{% for stat in day.3 %}{{stat.0}}{% endfor %}">
+            <div>08:00-16:00</div>
+        </td>
+        {% for bl in day.1 %}
+            <td class="{% for stat in day.3 %}{{stat.0}}{% endfor %}">
+                <div>{{bl.0}}</div>
+            </td>       
+        {% endfor %}
+        <td rowspan=3 class="column1">{{day.2}}</td>
+        </tr>
+        <tr>      
+        <td class="{% for stat in day.3 %}{{stat.1}}{% endfor %}">
+            <div>16:00-24:00</div>
+        </td>
+        {% for bl in day.1 %}
+            <td class="{% for stat in day.3 %}{{stat.1}}{% endfor %}">
+                <div>{{bl.1}}</div>
+            </td>       
+        {% endfor %}
+        </tr>
+        <tr>      
+        <td class="{% for stat in day.3 %}{{stat.2}}{% endfor %}">
+            <div>24:00-08:00</div>
+        </td>
+        {% for bl in day.1 %}
+            <td class="{% for stat in day.3 %}{{stat.2}}{% endfor %}">
+                <div>{{bl.2}}</div>
+            </td>       
+        {% endfor %}
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+</div>
+
+
+
+
+

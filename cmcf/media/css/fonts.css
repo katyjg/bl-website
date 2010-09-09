@@ -1,0 +1,95 @@
+
+/* graublau-web */
+@font-face {
+    font-family: "graublau-web";
+    src: url(/media/fnt/GraublauWeb.eot);
+}
+@font-face {
+    font-family: "graublau-web";
+    src: url(/media/fnt/GraublauWebBold.eot);
+    font-weight: bold;
+}
+
+
+@font-face {
+    font-family: "graublau-web";
+    src: url(/media/fnt/GraublauWeb.otf) format("opentype");
+}
+@font-face {
+    font-family: "graublau-web";
+    src: url(/media/fnt/GraublauWebBold.otf) format("opentype");
+    font-weight: bold;
+}
+
+
+/* union */
+
+@font-face {
+    font-family: "union";
+    src: url(/media/fnt/union___.eot);
+}
+@font-face {
+    font-family: "union";
+    src: url(/media/fnt/unionbd_.eot);
+    font-weight: bold;
+}
+
+
+@font-face {
+    font-family: "union";
+    src: url(/media/fnt/union___.ttf) format("truetype");
+}
+@font-face {
+    font-family: "union";
+    src: url(/media/fnt/unionbd_.ttf) format("truetype");
+    font-weight: bold;
+}
+
+
+
+/* Gentium */
+@font-face {
+    font-family: "gentium";
+    src: url(/media/fnt/GenR102.ttf) format('truetype');
+}
+@font-face {
+    font-family: "gentium";
+    src: url(/media/fnt/GenI102.ttf) format('truetype');
+    font-style: italic;
+}
+
+
+/* Charis */
+@font-face {
+    font-family: "charis";
+    src: url(/media/fnt/CharisSILR.ttf) format('truetype');
+}
+@font-face {
+    font-family: "charis";
+    src: url(/media/fnt/CharisSILI.ttf) format('truetype');
+    font-style: italic;
+}
+@font-face {
+    font-family: "charis";
+    src: url(/media/fnt/CharisSILB.ttf) format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: "charis";
+    src: url(/media/fnt/CharisSILBI.ttf) format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+
+/* Yanone Kaffeesatz */
+@font-face {
+    font-family: "yanone-kaffeesatz";
+    src: url(/media/fnt/YanoneKaffeesatz-Regular.otf) format('opentype');
+}
+@font-face {
+    font-family: "yanone-kaffeesatz";
+    src: url(/media/fnt/YanoneKaffeesatz-Bold.otf) format('opentype');
+    font-style: bold;
+}
+

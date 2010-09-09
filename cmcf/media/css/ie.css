@@ -1,0 +1,20 @@
+.wrapper {
+	width: 980px;
+}
+
+#home-below h4 {
+	font-size: 12px !important;
+}
+
+.col-3 .download-button {
+	height: 35px !important;
+}
+
+#header ul li a {
+	padding: 0 9px;
+}
+
+#head-search {
+	height: 30px;
+}
+

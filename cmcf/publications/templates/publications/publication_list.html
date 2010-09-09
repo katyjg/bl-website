@@ -1,0 +1,36 @@
+{% load i18n %}
+
+{% if year_list %}
+    {% for year in year_list %}<a href="#{{ year }}"> {{ year }} </a> {% if forloop.last %}{% else %}-{% endif %}{% endfor %}
+<a class="right-subtitle" href="http://biosync.rcsb.org/biosync_gallery/galleryCLSI08ID-1.html">08ID-1 Gallery at BioSync</a>
+    {% for year in year_list %}<h2><a name="{{ year }}"></a>{{ year }}</h2>
+    {% for publication in publication_list %}
+        {% ifequal year publication.year %}
+            <p><a name="{{publication.slug}}"></a>
+            {{ publication.first_author }}
+            {% if publication.authors %}, {{ publication.authors }}{% endif %}. 
+            ({{ publication.year }}). 
+            {{ publication.title }}. 
+            <i>{{ publication.journal }}
+            {% if publication.volume %}, {{ publication.volume }}{% endif %}</i>
+            {% if publication.issue %} ({{ publication.issue }}){% endif %}
+            {% if publication.pages %}, {{ publication.pages }}{% endif %}.
+            {% if publication.original %}<br/><a href="{{ publication.original }}">Abstract on PubMed</a>
+            {% if publication.PDBlink.all %} | PDB {% endif %}{% endif %}
+            {% for link in publication.PDBlink.all %}<a href="{{ link }}">{{ forloop.counter }} </a>{% endfor %}
+            </p>
+        {% endifequal %}
+    {% endfor %}
+    {% endfor %}
+{% endif %}
+
+{% if year_list %}
+{% else %}
+    {% for publication in publication_list %}
+    {% if forloop.first %}
+        <h2>{{publication.year}}</h2>
+        <h2 class="subtitle"><a href="/publications">Back to Full List</a><a class="right-subtitle" href="http://biosync.rcsb.org/biosync_gallery/galleryCLSI08ID-1.html">08ID-1 Gallery at BioSync</a></h2>
+    {% endif %}
+    {% endfor %}
+{% endif %}
+

@@ -1,0 +1,109 @@
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{ feincms_page.title }}</title>
+<link type="text/css" href="/media/css/fonts.css" rel="stylesheet">
+<link type="text/css" href="/media/css/wp-style.css" rel="stylesheet">
+
+<script language="JavaScript" type="Text/Javascript">
+function addBookmark(title,url) {
+    if (window.sidebar) {
+        window.sidebar.addPanel(title, url,"");
+    } else if( document.all ) {
+        window.external.AddFavorite( url, title);
+    } else if( window.opera && window.print ) {
+    return true;
+}
+} 
+</script>
+
+{% block extra-header %}{% endblock %}
+
+<!--[if lt IE 8]>
+<link type="text/css" href="/media/css/ie.css" rel="stylesheet">
+<![endif]-->
+<!--[if lt IE 7]>
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
+<![endif]-->
+<link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="Canadian Macromolecular Crystallography Facility">
+</head>
+<body id="wordpress-org">
+
+<div id="header">
+    <div class="banner">
+    <div class="logo">
+	<div class="wrapper"> 
+        <!--<a href="/"><h1>Canadian Macromolecular Crystallography Facility</h1></a>-->
+        <h1>Canadian Macromolecular<br/>Crystallography Facility</h1>
+        <!--<h2>Beamlines 08ID-1 & 08B1-1 at the Canadian Light Source </h2>-->
+    </div>
+    <ul>
+    {% feincms_navigation of feincms_page as toplevel level=1 %}
+    {% for p in toplevel %}
+    <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
+        {% feincms_navigation of p as sublevel level=2 %}
+            {% if sublevel %}{% for sp in sublevel %}
+                {% if forloop.first %}<ul class="nav-submenu">{% endif %}
+                <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
+                {% if forloop.last %}</ul>{% endif %}
+            {% endfor %}{% endif %}
+        </li>
+    {% endfor %}
+</ul>
+    </div>
+    </div>
+</div>
+{% block "page-content" %}
+<div id="headline">
+	<div class="wrapper">
+		<h2>{{ feincms_page.title }}</h2>
+	</div>
+</div>
+
+<div id="pagebody">
+<div class="wrapper">
+<div class="col-9">
+{% feincms_render_region feincms_page "main" request %}
+</div>
+		
+<div class="col-3">
+{% feincms_navigation of feincms_page as sublevel level=2 %}
+{% if sublevel %} {# stupid django 1.0 compatibility ... :-) #}
+    {% for p in sublevel %}
+        {% if forloop.first %}<ul>{% endif %}
+        <li><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></li>
+        {% if forloop.last %}</ul>{% endif %}
+    {% endfor %}
+{% else %}
+{% endif %}
+
+{% feincms_render_region feincms_page "sidebar" request %}
+</div>
+
+</div>
+</div>
+{% endblock %}
+
+{% feincms_frontend_editing feincms_page request %}
+
+<div id="footer">
+	<div class="wrapper">
+        <span id="something">{% get_fragment request "something" %}</span>
+		<p> 
+			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
+			<a href="/sitemap">Site Map</a> |
+            <a href="/contact-us/feedback">Feedback</a> |
+            <a href="javascript:addBookmark('Canadian Macromolecular Crystallography Facility', 'http://cmcf.lightsource.ca:8000')">Add Bookmark</a> | 
+            <a href="/links">Links</a> |
+            <a href="/feeds/latest" class="feed">RSS</a> 
+		</p>
+	</div>
+</div>
+
+
+</body>
+</html>
+

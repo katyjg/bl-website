@@ -1,0 +1,33 @@
+{% extends "photologue/root.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "All Galleries" %}{% endblock %}
+
+{% block content %}
+
+<h1>{% trans "All galleries" %}</h1>
+
+{% if object_list %}
+    {% for gallery in object_list %}
+    <div class="photo-gallery">
+        <h2><a href="{{ gallery.get_absolute_url }}">{{ gallery.title }}</a></h2>
+        {% for photo in gallery.sample|slice:sample_size %}
+        <div class="gallery-photo">
+            <a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_thumbnail_url }}" alt="{{ photo.title }}"/></a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% else %}
+    <p>{% trans "No galleries were found." %}</p>
+{% endif %}
+
+{% if is_paginated %}
+<p>{{ hits }} {% trans "galleries total." %}</p>
+<div id="page_controls">
+    <p>{% if has_previous %}<a href="{% url pl-gallery-list previous %}">{% trans "Previous" %}</a> | {% endif %} {% trans "page" %} {{ page }} {% trans "of" %} {{ pages }} {% if has_next %}| <a href="{% url pl-gallery-list next %}">{% trans "Next" %}</a>{% endif %}</p>
+</div>
+{% endif %}
+
+{% endblock %}
