@@ -4,4 +4,10 @@
 *~
 *.bak
 *.cache
+<<<<<<< HEAD
+uploads/
+junk/
+cmcf.db
+=======
 
+>>>>>>> ff0fed969b685ec05fb371441c7b296c342504f8
