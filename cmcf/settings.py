@@ -33,7 +33,7 @@ TINYMCE_CONTENT_CSS_URL = '/media/admin/tinymce/jscripts/tiny_mce/themes/advance
 
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
 MEDIA_URL = '/media/'
-ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca:8000/media/admin/'
+ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca/media/admin/'
 FEINCMS_ADMIN_MEDIA = '/feincms_media/'
 
 SECRET_KEY = '_wn95s-apfd-442cby5m^_^ak6+5(fyn3lvnvtn7!si&o)1x^w'

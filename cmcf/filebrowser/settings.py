@@ -41,7 +41,7 @@ URL_FILEBROWSER_MEDIA = getattr(settings, "FILEBROWSER_URL_FILEBROWSER_MEDIA", "
 PATH_FILEBROWSER_MEDIA = getattr(settings, "FILEBROWSER_PATH_FILEBROWSER_MEDIA", os.path.join(settings.MEDIA_ROOT, 'filebrowser/'))
 
 # The URL/PATH to your TinyMCE Installation.
-URL_TINYMCE = "http://cmcf.lightsource.ca:8000/media/js/tinymce/"
+URL_TINYMCE = "http://cmcf.lightsource.ca/media/js/tinymce/"
 #URL_TINYMCE = getattr(settings, "FILEBROWSER_URL_TINYMCE", DEFAULT_URL_TINYMCE)
 PATH_TINYMCE = getattr(settings, "FILEBROWSER_PATH_TINYMCE", DEFAULT_PATH_TINYMCE)
 

@@ -20,7 +20,7 @@ class LatestEntries(Feed):
 
     def item_link(self, item):
         url_link = []
-        url_link.append(":8000/research-highlights/#")
+        url_link.append("/research-highlights/#")
         url_link.append(item.slug)
         return ''.join(url_link)
 
