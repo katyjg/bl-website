@@ -66,7 +66,7 @@ ROOT_URLCONF = 'cmcf.urls'
 TEMPLATE_DIRS = (
     '/users/kathryn/Code/cmcf-website/cmcf/templates',
     '/users/kathryn/Code/cmcf-website/cmcf/templatetags',
-    '/users/kathryn/Code/cmcf-website/cmcf/galleriffic/templates',
+    #'/users/kathryn/Code/cmcf-website/cmcf/galleriffic/templates',
     #'/users/kathryn/Django1.2.1',
     #'/users/kathryn/Django1.2.1/django/contrib/admin/templates/admin',
     #'/users/kathryn/FeinCMSTesting/cmcf/filebrowser/templates',
