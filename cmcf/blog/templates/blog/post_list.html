@@ -12,7 +12,7 @@
         </div>
   	    <div>
    	    <h3 class="subtitle"><!--<a href="{{ post.get_absolute_url }}" title="{% trans "View this post" %}">{{ post.title }}</a>--><a name="{{ post.slug }}"></a>{{ post.title }}</h3>
-        {{ post.body|safe }}
+        {{ post.body|removetags:"p"|safe }}
         </div>
 	    {% if post.link %}<br/><a href={{object.link}}>Original Publication</a>{% if post.CLSlink %}&nbsp;|{% endif %}{% endif %}
             {% if post.CLSlink %}<a href={{object.CLSlink}}>CLS Science Highlights</a>{% endif %}

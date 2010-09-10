@@ -149,11 +149,11 @@ class pdblink(models.Model):
 
 
 class Publication(models.Model):
-    title = models.CharField(_('title'), max_length=200, blank=False)
-    slug = AutoSlugField(max_length=100, populate_from='year', append_field='pages')
-#    slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
-    first_author = models.CharField(_('first author'), max_length=150, blank=False)
-    authors = models.CharField(_('authors'), max_length=250, blank=True)
+    title = models.TextField(_('title'), max_length=200, blank=False)
+#    slug = AutoSlugField(max_length=100, populate_from='year', append_field='pages')
+    slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
+    first_author = models.TextField(_('first author'), max_length=150, blank=False)
+    authors = models.TextField(_('authors'), max_length=250, blank=True)
     journal = models.ForeignKey(Journal, blank=False)
     volume = models.CharField(_('volume'), max_length=20, blank=True)
     issue = models.CharField(_('issue'), max_length=20, blank=True)
@@ -201,6 +201,10 @@ class PublicationAdmin(admin.ModelAdmin):
     list_display  = ('title', 'year')
     search_fields = ('title', 'year', 'authors', 'journal')
 #    prepopulated_fields = {'slug': ('title',)}
+
+    class Media:
+        js = ['/media/admin/tinymce/jscripts/tiny_mce/tiny_mce.js', '/media/admin/tinymce_setup/tinymce_setup.js',]
+
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Journal)
 admin.site.register(pdblink)

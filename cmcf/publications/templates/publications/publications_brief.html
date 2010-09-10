@@ -5,9 +5,9 @@
 <ul class="hr-list">
 {% for publication in publication_list %}
     <li>
-    {{ publication.first_author }}{% if publication.authors %}, et al.{% endif %}
+    {{ publication.first_author|striptags }}{% if publication.authors %}, et al.{% endif %}
     ({{ publication.year }}).
-    <a title="View Reference", href="/publications/#{{ publication.slug }}">{{ publication.title|truncate_chars:95 }}</a>
+    <a title="View Reference", href="/publications/#{{ publication.slug }}">{{ publication.title|truncate_chars:95|striptags }}</a>
     <i>{{publication.journal}}, {{ publication.volume }}</i> {% if publication.issue %}({{publication.issue}}){% endif %}{% if publication.pages %}, {{ publication.pages }}{% endif %}. 
     </li>
 {% endfor %}

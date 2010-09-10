@@ -1403,10 +1403,10 @@ thead th {
 	background:#FFFF99;
 	}
 .Maintenance{
-	background:#FFC78F;
+	background:#B3D9FF;
 	}
 .Development{
-	background:#B3D9FF;
+	background:#FFC78F;
 	}
 .NormalMode{
 	background:#A3E085;
@@ -1470,7 +1470,6 @@ div.sitemap ul li ul li{
 }
 #guide p {
     margin-bottom: 15px;
-    clear: left;
 }
 ul.hr-list{
     list-style: none !important;
@@ -1479,6 +1478,9 @@ ul.hr-list{
 }
 ul.hr-list li{
     padding-bottom: 6px;
+}
+ul.hr-list li p {
+    clear: none !important;
 }
 ul.hr-list li+li{
   	border-top: 1px solid #ebebeb;
@@ -1503,6 +1505,7 @@ td ul{
     clear: right;
     padding-top: 2px;
     padding-bottom: 2px;
+    vertical-align: center;
 }
 .img_block {
     display: block;

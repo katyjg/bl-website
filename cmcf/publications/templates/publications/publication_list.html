@@ -7,10 +7,10 @@
     {% for publication in publication_list %}
         {% ifequal year publication.year %}
             <p><a name="{{publication.slug}}"></a>
-            {{ publication.first_author }}
-            {% if publication.authors %}, {{ publication.authors }}{% endif %}. 
+            {{ publication.first_author|striptags }}
+            {% if publication.authors %}, {{ publication.authors|striptags }}{% endif %}. 
             ({{ publication.year }}). 
-            {{ publication.title }}. 
+            {{ publication.title|striptags }}. 
             <i>{{ publication.journal }}
             {% if publication.volume %}, {{ publication.volume }}{% endif %}</i>
             {% if publication.issue %} ({{ publication.issue }}){% endif %}
