@@ -1,24 +1,23 @@
 {% load i18n %}
 {% for category in categories reversed %}
-    {% ifequal categories|length 1 %}{% else %}<a href="#{{ category }}"> {{ category }} </a> {% if forloop.last %}{% else %}-{% endif %}{% endifequal %}
-    <h2><a name="{{ category }}"></a>{{ category }}</h2>
+<!--    {% ifequal categories|length 1 %}{% else %}<a href="#{{ category }}"> {{ category }} </a> {% if forloop.last %}{% else %}-{% endif %}{% endifequal %}
+    <h2><a name="{{ category }}"></a>{{ category }}</h2>-->
 <ul class="hr-list">
 {% for post in object_list %}
-    {% ifequal category post.categories.all.0 %}
+<!--    {% ifequal category post.categories.all.0 %}-->
     <li>
         <div class="news-post">
         <div class="{% cycle 'image' 'image-odd' %}">
-            <img src="/media/uploads/news/photos/{{post.image_filename}}" alt=""/>
+            <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image"/>
         </div>
-  	    <div>
-   	    <h3 class="subtitle"><!--<a href="{{ post.get_absolute_url }}" title="{% trans "View this post" %}">{{ post.title }}</a>--><a name="{{ post.slug }}"></a>{{ post.title }}</h3>
+  	<div>
+   	    <h3 class="subtitle"><a name="{{ post.slug }}"></a>{{ post.categories.all.0 }}: <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a></h3>
+	Posted on {{ post.publish|date:"F d, Y" }} <br>			
         {{ post.body|removetags:"p"|safe }}
         </div>
-	    {% if post.link %}<br/><a href={{object.link}}>Original Publication</a>{% if post.CLSlink %}&nbsp;|{% endif %}{% endif %}
-            {% if post.CLSlink %}<a href={{object.CLSlink}}>CLS Science Highlights</a>{% endif %}
         </div>
     </li>
-    {% endifequal %}
+<!--    {% endifequal %}-->
 {% endfor %}
 </ul>
 {% endfor %}

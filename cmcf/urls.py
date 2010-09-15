@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     (r'^grappelli/', include('grappelli.urls')),
     (r'^admin/filebrowser/', include('filebrowser.urls')),
     (r'^admin_tools/', include('admin_tools.urls')),
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/img/clslogo.png'}),
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/img/clslogo.ico'}),
 
     # This avoids breaking Django admin's localization JavaScript when using
     # the FeinCMS frontend editing:
@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     (r'^feincms_media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': '/users/kathryn/FeinCMSTesting/feincms/media/feincms/'}),
+        {'document_root': '/var/website/cmcf-website/cmcf/media/feincms/'}),
 #        {'document_root': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'feincms/media/feincms/')}),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': os.path.join(os.path.dirname(__file__), 'media/')}),

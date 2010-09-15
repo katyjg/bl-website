@@ -22,8 +22,8 @@ DEBUG = getattr(settings, "FILEBROWSER_DEBUG", False)
 
 # Main Media Settings
 
-MEDIA_ROOT = "/users/kathryn/Code/cmcf-website/cmcf/media/"
-#MEDIA_ROOT = getattr(settings, "FILEBROWSER_MEDIA_ROOT", settings.MEDIA_ROOT)
+#MEDIA_ROOT = "/users/kathryn/Code/cmcf-website/cmcf/media/"
+MEDIA_ROOT = getattr(settings, "FILEBROWSER_MEDIA_ROOT", settings.MEDIA_ROOT)
 #MEDIA_URL = "http://cmcf.lightsource.ca:8000/media/"
 MEDIA_URL = getattr(settings, "FILEBROWSER_MEDIA_URL", settings.MEDIA_URL)
 

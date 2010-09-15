@@ -134,36 +134,20 @@ class Journal(models.Model):
         """Human readable string for Beamline"""
         return self.name        
 
-class pdblink(models.Model):
-    name = models.CharField(max_length=300, blank=False)
-
-    class Meta:
-        verbose_name = _('PDB link')
-        verbose_name_plural = _('PDB links')
-        ordering  = ['name']
-
-    def __unicode__(self):
-        """Human readable string for PDBlink"""
-        return self.name        
-
-
 
 class Publication(models.Model):
     title = models.TextField(_('title'), max_length=200, blank=False)
 #    slug = AutoSlugField(max_length=100, populate_from='year', append_field='pages')
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
-    first_author = models.TextField(_('first author'), max_length=150, blank=False)
-    authors = models.TextField(_('authors'), max_length=250, blank=True)
+    authors = models.CharField(_('authors'), max_length=250, blank=True)
     journal = models.ForeignKey(Journal, blank=False)
-    volume = models.CharField(_('volume'), max_length=20, blank=True)
-    issue = models.CharField(_('issue'), max_length=20, blank=True)
-    pages = models.CharField(_('pages'), max_length=20, blank=True)
     year = models.IntegerField(_('year'), blank=False)
+    citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
 #    image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
-    original = models.CharField(_('Link to full version'), blank=True, max_length=200)
-    PDBlink = models.ManyToManyField(pdblink, blank=True)
-    publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
-    created = models.DateTimeField(_('created'), auto_now_add=True)
+    original = models.CharField(_('DOI Reference'), blank=True, max_length=200)
+    pdb_entries = models.CharField(_('PDB entries'), max_length=50, help_text="Comma-separated list of PDB codes (no spaces)", blank=True, default="") 
+    publish = models.DateTimeField(_('publish'), default=datetime.datetime.now, editable=False)
+    created = models.DateTimeField(_('created'), auto_now_add=True, editable=False)
     modified = models.DateTimeField(_('modified'), auto_now=True)
     tags = TagField()
     objects = PublicManager()
@@ -172,7 +156,7 @@ class Publication(models.Model):
         verbose_name = _('publication')
         verbose_name_plural = _('publications')
         db_table  = 'publication_index'
-        ordering  = ['-year', '-publish']
+        ordering  = ['-year', 'authors']
         get_latest_by = 'publish'
 
 
@@ -207,7 +191,5 @@ class PublicationAdmin(admin.ModelAdmin):
 
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Journal)
-admin.site.register(pdblink)
-
 
 

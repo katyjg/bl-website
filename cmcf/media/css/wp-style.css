@@ -15,9 +15,9 @@ html * {
 	text-align: left ;
 }
 body {
-	font-size: 15px;
+	font-size: 14px;
 	background: #fff;
-	font-family: "charis", "Georgia", "Palatino", serif;
+	font-family: "Georgia", "charis", "Palatino", serif;
 	line-height: 150%;
 	color: #555;
 	margin-bottom: 40px;
@@ -46,7 +46,7 @@ a { color: #21759b; text-decoration: none; font-weight: normal; }
 
 a:visited {color:#4ca6cf;}
 
-p a { border-bottom: 1px solid #dfdfdf; }
+/*p a { border-bottom: 1px solid #dfdfdf; }*/
 
 h3 a { font-weight: bold; }
 
@@ -54,12 +54,12 @@ h3 a { font-weight: bold; }
 
 #headline a.button { display: inline-block; }
 
-p a:hover { border-bottom: 1px solid #d54e21; }
+/*p a:hover { border-bottom: 1px solid #d54e21; }*/
 
 a:hover { color: #d54e21; }
 
 h2, h2.titlelink {
-	font-family: charis, Georgia, Palatino, serif;
+	font-family: Georgia, charis, Palatino, serif;
 	font-weight: normal;
 	font-size: 20px;
 }
@@ -94,14 +94,18 @@ sup {
 #header {
 	height: 88px;
 	min-width: 960px;
-	background: #dcdcdc url(/media/img/header-bg.png) top right repeat-x;
+	background: #dcdcdc url(/media/img/header_bg_2.png) top right repeat-x;
+/*    background:-moz-linear-gradient(center top , #9966cc, #a6a6a6) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#9966cc), to(#a6a6a6)) repeat scroll 0 0 transparent;
+*/
 }
 
 #header .logo {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
-	background: url(/media/img/clslogo.png) top left no-repeat;
+/*	background: url(/media/img/clslogo.png) top left no-repeat;*/
+	background: url(/media/img/clslogo_2.png) top left no-repeat;
     height: 88px;    
 }
 
@@ -115,11 +119,14 @@ sup {
 
 #header h1 {
    padding: 15px 0px 0px 115px !important;
-   font: 20px  Verdana, "Lucida Grande", sans-serif;
+   font: 28px  graublau-web, Verdana, "Lucida Grande", sans-serif;
    background-color: transparent;
-//   padding-left: 115px;
-   text-shadow: 0 1px 0 #eee;
+/*   padding-left: 115px;*/
+   font-weight: bold;
+   text-shadow: 0 1px 3px #000;
    line-height: 27px;
+    color: #f7f7f7;
+
 }
 h1 {
    padding: 10px 0px 0px 0px;
@@ -143,7 +150,7 @@ h1 {
 	float: right;
 	list-style: none;
 	min-width: 500px;
-    margin-top: -15px;
+    margin-top: 54px;
 }
 
 #header ul li {
@@ -152,24 +159,27 @@ h1 {
 }
 
 #header ul li a {
-	font-family:  Verdana, "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;
-	font-weight: normal;
+	font-family:  graublau-web, "Trebuchet MS", "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;
+	font-weight: bold;
 	display: block;
 	line-height: 34px;
 	padding: 0 9px;
-	font-size: 12px;
-	color: #666;
-	text-shadow: #eee 0px 1px 0px;
+	font-size: 15px;
+	color: #f7f7f7;
+	text-shadow: #000 0px 1px 2px;
+
 }
 
 #header ul li a:hover {
-	color: #d54e21;
+	color: #ffd24d !important;
 }
-
+#header ul li a.current:hover, #header ul li a.current + ul li a:hover {
+	color: #d54e21 !important;
+}
 #header ul li a.current, #header ul li#download a.current {
 	color: #555;
 	background: #f7f7f7;
-	border: 1px solid #c6c6c6;
+	border: 1px solid #f7f7f7;
 	border-bottom:none;
 	margin-top:-1px;
 	-moz-border-radius-topleft: 3px;
@@ -180,7 +190,7 @@ h1 {
 	-khtml-border-top-right-radius: 3px;
 	-webkit-border-top-right-radius: 3px;
 	border-top-right-radius: 3px;
-	text-shadow: #c6d9e9 1px 1px 1px;
+	text-shadow: #bfbfbf 1px 1px 2px;
 }
 
 #header ul li#download a {
@@ -194,7 +204,7 @@ h1 {
 	-khtml-border-top-right-radius: 3px;
 	-webkit-border-top-right-radius: 3px;
 	border-top-right-radius: 3px;
-	text-shadow: #b5421c 1px 1px 1px;
+	text-shadow: #b5421c 1px 1px 2px;
 }
 
 #header ul li#download a:hover {
@@ -216,9 +226,9 @@ h1 {
 	-khtml-border-bottom-left-radius: 3px;
 	-webkit-border-bottom-left-radius: 3px;
 	border-bottom-left-radius: 3px;	
-	background: #d6d6d6;
+	background: #a6a6a6;
 	margin-top: -1px;
-	border: #c6c6c6 solid 1px;
+	border: #a6a6a6 solid 1px;
 	border-top:0;
 }
 
@@ -246,7 +256,8 @@ h1 {
 }
 
 #header ul li ul.nav-submenu li a{
-    line-height: 28px
+    line-height: 28px;
+    font-weight: normal;
 }
 
 #home-welcome {
@@ -384,12 +395,6 @@ a.download-button:active {
 	margin-left: 6px;
 }
 
-.col-3 ul {
-	margin-left: 16px;
-	list-style: disc;
-	margin-bottom: 22px;
-}
-
 .col-3 p {
 	margin-bottom: 22px;
 }
@@ -491,35 +496,40 @@ a.download-button {
 	padding-left: 10px;
 }
 
-#home-welcome .announcements {
-	background: #fffbcc;
-	border: 1px solid #e6db55;
-	padding: 11px 11px 16px;
-	margin: auto 0;
-	overflow: auto;
-	border: 1px solid #ccc;
-	float: left
-	padding-top: 10px;
-	margin-top: 25px;
-    vertical-align: center;
+.announcements {
+	background: #eebdff;
+	border: 1px solid #d042ff;
+/*	padding: 11px 11px 16px;*/
+	margin-top: 12px;
+	margin-bottom: 5px;
+ 	padding: 10px 0;
+	text-align: center !important;
 }
-#home-welcome .announcements ul {
+.announcements ul {
     font-weight: normal;
-    padding-left: 10px;
+/*    padding-left: 10px;*/
     list-style: none;
 }
-
+.announcements p, .announcements ul, .announcements ul li {
+ 	text-align: center;
+}
+a.toplink {
+	float:right;
+	font-size: 13px;
+}
 #home-below .quicklinks {
-	background: #e8e8e8;
-	border: 1px solid #e6db55;
-	padding: 11px 11px 16px;
-	margin: 32px 0;
-    margin-bottom: 0px;
+	background: #eeffee;
+/*	border: 1px solid #b7da71;*/
+	padding: 12px 14px 16px;
+/*	margin: 32px 0;*/
+    	margin-bottom: 0px;
 	overflow: auto;
-	border: 1px solid #ccc;
 	float: left
 	padding-top: 10px;
 	margin-top: 10px;
+}
+#home-below div.col-3 {
+	margin: 10px 0 0 0; !important
 }
 #home-below div.quicklinks {
     min-height: 225px;
@@ -533,16 +543,26 @@ a.download-button {
     margin-left: 22px;
 }
 #home-below .quicklinks h2 {
-    font-size: 125%;
-    font-weight: normal;
-}   
-
+    padding-top: -5px;
+    margin-top: -5px;
+}
+#home-below .quicklinks ul {
+    margin-left: 16px;
+    list-style: disc;
+    margin-bottom: 0px;
+}
 #home-below h2 {
-    margin-top: 0px;
+    margin-top: 7px;
+    font-size: 125%;
+    font-weight: bold;
+    font-variant: small-caps !important;
+    color: #666;
 /*    font-family: "Lucida Grande", Verdana, Tahoma, Arial, sans-serif; */
 }
-#home-below h2 a {
+#home-below span a {
     font-weight: bold;
+    font-variant: small-caps !important;
+    font-size: 100%;
 }
 #home-welcome h3 {
 	font-size: 1.6em;
@@ -568,7 +588,9 @@ h4, h3.head {
 	margin-bottom: 18px;
 	margin-top: -20px;
 }
-
+h3.subtitle {
+	font-variant: small-caps !important;
+}
 h5 {
 	font-weight: bold;
 	font-size: 1em;
@@ -712,8 +734,8 @@ p.person {
 
 #pagebody .submenu li {
 	border-bottom: 1px solid #dedede;
-/*	font-size: 11px;
-	line-height: 15px;*/
+	font-size: 13px;
+/*	line-height: 15px;*/
 	padding: 5px 0;
 }
 

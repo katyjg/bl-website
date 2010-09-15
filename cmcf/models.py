@@ -80,6 +80,16 @@ Page.register_templates({
     })
 
 Page.register_templates({
+    'key': 'wp-5_7',
+    'title': 'WP 2-Col. 5/7',
+    'path': 'wp-5_7.html',
+    'regions': (
+	('col1', 'Main'),
+	('col2', 'Sidebar', 'inherited'),
+	)
+    })
+
+Page.register_templates({
     'key': 'wp-8_4',
     'title': 'WP 2-Col. 8/4',
     'path': 'wp-8_4.html',
