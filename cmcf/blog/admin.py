@@ -20,7 +20,7 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('title', 'body')
 #    prepopulated_fields = {'slug': ('title',)}
     class Media:
-        js = ['/media/admin/tinymce/jscripts/tiny_mce/tiny_mce.js', '/media/admin/tinymce_setup/tinymce_setup.js',]
+        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
 admin.site.register(Post, PostAdmin)
 
 

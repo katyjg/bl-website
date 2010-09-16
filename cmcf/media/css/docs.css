@@ -8,7 +8,7 @@ html * {
 }
 
 #bodyContent h1, #bodyContent h2 {
-	font-family: charis, Georgia, Palatino, serif;
+	font-family: Georgia, charis, Palatino, serif;
 	font-size: 22px;
 	margin-bottom: 22px;
 	color: #333;

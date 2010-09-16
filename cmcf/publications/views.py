@@ -21,10 +21,24 @@ from django.db import connection, transaction
 
 def publications_brief(request):
     pub_list = []
+    author_list = []
+    data_list = []
     i = 0
     for publication in Publication.objects.all():
         if i <= 2:
-            pub_list.append(publication)
+	    data_list = []
+	    author_list = publication.authors.split(', ')
+	    if len(author_list) is 3:
+		authors = author_list[0] + ', ' + author_list[1] + ', ' + author_list[2]
+            elif len(author_list) is 2:
+		authors = author_list[0] + ', ' + author_list[1]
+	    elif len(author_list) is 1:
+		authors = author_list[0]
+	    else:
+		authors = author_list[0] + ', et al'
+	    data_list.append(publication)
+	    data_list.append(authors)
+            pub_list.append(data_list)
             i = i+1
 
     return render_to_response(
@@ -44,20 +58,20 @@ def publication_archive_year(request, year):
         )
 
 def publication_list(request, **kwargs):
-    publications = Publication.objects.all()
- 
     all_years_list = []
     year_list = []
     pub_list = []
-    link_list = {}
-    for publication in Publication.objects.all():
-        pub_list.append(publication)
+    for publication in sorted(Publication.objects.all(), key=lambda Publication: Publication.authors.split(',')[0].split(' ')[1]):
+	data_list = []
+	data_list.append(publication)
+	data_list.append(publication.pdb_entries.split(','))
+        pub_list.append(data_list)
         all_years_list.append(publication.year)
         if all_years_list.count(publication.year)==1:
             year_list.append(publication.year)
 	
     return object_list(request, 
-                        queryset=publications, 
+                        queryset=Publication.objects.all(), 
                         extra_context={ 'publication_list': pub_list,
                                         'year_list': year_list},
                         **kwargs)

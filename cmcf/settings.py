@@ -28,12 +28,13 @@ SITE_ID = 1
 
 USE_I18N = True
 
-TINYMCE_JS_URL = '/media/admin/tinymce/jscripts/tiny_mce/tiny_mce.js'
-TINYMCE_CONTENT_CSS_URL = '/media/admin/tinymce/jscripts/tiny_mce/themes/advanced/skins/grappelli/ui.css'
+TINYMCE_JS_URL = '/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js'
+TINYMCE_CONTENT_CSS_URL = '/admin_media/tinymce/jscripts/tiny_mce/themes/advanced/skins/grappelli/ui.css'
 
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
 MEDIA_URL = '/media/'
-ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca:8000/media/admin/'
+#ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca:8000/media/admin/'
+ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca/admin_media/'
 FEINCMS_ADMIN_MEDIA = '/feincms_media/'
 
 SECRET_KEY = '_wn95s-apfd-442cby5m^_^ak6+5(fyn3lvnvtn7!si&o)1x^w'
@@ -62,14 +63,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'cmcf.urls'
 
-
 TEMPLATE_DIRS = (
-    '/users/kathryn/Code/cmcf-website/cmcf/templates',
-    '/users/kathryn/Code/cmcf-website/cmcf/templatetags',
-    #'/users/kathryn/Code/cmcf-website/cmcf/galleriffic/templates',
-    #'/users/kathryn/Django1.2.1',
-    #'/users/kathryn/Django1.2.1/django/contrib/admin/templates/admin',
-    #'/users/kathryn/FeinCMSTesting/cmcf/filebrowser/templates',
+    '/var/website/cmcf-website/cmcf/templates/',
 )
 
 INSTALLED_APPS = (
@@ -100,6 +95,7 @@ INSTALLED_APPS = (
     'photologue',
     'contact_form',
     'publications',
+    'galleriffic',
 
     'mptt',
     'south',

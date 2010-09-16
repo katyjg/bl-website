@@ -2,22 +2,18 @@
 
 {% if year_list %}
     {% for year in year_list %}<a href="#{{ year }}"> {{ year }} </a> {% if forloop.last %}{% else %}-{% endif %}{% endfor %}
-<a class="right-subtitle" href="http://biosync.rcsb.org/biosync_gallery/galleryCLSI08ID-1.html">08ID-1 Gallery at BioSync</a>
+<a class="right-subtitle" href="http://biosync.sbkb.org/stats.do?stats_sec=GALLRY&stats_focus_lvl=BMLN&stats_site=CLSI&stats_bmln=08ID-1">08ID-1 Gallery at BioSync</a>
     {% for year in year_list %}<h2><a name="{{ year }}"></a>{{ year }}</h2>
     {% for publication in publication_list %}
-        {% ifequal year publication.year %}
-            <p><a name="{{publication.slug}}"></a>
-            {{ publication.first_author|striptags|safe }}
-            {% if publication.authors %}, {{ publication.authors|striptags|safe }}{% endif %}. 
-            ({{ publication.year }}). 
-            {{ publication.title|striptags|safe }}. 
-            <i>{{ publication.journal }}
-            {% if publication.volume %}, {{ publication.volume }}{% endif %}</i>
-            {% if publication.issue %} ({{ publication.issue }}){% endif %}
-            {% if publication.pages %}, {{ publication.pages }}{% endif %}.
-            {% if publication.original %}<br/><a href="{{ publication.original }}">Abstract on PubMed</a>
-            {% if publication.PDBlink.all %} | PDB {% endif %}{% endif %}
-            {% for link in publication.PDBlink.all %}<a href="{{ link }}">{{ forloop.counter }} </a>{% endfor %}
+        {% ifequal year publication.0.year %}
+            <p><a name="{{publication.0.slug}}"></a>
+            {{ publication.0.authors|safe }}. 
+            ({{ publication.0.year }}). 
+            {{ publication.0.title|striptags|safe }}. 
+            <i>{{ publication.0.journal }}</i>
+            {% if publication.0.citation %}{{ publication.0.citation }}{% endif %}
+            {% if publication.0.original %}<br/>DOI: <a href="http://dx.doi.org/{{ publication.0.original }}">{{ publication.0.original }}</a>
+            {% if publication.0.pdb_entries %} | PDB: {% for pdb in publication.1 %}&nbsp;<a href="http://www.rcsb.org/pdb/explore/explore.do?structureId={{pdb}}">{{ forloop.counter }}</a>&nbsp;{% endfor %}{% endif %}{% endif %}
             </p>
         {% endifequal %}
     {% endfor %}

@@ -29,13 +29,12 @@ class SupportPerson(models.Model):
     STAFF_CHOICES = (
         (0, u'Beamline Staff'),
         (1, u'Students'),
-        (2, u'Software and Instrumentation'),
     )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     position = models.CharField(max_length=100)
     email = models.EmailField()
-    phone_number = models.CharField(max_length=20, help_text="Four digit extension")
+    phone_number = models.CharField(max_length=20, help_text="Four digit extension", blank=True)
     image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
     office = models.CharField(blank=True, max_length=50)
     category = models.IntegerField(blank=False, choices=STAFF_CHOICES)

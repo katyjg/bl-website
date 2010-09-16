@@ -10,26 +10,30 @@
 
 		<div class="col-5">				
 		<p class="intro"> Located at the Canadian Light Source, two CMCF beamlines enable high-resolution structural studies of proteins, nucleic acids and other macromolecules, satisfying the requirements of the most challenging and diverse crystallographic experiments. </p>
-		<div class="announcements">
-    {% feincms_render_region feincms_page "sidebar" request %}
-		</div>
 		</div>
 	</div>
 </div>	
 
+{% if feincms_page.content.sidebar %}
+    <div class="wrapper">
+	<div class="announcements col-12">
+    {% feincms_render_region feincms_page "sidebar" request %}
+	</div>
+    </div>
+{% endif %}
 
 
 <div id="home-below">
 	<div id="bodyContent" class="wrapper">
-		<div class="col-3">
+		<div class="col-5">
         {% feincms_render_region feincms_page "col1" request %}
 		</div>
 
-		<div class="col-4 quicklinks">
+		<div class="col-3 quicklinks">
         {% feincms_render_region feincms_page "col2" request %}
 		</div>
 		
-		<div class="col-5">
+		<div class="col-4">
         {% feincms_render_region feincms_page "col3" request %}
 		</div>
 	</div>

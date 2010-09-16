@@ -7,17 +7,15 @@
     <li>
     <div class="news-entry">
     <div class="{% cycle 'image' 'image-odd' %}">
-        <!--<a title="View Post", href="/research-highlights/{{post.publish.year}}/{{post.publish|date:"b"}}/{{post.publish.day}}/{{ post.slug }}">
-            --><a title="View this Post" href="/research-highlights/#{{ post.slug }}"><img src="/media/uploads/news/photos/{{post.image_filename}}" alt="">
+        <!--<a title="View Post", href="/research-highlights/{{post.publish.year}}/{{post.publish|date:"b"}}/{{post.publish.day}}/{{ post.slug }}">-->
+            <a title="View this Post" href="/research-highlights/#{{ post.slug }}"><img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
         </a>
     </div>
-    {% for category in post.categories.all %}
-        <a title="View All {% for category in post.categories.all %}{{ category }}{% endfor %}", href="/research-highlights/#{{ category }}">
-            {{ category }}
-        </a>
+        {{ post.categories.all.0 }}:
         <br/>
-    {% endfor %}
-    {{ post.title|truncate_chars:95 }}
+	<a title="View this Post" href="/research-highlights/#{{ post.slug }}">
+	    {{ post.title|truncate_chars:95 }}
+	</a>
     </div>
     </li>
 {% endfor %}

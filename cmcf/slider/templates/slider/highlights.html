@@ -11,8 +11,9 @@
                     </a>
                 </div>
 				<div class="slider-content"><h1>{{ post.title }}</h1>
+				<!--<p class="date">Posted on {{ post.publish|date:"F d, Y" }}</p>-->
 				<p>{{ post.tease|safe }}</p></div>
-				<div class="slider-links">{% if post.link %}<a href={{post.link}}>Original Publication</a>{% endif %}</div>
+				<!--<div class="slider-links">{% if post.link %}<a href={{post.link}}>Original Publication</a>{% endif %}</div>-->
 				{% endif %}
 				
 				{% if post.photo_highlight %}
@@ -22,7 +23,7 @@
                     </a>
                 </div>
 				<h1>{{ post.title }}</h1>
-				<p class="date">Added on {{ post.date_added|date:"Y F d" }}</p>
+				<p class="date">Added on {{ post.date_added|date:"F d, Y" }}</p>
 				<p class="date">{{ post.caption|safe }}</p>
             	{% endif %}
 			</div><!-- .panel-wrapper -->
