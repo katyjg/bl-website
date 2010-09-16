@@ -471,6 +471,8 @@
 .grappelliSkin span.mce_image { background-image: url('img/buttons/image.png'); }
 .grappelliSkin span.mce_code { background-image: url('img/buttons/code.png'); }
 .grappelliSkin span.mce_charmap { background-image: url('img/buttons/charmap.png'); }
+.grappelliSkin span.mce_anchor { background-image: url('img/buttons/anchor.png'); }
+.grappelliSkin span.mce_indent { background-image: url('img/buttons/indent.png'); }
 
 .grappelliSkin span.mce_fullscreen { background-image: url('img/buttons/fullscreen.png'); }
 .grappelliSkin span.mce_media { background-image: url('img/buttons/media.png'); }

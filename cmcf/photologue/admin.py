@@ -42,7 +42,7 @@ class PhotoAdmin(BatchModelAdmin):
     prepopulated_fields = {'title_slug': ('title',)}
 
     class Media:
-        js = ['/media/admin/tinymce/jscripts/tiny_mce/tiny_mce.js', '/media/admin/tinymce_setup/tinymce_setup.js',]
+        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
 
 class PhotoEffectAdmin(BatchModelAdmin):
     batch_actions = ['delete_selected']

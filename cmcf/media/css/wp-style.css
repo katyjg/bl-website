@@ -735,24 +735,66 @@ p.person {
 #pagebody .submenu li {
 	border-bottom: 1px solid #dedede;
 	font-size: 13px;
-/*	line-height: 15px;*/
+	line-height: 1.2em;
+	padding: 5px 0;
+}
+#pagebody .submenu li.subsubmenu+li {
+	border-top: 1px solid #dedede;
+}
+#pagebody .submenu li.subsubmenu+li.subsubmenu {
+	border-top: none;
+}
+#pagebody .submenu li.subsubmenu {
+	border-bottom: none;
+	font-size: 12px;
+	padding: 5px 16px;
+}
+#pagebody .submenu li.current a{
+	color: #006385;
+	font-weight: bold;
+}
+#pagebody .submenu span.open {
+	background: url(/media/img/arrow_down.png) center right no-repeat;
+	padding-right: 14px;
+}	
+#pagebody .submenu span.closed {
+	background: url(/media/img/arrow.png) center right no-repeat;
+	padding-right: 10px;
+}
+
+
+/*#pagebody .submenu li {
+	border-bottom: 1px solid #dedede;
+	font-size: 13px;
+	line-height: 1.2em;
 	padding: 5px 0;
 }
 
 #pagebody .submenu li a {
 	width: 100%;
-/*    font-size: 80%;*/
 	display: block;
 }
 
-#pagebody .submenu li.current{
-	background: url(/media/img/arrow.png) center left no-repeat;
+*//*#pagebody .submenu li.current{
+
     background-position: left 0.75em;
 	font-weight: bold;
     padding-left: 8px;
 }
-#pagebody .submenu li.current a{
+*//*
+#pagebody .submenu li.current{
     font-weight: bold;
+}
+#pagebody .submenu li.subsubmenu a{
+	padding-left: 16px;
+	font-size: 11px;
+	background: none;
+}
+#pagebody .submenu ul.subsubmenu li{
+	border-bottom: none;
+}
+#pagebody li.subsubmenu+li {
+	border-bottom: 1px solid #eee;
 }
 #pagebody .submenu li ul {
 	margin-top: 0 !important;
@@ -764,18 +806,20 @@ p.person {
 	line-height: 1.4em;
 	padding-bottom: 2px;
 }
-#pagebody .submenu ul.subsubmenu li, #pagebody .submenu li.current ul.subsubmenu li a {
-    list-style: disc;
-    border-bottom: none;
-    font-weight: normal;
+#pagebody ul.subsubmenu, #pagebody .submenu ul.subsubmenu li, #pagebody .submenu li.current ul.subsubmenu li a {
+	list-style: none;
+	font-weight: normal;
+	border-bottom: none;
 }
-
-#pagebody .submenu ul.subsubmenu li, #pagebody .submenu li.current ul.subsubmenu li.current a {
+#pagebody .submenu li.subsubmenu{
     font-weight: bold;
     background: none;
     padding-left: 0;
+    border-bottom: none;
 }
-
+#pagebody li.current + li.subsubmenu {
+	border-bottom: none;
+}*/
 #pagebody {
 /* 	font-size: 12px;*/
 	margin-top: 10px;
@@ -1520,6 +1564,7 @@ td ul{
     clear: left;
     padding-top: 2px;
     padding-bottom: 2px;
+    padding-right: 5px;
 }
 .img_right {
     display: block;

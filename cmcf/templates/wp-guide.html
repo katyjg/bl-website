@@ -6,6 +6,7 @@
 {% block "page-content" %}
 
 {% feincms_navigation of feincms_page as subsubsublevel level=4 %}
+{% feincms_navigation of feincms_page as subsublevel level=3 %}
 {% if subsubsublevel %}
 <div id="headline">
     <div class="wrapper">
@@ -67,18 +68,20 @@
 
     <div class="col-3">
   	{% feincms_navigation of feincms_page as sublevel level=2 %}
+  	{% feincms_navigation of feincms_page as subsublevel level=3 %}
         <ul class="submenu" >
   	{% for sp in sublevel %}
-     	    <li{% if sp|is_equal_or_parent_of:feincms_page %} class="current"{% endif %}><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
-            {% feincms_navigation of feincms_page as subsublevel level=3 %}
-            {% if sp|is_equal_or_parent_of:feincms_page %}
-                <ul class="subsubmenu">
-                {% for ssp in subsublevel %}
-        	    <li{% if ssp|is_equal_or_parent_of:feincms_page %} class="current"{% endif %}><a href="{{ ssp.get_absolute_url }}">{{ ssp.title }}</a></li>
-                {% endfor %}
-                </ul>
+	    {% feincms_navigation of sp as subsubsublevel level=4 %}
+     	    <li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
+	    {% if subsubsublevel %}
+	    	<span class="{% if sp|is_equal_or_parent_of:feincms_page %}open{% else %}closed{% endif %}"></span>
 	    {% endif %}
-            </li>
+	    </li>
+            {% if sp|is_equal_or_parent_of:feincms_page %}
+                {% for ssp in subsublevel %}
+        	    <li class="subsubmenu {% if ssp|is_equal_or_parent_of:feincms_page %} current{% endif %}"><a href="{{ ssp.get_absolute_url }}">{{ ssp.title }}</a></li>
+                {% endfor %}
+	    {% endif %}
     	{% endfor %}
         </ul>
 	{% feincms_render_region feincms_page "col1" request %}
@@ -135,7 +138,12 @@
 	    {% feincms_navigation of feincms_page as sublevel level=2 %}
             <ul class="submenu" >
     	    {% for sp in sublevel %}
-        	<li{% if sp|is_equal_or_parent_of:feincms_page %} class="current"{% endif %}><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
+	    	{% feincms_navigation of sp as subsubsublevel level=4 %}
+     	    	<li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
+	    	{% if subsubsublevel %}
+	    	    <span class="{% if sp|is_equal_or_parent_of:feincms_page %}open{% else %}closed{% endif %}"></span>
+	    	{% endif %}
+	    	</li>
     	    {% endfor %}
             </ul>
 	    {% feincms_render_region feincms_page "col1" request %}
