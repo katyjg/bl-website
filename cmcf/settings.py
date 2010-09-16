@@ -28,6 +28,8 @@ SITE_ID = 1
 
 USE_I18N = True
 
+INTERNAL_IPS = ('10.52.7.132', '10.52.4.20')
+
 TINYMCE_JS_URL = '/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js'
 TINYMCE_CONTENT_CSS_URL = '/admin_media/tinymce/jscripts/tiny_mce/themes/advanced/skins/grappelli/ui.css'
 
@@ -96,6 +98,7 @@ INSTALLED_APPS = (
     'contact_form',
     'publications',
     'galleriffic',
+    'simplewiki',
 
     'mptt',
     'south',

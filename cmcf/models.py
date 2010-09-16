@@ -185,6 +185,7 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('publications.urls', 'Publications All'),
     ('publications.brief_urls', 'Publications Brief'),
     ('contact_form.urls', 'Contact Form'),
+    ('simplewiki.urls', 'Simple Wiki'),
     ))    
 
 '''Entry.register_regions(
