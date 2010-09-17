@@ -106,7 +106,7 @@ tinyMCE.init({
     ].join(','),
     extended_valid_elements: [
         'a[name|class|href|target|title|onclick]',
-        'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]',
+        'img[class|src|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]',
         'br[clearfix]',
         '-p[class<clearfix?summary?code]',
         'h2[class<clearfix],h3[class<clearfix],h4[class<clearfix]',

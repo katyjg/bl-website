@@ -4,7 +4,7 @@
 
 <!-- We only want the thumbnails to display when javascript is disabled -->
 <script type="text/javascript">
-        document.write('<style>.noscript { display: none; }</style>');
+        document.write('<style>.noscript { display: none; }<\/style>');
 </script>
 
 <!-- Start Advanced Gallery Html Containers -->
@@ -16,13 +16,13 @@
         <ul id="thumb-gallery" class="thumbs noscript">
                 {% for photo in gallery_list %}
                 <li>
-                <a class="thumb" name="{{ photo.title }}" title="{{ photo.title }}" href="{{ photo.get_display_url }}"><img src="{{ photo.get_thumbnail_url }}" alt="{{ photo.title }}"/></a>
+                <a class="thumb" name="{{ photo.title }}" title="{{ photo.title }}" href="{{ photo.get_display_url }}"><img src="{{ photo.get_thumbnail_url }}" alt="{{ photo.title }}"></a>
                 <div class="caption">
                 	<div class="download">
                                 <a href="{{ photo.get_large_url }}">Download Original</a>
                         </div>
                         <div class="image-title">{{ photo.title }}</div>
-                        <div class="image-desc"><p>{{ photo.caption|safe }}</p></div>
+                        <div class="image-desc"><p>{{ photo.caption|removetags:"p"|safe }}</p></div>
                 </div>
                 </li>
                 {% endfor %}

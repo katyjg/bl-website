@@ -91,7 +91,6 @@ INSTALLED_APPS = (
     'scheduler',
     'glossary',
     'blog',
-    'inlines',
     'tagging',
     'slider',
     'photologue',

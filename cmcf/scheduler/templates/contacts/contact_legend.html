@@ -8,9 +8,9 @@
 {% for person in contact_list %}
 {% ifequal person.category 0 %}
 <tr>
-<td class="column1" width=15%>{% for char in person.first_name|make_list %}{% if forloop.first %}{{char}}{% endif %}{% endfor %}{% for char in person.last_name|make_list %}{% if forloop.first %}{{char}}{% endif %}{% endfor %}</td>
-<td class="column1" width=60%><a href="/contact-us/#{{person.first_name}}-{{person.last_name}}">{{ person.first_name }} {{ person.last_name }}</a></td>
-<td class="column1" width=25%>{{ person.phone_number }}</td></tr>
+<td class="column1">{% for char in person.first_name|make_list %}{% if forloop.first %}{{char}}{% endif %}{% endfor %}{% for char in person.last_name|make_list %}{% if forloop.first %}{{char}}{% endif %}{% endfor %}</td>
+<td class="column1"><a href="/contact-us/#{{person.first_name}}-{{person.last_name}}">{{ person.first_name }} {{ person.last_name }}</a></td>
+<td class="column1">{{ person.phone_number }}</td></tr>
 {% endifequal %}
 {% endfor %}
 

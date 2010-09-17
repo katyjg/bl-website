@@ -446,6 +446,9 @@ a.download-button {
 .news-post div {
     min-height: 155px;
 }
+p.link {
+    margin: 10px 0 0 0 !important;
+}
 #home-below div.news-entry {
     height: 65px;
 }
@@ -518,18 +521,18 @@ a.toplink {
 	font-size: 13px;
 }
 #home-below .quicklinks {
-	background: #eeffee;
+	background: #e9ffd6;
 /*	border: 1px solid #b7da71;*/
 	padding: 12px 14px 16px;
 /*	margin: 32px 0;*/
     	margin-bottom: 0px;
 	overflow: auto;
-	float: left
+	float: left;
 	padding-top: 10px;
 	margin-top: 10px;
 }
 #home-below div.col-3 {
-	margin: 10px 0 0 0; !important
+	margin: 10px 0 0 0 !important;
 }
 #home-below div.quicklinks {
     min-height: 225px;
@@ -543,7 +546,6 @@ a.toplink {
     margin-left: 22px;
 }
 #home-below .quicklinks h2 {
-    padding-top: -5px;
     margin-top: -5px;
 }
 #home-below .quicklinks ul {
@@ -1384,7 +1386,7 @@ hr { border: none; border-top: 1px solid #dfdfdf; }
 .contacts img { 
     float: right; 
     height: 110px;
-    padding: 5px
+    padding: 5px;
     margin: 0;
 }
 .contacts ul li a { font-weight: bold;
@@ -1395,26 +1397,26 @@ hr { border: none; border-top: 1px solid #dfdfdf; }
 
 
 /******* Schedule Table Styling ********/
-#schedule .beamline{
+#schedule .beamline, div.schedule .beamline {
 	width: 25%;
 	}
-#schedule .date, .oncall{
+#schedule .date, .oncall, div.schedule .date {
 	width: 7em;
 	}
-#schedule p {
+#schedule p, div.schedule p {
 	text-align:center;
 	}	
-#schedule a.current {
+#schedule a.current, div.schedule a.current {
 	margin: 0 0 0 230px;
     float: left;
 	}
-#schedule a.prev img{
+#schedule a.prev img {
 	float: left;
 	}
-#schedule a.next img{
+#schedule a.next img {
 	float: right;
 	}			
-#schedule table {
+#schedule table, div.schedule table {
 	width:100%;
 	border-top:1px solid #b5b5b5;
 	border-right:1px solid #b5b5b5;
@@ -1436,23 +1438,25 @@ hr { border: none; border-top: 1px solid #dfdfdf; }
 .row-even   {
     background: #fff;
 }
-#schedule tbody td {
+#schedule tbody td, div.schedule tbody td {
     border-bottom:1px solid #B5b5b5;
 	border-left:1px solid #B5b5b5;
+    padding: .3em .8em;
 }
-#schedule td{
+#schedule td div.schedule td {
 	border-bottom:1px solid #B5b5b5;
 	border-left:1px solid #B5b5b5;
-/*	padding:.3em 1em;*/
+	padding:.3em 1em;
 	padding-bottom: 5px;
     padding-top: 4px;
 	text-align:center !important;
+    padding-left: 5px;
 /*	font:normal 1.2em/2em "Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;*/
 	}		
-#schedule td div{
+#schedule td div div.schedule td div{
     text-align: center;
 }		
-#schedule th {
+#schedule th, div.schedule th {
 	font-weight:bold;
 	text-align:center;
 	border-bottom: 1px solid #B5b5b5;
@@ -1564,7 +1568,8 @@ td ul{
     clear: left;
     padding-top: 2px;
     padding-bottom: 2px;
-    padding-right: 5px;
+    padding-right: 10px;
+    border: 0;
 }
 .img_right {
     display: block;
@@ -1572,16 +1577,22 @@ td ul{
     clear: right;
     padding-top: 2px;
     padding-bottom: 2px;
-    vertical-align: center;
+    padding-left: 10px;
+    border: 0;
 }
 .img_block {
     display: block;
+    border: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 .img_left_nospacetop {
     float: left;
     padding-top: 0px;
+    border: 0;
 }
 .img_right_nospacetop {
     float: right;
     padding-top: 0px;
+    border: 0;
 }

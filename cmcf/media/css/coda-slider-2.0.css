@@ -12,7 +12,6 @@
 /* Most common stuff you'll need to change */
 
 	.coda-slider-wrapper { 
-       scroll: no;
 	   padding: 0px 10px 0 0px;  width: 504px; background: #fff;
 	   height: 310px;
 	   border: 1px solid #ccc;

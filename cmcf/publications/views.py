@@ -29,7 +29,7 @@ def publications_brief(request):
 	    data_list = []
 	    author_list = publication.authors.split(', ')
 	    if len(author_list) is 3:
-		authors = author_list[0] + ', ' + author_list[1] + ', ' + author_list[2]
+		authors = author_list[0] + ', ' + author_list[1] + ' and ' + author_list[2]
             elif len(author_list) is 2:
 		authors = author_list[0] + ', ' + author_list[1]
 	    elif len(author_list) is 1:
@@ -61,14 +61,15 @@ def publication_list(request, **kwargs):
     all_years_list = []
     year_list = []
     pub_list = []
+    for publication in Publication.objects.all():
+	all_years_list.append(publication.year)
+        if all_years_list.count(publication.year)==1:
+            year_list.append(publication.year)
     for publication in sorted(Publication.objects.all(), key=lambda Publication: Publication.authors.split(',')[0].split(' ')[1]):
 	data_list = []
 	data_list.append(publication)
 	data_list.append(publication.pdb_entries.split(','))
         pub_list.append(data_list)
-        all_years_list.append(publication.year)
-        if all_years_list.count(publication.year)==1:
-            year_list.append(publication.year)
 	
     return object_list(request, 
                         queryset=Publication.objects.all(), 

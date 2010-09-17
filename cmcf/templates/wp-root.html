@@ -1,14 +1,14 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+<html dir="ltr" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <title>{{ feincms_page.title }}</title>
 <link type="text/css" href="/media/css/fonts.css" rel="stylesheet">
 <link type="text/css" href="/media/css/wp-style.css" rel="stylesheet">
 
-<script language="JavaScript" type="Text/Javascript">
+<script type="Text/Javascript">
 function addBookmark(title,url) {
     if (window.sidebar) {
         window.sidebar.addPanel(title, url,"");
@@ -95,11 +95,11 @@ function addBookmark(title,url) {
         <span id="something">{% get_fragment request "something" %}</span>
 		<p> 
 			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
-			<a href="/sitemap">Site Map</a> |
-            <a href="/contact-us/feedback">Feedback</a> |
+			<a href="/sitemap/">Site Map</a> |
+            <a href="/contact-us/feedback/">Feedback</a> |
             <a href="javascript:addBookmark('Canadian Macromolecular Crystallography Facility', 'http://cmcf.lightsource.ca')">Add Bookmark</a> | 
-            <a href="/links">Links</a> |
-            <a href="/feeds/latest" class="feed">RSS</a> 
+            <a href="/links/">Links</a> |
+            <a href="/feeds/latest/" class="feed">RSS</a> 
 		</p>
 	</div>
 </div>
