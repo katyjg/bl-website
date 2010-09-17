@@ -7,13 +7,13 @@
 				{% if post.highlight or post.publish %}
     			<div class="slider-image">
                     <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
-                        <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" />
+                        <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" >
                     </a>
                 </div>
 				<div class="slider-content"><h1>{{ post.title }}</h1>
 				<!--<p class="date">Posted on {{ post.publish|date:"F d, Y" }}</p>-->
-				<p>{{ post.tease|safe }}</p></div>
-				<!--<div class="slider-links">{% if post.link %}<a href={{post.link}}>Original Publication</a>{% endif %}</div>-->
+				<p>{{ post.tease|removetags:"p"|safe }}</p></div>
+				<div class="slider-links">{% if post.link %}<a href="{{post.link}}">{{ post.citation|removetags:"p"|safe }}</a>{% endif %}</div>
 				{% endif %}
 				
 				{% if post.photo_highlight %}

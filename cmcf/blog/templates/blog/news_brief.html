@@ -12,14 +12,14 @@
         </a>
     </div>
         {{ post.categories.all.0 }}:
-        <br/>
+        <br>
 	<a title="View this Post" href="/research-highlights/#{{ post.slug }}">
 	    {{ post.title|truncate_chars:95 }}
 	</a>
     </div>
     </li>
 {% endfor %}
-
+</ul>
 {% endblock %}
 
 
