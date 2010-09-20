@@ -43,7 +43,8 @@ Page.register_templates({
     'path': 'wp-home.html',
     'regions': (
         ('welcome', 'Content Slider'),
-	('sidebar', 'Announcements'),
+    	('announce', 'Announcements'),
+        ('sidebar', 'Sidebar'),
         ('col1', 'Bottom Col. 1', 'inherited'),
         ('col2', 'Bottom Col. 2', 'inherited'),
         ('col3', 'Bottom Col. 3', 'inherited'),

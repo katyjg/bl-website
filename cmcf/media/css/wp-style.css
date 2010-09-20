@@ -99,10 +99,12 @@ sup {
     background:-webkit-gradient(linear, center top , center bottom , from(#9966cc), to(#a6a6a6)) repeat scroll 0 0 transparent;
 */
 }
-#header.wiki {
-    background:-moz-linear-gradient(center top , #9966cc, #a6a6a6) repeat scroll 0 0 transparent;
+#header.wiki{
+/*    background:-moz-linear-gradient(center top , #9966cc, #a6a6a6) repeat scroll 0 0 transparent;*/
+	height: 88px;
+	min-width: 960px;
+	background: #dcdcdc url(/media/img/header_blue.png) top right repeat-x;
 }
-
 #header .logo {
 	width: 960px;
 	margin: 0 auto;
@@ -523,8 +525,8 @@ a.toplink {
 	float:right;
 	font-size: 13px;
 }
-#home-below .quicklinks {
-	background: #e9ffd6;
+.quicklinks {
+	background: #feffd6;
 /*	border: 1px solid #b7da71;*/
 	padding: 12px 14px 16px;
 /*	margin: 32px 0;*/
@@ -537,21 +539,28 @@ a.toplink {
 #home-below div.col-3 {
 	margin: 10px 0 0 0 !important;
 }
+#home-welcome div.quicklinks {
+    min-height: 170px;
+    width: 312px;
+}
+#home-below .quicklinks {
+    background: #e9ffd6;
+}
 #home-below div.quicklinks {
     min-height: 225px;
 }
-#home-below .quicklinks ol li {
+.quicklinks ol li {
     font-size: 100%;
     margin-left: 48px;
 }
-#home-below .quicklinks ul li {
+.quicklinks ul li {
     font-size: 100%;
     margin-left: 22px;
 }
-#home-below .quicklinks h2 {
-    margin-top: -5px;
+.quicklinks h2, #home-below .quicklinks h2 {
+    margin-top: -5px !important;
 }
-#home-below .quicklinks ul {
+.quicklinks ul {
     margin-left: 16px;
     list-style: disc;
     margin-bottom: 0px;
