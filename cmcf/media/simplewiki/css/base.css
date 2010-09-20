@@ -7,7 +7,19 @@ a img
 {
 	border: 0;
 }
+/*div#wiki_article, div#wiki_article h1#headline {
+    margin: 0 auto;
+    min-width: 960px;
+    float: left;
+}*/
+#wiki_article {
+    display: block;
+    margin-left: auto;
+}
+#pagebody div#wiki_article h1#headline {
+    margin-top: -10px;
 
+}
 div#wiki_article a {
     color: #06d;
     text-decoration: none;
@@ -39,7 +51,7 @@ div#wiki_article h1
 {
 	font-size: 200%;
 	font-weight: normal;
-	color: #048;
+/*	color: #048;*/
 }
 
 div#wiki_article h2

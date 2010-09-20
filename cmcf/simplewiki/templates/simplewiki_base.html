@@ -33,17 +33,18 @@
 </head>
 
 <body id="wordpress-org">
-
 <div id="header" class="wiki">
     <div class="banner">
-    <div class="logo">
-
-    </div>
+        <div class="logo"></div>
     </div>
 </div>
 
-<h1>{% block wiki_page_title %}{% endblock %}</h1>
-<hr />
+<!--<h1>{% block wiki_page_title %}{% endblock %}</h1>
+<hr />-->
+<div id="pagebody">
+{% block wiki_body %}
+
+{% endblock %}
 
 {% block wiki_panel %}
 
@@ -198,10 +199,8 @@
 </div>
 
 {% endblock %}
+</div><!--pagebody-->
 
-{% block wiki_body %}
-
-{% endblock %}
 
 </body>
 <!--</html>-->
