@@ -1,8 +1,9 @@
 {% load i18n simplewiki_utils %}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="{{ LANGUAGE_CODE }}">
+<!--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="{{ LANGUAGE_CODE }}">-->
 <head>
 <title>{{ wiki_title }}</title>
+<link type="text/css" href="/media/css/wp-style.css" rel="stylesheet">
 <link rel="stylesheet" media="screen,print" href="{{"simplewiki/css/base.css"|prepend_media_url}}" />
 <link rel="stylesheet" media="print" href="{{"simplewiki/css/base_print.css"|prepend_media_url}}" />
 <link rel="stylesheet" href="{{"simplewiki/css/autosuggest_inquisitor.css"|prepend_media_url}}" />
@@ -30,7 +31,16 @@
 {% block wiki_head %}
 {% endblock %}
 </head>
-<body>
+
+<body id="wordpress-org">
+
+<div id="header" class="wiki">
+    <div class="banner">
+    <div class="logo">
+
+    </div>
+    </div>
+</div>
 
 <h1>{% block wiki_page_title %}{% endblock %}</h1>
 <hr />
@@ -194,4 +204,4 @@
 {% endblock %}
 
 </body>
-</html>
+<!--</html>-->
