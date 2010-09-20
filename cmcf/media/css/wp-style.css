@@ -99,6 +99,9 @@ sup {
     background:-webkit-gradient(linear, center top , center bottom , from(#9966cc), to(#a6a6a6)) repeat scroll 0 0 transparent;
 */
 }
+#header.wiki {
+    background:-moz-linear-gradient(center top , #9966cc, #a6a6a6) repeat scroll 0 0 transparent;
+}
 
 #header .logo {
 	width: 960px;

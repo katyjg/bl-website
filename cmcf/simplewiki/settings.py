@@ -21,7 +21,7 @@ WIKI_REQUIRE_LOGIN_VIEW = getattr(settings, 'SIMPLE_WIKI_REQUIRE_LOGIN_VIEW',
 
 # Adds standard django login protection for editing
 WIKI_REQUIRE_LOGIN_EDIT = getattr(settings, 'SIMPLE_WIKI_REQUIRE_LOGIN_EDIT',
-                                  True)
+                                  False)
 
 ####################
 # ATTACHMENTS      #
@@ -37,7 +37,7 @@ WIKI_ALLOW_ATTACHMENTS = getattr(settings, 'SIMPLE_WIKI_ALLOW_ATTACHMENTS',
                                  True)
 
 # If WIKI_REQUIRE_LOGIN_EDIT is False, then attachments can still be disallowed
-WIKI_ALLOW_ANON_ATTACHMENTS = getattr(settings, 'SIMPLE_WIKI_ALLOW_ANON_ATTACHMENTS', False)
+WIKI_ALLOW_ANON_ATTACHMENTS = getattr(settings, 'SIMPLE_WIKI_ALLOW_ANON_ATTACHMENTS', True)
 
 # Attachments are automatically stored with a dummy extension and delivered
 # back to the user with their original extension.
