@@ -49,12 +49,16 @@ div#wiki_article p
 }
 div#wiki_article h1
 {
-	font-size: 200%;
+/*	font-size: 200%;*/
 	font-weight: normal;
 /*	color: #048;*/
     background: transparent;
-    border: none;
-    height: 40px;
+/*    border: none;*/
+	border-bottom: 1px solid #cccccc;
+    padding-bottom: 0;
+	font-size: 22px;
+	margin-bottom: 22px;
+	color: #333;
 }
 
 div#wiki_article h2
