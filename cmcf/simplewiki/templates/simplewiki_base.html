@@ -39,13 +39,16 @@
     </div>
 </div>
 
-<h1>{% block wiki_page_title %}{% endblock %}</h1>
+<div id="headline"><div class="wrapper"><h2>{% block wiki_page_title %}{% endblock %}</h2></div></div>
 <hr />
 <div id="pagebody">
+<div id="bodyContent" class="wrapper">
+    <div class="col-8">
 {% block wiki_body %}
 
 {% endblock %}
-
+    </div><!--col-9-->
+    <div class="col-4">
 {% block wiki_panel %}
 
 <div id="wiki_panel">
@@ -95,12 +98,12 @@
     	<p>
     	
 	    {% if wiki_article %} 
-    	    <input type="button" onclick="javascript:location.href='{% url wiki_view wiki_article.get_url %}'" value="View" style="width: 100%;" /><br />
-    	    <input type="button" onclick="javascript:location.href='{% url wiki_edit wiki_article.get_url %}'" value="Edit" style="width: 100%;"{% if not wiki_write %} disabled="true"{%endif%} /><br />
-    	    <input type="button" onclick="javascript:location.href='{% url wiki_history wiki_article.get_url 1 %}'" value="History" style="width: 100%;" />
+    	    <input type="button" onclick="javascript:location.href='{% url wiki_view wiki_article.get_url %}'" value="View"  /><br />
+    	    <input type="button" onclick="javascript:location.href='{% url wiki_edit wiki_article.get_url %}'" value="Edit" {% if not wiki_write %} disabled="true"{%endif%} /><br />
+    	    <input type="button" onclick="javascript:location.href='{% url wiki_history wiki_article.get_url 1 %}'" value="History"  />
     	{% endif %}
-    	<input type="button" onclick="document.getElementById('wiki_create_form').style.display='block';" value="{% trans "Create article" %}" style="width: 100%; margin-bottom: 2px;" class="button" />
-    	<input type="button" onclick="javascript:location.href='{% url wiki_random wiki_article.get_url %}'" value="{% trans "Random article" %}" style="width: 100%; margin-bottom: 2px;" class="button" />
+    	<input type="button" onclick="document.getElementById('wiki_create_form').style.display='block';" value="{% trans "Create article" %}" style="margin-bottom: 2px;" class="button" />
+    	<input type="button" onclick="javascript:location.href='{% url wiki_random wiki_article.get_url %}'" value="{% trans "Random article" %}" style="margin-bottom: 2px;" class="button" />
     	</p>
 	    {% if wiki_article %} 
     	    {% if wiki_article.locked %}
@@ -199,6 +202,8 @@
 </div>
 
 {% endblock %}
+</div><!--col-3-->
+</div><!--wrapper-->
 </div><!--pagebody-->
 
 

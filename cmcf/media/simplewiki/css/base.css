@@ -52,6 +52,9 @@ div#wiki_article h1
 	font-size: 200%;
 	font-weight: normal;
 /*	color: #048;*/
+    background: transparent;
+    border: none;
+    height: 40px;
 }
 
 div#wiki_article h2
@@ -107,13 +110,20 @@ div.wiki_box
 {
 	width: 230px;
 	padding: 10px;
-	color: #fff;
-	font-size: 80%;
+    color: #3d7ab8;
+/*	color: #fff;*/
+    font-size: 80%;
 }
 
 div.wiki_box div.wiki_box_contents
-{	background-color: #222;
-	padding: 5px 10px;}
+{	
+/*background-color: #222;*/
+    background-color: #f1f1f1;
+	padding: 5px 10px;
+   	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+    border:1px solid #DADADA;
+}
 
 div.wiki_box div.wiki_box_header,
 div.wiki_box div.wiki_box_footer
@@ -155,7 +165,8 @@ div.wiki_box div.wiki_box_footer div.wiki_box_bar
 {
 	height: 6px;
 	overflow: hidden;
-	background-color: #222;
+/*	background-color: #222;*/
+    background-color: #f1f1f1;
 }
 
 
@@ -290,4 +301,12 @@ blockquote {
 blockquote p {
     margin-top: 8px;
     margin-bottom: 8px;
+}
+
+/**************Added Stuff*******************/
+.wiki_box_bar, .wiki_box_corner, .wiki_box_footer, .wiki_box_header {
+    display: none;
+}
+.wiki_box_contents input {
+    width: 190px;
 }
