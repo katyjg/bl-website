@@ -184,7 +184,7 @@ h1 {
 }
 
 #header ul li a:hover {
-	color: #ffd24d !important;
+	color: #ffc300 !important;
 }
 #header ul li a.current:hover, #header ul li a.current + ul li a:hover {
 	color: #d54e21 !important;
@@ -338,6 +338,7 @@ p.intro a {
 
 .button-primary {
 	border-color: #298cba !important;
+
 	font-weight: bold;
 	color: #FFF !important;
 	background: #21759B url(images/button-grad.png) repeat-x scroll left top;
@@ -513,8 +514,8 @@ p.link {
 }
 
 .announcements {
-	background: #eebdff;
-	border: 1px solid #d042ff;
+	background: #f5eaff;
+	border: 1px solid #8a60b3;
 /*	padding: 11px 11px 16px;*/
 	margin-top: 12px;
 	margin-bottom: 5px;
@@ -534,8 +535,8 @@ a.toplink {
 	font-size: 13px;
 }
 .quicklinks {
-	background: #feffd6;
-/*	border: 1px solid #b7da71;*/
+	background: #fff7db;
+	border: 1px solid #ffc300;
 	padding: 12px 14px 16px;
 /*	margin: 32px 0;*/
     	margin-bottom: 0px;
@@ -553,7 +554,9 @@ a.toplink {
     color: #444;
 }
 #home-below .quicklinks {
-    background: #e9ffd6;
+    background: #eaf7ea;
+    border: none !important;
+/*    border: 1px solid #007300;*/
 }
 #home-below div.quicklinks {
     min-height: 225px;
@@ -573,7 +576,6 @@ a.toplink {
     border-bottom: 1px solid #ccc;
 }
 .quicklinks ul {
-    margin-left: 16px;
     list-style: disc;
     margin-bottom: 0px;
 }
@@ -1497,18 +1499,23 @@ thead th {
 	}	
 .Shutdown{
 	background:#FFFF99;
+    background: #fff7db;
 	}
 .Maintenance{
 	background:#B3D9FF;
+    background: #ebeff9;
 	}
 .Development{
 	background:#FFC78F;
+    background: #fff1ec;
 	}
 .NormalMode{
 	background:#A3E085;
+    background: #eaf7ea;
 	}
 .Special{
 	background:#94B8B8;
+    background: #e9f7f7;
 	}
 
 table.legend tr, table.legend{
