@@ -27,32 +27,32 @@
                 <tr>
                     <td rowspan=3 class="column1">{{day.0}}</td>
                     <td class="{% for stat in day.3 %}{{stat.0}}{% endfor %}">
-                        <div>08:00-16:00</div>
+                        08:00-16:00
                     </td>
                     {% for bl in day.1 %}
                         <td class="{% for stat in day.3 %}{{stat.0}}{% endfor %}">
-                            <div>{{bl.0}}</div>
+                            {{bl.0}}
                         </td>       
                     {% endfor %}
                     <td rowspan=3 class="column1">{{day.2}}</td>
                 </tr>
                 <tr>      
                     <td class="{% for stat in day.3 %}{{stat.1}}{% endfor %}">
-                        <div>16:00-24:00</div>
+                        16:00-24:00
                     </td>
                     {% for bl in day.1 %}
                         <td class="{% for stat in day.3 %}{{stat.1}}{% endfor %}">
-                            <div>{{bl.1}}</div>
+                            {{bl.1}}
                         </td>       
                     {% endfor %}
                 </tr>
                 <tr>      
                     <td class="{% for stat in day.3 %}{{stat.2}}{% endfor %}">
-                        <div>24:00-08:00</div>
+                        24:00-08:00
                     </td>
                     {% for bl in day.1 %}
                         <td class="{% for stat in day.3 %}{{stat.2}}{% endfor %}">
-                            <div>{{bl.2}}</div>
+                            {{bl.2}}
                         </td>       
                     {% endfor %}
                 </tr>

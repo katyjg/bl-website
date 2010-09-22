@@ -51,7 +51,7 @@
 					{% endif %}
 					<h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span>
 					{% if forloop.first %}{% else %}
-					    <a class="toplink" href="#">[Back to Top]</a>
+					    <a class="toplink" href="#" title="Back to Top">&nbsp;</a>
 					{% endif %}
 					</h2>
 					{% feincms_render_region ssp "col2" request %}
@@ -121,7 +121,7 @@
 				{% for ssp in subsublevel %}         				
 				    <h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span>
 				    {% if forloop.first %}{% else %}
-					<a class="toplink" href="#">[Back to Top]</a>
+					<a class="toplink" href="#" title="Back to Top">&nbsp;</a>
 				    {% endif %}
 				    </h2>
 				    {% feincms_render_region ssp "col2" request %}
