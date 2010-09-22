@@ -5,33 +5,24 @@
 
 <h2><span><a href="/research-highlights/">Latest News &raquo;</a></span></h2>
 
-<ul class="hr-list">
+<div class="news-entry">
+<ul><!--<ul class="hr-list">-->
 {% for post in post_list %}
     <li>
-    <div class="news-entry">
-
-        <div class="{% cycle 'image' 'image-odd' %}">
-            <!--<a title="View Post", href="/research-highlights/{{post.publish.year}}/{{post.publish|date:"b"}}/{{post.publish.day}}/{{ post.slug }}">-->
+<!--        <div class="{% cycle 'image' 'image-odd' %}">
             <a title="View this Post" href="/research-highlights/#{{ post.slug }}">
                 <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
             </a>
-        </div>
+        </div>-->
 
-        <div class="smallcaps">
             {{ post.categories.all.0 }}:
-        </div>
-
-        <div>
-	        <a title="View this Post" href="/research-highlights/#{{ post.slug }}">
+            <a title="View this Post" href="/research-highlights/#{{ post.slug }}">
 	            {{ post.title|truncate_chars:95 }}
 	        </a>
-        </div>
-
-    </div>
     </li>
 {% endfor %}
 </ul>
-
+</div>
 {% endblock %}
 
 

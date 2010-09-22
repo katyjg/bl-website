@@ -464,7 +464,12 @@ p.link {
     margin: 10px 0 0 0 !important;
 }
 #home-below div.news-entry {
-    height: 65px;
+/*    height: 65px;*/
+    line-height: 1.2em;
+}
+.news-entry ul {
+    padding-left: 16px;
+    list-style-image: url(/media/img/stock_right2.png);
 }
 #home-below ul.pub-entry {
     list-style: none;
@@ -531,6 +536,8 @@ p.link {
  	text-align: center;
 }
 a.toplink {
+    min-width: 24px;
+    background-image: url(/media/img/stock_up.png);
 	float:right;
 	font-size: 13px;
 }
@@ -549,8 +556,8 @@ a.toplink {
 	margin: 10px 0 0 0 !important;
 }
 #home-welcome div.quicklinks {
-    min-height: 170px;
-    width: 312px;
+/*    min-height: 170px;
+    width: 312px;*/
     color: #444;
 }
 #home-below .quicklinks {
@@ -577,6 +584,8 @@ a.toplink {
 }
 .quicklinks ul {
     list-style: disc;
+    list-style-image: url(/media/img/stock_right2.png);
+    list-style-image: url(/media/img/stock_right2.png);
     margin-bottom: 0px;
 }
 #home-below h2 {
@@ -861,6 +870,7 @@ p.person {
 #pagebody ul {
 	margin-left: 16px;
 	list-style: disc;
+    list-style-image: url(/media/img/stock_right2.png);
     margin-top: 0px;
     margin-bottom: 0px;
 }
@@ -1515,7 +1525,7 @@ thead th {
 	}
 .Special{
 	background:#94B8B8;
-    background: #e9f7f7;
+    background: #f5eaff;
 	}
 
 table.legend tr, table.legend{
@@ -1561,6 +1571,7 @@ div.sitemap ul li{
 }
 div.sitemap ul li ul li{
     list-style: disc;
+    list-style-image: url(/media/img/stock_right2.png);
     border: none;
 }
 #bodyContent .guide img {
