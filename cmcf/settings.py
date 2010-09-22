@@ -28,7 +28,9 @@ SITE_ID = 1
 
 USE_I18N = True
 
-INTERNAL_IPS = ('10.52.7.132', '10.52.4.20', '70.76.64.163', '10.45.2.20')
+INTERNAL_IPS = ('70.76.64.163',)
+ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.45.2.0/255.255.252.0',)
+
 
 TINYMCE_JS_URL = '/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js'
 TINYMCE_CONTENT_CSS_URL = '/admin_media/tinymce/jscripts/tiny_mce/themes/advanced/skins/grappelli/ui.css'

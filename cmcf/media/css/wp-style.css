@@ -550,6 +550,7 @@ a.toplink {
 #home-welcome div.quicklinks {
     min-height: 170px;
     width: 312px;
+    color: #444;
 }
 #home-below .quicklinks {
     background: #e9ffd6;
@@ -567,6 +568,9 @@ a.toplink {
 }
 .quicklinks h2, #home-below .quicklinks h2 {
     margin-top: -5px !important;
+    margin-bottom: 11px;
+    font-size: 150%;
+    border-bottom: 1px solid #ccc;
 }
 .quicklinks ul {
     margin-left: 16px;
@@ -593,7 +597,9 @@ a.toplink {
 	margin: -15px 0 0 10px;
 
 }
-
+.smallcaps {
+    font-variant: small-caps !important;
+}
 h3 {
 	font-size: 14px;
 	color: #333;
