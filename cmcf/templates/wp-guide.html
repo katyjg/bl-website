@@ -37,16 +37,16 @@
 					{% endifequal %}
                			    {% ifnotequal ssp.title sp.title %}
 					{% if forloop.first %}
-				            {% ifnotequal subsublevel.count 0 %}
+				            {% ifnotequal subsublevel.count 0 %}{% ifnotequal subsublevel.count 1 %}
 	        				<table id="toc" class="toc" summary="Contents"><tr><td>
-    						<div id="toctitle"><h2>Contents</h2></div>
+    						<div id="toctitle"><h2>Page Contents</h2></div>
     						<ul>
 	    					{% for sp in subsublevel %}
 	    					<li{% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}><a href="#{{ sp.slug }}">{{ sp.title }}</a></li>
 	    					{% endfor %}
     						</ul>
 	        				</td></tr></table>
-					    {% endifnotequal %}     
+					    {% endifnotequal %}{% endifnotequal %}    
 					    {% feincms_render_region sp "col2" request %}   				
 					{% endif %}
 					<h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span>
@@ -102,7 +102,7 @@
   	    {% feincms_navigation of feincms_page as sublevel level=3 %}
             {% ifnotequal sublevel.count 0 %}
 		<table id="toc" class="toc" summary="Contents"><tr><td>
-		<div id="toctitle"><h2>Contents</h2></div>
+		<div id="toctitle"><h2>Page Contents</h2></div>
                 <ul>
     		{% for sp in sublevel %}
         	    <li{% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}><a href="#{{ sp.slug }}">{{ sp.title }}</a></li>

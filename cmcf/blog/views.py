@@ -14,7 +14,7 @@ def news_brief(request):
     post_list = []
     i = 0
     for post in Post.objects.all():
-	if i <= 2:
+	if i <= 4:
             post_list.append(post)
             i = i+1
     return render_to_response(
