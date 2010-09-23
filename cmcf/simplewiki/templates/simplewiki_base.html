@@ -97,7 +97,7 @@
     	<p>
     	
 	    {% if wiki_article %} 
-    	    <input type="button" onclick="javascript:location.href='{% url wiki_view wiki_article.get_url %}'" value="View"  /><br />
+    	    <input type="button" onclick="javascript:location.href='{% url wiki_view wiki_article.get_url %}/'" value="View"  /><br />
     	    <input type="button" onclick="javascript:location.href='{% url wiki_edit wiki_article.get_url %}'" value="Edit" {% if not wiki_write %} disabled="true"{%endif%} /><br />
     	    <input type="button" onclick="javascript:location.href='{% url wiki_history wiki_article.get_url 1 %}'" value="History"  />
     	{% endif %}
