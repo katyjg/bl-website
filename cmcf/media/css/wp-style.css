@@ -339,6 +339,7 @@ p.intro a {
 .button-primary {
 	border-color: #298cba !important;
 
+
 	font-weight: bold;
 	color: #FFF !important;
 	background: #21759B url(images/button-grad.png) repeat-x scroll left top;
@@ -467,9 +468,9 @@ p.link {
 /*    height: 65px;*/
     line-height: 1.2em;
 }
-.news-entry ul {
+.news-entry ul.hr-list {
     padding-left: 16px;
-    list-style-image: url(/media/img/stock_right2.png);
+    list-style-image: url(/media/img/stock_right4.png) !important;
 }
 #home-below ul.pub-entry {
     list-style: none;
@@ -584,8 +585,7 @@ a.toplink {
 }
 .quicklinks ul {
     list-style: disc;
-    list-style-image: url(/media/img/stock_right2.png);
-    list-style-image: url(/media/img/stock_right2.png);
+    list-style-image: url(/media/img/stock_right4.png);
     margin-bottom: 0px;
 }
 #home-below h2 {
@@ -870,7 +870,7 @@ p.person {
 #pagebody ul {
 	margin-left: 16px;
 	list-style: disc;
-    list-style-image: url(/media/img/stock_right2.png);
+    list-style-image: url(/media/img/stock_right4.png);
     margin-top: 0px;
     margin-bottom: 0px;
 }
@@ -1571,7 +1571,7 @@ div.sitemap ul li{
 }
 div.sitemap ul li ul li{
     list-style: disc;
-    list-style-image: url(/media/img/stock_right2.png);
+    list-style-image: url(/media/img/stock_right4.png);
     border: none;
 }
 #bodyContent .guide img {
