@@ -1,7 +1,7 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
-<html dir="ltr" lang="en">
+<html lang="en" dir="ltr">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <title>{{ feincms_page.title }}</title>
@@ -20,8 +20,6 @@ function addBookmark(title,url) {
 } 
 </script>
 
-{% block extra-header %}{% endblock %}
-
 <!--[if lt IE 8]>
 <link type="text/css" href="/media/css/ie.css" rel="stylesheet">
 <![endif]-->
@@ -31,9 +29,9 @@ function addBookmark(title,url) {
 <link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="Canadian Macromolecular Crystallography Facility">
 <link REL="SHORTCUT ICON" HREF="http://cmcf.lightsource.ca/media/img/clslogo.ico">
 <meta name="google-site-verification" content="9T6_aOBqv3je6XSCFybrgP0jym91Y6L7dVLdnBAWDWo" >
+
 </head>
 <body id="wordpress-org">
-
 <div id="header">
     <div class="banner">
     <div class="logo">
@@ -43,7 +41,7 @@ function addBookmark(title,url) {
         <!--<h2>Beamlines 08ID-1 & 08B1-1 at the Canadian Light Source </h2>-->
     </div>
     <ul>
-    {% feincms_navigation of feincms_page as toplevel level=1 %}
+    {% feincms_navigation of / as toplevel level=1 %}
     {% for p in toplevel %}
     <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
         {% feincms_navigation of p as sublevel level=2 %}
@@ -58,42 +56,26 @@ function addBookmark(title,url) {
     </div>
     </div>
 </div>
-{% block "page-content" %}
+
+
 <div id="headline">
 	<div class="wrapper">
-		<h2>{{ feincms_page.title }}</h2>
+		<h2>Oops... </h2>
 	</div>
 </div>
 
 <div id="pagebody">
-<div class="wrapper">
-<div class="col-9">
-{% feincms_render_region feincms_page "main" request %}
+    <div class="wrapper">
+        <div id="bodyContent" class="col-12">
+            <h2>We've encountered an Internal Server Error.</h2>
+            <p>A notification has been sent, and we will try to sort out the problem as soon as possible.  (If you would like to help, let us know what you were trying to do when the error occurred through our <a href="/contact-us/feedback/">feedback</a> page.)</p>
+            <p>Sorry for the inconvenience!</p>
+        </div>
+    </div>
 </div>
-		
-<div class="col-3">
-{% feincms_navigation of feincms_page as sublevel level=2 %}
-{% if sublevel %} {# stupid django 1.0 compatibility ... :-) #}
-    {% for p in sublevel %}
-        {% if forloop.first %}<ul>{% endif %}
-        <li><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></li>
-        {% if forloop.last %}</ul>{% endif %}
-    {% endfor %}
-{% else %}
-{% endif %}
-
-{% feincms_render_region feincms_page "sidebar" request %}
-</div>
-
-</div>
-</div>
-{% endblock %}
-
-{% feincms_frontend_editing feincms_page request %}
 
 <div id="footer">
 	<div class="wrapper">
-        <span id="something">{% get_fragment request "something" %}</span>
 		<p> 
 			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
 			<a href="/sitemap/">Site Map</a> |
@@ -104,8 +86,6 @@ function addBookmark(title,url) {
 		</p>
 	</div>
 </div>
-
-
 </body>
 </html>
 

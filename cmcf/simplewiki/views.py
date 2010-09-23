@@ -18,8 +18,9 @@ from cmcf.decorators import protectview
 
 @protectview
 def view(request, wiki_url):
-    
+
     (article, path, err) = fetch_from_url(request, wiki_url)
+
     if err:
         return err
         
