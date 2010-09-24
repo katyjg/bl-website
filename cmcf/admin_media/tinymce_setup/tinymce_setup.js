@@ -82,7 +82,7 @@ tinyMCE.init({
     advimage_update_dimensions_onchange: true,
     
     // grappelli
-    grappelli_adv_hidden: false,
+    grappelli_adv_hidden: true,
     grappelli_show_documentstructure: 'on',
     
     // templates
@@ -119,7 +119,8 @@ tinyMCE.init({
           + "|vspace|width]",
         'param[id|name|type|value|valuetype<DATA?OBJECT?REF]',
         'address',
-        'acronym'
+        'acronym[class|id|title]',
+        'abbr[class|title|id]'
     ].join(','),
     valid_child_elements : [
         'h1/h2/h3/h4/h5/h6/a[%itrans_na]',       'table[thead|tbody|tfoot|tr|td]',
