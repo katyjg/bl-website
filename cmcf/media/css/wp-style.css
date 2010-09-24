@@ -329,15 +329,16 @@ p.intro a {
 }
 
 .submit input, .button, .button-secondary, input[type=button], input[type=submit] {
-	background: #f2f2f2 url(images/white-grad.png) repeat-x scroll left top;
+	background: #f2f2f2 url(/media/img/white-grad.png) repeat-x scroll left top;
 }
 
 .submit input:active, .button:active, .button-secondary:active, input[type=button]:active, input[type=submit]:active {
-	background: #eee url(images/white-grad.png) repeat-x scroll left bottom;
+	background: #eee url(/media/img/white-grad.png) repeat-x scroll left bottom;
 }
 
 .button-primary {
 	border-color: #298cba !important;
+
 
 
 	font-weight: bold;
