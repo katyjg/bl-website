@@ -1511,22 +1511,27 @@ thead th {
 .Shutdown{
 	background:#FFFF99;
     background: #fff7db;
+    background: #fff2c2;
 	}
 .Maintenance{
 	background:#B3D9FF;
     background: #ebeff9;
+    background: #d8e0f3;
 	}
 .Development{
 	background:#FFC78F;
     background: #fff1ec;
+    background: #ffddd1;
 	}
 .NormalMode{
 	background:#A3E085;
     background: #eaf7ea;
+    background: #d6f0d6;
 	}
 .Special{
 	background:#94B8B8;
     background: #f5eaff;
+    background: #e9d1ff;
 	}
 
 table.legend tr, table.legend{
