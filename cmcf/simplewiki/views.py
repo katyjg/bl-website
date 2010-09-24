@@ -147,14 +147,14 @@ def edit(request, wiki_url):
             new_revision.article = article
             # Check that something has actually been changed...
             if not new_revision.get_diff():
-                return (None, HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:],))))
+                return (None, HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:]+'/',))))
             if not request.user.is_anonymous():
                 new_revision.revision_user = request.user
             new_revision.save()
             if WIKI_ALLOW_TITLE_EDIT:
                 new_revision.article.title = f.cleaned_data['title']
                 new_revision.article.save()
-            return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:],)))
+            return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:]+'/',)))
     else:
         f = EditForm({'contents': article.current_revision.contents, 'title': article.title})
     c = RequestContext(request, {'wiki_form': f,
