@@ -84,7 +84,7 @@ def create(request, wiki_url):
         # Ensure doesn't already exist
         article = Article.get_url_reverse(url_path, root)
         if article:
-            return HttpResponseRedirect(reverse('wiki_view', args=(article[-1].get_url(),)))
+            return HttpResponseRedirect(reverse('wiki_view', args=(article[-1].get_url()[1:],)))
     
         # TODO: Somehow this doesnt work... 
         #except ShouldHaveExactlyOneRootSlug, (e):
@@ -112,7 +112,7 @@ def create(request, wiki_url):
             new_revision.article = article
             new_revision.save()
             import django.db as db
-            return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url(),)))
+            return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:],)))
     else:
         f = CreateArticleForm(initial={'title':request.GET.get('wiki_article_name', url_path[-1]),
                                        'contents':_('Headline\n===\n\n')})
@@ -147,14 +147,14 @@ def edit(request, wiki_url):
             new_revision.article = article
             # Check that something has actually been changed...
             if not new_revision.get_diff():
-                return (None, HttpResponseRedirect(reverse('wiki_view', args=(article.get_url(),))))
+                return (None, HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:],))))
             if not request.user.is_anonymous():
                 new_revision.revision_user = request.user
             new_revision.save()
             if WIKI_ALLOW_TITLE_EDIT:
                 new_revision.article.title = f.cleaned_data['title']
                 new_revision.article.save()
-            return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url(),)))
+            return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:],)))
     else:
         f = EditForm({'contents': article.current_revision.contents, 'title': article.title})
     c = RequestContext(request, {'wiki_form': f,
@@ -243,7 +243,13 @@ def search_articles(request, wiki_url):
             results = Article.objects.all()
 
         if results.count() == 1:
-            return HttpResponseRedirect(reverse('wiki_view', args=(results[0].get_url(),)))
+            if results[0].get_url():
+                if results[0].get_url()[0] == '/':
+                    result_url = results[0].get_url()[1:]
+                else:
+                    result_url = results[0].get_url()
+            #return HttpResponseRedirect(reverse('wiki_view', args=(results[0].get_url(),)))
+            return HttpResponseRedirect(reverse('wiki_view', args=(result_url,)))
         else:        
             c = RequestContext(request, {'wiki_search_results': results,
                                          'wiki_search_query': querystring})
@@ -328,7 +334,7 @@ def random_article(request, wiki_url):
     from random import randint
     num_arts = Article.objects.count()
     article = Article.objects.all()[randint(0, num_arts-1)]
-    return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url(),)))
+    return HttpResponseRedirect(reverse('wiki_view', args=(article.get_url()[1:],)))
 
 def encode_err(request, url):
     return render_to_response('simplewiki_error.html',
