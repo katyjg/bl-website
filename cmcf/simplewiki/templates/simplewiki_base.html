@@ -59,7 +59,8 @@
     	</div>
     	<div class="wiki_box_contents">
         	<div class="wiki_box_title">{% trans "Search" %}</div>
-            <form method="POST" action='{% url wiki_search_articles wiki_article.get_url %}'>
+            <!--<form method="POST" action='{% url wiki_search_articles wiki_article.get_url|stripslash %}'>-->
+            <form method="POST" action='{% url wiki_search_articles 'mainpage' %}'>
             	<input type="text" name="value" id="wiki_search_input" style="width: 72%" value="{{wiki_search_query|escape}}"/>
             	<input type="submit" id="wiki_search_input_submit" value={% trans "Go!" %} style="width: 20%" />
             </form>
@@ -79,7 +80,7 @@
 
     	<div style="border: 2px outset #CCC; width: 250px; padding: 10px; background-color: #FFF; position: absolute; right: 100px; top: -80px; display: none; color: #000;" id="wiki_create_form">
     	    {% with "this.wiki_article_name.value.replace(/([^a-zA-Z0-9\-])/g, '')+'/_create/'" as theaction %}
-    		<form method="GET" onsubmit="this.action='{% url wiki_view "" %}{{ wiki_article.get_url }}/' + {{ theaction }};">
+    		<form method="GET" onsubmit="this.action='{% url wiki_view "" %}{{ wiki_article.get_url|stripslash }}/' + {{ theaction }};">
     		{% endwith %}
     			<h2>{% trans "Create article" %}</h2>
     			<p>
@@ -109,7 +110,7 @@
     	    <p><strong>{% trans "This article has been locked" %}</strong></p>
     	    {% endif %}
     	    <p>
-    	        <i>{% trans "Last modified" %}: {{ wiki_article.modified_on|date }}, {{ wiki_article.modified_on|time }}</i>
+    	        <i>{% trans "Last modified" %}:<br> {{ wiki_article.modified_on|date }}, {{ wiki_article.modified_on|time }}</i>
     	    </p>
         {% endif %}
     	</div>
@@ -171,7 +172,8 @@
         	{% if wiki_article.attachments %}
         	<ul>
         		{% for a in wiki_article.attachments %}
-        		<li><a href="{{a.download_url}}">{{a.filename|slice:":13"|slice:":-3" }}{% if a.filename|slice:"10:" %}...{{ a.filename|slice:"-3:" }}{% endif %}</a> ({{a.get_size|filesizeformat}})</li>
+        		<!--<li><a href="{{a.download_url}}">{{a.file}}{{a.filename|slice:":13"|slice:":-3" }}{% if a.filename|slice:"10:" %}...{{ a.filename|slice:"-3:" }}{% endif %}</a> ({{a.get_size|filesizeformat}})</li>-->
+                <li><a href="{{a.download_url}}">/{{a.file}}</a><br> ({{a.get_size|filesizeformat}})</li>
         		{% endfor %}
         	</ul>
         	{% else %}

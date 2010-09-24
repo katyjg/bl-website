@@ -174,20 +174,23 @@ div.wiki_box div.wiki_box_footer div.wiki_box_bar
     background-color: #f1f1f1;
 }
 
-
+#bodyContent div.wiki_box {
+    font-size: 12px !important;
+}
 div.wiki_box a
 {
-	color: #acf;
+    font-size: 10px;
+/*	color: #acf;*/
 }
 
 div.wiki_box p
 {
-	margin: 5px 0;
+	margin: 5px 0 !important;
 }
 
 div.wiki_box ul
 {
-	padding-left: 20px;
+	padding-left: 0px;
 	margin-left: 0;
 }
 
