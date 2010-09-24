@@ -18,7 +18,7 @@ from cmcf.decorators import protectview
 
 @protectview
 def view(request, wiki_url):
-
+    
     (article, path, err) = fetch_from_url(request, wiki_url)
 
     if err:
@@ -50,7 +50,9 @@ def root_redirect(request):
         err = not_found(request, 'mainpage')
         return err
 
-    return HttpResponseRedirect(reverse('wiki_view', args=(root.slug,)))
+    #return HttpResponseRedirect(reverse('wiki_view', args=(root.slug,)))
+    return HttpResponseRedirect(reverse('wiki_view', args=('mainpage',)))
+
 
 @protectview
 def create(request, wiki_url):
@@ -121,6 +123,7 @@ def create(request, wiki_url):
 
     return render_to_response('simplewiki_create.html', c)
 
+@protectview
 def edit(request, wiki_url):
 
     (article, path, err) = fetch_from_url(request, wiki_url)

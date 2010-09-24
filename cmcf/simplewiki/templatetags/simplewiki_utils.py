@@ -15,3 +15,14 @@ def prepend_media_url(value):
 def urlquote(value):
     """Prepend user defined media root to url"""
     return django_urlquote(value)
+
+@register.filter()
+def stripslash(value):
+    if value:
+        if value[0] == '/':
+            return value[1:]
+        else:
+            return value
+    return value
+
+
