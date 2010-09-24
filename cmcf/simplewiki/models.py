@@ -57,9 +57,9 @@ class Article(models.Model):
     def get_url(self):
         """Return the Wiki URL for an article"""
         if self.parent:
-            return self.parent.get_url() + '/' + self.slug
+            return self.parent.get_url() + '/' + self.slug 
         else:
-            return self.slug
+            return self.slug 
 
     def get_abs_url(self):
         """Return the absolute path for an article. This is necessary in cases
@@ -248,7 +248,7 @@ class Revision(models.Model):
 
         # Create pre-parsed contents - no need to parse on-the-fly
         ext = WIKI_MARKDOWN_EXTENSIONS
-        ext += ["wikilinks(base_url=%s'')" % reverse('wiki_view', args=('',))]
+        ext += ["wikilinks(base_url=%s)" % reverse('wiki_view', args=('',))]
 
         print ext
         self.contents_parsed = markdown(self.contents,
