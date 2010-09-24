@@ -124,7 +124,8 @@ def get_attachment_filepath(instance, filename):
     dir_ = '/'.join(filter(lambda x: x!='', dir_.split('/')))
     if not os.path.exists(WIKI_ATTACHMENTS_ROOT + dir_):
         os.makedirs(WIKI_ATTACHMENTS_ROOT + dir_)
-    return dir_ + '/' + filename + '.upload'
+    #return dir_ + '/' + filename + '.upload'
+    return dir_ + '/' + filename
 
 class ArticleAttachment(models.Model):
     article = models.ForeignKey(Article, verbose_name=_('Article'))
@@ -247,8 +248,7 @@ class Revision(models.Model):
 
         # Create pre-parsed contents - no need to parse on-the-fly
         ext = WIKI_MARKDOWN_EXTENSIONS
-        ext += ["wikilinks(base_url=%s)" % reverse('wiki_view', args=('',))]
-        #ext = ["wikilinks"]
+        ext += ["wikilinks(base_url=%s'')" % reverse('wiki_view', args=('',))]
 
         print ext
         self.contents_parsed = markdown(self.contents,

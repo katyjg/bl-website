@@ -59,7 +59,7 @@ WIKI_ATTACHMENTS_MAX = getattr(settings, 'SIMPLE_WIKI_ATTACHMENTS_MAX',
 
 # Allow users to edit titles of pages
 # (warning! titles are not maintained in the revision system.)
-WIKI_ALLOW_TITLE_EDIT = getattr(settings, 'SIMPLE_WIKI_ALLOW_TITLE_EDIT', False)
+WIKI_ALLOW_TITLE_EDIT = getattr(settings, 'SIMPLE_WIKI_ALLOW_TITLE_EDIT', True)
 
 # Global context processors
 # These are appended to TEMPLATE_CONTEXT_PROCESSORS in your Django settings
