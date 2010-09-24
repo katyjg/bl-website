@@ -51,7 +51,7 @@ def root_redirect(request):
         return err
 
     #return HttpResponseRedirect(reverse('wiki_view', args=(root.slug,)))
-    return HttpResponseRedirect(reverse('wiki_view', args=('mainpage',)))
+    return HttpResponseRedirect(reverse('wiki_view', args=('mainpage/',)))
 
 
 @protectview
