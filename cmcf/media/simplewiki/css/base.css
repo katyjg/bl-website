@@ -241,6 +241,7 @@ table#wiki_history_table
     border-collapse: collapse;
     border-spacing: 0;
 	padding-right: 250px;
+    max-width: 600px;
 }
 
 table#wiki_history_table th#modified
