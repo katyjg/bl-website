@@ -24,6 +24,9 @@ class LatestEntries(Feed):
         url_link.append(item.slug)
         return ''.join(url_link)
 
+    def item_description(self, item):
+        return item.tease
+
 '''     url_link.append(":8000/research-highlights")
         url_link.append(str(item.publish.year))
         url_link.append(item.publish.strftime('%b').lower())

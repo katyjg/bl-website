@@ -108,9 +108,11 @@ table thead th
 
 div#wiki_panel
 {
+/*    position: fixed;*/
 	float: right;
 }
-
+div#header.wiki {
+}
 div.wiki_box
 {
 	width: 230px;
