@@ -1607,6 +1607,9 @@ ul.hr-list li+li{
     padding-top: 6px;
     padding-bottom: 6px;
 }
+div.news-entry ul.hr-list li+li{
+    border-top: none;
+}
 ul.hr-list h3{
     border-bottom: none !important;
 }
