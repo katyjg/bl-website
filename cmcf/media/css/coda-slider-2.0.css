@@ -6,7 +6,6 @@
 
 /* Insignificant stuff, for demo purposes */
 
-	.panel h2.title { margin-bottom: 10px }
 	noscript div { background: #ccc; border: 1px solid #900; margin: 20px 0; padding: 15px }
 
 /* Most common stuff you'll need to change */
@@ -30,15 +29,8 @@
 	/* Change the width of the entire slider (without dynamic arrows) */
 	.coda-slider, .coda-slider .panel { width: 504px; height: 290px } 
 	
-	/* Change margin and width of the slider (with dynamic arrows) */
-	.coda-slider-wrapper.arrows .coda-slider, .coda-slider-wrapper.arrows .coda-slider .panel { width: 6000px }
-	.coda-slider-wrapper.arrows .coda-slider { margin: 0 10px }
-
     .coda-nav { margin: 0 }	
 
-	/* Arrow styling */
-	.coda-nav-left a, .coda-nav-right a { background: #000; color: #fff; padding: 5px; width: 100px }
-	
 	/* Tab nav */
 	.coda-nav ul li a.current { background: #39c }
 	
@@ -60,30 +52,46 @@
 	.coda-slider { float: left; overflow: hidden; position: relative }
 	.coda-slider .panel { display: block; float: left }
 	.coda-slider .panel-container { position: relative }
-	.coda-nav-left, .coda-nav-right { float: left }
-	.coda-nav-left a, .coda-nav-right a { display: block; text-align: center; text-decoration: none }
-	.coda-slider img { margin-right: 5px; float: left; max-height: 280px; max-width: 250px } 
-	.coda-slider h1 { font-size: 16px; color: #298cba; font-weight: bold}
-	.coda-slider p { font-size: 12px; color: #777}
-
+/*	.coda-slider img { margin-right: 5px; float: left; max-height: 270px; max-width: 250px } */
+	.coda-slider h1 { font-size: 18px; color: #21759b; font-weight: normal}
+	.coda-slider p { color: #444;
+        text-align: right;
+        font-size: 95%;}
+    .coda-slider a { text-align: right; }
 div.slider-image {
-    display: block;
-    float:left;
-    height: 290px;
-    width: 255px;
+    position: absolute;
 }
-
+div.slider-image img{
+    vertical-align: middle !important;
+    max-height: 270px;
+    max-width: 250px;
+}
+div.slider-image a {
+    display: block;
+/*    height: 310px;*/
+    line-height: 290px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center !important;
+/*    width: 250px;*/
+}
+div.slider-content span {
+    background-color:rgba(255,255,255,0.75);
+}
 div.slider-content {
     display: block;
-    height: 250px;
+    max-height: 290px;
+    float: right;
+    position: relative;
+    max-width: 250px;
 }
 
 .slider-content h1 {
-    padding: 0;
-    padding-top: 10px;
+    padding: 15px 0 10px;
+    text-align: right;
 }
 
 div.slider-links {
     display: block;
-    float: left;
+    float: right;
 }

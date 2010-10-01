@@ -3,12 +3,81 @@ from dateutil import rrule
 from datetime import datetime, date, timedelta
 from django.utils.translation import ugettext_lazy as _
 import os
+from django.db.models.signals import post_save
+from django.conf import settings
+
+from jsonfield import JSONField
+#import django.dispatch
 
 from feincms.content.image.models import ImageContent
 import ImageFile
 
+import urllib2
+from BeautifulSoup import BeautifulSoup
+
 def get_storage_path(instance, filename):
     return os.path.join('uploads/contacts/', 'photos', filename)
+
+#cls_modes = django.dispatch.Signal(providing_args=["year", "week"])
+
+def get_cls_modes():
+    page = urllib2.urlopen("http://www.lightsource.ca/operations/schedule.php")
+    soup = BeautifulSoup(page)
+    t = soup.find("table", "schedule")
+    dat = [ map(str, row.findAll("td")) for row in t.findAll("tr") ]
+    mode_calendar = []
+    w = 0
+    for x in range(len(dat)):
+        z = 0
+        for y in range(len(dat[w])):
+            if dat[w][z].endswith('&nbsp;</td>'):
+                dat[w].pop(z)
+            else:
+                dat[w][z] = dat[w][z].split('>')[1].split('<')[0]
+                z += 1
+        if dat[w]:
+            w += 1
+        else:
+            dat.pop(w)
+
+    for x in range(len(dat)):
+        if dat[x][0][2:3] != ':':
+            if len(dat[x][0]) > 8:
+                for y in range(1,8):
+                    if len(dat[x][y]) == 1:
+                        month = dat[x][0][:3]
+                        dat[x][y] = month + '/0' + dat[x][y]
+                    if len(dat[x][y]) == 2:
+                        dat[x][y] = month + '/' + dat[x][y]
+            else:
+                for y in range(0,7):
+                    if len(dat[x][y]) == 1:
+                        dat[x][y] = '0' + dat[x][y]
+                    if month:
+                        dat[x][y] = month + '/' + dat[x][y]
+
+    for x in range(len(dat)):
+        if len(dat[x]) > 7:
+            dat[x].pop(0)
+ 
+    for z in range(len(dat)/4):
+        for x in range(0,7):
+            mode_day = []
+            for y in range(0,4):
+                mode_day.append(dat[y][x])
+            mode_calendar.append(mode_day)
+        if z != len(dat)/4:
+            for i in range(0,4):
+                dat.pop(0)
+    
+    for x in range(len(mode_calendar)):
+        mode_calendar[x][1] = mode_calendar[x][2]
+        mode_calendar[x][2] = mode_calendar[x][3]
+        if x != len(mode_calendar)-1:
+            mode_calendar[x][3] = mode_calendar[x+1][1]
+
+    return mode_calendar
+
 
 class Beamline(models.Model):
     '''
@@ -148,6 +217,11 @@ class Visit(models.Model):
                 shifts[i] = self.description
         
         return shifts
+
+    def send_cls_modes(self, year, week):
+        dt = datetime.now()
+        year, week, day = dt.isocalendar()
+        cls_modes.send(sender=self, year=year, week=week)
         
     class Meta:
         unique_together = (
@@ -156,6 +230,7 @@ class Visit(models.Model):
             )
         get_latest_by = "date"
         verbose_name = "Beamline Visit"
+
 
    
 class OnCallManager(models.Manager):
@@ -201,11 +276,19 @@ class OnCall(models.Model):
         verbose_name = "On Call Person"
         verbose_name_plural = "On Call Personnel"
 
+class WebStatus(models.Model):
+    year = models.DateField()
+    week = models.DateField()
+    status = JSONField(get_cls_modes)
+
+    class Meta:
+        unique_together = (("year", "week"),)
+        verbose_name = "Upload CLS Beam Mode"
+
 
 class Mode(models.Model):
     '''
-    Basic beamline information for ``Visit`` entries.
-    
+    Basic beamline information for ``Visit`` entries.    
     '''
     name = models.CharField(blank=False,max_length=30)
 #    description = models.CharField(max_length=200)
@@ -272,6 +355,8 @@ class StatManager(models.Manager):
         return qs
         
 
+
+
 class Stat(models.Model):
     '''
     Represents the start and end time for a specific beamline information for ``OnCall`` entries.
@@ -328,3 +413,5 @@ class Stat(models.Model):
         verbose_name = "Beamline Status"
 	verbose_name_plural = "Beamline Statuses"
 
+
+#post_save.connect(get_cls_modes, sender=Visit)
