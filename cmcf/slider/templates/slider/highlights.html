@@ -5,26 +5,34 @@
 		<div class="panel">
 			<div class="panel-wrapper" >
 				{% if post.highlight or post.publish %}
-    			<div class="slider-image">
-                    <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
-                        <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" >
-                    </a>
-                </div>
-				<div class="slider-content"><h1>{{ post.title }}</h1>
-				<!--<p class="date">Posted on {{ post.publish|date:"F d, Y" }}</p>-->
-				<p>{{ post.tease|removetags:"p"|safe }}</p></div>
-				<div class="slider-links">{% if post.link %}<a href="{{post.link}}">{{ post.citation|removetags:"p"|safe }}</a>{% endif %}</div>
-				{% endif %}
+        			<div class="slider-image">
+                        <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
+                            <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" >
+                        </a>
+                    </div>
+				    <div class="slider-content">
+                        <h1>{{ post.title }}</h1>
+				        <p><span>{{ post.tease|removetags:"p"|safe }}</span></p>
+                        {% if post.link %}
+                            <p><a href="{{post.link}}">{{ post.citation|removetags:"p"|safe }}</a></p>
+                        {% endif %}
+                    </div>
+<!--				    <div class="slider-links">
+                        {% if post.link %}
+                            <a href="{{post.link}}">{{ post.citation|removetags:"p"|safe }}</a>
+                        {% endif %}
+                    </div>
+-->				{% endif %}
 				
 				{% if post.photo_highlight %}
-				<div class="image">
-                    <a href="/images" title="Go to Photo Gallery">
-                        <img src="/media/uploads/photologue/photos/{{ post.image_filename }}" alt="" />
-                    </a>
-                </div>
-				<h1>{{ post.title }}</h1>
-				<p class="date">Added on {{ post.date_added|date:"F d, Y" }}</p>
-				<p class="date">{{ post.caption|safe }}</p>
+				    <div class="image">
+                        <a href="/images" title="Go to Photo Gallery">
+                            <img src="/media/uploads/photologue/photos/{{ post.image_filename }}" alt="" />
+                        </a>
+                    </div>
+				    <h1>{{ post.title }}</h1>
+				    <p class="date">Added on {{ post.date_added|date:"F d, Y" }}</p>
+				    <p class="date">{{ post.caption|safe }}</p>
             	{% endif %}
 			</div><!-- .panel-wrapper -->
 		</div><!-- .panel -->

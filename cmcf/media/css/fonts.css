@@ -49,15 +49,45 @@
 
 /* Gentium */
 @font-face {
-    font-family: "gentium";
-    src: url(/media/fnt/GenR102.ttf) format('truetype');
+  font-family: "gentium";
+  src: url(/media/fnt/GenBasR.eot);
+}
+@font-face {
+  font-family: "gentium";
+  src: url(/media/fnt/GenBasI.eot);
+    font-style: italic;
+}
+@font-face {
+  font-family: "gentium";
+  src: url(/media/fnt/GenBasB.eot);
+    font-weight: bold;
+}
+@font-face {
+  font-family: "gentium";
+  src: url(/media/fnt/GenBasBI.eot);
+    font-weight: bold;
+    font-style: italic;
 }
 @font-face {
     font-family: "gentium";
-    src: url(/media/fnt/GenI102.ttf) format('truetype');
+    src: url(/media/fnt/GenBasR.ttf) format('truetype');
+}
+@font-face {
+    font-family: "gentium";
+    src: url(/media/fnt/GenBasI.ttf) format('truetype');
     font-style: italic;
 }
-
+@font-face {
+    font-family: "gentium";
+    src: url(/media/fnt/GenBasB.ttf) format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: "gentium";
+    src: url(/media/fnt/GenBasBI.ttf) format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
 
 /* Charis */
 @font-face {
@@ -91,5 +121,18 @@
     font-family: "yanone-kaffeesatz";
     src: url(/media/fnt/YanoneKaffeesatz-Bold.otf) format('opentype');
     font-style: bold;
+}
+
+/* NuvoWeb */
+/* first for IE 6/7/8 */
+@font-face {
+  font-family: NuvoWeb-Medi;
+  src: url(/media/fnt/NuvoWeb-Medi.eot);
+}
+
+/* then for Mozilla browsers -> Firefox */
+@font-face {
+  font-family: NuvoWeb-Medi;
+  src: url(/media/fnt/NuvoWeb-Medi.woff) format('woff');
 }
 

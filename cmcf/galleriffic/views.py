@@ -38,10 +38,10 @@ def gallery_display(request, slug):
     photo_list = []
     for photo in Photo.objects.all():
 	if slug == '08id1' and photo.gallery == 1:
-	    photo.galleryname = "08ID-1 Gallery"
+	    photo.galleryname = "08ID-1 Construction"
 	    photo_list.append(photo)
 	elif slug == '08b1' and photo.gallery == 2:
-	    photo.galleryname = "08B1-1 Gallery"
+	    photo.galleryname = "08B1-1 Construction"
 	    photo_list.append(photo)
 
     return render_to_response(

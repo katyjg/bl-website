@@ -3,53 +3,41 @@ html * {
 	text-align: left;
 }
 
-.printfooter, hr, .urlexpansion {
-	display: none !important;
-}
-
-#bodyContent h1, #bodyContent h2 {
-	font-family: Georgia, charis, Palatino, serif;
+#bodyContent h2 {
+	font-family: NuvoWeb-Medi, graublau-web, sans-serif;
 	font-size: 22px;
 	margin-bottom: 22px;
 	color: #333;
+    line-height: 130%;
 }
 #bodyContent h2, #bodyContent h3, #bodyContent h4, #bodyContent h5, #bodyContent h6 {
 		border-bottom: 1px solid #cccccc;
 		font-weight: normal;
 }
 #bodyContent h2.pagetitle {
-	font-family:  "Lucida Grande", Verdana, Tahoma, Arial, sans-serif;
-	font-size: 24px;
-	font-weight: bold;
-	color: #666;
+	font-family:  "NuvoWeb-Medi", "graublau-web", sans-serif;
+	font-size: 28px;
+	font-weight: normal;
+	color: #777;
 	padding-bottom: 2px;
 	margin-top: 22px;
 	margin-bottom: 24px;
-    line-height: 26px;
+    line-height: 130%;
 }
-#bodyContent h2.subtitle {
-    margin-top: 0px;
-    font-family: "Lucida Grande", Verdana, Tahoma, Arial, sans-serif; 
-}
+
 #bodyContent a.right-subtitle {
     float: right;
-}
-#bodyContent h2.subtitle a {
-    font-weight: bold;
-    font-size: 1em;
-}
-.col-2 h3 {
-	margin-top: 3px;
 }
 
 #bodyContent h2 {
 	margin-top: 22px;
 	margin-bottom: 11px;
 }
+
 .editsection {
 font-size: 10px;
 font-weight: normal !important;
-font-family: "Lucida Grande", Verdana, Tahoma, Arial, sans-serif;
+font-family: "NuvoWeb-Medi", "graublau-web", sans-serif;
 }
 #bodyContent h3 {
 	padding-bottom: 4px;
@@ -65,37 +53,23 @@ border-color: #eee;
 #bodyContent h4 {
 font-size: 120%;
 }
-h4 b {
-font-weight: normal;
-}
+
 #bodyContent h5 {
 font-size: 100%;
 font-weight: bold;
 }
 
 #bodyContent {
-color: #444;
+color: #000;
 }
 #bodyContent p {
 	clear: left;
 }
 #pagebody #bodyContent ul,
-#pagebody #bodyContent dl,
 #pagebody #bodyContent ol {
 	margin-bottom: 22px;
 }
 
-p.login a {
-	margin-right: 6px;
-}
-
-#editpage-copywarn p {
-	margin-top: 18px !important;
-}
-
-blockquote {
-	padding: 11px 22px !important;
-}
 
 #bodyContent div {
 	font-size: 100% !important;
@@ -104,8 +78,7 @@ blockquote {
 #bodyContent pre, #bodyContent code {
 	margin-bottom: 15px;
     margin-top: 15px;
-	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
-/*	font-size: 12px;*/
+	font-family: 'Droid Sans Mono', Consolas, Monaco, "Courier New", Courier, monospace;
 	font-weight: inherit;
 	overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
 	white-space: pre-wrap; /* css-3 */
@@ -129,30 +102,19 @@ textarea {
   
 }
 
-dl dt {
-	font-weight: bold;
-	font-size: 110%;
-}
-
-dl dd {
-	margin-bottom: 11px;
-	margin-left: 1em;
-}
 
 #toc {
 	background: #f1f1f1;
 	border: 1px solid #dadada;
-/*	-webkit-border-radius: 3px;*/
 	float: right;
 	margin-left: 16px;
-	padding: 4px 8px;
+	padding: 8px;
 	margin-bottom: 12px;
-/*	font-size: 85%;*/
-	max-width: 30%;
+	max-width: 212px;
 }
 #pagebody #toc ul {
 	margin-bottom: 0px;
-    margin-left: 8px;    
+ 
 }
 #toc li {
     padding: 2px 0;
@@ -166,12 +128,72 @@ dl dd {
 }
 #toctitle td {
 	text-align: left !important;
-}
-
-#toctitle td {
 	border-bottom: 1px solid #dadada;
 }
 
+
+input[type="text"], input[type="password"] {
+	margin-right: 2px;
+	padding: 3px;
+	margin-bottom: 6px;
+	background: #f5f5f5;
+    background: url("/media/img/textbox_bg.gif") no-repeat scroll left top #FFFFFF;
+	border: 1px solid #ccc;
+    border-color: #7C7C7C #C3C3C3 #DDDDDD;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;	
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	color: #666;
+    width: 75%;
+}
+
+input[type="checkbox"] {
+	margin-right: 4px;
+}
+
+label {
+	margin-right: 8px;
+}
+/*
+.printfooter, hr, .urlexpansion {
+	display: none !important;
+}
+#bodyContent h2.subtitle {
+    margin-top: 0px;
+    font-family: "Lucida Grande", Verdana, sans-serif; 
+}
+#bodyContent h2.subtitle a {
+    font-weight: bold;
+    font-size: 1em;
+}
+.col-2 h3 {
+	margin-top: 3px;
+}
+
+h4 b {
+font-weight: normal;
+}
+p.login a {
+	margin-right: 6px;
+}
+
+#editpage-copywarn p {
+	margin-top: 18px !important;
+}
+
+blockquote {
+	padding: 11px 22px !important;
+}
+dl dt {
+	font-weight: bold;
+	font-size: 110%;
+}
+
+dl dd {
+	margin-bottom: 11px;
+	margin-left: 1em;
+}
 #tocinside td {
 	padding-top: 4px;
 	font-size: 10px;
@@ -184,32 +206,6 @@ dl dd {
 
 .tocindent .tocindent p {
 	padding-left: 32px;
-}
-
-input[type="text"], input[type="password"] {
-//	margin-right: 2px;
-/*	font-size: 10px;*/
-	padding: 3px;
-	margin-bottom: 6px;
-	background: #f5f5f5;
-    background: url("/media/img/textbox_bg.gif") no-repeat scroll left top #FFFFFF;
-	border: 1px solid #ccc;
-    border-color: #7C7C7C #C3C3C3 #DDDDDD;
-	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;	
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-/*	height: 14px;*/
-	color: #666;
-    width: 75%;
-}
-
-input[type="checkbox"] {
-	margin-right: 4px;
-}
-
-label {
-	margin-right: 8px;
 }
 
 table.diff { background:white; }
@@ -229,7 +225,7 @@ td.diff-context {
 }
 span.diffchange { color: red; font-weight: bold; }
 
-/* image css */
+// image css //
 a img.alignright, .tright img, img.alignright, img.right {float:right; margin:0 0 1em 1em}
 a img.alignleft, .tleft img, img.alignleft, img.left {float:left; margin:0 1em 1em 0}
 a img.aligncenter, img.aligncenter, img.center {display: block; margin-left: auto; margin-right: auto}
@@ -253,4 +249,4 @@ margin: 1em 0;
 }
 
 .new, .new:link, .new:visited { color: red !important; }
-.new:hover, .new:active { text-decoration: underline !important; }
+.new:hover, .new:active { text-decoration: underline !important; }*/

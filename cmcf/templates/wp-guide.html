@@ -38,21 +38,21 @@
                			    {% ifnotequal ssp.title sp.title %}
 					{% if forloop.first %}
 				            {% ifnotequal subsublevel.count 0 %}{% ifnotequal subsublevel.count 1 %}
-	        				<table id="toc" class="toc" summary="Contents"><tr><td>
+	        				<div id="toc"><!--<table id="toc" class="toc" summary="Contents"><tr><td>-->
     						<div id="toctitle"><h2>Page Contents</h2></div>
     						<ul>
 	    					{% for sp in subsublevel %}
 	    					<li{% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}><a href="#{{ sp.slug }}">{{ sp.title }}</a></li>
 	    					{% endfor %}
-    						</ul>
-	        				</td></tr></table>
+    						</ul></div><!--
+	        				</td></tr></table>-->
 					    {% endifnotequal %}{% endifnotequal %}    
 					    {% feincms_render_region sp "col2" request %}   				
 					{% endif %}
 					<h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span>
-					{% if forloop.first %}{% else %}
+					<!--{% if forloop.first %}{% else %}
 					    <a class="toplink" href="#" title="Back to Top">&nbsp;</a>
-					{% endif %}
+					{% endif %}-->
 					</h2>
 					{% feincms_render_region ssp "col2" request %}
                 		    {% endifnotequal %}
@@ -64,7 +64,6 @@
 	        {% endfor %}		
 	    </div>
 	</div>
-    </div>
 
     <div class="col-3">
   	{% feincms_navigation of feincms_page as sublevel level=2 %}
@@ -85,6 +84,7 @@
     	{% endfor %}
         </ul>
 	{% feincms_render_region feincms_page "col1" request %}
+    </div>
     </div>
 </div>
 
@@ -120,9 +120,9 @@
 			    {% if subsublevel %}
 				{% for ssp in subsublevel %}         				
 				    <h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span>
-				    {% if forloop.first %}{% else %}
+<!--				    {% if forloop.first %}{% else %}
 					<a class="toplink" href="#" title="Back to Top">&nbsp;</a>
-				    {% endif %}
+				    {% endif %}-->
 				    </h2>
 				    {% feincms_render_region ssp "col2" request %}
 				{% endfor %}

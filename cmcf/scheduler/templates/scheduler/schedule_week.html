@@ -26,32 +26,32 @@
             {% for day in calendar %}
                 <tr>
                     <td rowspan=3 class="column1">{{day.0}}</td>
-                    <td class="{% for stat in day.3 %}{{stat.0}}{% endfor %}">
+                    <td class="{{day.4.0}}">
                         08:00-16:00
                     </td>
                     {% for bl in day.1 %}
-                        <td class="{% for stat in day.3 %}{{stat.0}}{% endfor %}">
+                        <td class="{{day.4.0}}">
                             {{bl.0}}
                         </td>       
                     {% endfor %}
                     <td rowspan=3 class="column1">{{day.2}}</td>
                 </tr>
                 <tr>      
-                    <td class="{% for stat in day.3 %}{{stat.1}}{% endfor %}">
+                    <td class="{{day.4.1}}">
                         16:00-24:00
                     </td>
                     {% for bl in day.1 %}
-                        <td class="{% for stat in day.3 %}{{stat.1}}{% endfor %}">
+                        <td class="{{day.4.1}}">
                             {{bl.1}}
                         </td>       
                     {% endfor %}
                 </tr>
                 <tr>      
-                    <td class="{% for stat in day.3 %}{{stat.2}}{% endfor %}">
+                    <td class="{{day.4.2}}">
                         24:00-08:00
                     </td>
                     {% for bl in day.1 %}
-                        <td class="{% for stat in day.3 %}{{stat.2}}{% endfor %}">
+                        <td class="{{day.4.2}}">
                             {{bl.2}}
                         </td>       
                     {% endfor %}

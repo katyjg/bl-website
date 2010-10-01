@@ -6,7 +6,7 @@
         {% if forloop.last %}{% else %}-{% endif %}
     {% endfor %}
     <a class="right-subtitle" href="http://biosync.sbkb.org/stats.do?stats_sec=GALLRY&amp;stats_focus_lvl=BMLN&amp;stats_site=CLSI&amp;stats_bmln=08ID-1">08ID-1 Gallery at BioSync</a>
-    {% for year in year_list %}<h2><a name="{{ year }}"></a>{{ year }}</h2>
+    {% for year in year_list %}<h2><a name="{{ year }}"></a>{{ year }}<a class="toplink" title="Back to Top" href="#">&nbsp;</a></h2>
         {% for publication in publication_list %}
             {% ifequal year publication.0.year %}
                 <p>

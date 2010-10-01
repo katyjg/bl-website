@@ -8,33 +8,38 @@
 </script>
 
 <!-- Start Advanced Gallery Html Containers -->
-		{% for photo in gallery_list %}{% if forloop.first %}
-			<h2>{{ photo.galleryname }}</h2>
-		{% endif %}{% endfor %}
+{% for photo in gallery_list %}{% if forloop.first %}
+	<h2>{{ photo.galleryname }}</h2>
+{% endif %}{% endfor %}
 
 <div id="thumbs" class="navigation">
-        <ul id="thumb-gallery" class="thumbs noscript">
-                {% for photo in gallery_list %}
-                <li>
-                <a class="thumb" name="{{ photo.title }}" title="{{ photo.title }}" href="{{ photo.get_display_url }}"><img src="{{ photo.get_thumbnail_url }}" alt="{{ photo.title }}"></a>
+    <ul id="thumb-gallery" class="thumbs noscript">
+        {% for photo in gallery_list %}
+            <li>
+                <a class="thumb" name="{{ photo.title }}" title="{{ photo.title }}" href="{{ photo.get_display_url }}">
+                    <img src="{{ photo.get_thumbnail_url }}" alt="{{ photo.title }}">
+                </a>
                 <div class="caption">
-                	<div class="download">
-                                <a href="{{ photo.get_large_url }}">Download Original</a>
-                        </div>
-                        <div class="image-title">{{ photo.title }}</div>
-                        <div class="image-desc"><p>{{ photo.caption|removetags:"p"|safe }}</p></div>
+        	        <div class="download">
+                        <a href="{{ photo.get_large_url }}">Download Original</a>
+                    </div>
+                    <div class="image-title">{{ photo.title }}</div>
+                    <div class="image-desc">
+                        <p>{{ photo.caption|removetags:"p"|safe }}</p>
+                    </div>
                 </div>
-                </li>
-                {% endfor %}
-        </ul>
+            </li>
+        {% endfor %}
+    </ul>
 </div>
+
 <div id="gallery" class="content">
-        <div id="controls" class="controls"></div>
-        <div class="slideshow-container">
-                <div id="loading" class="loader"></div>
-                <div id="slideshow" class="slideshow"></div>
-        </div>
-        <div id="caption" class="caption-container"></div>
+    <div id="controls" class="controls"></div>
+    <div class="slideshow-container">
+        <div id="loading" class="loader"></div>
+        <div id="slideshow" class="slideshow"></div>
+    </div>
+    <div id="caption" class="caption-container"></div>
 </div>
 
 <!--<div style="clear: both;"></div>-->
