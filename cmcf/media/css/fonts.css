@@ -1,16 +1,14 @@
-
-/* graublau-web */
-/*@font-face {
-    font-family: "graublau-web";
-    src: url(/media/fnt/GraublauWeb.eot);
+/* NuvoWeb */
+@font-face {
+  font-family: NuvoWeb-Medi;
+  src: url(/media/fnt/NuvoWeb-Medi.eot);
 }
 @font-face {
-    font-family: "graublau-web";
-    src: url(/media/fnt/GraublauWebBold.eot);
-    font-weight: bold;
+  font-family: NuvoWeb-Medi;
+  src: url(/media/fnt/NuvoWeb-Medi.woff) format('woff');
 }
-*/
 
+/* Graublau-Web */
 @font-face {
     font-family: "graublau-web";
     src: url(/media/fnt/GraublauWeb.otf) format("opentype");
@@ -21,118 +19,68 @@
     font-weight: bold;
 }
 
-
-/* union */
-
-@font-face {
-    font-family: "union";
-    src: url(/media/fnt/union___.eot);
-}
-@font-face {
-    font-family: "union";
-    src: url(/media/fnt/unionbd_.eot);
-    font-weight: bold;
-}
-
-
-@font-face {
-    font-family: "union";
-    src: url(/media/fnt/union___.ttf) format("truetype");
-}
-@font-face {
-    font-family: "union";
-    src: url(/media/fnt/unionbd_.ttf) format("truetype");
-    font-weight: bold;
-}
-
-
-
 /* Gentium */
 @font-face {
-  font-family: "gentium";
-  src: url(/media/fnt/GenBasR.eot);
-}
-@font-face {
-  font-family: "gentium";
-  src: url(/media/fnt/GenBasI.eot);
-    font-style: italic;
-}
-@font-face {
-  font-family: "gentium";
-  src: url(/media/fnt/GenBasB.eot);
-    font-weight: bold;
-}
-@font-face {
-  font-family: "gentium";
-  src: url(/media/fnt/GenBasBI.eot);
-    font-weight: bold;
-    font-style: italic;
+    font-family: "gentium";
+	src: url('/media/fnt/GenBasR-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBasR-webfont.woff') format('woff'), url('/media/fnt/GenBasR-webfont.ttf') format('truetype'), url('/media/fnt/GenBasR-webfont.svg#webfont83Gk0EqE') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
 @font-face {
     font-family: "gentium";
-    src: url(/media/fnt/GenBasR.ttf) format('truetype');
+	src: url('/media/fnt/GenBasI-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBasI-webfont.woff') format('woff'), url('/media/fnt/GenBasI-webfont.ttf') format('truetype'), url('/media/fnt/GenBasI-webfont.svg#webfontY1vE4adJ') format('svg');
+	font-weight: normal;
+	font-style: italic;
 }
 @font-face {
     font-family: "gentium";
-    src: url(/media/fnt/GenBasI.ttf) format('truetype');
-    font-style: italic;
+	src: url('/media/fnt/GenBasB-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBasB-webfont.woff') format('woff'), url('/media/fnt/GenBasB-webfont.ttf') format('truetype'), url('/media/fnt/GenBasB-webfont.svg#webfont9GWbRghj') format('svg');
+	font-weight: bold;
+	font-style: normal;
 }
 @font-face {
     font-family: "gentium";
-    src: url(/media/fnt/GenBasB.ttf) format('truetype');
-    font-weight: bold;
+	src: url('/media/fnt/GenBasBI-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBasBI-webfont.woff') format('woff'), url('/media/fnt/GenBasBI-webfont.ttf') format('truetype'), url('/media/fnt/GenBasBI-webfont.svg#webfontxFZtZk8k') format('svg');
+	font-weight: bold;
+	font-style: italic;
 }
+/*
 @font-face {
     font-family: "gentium";
-    src: url(/media/fnt/GenBasBI.ttf) format('truetype');
-    font-weight: bold;
-    font-style: italic;
+	src: url('/media/fnt/GenBkBasR-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBkBasR-webfont.woff') format('woff'), url('/media/fnt/GenBkBasR-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasR-webfont.svg#webfontOawVVQSm') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
 
-/* Charis */
 @font-face {
-    font-family: "charis";
-    src: url(/media/fnt/CharisSILR.ttf) format('truetype');
-}
-@font-face {
-    font-family: "charis";
-    src: url(/media/fnt/CharisSILI.ttf) format('truetype');
-    font-style: italic;
-}
-@font-face {
-    font-family: "charis";
-    src: url(/media/fnt/CharisSILB.ttf) format('truetype');
-    font-weight: bold;
-}
-@font-face {
-    font-family: "charis";
-    src: url(/media/fnt/CharisSILBI.ttf) format('truetype');
-    font-weight: bold;
-    font-style: italic;
+    font-family: "gentium";
+	src: url('/media/fnt/GenBkBasI-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBkBasI-webfont.woff') format('woff'), url('/media/fnt/GenBkBasI-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasI-webfont.svg#webfontIR41rMy5') format('svg');
+	font-weight: normal;
+	font-style: italic;
 }
 
-
-/* Yanone Kaffeesatz */
 @font-face {
-    font-family: "yanone-kaffeesatz";
-    src: url(/media/fnt/YanoneKaffeesatz-Regular.otf) format('opentype');
-}
-@font-face {
-    font-family: "yanone-kaffeesatz";
-    src: url(/media/fnt/YanoneKaffeesatz-Bold.otf) format('opentype');
-    font-style: bold;
+    font-family: "gentium";
+	src: url('/media/fnt/GenBkBasB-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBkBasB-webfont.woff') format('woff'), url('/media/fnt/GenBkBasB-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasB-webfont.svg#webfonttS5RtN7j') format('svg');
+	font-weight: bold;
+	font-style: normal;
 }
 
-/* NuvoWeb */
-/* first for IE 6/7/8 */
 @font-face {
-  font-family: NuvoWeb-Medi;
-  src: url(/media/fnt/NuvoWeb-Medi.eot);
+    font-family: "gentium";
+	src: url('/media/fnt/GenBkBasBI-webfont.eot');
+	src: local('☺'), url('/media/fnt/GenBkBasBI-webfont.woff') format('woff'), url('/media/fnt/GenBkBasBI-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasBI-webfont.svg#webfontiSviAAwr') format('svg');
+	font-weight: bold;
+	font-style: italic;
 }
+*/
 
-/* then for Mozilla browsers -> Firefox */
-@font-face {
-  font-family: NuvoWeb-Medi;
-  src: url(/media/fnt/NuvoWeb-Medi.woff) format('woff');
-}
+
 
