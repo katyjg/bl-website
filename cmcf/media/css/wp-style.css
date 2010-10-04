@@ -414,8 +414,6 @@ p.link {
 	margin: 0 14px;
 }
 
-
-
 .col-1 { width: 52px; }
 .col-2 { width: 132px; }
 .col-3 { width: 212px; }
@@ -443,7 +441,7 @@ p.link {
 .announcements p, .announcements ul li {
  	text-align: center;
 }
-#toTop { 
+#toTop, #toTop a { 
     min-width: 45px;
     min-height: 42px;
     position:fixed;
@@ -453,7 +451,7 @@ p.link {
     cursor:pointer;
     background-image: url(/media/img/BackToTop_blue_fade.png)
 }
-#toTop:hover {
+#toTop:hover, #toTop a:hover {
     background-image: url(/media/img/BackToTop_blue.png);
 }
 .quicklinks {
