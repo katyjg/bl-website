@@ -1,5 +1,4 @@
 {% load i18n %}
-{% for category in categories reversed %}
 
 <!--
 {% ifequal categories|length 1 %}{% else %}
@@ -11,12 +10,13 @@
 
 <ul class="hr-list">
     {% for post in object_list %}
-        <!--{% ifequal category post.categories.all.0 %}-->
         <li>
             <div class="news-post">
+                {% if post.image_filename %}
                 <div class="{% cycle 'image' 'image-odd' %}">
                     <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
                 </div>
+                {% endif %}
 
   	            <div>
    	                <h3 class="subtitle">
@@ -34,10 +34,8 @@
                 </div>	      
             </div>
         </li>
-        <!--{% endifequal %}-->
     {% endfor %}
 </ul>
-{% endfor %}
 
 {% if is_paginated %}
 	<p class="pagination">
