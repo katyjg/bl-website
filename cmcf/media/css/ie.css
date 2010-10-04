@@ -10,6 +10,10 @@
 	height: 35px !important;
 }
 
+#header .logo ul {
+    margin-top: 34px;
+}
+
 #header ul li a {
 	padding: 0 9px;
 }
@@ -18,3 +22,12 @@
 	height: 30px;
 }
 
+#header ul li:hover .nav-submenu, #header ul li .nav-submenu:hover  {
+	top:-2px;
+}
+#toTop { 
+    background-image: url(/media/img/BackToTop_blue_fade_ie.png)
+}
+#toTop:hover {
+    background-image: url(/media/img/BackToTop_blue_ie.png);
+}

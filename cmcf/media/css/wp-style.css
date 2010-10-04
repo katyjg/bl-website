@@ -24,13 +24,13 @@ body {
 }
 /* -------------------------------------------- */
 
-code, pre { font-family: 'Droid Sans Mono', Consolas, Monaco, "Courier New", Courier, monospace; }
+code, pre { font-family: "Courier New", Courier, monospace; }
 
 pre {
 	background: #f5f5f5;
 	border: 1px solid #dadada;
 	padding: 11px;
-	font-size: 11px;
+	font-size: 85%;
 	line-height: 1.3em;
 	overflow: auto;
 }
@@ -443,11 +443,18 @@ p.link {
 .announcements p, .announcements ul li {
  	text-align: center;
 }
-a.toplink {
-    min-width: 24px;
-    background-image: url(/media/img/stock_up.png);
-	float:right;
-	font-size: 13px;
+#toTop { 
+    min-width: 45px;
+    min-height: 42px;
+    position:fixed;
+    display: scroll;
+    bottom:10px;
+    right:10px;
+    cursor:pointer;
+    background-image: url(/media/img/BackToTop_blue_fade.png)
+}
+#toTop:hover {
+    background-image: url(/media/img/BackToTop_blue.png);
 }
 .quicklinks {
 	background: #fff7db;
@@ -504,13 +511,13 @@ a.toplink {
 #home-below h2 {
     margin-top: 7px;
     font-weight: normal;
-    font-variant: small-caps !important;
+/*    font-variant: small-caps !important;*/
     color: #666;
 /*    font-family: "NuvoWeb-Medi", "graublau-web", sans-serif; */
 }
 #home-below span a {
     font-weight: normal;
-    font-variant: small-caps !important;
+/*    font-variant: small-caps !important;*/
 }
 .quicklinks h2, #home-below .quicklinks h2 {
     margin-top: -5px !important;
@@ -660,7 +667,7 @@ input.text {
 	padding: 16px 10px;
     line-height: 1em;
 	float: left;
-	text-rendering: optimizeLegibility;
+/*	text-rendering: optimizeLegibility;*/
 }
 /*
 #headline .login {
@@ -677,9 +684,17 @@ input.text {
 
 #pages {float:right;}
 */
-#pagebody .submenu, #pagebody #submenu {
+#pagebody ul {
+	margin-left: 16px;
+    list-style-image: url(/media/img/stock_right4.png);
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#pagebody .submenu, #pagebody #submenu, #pagebody ul.submenu {
 	margin-left: 0;
 	margin-top: 20px;
+    list-style-image: none;
 	list-style: none;
 }
 
@@ -722,8 +737,6 @@ p.person {
 	background: url(/media/img/arrow.png) center right no-repeat;
 	padding-right: 10px;
 }
-
-
 /*#pagebody .submenu li {
 	border-bottom: 1px solid #dedede;
 	font-size: 13px;
@@ -788,13 +801,6 @@ p.person {
 
 #pagebody p, #pagebody ol{
 	margin: 0 0 22px 0;
-}
-#pagebody ul {
-	margin-left: 16px;
-	list-style: disc;
-    list-style-image: url(/media/img/stock_right4.png);
-    margin-top: 0px;
-    margin-bottom: 0px;
 }
 
 #pagebody #thumb-gallery {
@@ -1198,7 +1204,7 @@ div.special { margin-top: 22px; }
 	padding-bottom: 4px;
 }
 
-
+/*
 ul.logo {
 	margin: 0 14px 14px 0 !important;
 	width: 176px;
@@ -1242,6 +1248,8 @@ ul.logo .pnglogo:hover { background: #555; }
 .pnglogo img {
 	padding: 62px 0;
 }
+*/
+
 /*
 #logo-blue img, #logo-grey img { padding: 20px 0; }
 

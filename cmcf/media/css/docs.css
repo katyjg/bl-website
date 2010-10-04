@@ -78,7 +78,7 @@ color: #000;
 #bodyContent pre, #bodyContent code {
 	margin-bottom: 15px;
     margin-top: 15px;
-	font-family: 'Droid Sans Mono', Consolas, Monaco, "Courier New", Courier, monospace;
+	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
 	font-weight: inherit;
 	overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
 	white-space: pre-wrap; /* css-3 */
