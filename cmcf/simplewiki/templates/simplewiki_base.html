@@ -3,11 +3,16 @@
 <html lang="{{ LANGUAGE_CODE }}">-->
 <head>
 <title>{{ wiki_title }}</title>
+
+<link type="text/css" href="/media/css/fonts.css" rel="stylesheet">
 <link type="text/css" href="/media/css/wp-style.css" rel="stylesheet">
 <link rel="stylesheet" media="screen,print" href="{{"simplewiki/css/base.css"|prepend_media_url}}" />
 <link rel="stylesheet" media="print" href="{{"simplewiki/css/base_print.css"|prepend_media_url}}" />
 <link rel="stylesheet" href="{{"simplewiki/css/autosuggest_inquisitor.css"|prepend_media_url}}" />
+
 <script type="text/javascript" src="{{"simplewiki/js/bsn.AutoSuggest_c_2.0.js"|prepend_media_url}}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/media/js/sidebar.js"></script>
 <script type="text/javascript">
 	function set_related_article_id(s) {
 		document.getElementById('wiki_related_input_id').value = s.id;
@@ -28,6 +33,11 @@
 			x();
 	}
 </script>
+
+    <!--[if lt IE 8]>
+    <link type="text/css" href="/media/css/ie.css" rel="stylesheet">
+    <![endif]-->
+
 {% block wiki_head %}
 {% endblock %}
 </head>
@@ -41,8 +51,8 @@
 
 <div id="headline"><div class="wrapper"><h2>{% block wiki_page_title %}{% endblock %}</h2></div></div>
 <div id="pagebody">
-<div id="bodyContent" class="wrapper">
-    <div class="col-8">
+<div class="wrapper">
+    <div id="bodyContent" class="col-8">
         {% block wiki_body %}{% endblock %}
     </div><!--col-8-->
     
@@ -50,31 +60,17 @@
 {% block wiki_panel %}
 
 <div id="wiki_panel">
-    
     <div class="wiki_box">
-    	<div class="wiki_box_header">
-    		<div class="wiki_box_corner"></div>
-    		<div class="wiki_box_bar"></div>
-    	</div>
     	<div class="wiki_box_contents">
-        	<div class="wiki_box_title">{% trans "Search" %}</div>
             <!--<form method="POST" action='{% url wiki_search_articles wiki_article.get_url|stripslash %}'>-->
             <form method="POST" action='{% url wiki_search_articles 'mainpage' %}'>
-            	<input type="text" name="value" id="wiki_search_input" style="width: 72%" value="{{wiki_search_query|escape}}"/>
-            	<input type="submit" id="wiki_search_input_submit" value={% trans "Go!" %} style="width: 20%" />
+            	<p><nobr><input type="text" name="value" id="wiki_search_input" style="width: 72%" value="{{wiki_search_query|escape}}"/>
+            	<input type="submit" id="wiki_search_input_submit" value={% trans "Search!" %} style="width: 20%" /></nobr></p>
             </form>
-        </div>
-        <div class="wiki_box_footer">
-        	<div class="wiki_box_corner"></div>
-        	<div class="wiki_box_bar"></div>
         </div>
     </div>
     
     <div class="wiki_box">
-    	<div class="wiki_box_header">
-    		<div class="wiki_box_corner"></div>
-    		<div class="wiki_box_bar"></div>
-    	</div>
     	<div class="wiki_box_contents" style="position: relative;">
 
     	<div style="border: 2px outset #CCC; width: 250px; padding: 10px; background-color: #FFF; position: absolute; right: 100px; top: -80px; display: none; color: #000;" id="wiki_create_form">
@@ -109,23 +105,45 @@
     	    <p><strong>{% trans "This article has been locked" %}</strong></p>
     	    {% endif %}
     	    <p>
-    	        <i>{% trans "Last modified" %}:<br>{{ wiki_article.modified_on|date }}, {{ wiki_article.modified_on|time }}</i>
+    	        <i>{% trans "Last modified" %}:</i>&nbsp;&nbsp;{{ wiki_article.modified_on|date }}, {{ wiki_article.modified_on|time }}</i>
     	    </p>
         {% endif %}
     	</div>
-    	<div class="wiki_box_footer">
-    		<div class="wiki_box_corner"></div>
-    		<div class="wiki_box_bar"></div>
-    	</div>
     </div>
+
+        <div class="wiki_box">
+        	<div class="wiki_box_contents">
+
+        	<div class="wiki_box_title">{% trans "Attachments" %}</div>
+        	{% if wiki_article.attachments %}
+        	<ul>
+        		{% for a in wiki_article.attachments %}
+        		<!--<li><a href="{{a.download_url}}">{{a.file}}{{a.filename|slice:":13"|slice:":-3" }}{% if a.filename|slice:"10:" %}...{{ a.filename|slice:"-3:" }}{% endif %}</a> ({{a.get_size|filesizeformat}})</li>-->
+                <li><a href="{{a.download_url}}">/media/{{a.file}}</a><br> {% if a.get_size %}({{a.get_size|filesizeformat}}){% else %} (Missing File) {% endif %}</li>
+        		{% endfor %}
+        	</ul>
+        	{% else %}
+        	<p><i>({% trans "none" %})</i></p>
+        	{% endif %}
+        	
+        {% if wiki_attachments_write %}
+        	<form method="POST" action="{% url add_attachment wiki_article.get_url %}" enctype="multipart/form-data" target="wiki_attach_frame">
+        		<input type="file" class="fileinput" name="attachment" size="10" /><br />
+        		<p><input type="checkbox" name="overwrite" id="wiki_attach_overwrite" value="1" /> Overwrite filename</p>
+        		<p><input type="submit" value="Attach" /></p>
+        		<div id="wiki_attach_progress_container">
+        			<div id="wiki_attach_progress"><br /></div>
+        		</div>
+        	</form>
+        	<iframe name="wiki_attach_frame" style="display:none"></iframe>
+        {% endif %}
+
+        	</div>
+        </div>
 
 
     {% if wiki_article %}    
         <div class="wiki_box">
-        	<div class="wiki_box_header">
-        		<div class="wiki_box_corner"></div>
-        		<div class="wiki_box_bar"></div>
-        	</div>
         	<div class="wiki_box_contents">
 
         	<div class="wiki_box_title">{% trans "Related articles" %}</div>
@@ -147,56 +165,16 @@
         {% endif %}
         {% if wiki_write %}
         <form method="POST" action="{% url add_related wiki_article.get_url %}">
-        	<input type="text" name="value" id="wiki_related_input" style="width: 72%" />
-        	<input type="submit" id="wiki_related_input_submit" disabled="true" value="Add" style="width: 20%" />
+        	<nobr><input type="text" name="value" id="wiki_related_input" style="width: 72%" />
+        	<input type="submit" id="wiki_related_input_submit" disabled="true" value="Add" style="width: 20%" /></nobr>
         	<input type="hidden" name="id" value="" id="wiki_related_input_id" />
         </form>
         {% endif %}
 
         	</div>
-        	<div class="wiki_box_footer">
-        		<div class="wiki_box_corner"></div>
-        		<div class="wiki_box_bar"></div>
-        	</div>
         </div>
 
-        <div class="wiki_box">
-        	<div class="wiki_box_header">
-        		<div class="wiki_box_corner"></div>
-        		<div class="wiki_box_bar"></div>
-        	</div>
-        	<div class="wiki_box_contents">
 
-        	<div class="wiki_box_title">{% trans "Attachments" %}</div>
-        	{% if wiki_article.attachments %}
-        	<ul>
-        		{% for a in wiki_article.attachments %}
-        		<!--<li><a href="{{a.download_url}}">{{a.file}}{{a.filename|slice:":13"|slice:":-3" }}{% if a.filename|slice:"10:" %}...{{ a.filename|slice:"-3:" }}{% endif %}</a> ({{a.get_size|filesizeformat}})</li>-->
-                <li><a href="{{a.download_url}}">/media/{{a.file}}</a><br> {% if a.get_size %}({{a.get_size|filesizeformat}}){% else %} (Missing File) {% endif %}</li>
-        		{% endfor %}
-        	</ul>
-        	{% else %}
-        	<p><i>({% trans "none" %})</i></p>
-        	{% endif %}
-        	
-        {% if wiki_attachments_write %}
-        	<form method="POST" action="{% url add_attachment wiki_article.get_url %}" enctype="multipart/form-data" target="wiki_attach_frame">
-        		<input type="file" class="fileinput" name="attachment" size="10" /><br />
-        		<input type="checkbox" name="overwrite" id="wiki_attach_overwrite" value="1" /> Overwrite same filename
-        		<p><input type="submit" value="Attach" /></p>
-        		<div id="wiki_attach_progress_container">
-        			<div id="wiki_attach_progress"><br /></div>
-        		</div>
-        	</form>
-        	<iframe name="wiki_attach_frame" style="display:none"></iframe>
-        {% endif %}
-
-        	</div>
-        	<div class="wiki_box_footer">
-        		<div class="wiki_box_corner"></div>
-        		<div class="wiki_box_bar"></div>
-        	</div>
-        </div>
     {% endif %}
 
 </div>
