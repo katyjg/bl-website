@@ -47,6 +47,14 @@ div#wiki_article p
 	/* font-size: 90%; looks funny when combined with lists/tables */
 	line-height: 140%;
 }
+div#wiki_article code
+{
+    font-size: 85%;
+}
+div#wiki_article img
+{
+    max-width: 600px;
+}
 div#wiki_article h1
 {
 /*	font-size: 200%;*/

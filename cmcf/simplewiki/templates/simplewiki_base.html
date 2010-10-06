@@ -119,7 +119,7 @@
         	<ul>
         		{% for a in wiki_article.attachments %}
         		<!--<li><a href="{{a.download_url}}">{{a.file}}{{a.filename|slice:":13"|slice:":-3" }}{% if a.filename|slice:"10:" %}...{{ a.filename|slice:"-3:" }}{% endif %}</a> ({{a.get_size|filesizeformat}})</li>-->
-                <li><a href="{{a.download_url}}">/media/{{a.file}}</a><br> {% if a.get_size %}({{a.get_size|filesizeformat}}){% else %} (Missing File) {% endif %}</li>
+                <li><a href="/media/{{a.file}}">/media/{{a.file}}</a><br> {% if a.get_size %}({{a.get_size|filesizeformat}}){% else %} (Missing File) {% endif %}</li>
         		{% endfor %}
         	</ul>
         	{% else %}

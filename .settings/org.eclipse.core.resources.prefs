@@ -1,6 +1,7 @@
-#Thu Sep 09 11:10:52 CST 2010
+#Wed Oct 06 10:48:58 CST 2010
 eclipse.preferences.version=1
 encoding//cmcf/filebrowser/settings.py=utf-8
 encoding//cmcf/grappelli/admin.py=utf-8
 encoding//cmcf/grappelli/views/generic.py=utf-8
 encoding//cmcf/grappelli/views/related.py=utf-8
+encoding//cmcf/simplewiki/views.py=utf-8
