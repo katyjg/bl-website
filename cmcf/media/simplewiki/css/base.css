@@ -108,18 +108,20 @@ table thead th
 
 div#wiki_panel
 {
-/*    position: fixed;*/
-	float: right;
+/*    position: absolute;
+    top: 158px;*/
 }
 div#header.wiki {
 }
 div.wiki_box
 {
 	width: 230px;
-	padding: 10px;
+	padding: 5px;
     color: #3d7ab8;
 /*	color: #fff;*/
     font-size: 80%;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 div.wiki_box div.wiki_box_contents
@@ -320,4 +322,7 @@ blockquote p {
 }
 .wiki_box_contents input {
     width: 190px;
+}
+.wiki_box_contents input[type="checkbox"] {
+    width: auto;
 }
