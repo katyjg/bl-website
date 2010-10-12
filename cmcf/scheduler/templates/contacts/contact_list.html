@@ -6,7 +6,7 @@
     <h2>{{category.1}}</h2>
     {% for person in contact_list %}{% ifequal person.category category.0 %}
     <div class="contacts">
-            <img src="/media/uploads/{{person.image}}" alt="" >
+            <img src="/media/{{person.image}}" alt="" >
             <p><a name="{{person.first_name}}-{{person.last_name}}" href="javascript:mailto_cmcf('{{person.first_name}}.{{person.last_name}}','lightsource.ca');">{{person.first_name}} {{person.last_name}}</a>
             <br>
             {{person.position}}<br>
