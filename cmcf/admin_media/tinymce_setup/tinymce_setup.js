@@ -116,11 +116,12 @@ tinyMCE.init({
           + "|codebase|codetype|data|declare|dir<ltr?rtl|height|hspace|id|lang|name"
           + "|onclick|ondblclick|onkeydown|onkeypress|onkeyup|onmousedown|onmousemove"
           + "|onmouseout|onmouseover|onmouseup|standby|style|tabindex|title|type|usemap"
-          + "|vspace|width]",
+          + "|vspace|width|height]",
         'param[id|name|type|value|valuetype<DATA?OBJECT?REF]',
         'address',
         'acronym[class|id|title]',
-        'abbr[class|title|id]'
+        'abbr[class|title|id]',
+        'embed[src|height|type|width|quality|salign]'
     ].join(','),
     valid_child_elements : [
         'h1/h2/h3/h4/h5/h6/a[%itrans_na]',       'table[thead|tbody|tfoot|tr|td]',
