@@ -20,7 +20,6 @@ class RssFooFeedGenerator(Rss201rev2Feed):
              })     
 
 class LatestEntries(Feed):
-
     feed_type = RssFooFeedGenerator
     _site = Site.objects.get_current()
     description = "Updates from CMCF at the Canadian Light Source."
