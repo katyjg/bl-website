@@ -501,7 +501,7 @@ fieldset.module > .row:last-child {
     border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px;
 }
-div.row input.delete-field, div.row label+input.delete-field {
+div.row input.delete-field, div.row label {
     display: none;
 }
 ul.errorlist + .module>*:first-child {
