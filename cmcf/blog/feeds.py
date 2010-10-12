@@ -6,12 +6,25 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
 from django.core.urlresolvers import reverse
 from blog.models import Post, Category
+from django.utils.feedgenerator import Rss201rev2Feed
+
+
+class RssFooFeedGenerator(Rss201rev2Feed):
+    def add_root_elements(self, handler):
+        super(RssFooFeedGenerator, self).add_root_elements(handler)
+        handler.addQuickElement(u"image", '',
+            {
+                 'url': u"http://cmcf.lightsource.ca/media/img/clslogo_feed.png",
+                 'title': u"Some title",
+                 'link': u"http://cmcf.lightsource.ca/", 
+             })     
 
 class LatestEntries(Feed):
 
+    feed_type = RssFooFeedGenerator
     _site = Site.objects.get_current()
     description = "Updates from CMCF at the Canadian Light Source."
-    title = '%s feed' % _site.name
+    title = '%s News' % _site.name
 #    description = '%s posts feed.' % _site.name
     link = '/research-highlights/'
 
