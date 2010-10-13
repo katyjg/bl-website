@@ -1526,7 +1526,6 @@ a.trigger li, a.trigger li a {
 	font-size: 11px !important;
 	}
 .trigger span{
-width: 20px;
 background: url(/media/img/plus1.png) no-repeat;
 }
 .trigger.active span {
