@@ -13,7 +13,7 @@
                     <a name="{{publication.0.slug}}"></a>
                     {{ publication.0.authors|safe }}. 
                     ({{ publication.0.year }}). 
-                    {{ publication.0.title|striptags|safe }}. 
+                    {{ publication.0.title|removetags:"p"|safe }}. 
                     <i>{{ publication.0.journal }}</i>
                     {% if publication.0.citation %}{{ publication.0.citation }}{% endif %}
                     {% if publication.0.original %}<br>

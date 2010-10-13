@@ -136,14 +136,12 @@ class Journal(models.Model):
 
 
 class Publication(models.Model):
-    title = models.TextField(_('title'), max_length=200, blank=False)
-#    slug = AutoSlugField(max_length=100, populate_from='year', append_field='pages')
+    title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
     authors = models.CharField(_('authors'), max_length=250, blank=True)
     journal = models.ForeignKey(Journal, blank=False)
     year = models.IntegerField(_('year'), blank=False)
     citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
-#    image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
     original = models.CharField(_('DOI Reference'), blank=True, max_length=200)
     pdb_entries = models.CharField(_('PDB entries'), max_length=50, help_text="Comma-separated list of PDB codes (no spaces)", blank=True, default="") 
     publish = models.DateTimeField(_('publish'), default=datetime.datetime.now, editable=False)
@@ -178,13 +176,10 @@ class Publication(models.Model):
     def get_next_publication(self):
         return self.get_next_by_year(status__gte=2)
 
-#    def image_filename(self):
-#        return os.path.basename(self.image.path)
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display  = ('title', 'year')
+    list_display  = ('year', 'authors')
     search_fields = ('title', 'year', 'authors', 'journal')
-#    prepopulated_fields = {'slug': ('title',)}
 
     class Media:
         js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
