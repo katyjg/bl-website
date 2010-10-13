@@ -1516,4 +1516,19 @@ td ul{
     padding-top: 0px;
     border: 0;
 }
-
+a.trigger {
+	font-size: 12px !important;
+	}
+ul.toggle_container {
+	list-style: none !important;
+	}
+a.trigger li, a.trigger li a {
+	font-size: 11px !important;
+	}
+.trigger span{
+width: 20px;
+background: url(/media/img/plus1.png) no-repeat;
+}
+.trigger.active span {
+background: url(/media/img/minus1.png) no-repeat;
+}
