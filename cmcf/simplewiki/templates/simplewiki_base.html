@@ -129,7 +129,7 @@
         	{% if wiki_article.attachments %}
         		{% for a in wiki_article.attachments %}    
                     <a href="#" class="trigger"><span>&nbsp; &nbsp; &nbsp;</span>{{a.filename}} - ({% if a.get_size %}{{a.get_size|filesizeformat}}{% else %}Not Found{% endif %})</a>
-                    <ul class="toggle_container"><li>Path: <a href="/media/{{a.file}}">/media/{{a.file}}</a></li></ul><br>
+                    <ul class="toggle_container"><li>Path: <a href="/media/{{a.file}}">/media/{{a.file}}</a></li></ul>
                 {% endfor %}
             {% else %}        
         	    <p><i>({% trans "none" %})</i></p>

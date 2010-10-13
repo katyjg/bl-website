@@ -1518,6 +1518,8 @@ td ul{
 }
 a.trigger {
 	font-size: 12px !important;
+    color: #185572;
+    display: block;
 	}
 ul.toggle_container {
 	list-style: none !important;
