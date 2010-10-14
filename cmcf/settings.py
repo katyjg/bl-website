@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'slider',
     'photologue',
     'contact_form',
+    'application_form',
     'publications',
     'galleriffic',
     'simplewiki',

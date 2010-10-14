@@ -101,7 +101,9 @@ textarea {
 	border-radius: 3px;
   
 }
-
+textarea:focus, input:focus {
+    background-color: #f7f7f7 !important;
+}
 
 #toc {
 	background: #f1f1f1;
@@ -132,7 +134,7 @@ textarea {
 }
 
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="email"] {
 	margin-right: 2px;
 	padding: 3px;
 	margin-bottom: 6px;
@@ -153,7 +155,7 @@ input[type="checkbox"] {
 }
 
 label {
-	margin-right: 8px;
+/*	margin-right: 8px;*/
 }
 /*
 .printfooter, hr, .urlexpansion {
