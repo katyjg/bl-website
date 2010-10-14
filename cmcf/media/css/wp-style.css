@@ -1533,3 +1533,22 @@ background: url(/media/img/plus1.png) no-repeat;
 .trigger.active span {
 background: url(/media/img/minus1.png) no-repeat;
 }
+.desc {
+    color: #003D52;
+    font-weight: bold;
+}
+.subdesc {
+    color: #777;
+    display: block;
+    width: 346px;
+    float: left;
+}
+input.medium {
+    width: 60%;
+}
+input.full, textarea.full {
+    width: 678px;
+}
+input.half {
+    width: 333px;
+}
