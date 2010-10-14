@@ -48,11 +48,11 @@ class ApplicationForm(forms.Form):
     other = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict), required=False)
     other_text = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
 
-    travel = forms.ChoiceField(widget=forms.RadioSelect(), choices[['Yes','Yes'],['No','No']] )
+'''    travel = forms.ChoiceField(widget=forms.RadioSelect(), choices[['Yes','Yes'],['No','No']] )
     visa = forms.ChoiceField(widget=forms.RadioSelect(), choices[['Yes','Yes'],['No','No']] )
 
     research = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))
-    benefit = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))
+    benefit = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))'''
     
     from_email = settings.DEFAULT_FROM_EMAIL
     
