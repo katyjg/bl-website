@@ -12,4 +12,8 @@ urlpatterns = patterns('',
                            direct_to_template,
                            { 'template': 'application_form/application_form_sent.html' },
                            name='application_form_sent'),
+                       url(r'^oops/$',
+                           direct_to_template,
+                           { 'template': 'application_form/application_form_retry.html' },
+                           name='application_form_retry'),
                        )

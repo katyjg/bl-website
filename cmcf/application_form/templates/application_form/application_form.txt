@@ -1,5 +1,51 @@
-{{name}} hello
-{{email}}
+Thank you for applying for the CMCF Summer Course!  Here is a copy of the information you provided on our online application form:
+
+PERSONAL INFORMATION:
+
+Name: {{name}} 
+Email: {{email}}
+Phone: {{phone}}
+Institution: {{institution}}
+
+Mailing Address: 
+    {{addr1}}{% if addr2 %}
+    {{addr2}}{% endif %}
+    {{city}}
+    {{state}}
+    {{code}}
+    {{country}}
+
+Status: {% if undergrad %}Undergraduate Student{% if masters or phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if masters %}Masters Student{% if phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if phd %}PhD Student{% if postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if postdoc %}Postdoctoral Fellow{% if faculty or staff or other %}/{% endif %}{% endif %}{% if faculty %}Faculty{% if staff or other %}/{% endif %}{% endif %}{% if staff %}Research Staff{% if other %}/{% endif %}{% endif %}{% if other %}Other ({{other_text}}){% endif %}
+
+SUPERVISOR CONTACT INFORMATION:
+
+{% if sup_name %}Name: {{sup_name}}
+Email: {{sup_email}}
+Phone: {{sup_phone}}
+Mailing Address: 
+    {{sup_addr1}}{% if sup_addr2 %}
+    {{sup_addr2}}{% endif %}
+    {{sup_city}}
+    {{sup_state}}
+    {{sup_code}}
+    {{sup_country}}
+{% else %} None provided {% endif %}
+
+TRAVEL INFORMATION:
+
+Travel Assistance: {% if travel %}{{travel}}{% else %}Not specified{% endif %}
+Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
+Bringing Crystals: {{crystals}}
+
+RESEARCH INTERESTS/EXPERIENCE:
+
+Research Abstract:
+
+{{research}}
+
+Experience/Benefit:
+
+{{benefit}}
 
 
 
