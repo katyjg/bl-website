@@ -1,6 +1,5 @@
 """
 View which can render and send email from a contact form.
-
 """
 
 from django.core.urlresolvers import reverse
@@ -24,7 +23,7 @@ def application_form(request, form_class=ApplicationForm,
     # perform the reverse lookup we need access to application_form/urls.py,
     # but application_form/urls.py in turn imports from this module.
     #
-    
+
     if success_url is None:
         success_url = reverse('application_form_sent')
     if request.method == 'POST':
@@ -32,6 +31,9 @@ def application_form(request, form_class=ApplicationForm,
         if form.is_valid():
             form.save(fail_silently=fail_silently)
             return HttpResponseRedirect(success_url)
+        else:
+            retry_url = reverse('application_form_retry')
+            return HttpResponseRedirect(retry_url)
     else:
         form = form_class(request=request)
 

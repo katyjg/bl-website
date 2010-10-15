@@ -1552,3 +1552,6 @@ input.full, textarea.full {
 input.half {
     width: 333px;
 }
+span.req {
+    color: red;
+}

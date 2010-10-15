@@ -13,6 +13,10 @@ from django.contrib.sites.models import Site
 attrs_dict = { 'class': 'required' }
 
 class ApplicationForm(forms.Form):
+    choices = ( ('yes','Yes'),
+                ('no','No'),
+              )
+
     def __init__(self, data=None, files=None, request=None, *args, **kwargs):
         if request is None:
             raise TypeError("Keyword argument 'request' must be supplied")
@@ -21,23 +25,24 @@ class ApplicationForm(forms.Form):
     
     name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=True)
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200)), label=u'Email (optional)', required=True)
-    phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    institution = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=True)
-    addr1 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    addr2 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    city = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    state = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    code = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
+    phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    institution = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict))
+    addr1 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict))
+    addr2 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    city = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict))
+    state = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict))
+    code = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict))
+    country = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict))
 
-    sup_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=True)
-    sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200)), label=u'Email (optional)', required=True)
-    sup_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    sup_addr1 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    sup_addr2 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    sup_city = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    sup_state = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    sup_code = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
-    sup_country = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), label=u'Name (optional)', required=False)
+    sup_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200)), required=False)
+    sup_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    sup_addr1 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    sup_addr2 = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    sup_city = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    sup_state = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    sup_code = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
+    sup_country = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
 
     undergrad = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict), required=False)
     masters = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict), required=False)
@@ -48,6 +53,12 @@ class ApplicationForm(forms.Form):
     other = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict), required=False)
     other_text = forms.CharField(max_length=100, widget=forms.TextInput(attrs=attrs_dict), required=False)
 
+    travel = forms.ChoiceField(choices=choices,widget=forms.RadioSelect, required=False)
+    visa = forms.ChoiceField(choices=choices,widget=forms.RadioSelect, required=False)
+    crystals = forms.ChoiceField(choices=choices,widget=forms.RadioSelect)
+
+    research = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))
+    benefit = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))
     
     from_email = settings.DEFAULT_FROM_EMAIL
     
@@ -99,7 +110,11 @@ class ApplicationForm(forms.Form):
         return RequestContext(self.request,
                               dict(self.cleaned_data,
                                    site=Site.objects.get_current()))
-    
+
+    def clean_recipients(self):
+        data = self.cleaned_data['email']
+        return data
+
     def get_message_dict(self):
         """
         Generate the various parts of the message and return them in a
@@ -121,8 +136,14 @@ class ApplicationForm(forms.Form):
             raise ValueError("Message cannot be sent from invalid contact form")
         message_dict = {}
         for message_part in ('from_email', 'message', 'recipient_list', 'subject'):
-            attr = getattr(self, message_part)
-            message_dict[message_part] = callable(attr) and attr() or attr
+            if message_part == 'recipient_list':
+                attr = [getattr(self, message_part)[0]]
+                attr.append(str(self.clean_recipients()))
+                message_dict[message_part] = callable(attr) and attr() or attr
+            else:
+                attr = getattr(self, message_part)
+                message_dict[message_part] = callable(attr) and attr() or attr
+    
         return message_dict
     
     def save(self, fail_silently=False):
@@ -130,7 +151,7 @@ class ApplicationForm(forms.Form):
         Build and send the email message.
         
         """
-        print self.get_message_dict()
+        '''print self.get_message_dict()'''
         send_mail(fail_silently=fail_silently, **self.get_message_dict())
         
 class AkismetContactForm(ApplicationForm):

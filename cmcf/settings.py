@@ -3,11 +3,15 @@ import os
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+#ADMINS will receive feedback from the website and 500 errors if they arise
 ADMINS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
 )
 
-MANAGERS = ADMINS
+#MANAGERS will receive online application forms
+MANAGERS = (
+    ('Kathryn', 'kathryn.janzen@lightsource.ca'),
+)
 
 #DATABASE_ENGINE = 'sqlite3'
 #DATABASE_NAME = os.path.join(os.path.dirname(__file__), 'cmcf.db')
@@ -37,7 +41,6 @@ TINYMCE_CONTENT_CSS_URL = '/admin_media/tinymce/jscripts/tiny_mce/themes/advance
 
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
 MEDIA_URL = '/media/'
-#ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca:8000/media/admin/'
 ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca/admin_media/'
 FEINCMS_ADMIN_MEDIA = '/feincms_media/'
 
