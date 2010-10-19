@@ -102,12 +102,22 @@ sup {
 #header.wiki{
 	background: #dcdcdc url(/media/img/header_blue.png) top right repeat-x;
 }
+#header.aca{
+	background: #dcdcdc url(/media/img/header_grey.png) top right repeat-x;
+}
 #header .logo {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
 	background: url(/media/img/clslogo_2.png) top left no-repeat;
     height: 88px;    
+}
+#header .aca-logo {
+	width: 960px;
+	margin: 0 auto;
+	clear: both;
+	background: url(/media/img/candivlogo_scale.png) top left no-repeat;
+	height: 88px;
 }
 #header.wiki .logo {
     background: url(/media/img/clslogo_3.png) top left no-repeat;

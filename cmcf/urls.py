@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     (r'^admin_tools/', include('admin_tools.urls')),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/img/clslogo.ico'}),
     (r'^wiki/', include('simplewiki.urls')),
+    (r'^apply/', include('application_form.urls')),
 
     # This avoids breaking Django admin's localization JavaScript when using
     # the FeinCMS frontend editing:
@@ -39,6 +40,7 @@ urlpatterns = patterns('',
     url(r'^preview/(?P<page_id>\d+)/', 'feincms.views.base.preview_handler', name='feincms:preview'),
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
+
 
     # This entry is here strictly for application content testing
     # XXX this really needs to go into a URLconf file which is only used by the
