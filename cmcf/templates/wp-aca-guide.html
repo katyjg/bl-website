@@ -17,13 +17,20 @@
 
 <div id="headline">
     <div class="wrapper">
-	    <h2>{{feincms_page.title}}</h2>
+	    <h2>
+            {% feincms_navigation of feincms_page as toplevel level=2 %}
+        	{% for p in toplevel %}
+            	{% if p|is_equal_or_parent_of:feincms_page %}
+                    {{ p.title }}
+                {% endif %}
+            {% endfor %}
+        </h2>
     </div>
 </div>
 
 <div id="pagebody">
     <div class="wrapper">
-aaaaaaaaaaa
+
 	    <div class="col-9" id="bodyContent">
             <div id="guide">
             	<h2 class="pagetitle">{{feincms_page.title}}</h2>
@@ -96,7 +103,7 @@ aaaaaaaaaaa
 
 <div id="headline">
     <div class="wrapper">
-	    <h2>{% feincms_navigation of feincms_page as toplevel level=1 %}{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}{{ p.title }}{% endif %}{% endfor %}</h2>
+	    <h2>{% feincms_navigation of feincms_page as toplevel level=1 %}{{feincms_page.title}}</h2>
     </div>
 </div>
 
@@ -104,7 +111,6 @@ aaaaaaaaaaa
     <div class="wrapper">
 
        	<div class="col-9" id="bodyContent">
-            <h2 class="pagetitle">{{feincms_page.title}}</h2>
       	    {% feincms_navigation of feincms_page as sublevel level=3 %}
             {% ifnotequal sublevel.count 0 %}
 	        	<table id="toc" class="toc" summary="Contents"><tr><td>
@@ -131,6 +137,16 @@ aaaaaaaaaaa
 		            	    {% endif %}
 		            	{% endif %}
 		            {% endfor %}
+                {% else %}
+                    {% if forloop.first %}
+                    {% feincms_navigation of feincms_page as subsublevel level=3 %}
+            	    {% if subsublevel %}
+                		{% for ssp in subsublevel %}         				
+                		    <h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span></h2>
+                		    {% feincms_render_region ssp "col2" request %}
+                		{% endfor %}
+            	    {% endif %}
+                    {% endif %}
 		        {% endif %}
    	        {% endfor %}			
             {% feincms_render_region feincms_page "col2" request %}
