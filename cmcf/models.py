@@ -61,6 +61,15 @@ Page.register_templates({
     })
 
 Page.register_templates({
+    'key': 'wp-aca-guide',
+    'title': 'ACA Guide',
+    'path': 'wp-aca-guide.html',
+    'regions': (
+    ('col2', 'Main Content'),
+    )
+    })
+
+Page.register_templates({
     'key': 'wp-calendar',
     'title': 'WP Calendar',
     'path': 'wp-calendar.html',
