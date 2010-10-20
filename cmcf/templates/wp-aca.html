@@ -43,16 +43,15 @@
     <![endif]-->
 
     <link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="Canadian Macromolecular Crystallography Facility">
-    <link REL="SHORTCUT ICON" HREF="http://cmcf.lightsource.ca/media/img/clslogo.ico">
+    <link REL="SHORTCUT ICON" HREF="http://cmcf.lightsource.ca:8000/media/img/ikka.ico">
 </head>
 
 <body>
 <div id="header" class="aca">
     <div class="banner">
-        <div class="aca-logo">
+        <a title="Back to ACA CanDiv Home" href="/aca/"><div class="aca-logo">
         	<div class="wrapper"></div>
-
-    </div>
+        </div></a>
     </div>
 </div>
 {% block "page-content" %}
@@ -62,7 +61,7 @@
 	</div>
 </div>
 
-<div id="pagebody">
+<div id="pagebody" class="aca">
 <a href="#" class="toplink">&nbsp;</a>
 <div class="wrapper">
 <div class="col-9">
@@ -93,12 +92,13 @@
 	<div class="wrapper">
         <span id="something">{% get_fragment request "something" %}</span>
 		<p> 
-			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
-			<a href="/sitemap/">Site Map</a> |
-            <a href="/contact-us/feedback/">Feedback</a> |
-            <a href="javascript:addBookmark('Canadian Macromolecular Crystallography Facility', 'http://cmcf.lightsource.ca')">Add Bookmark</a> | 
-            <a href="/links/">Links</a> |
-            <a href="/feeds/latest/" class="feed">RSS</a> 
+			<a href="http://www.canadiancrystallography.ca" title="Canadian National Committee for Crystallography">CNCC</a> | 
+			<a href="http://www.iucr.org/" title="International Union of Crystallography">IUCr</a> |
+            <a href="http://www.amercrystalassn.org/" title="American Crystallographic Association">ACA</a> |
+            <a href="http://www.lightsource.ca/" title="Canadian Light Source">CLS</a> |
+            <a href="javascript:addBookmark('ACA CanDiv', 'http://cmcf.lightsource.ca/aca')">Add Bookmark</a> | 
+            <a href="/aca/about-aca-candiv/candiv-logo">About our Logo</a> |  
+            <a href="/aca/contacting-candiv/#webmaster">Contact the Webmaster</a> 
 		</p>
 	</div>
 </div>

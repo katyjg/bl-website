@@ -1263,6 +1263,7 @@ ul.logo .pnglogo:hover { background: #555; }
 
 
 ul.colors {
+
 	margin: 0 !important;
 }
 
@@ -1564,4 +1565,14 @@ input.half {
 }
 span.req {
     color: red;
+}
+div.aca ul {
+    list-style: none !important;
+    list-style-image: none !important;
+}
+div.aca ul li ul {
+    list-style-image: url("/media/img/stock_right4.png") !important;
+}
+div.aca table ul {
+    list-style-image: url("/media/img/stock_right4.png") !important;
 }
