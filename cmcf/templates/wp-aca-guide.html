@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<div id="pagebody">
+<div id="pagebody" class="aca">
     <div class="wrapper">
 
 	    <div class="col-9" id="bodyContent">
@@ -59,8 +59,21 @@
                         				    {% endifnotequal %}{% endifnotequal %}    
                         				    {% feincms_render_region sp "col2" request %}   				
                         				{% endif %}
-                        				<h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span></h2>
+                           
+
+                                        {% feincms_navigation of ssp as subsubsublevel level=5 %}
+                                        {% if subsubsublevel %}
+                                            {% for sssp in subsubsublevel %}{% if forloop.first %}
+                                                {% if ssp|is_parent_of:feincms_page %}
+                                                    {% feincms_render_region feincms_page "col2" request %}
+                                                {% else %}
+                                                    {% feincms_render_region ssp "col2" request %}
+                                                {% endif %}                        
+                                            {% endif %}{% endfor %}
+                                        {% else %}
+                        				<a name={{ssp.slug}}></a>
                         				{% feincms_render_region ssp "col2" request %}
+                                        {% endif %}
                   				    {% endfor %}
                                 {% else %}
                                     {% feincms_render_region feincms_page "col2" request %}
@@ -107,7 +120,7 @@
     </div>
 </div>
 
-<div id="pagebody">
+<div id="pagebody" class="aca">
     <div class="wrapper">
 
        	<div class="col-9" id="bodyContent">
