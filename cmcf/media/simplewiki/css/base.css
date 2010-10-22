@@ -334,3 +334,16 @@ blockquote p {
 .wiki_box_contents input[type="checkbox"] {
     width: auto;
 }
+
+#wiki_create_form {
+    position: fixed;
+    top: auto;
+    right: auto;
+    width: 210px;
+    padding: 10px;
+    border: 2px outset #CCC; 
+    background-color: #B7CEEC; 
+    display: none; 
+    color: #000;
+
+}
