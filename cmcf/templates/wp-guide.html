@@ -30,7 +30,6 @@
 
 <div id="pagebody">
     <div class="wrapper">
-
 	    <div class="col-9" id="bodyContent">
             <div id="guide">
             	<h2 class="pagetitle">{{feincms_page.title}}</h2>
@@ -59,8 +58,10 @@
                         				    {% endifnotequal %}{% endifnotequal %}    
                         				    {% feincms_render_region sp "col2" request %}   				
                         				{% endif %}
+                                        {% if ssp.content.col2 %}
                         				<h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span></h2>
                         				{% feincms_render_region ssp "col2" request %}
+                                        {% endif %}
                   				    {% endfor %}
                                 {% else %}
                                     {% feincms_render_region feincms_page "col2" request %}

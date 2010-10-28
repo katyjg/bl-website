@@ -72,7 +72,6 @@ def application_form(request, form_class=ApplicationForm,
 def applicant_list(request):
     applicant_list = []
     for applicant in Application.objects.all():
-        print "in herex!"
         applicant_list.append(applicant)
 
     return render_to_response(
