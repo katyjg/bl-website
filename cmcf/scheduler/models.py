@@ -14,9 +14,14 @@ import ImageFile
 
 import urllib2
 from BeautifulSoup import BeautifulSoup
+from django.db.models.signals import post_save
+
+
 
 def get_storage_path(instance, filename):
     return os.path.join('uploads/contacts/', 'photos', filename)
+
+
 
 #cls_modes = django.dispatch.Signal(providing_args=["year", "week"])
 
@@ -218,10 +223,8 @@ class Visit(models.Model):
         
         return shifts
 
-    def send_cls_modes(self, year, week):
-        dt = datetime.now()
-        year, week, day = dt.isocalendar()
-        cls_modes.send(sender=self, year=year, week=week)
+    def send_cls_modes(self):
+        post_save.send(self)
         
     class Meta:
         unique_together = (
@@ -231,6 +234,7 @@ class Visit(models.Model):
         get_latest_by = "date"
         verbose_name = "Beamline Visit"
 
+post_save.send(sender=Visit)
 
    
 class OnCallManager(models.Manager):
@@ -277,12 +281,13 @@ class OnCall(models.Model):
         verbose_name_plural = "On Call Personnel"
 
 class WebStatus(models.Model):
-    year = models.DateField()
-    week = models.DateField()
-    status = JSONField(get_cls_modes)
+    date = models.CharField(max_length=15, default='')
+    status1 = models.CharField(max_length=10, default='')
+    status2 = models.CharField(max_length=10, default='')
+    status3 = models.CharField(max_length=10, default='')
 
     class Meta:
-        unique_together = (("year", "week"),)
+        unique_together = (("date"),)
         verbose_name = "Upload CLS Beam Mode"
 
 

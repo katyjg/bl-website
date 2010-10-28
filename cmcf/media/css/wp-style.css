@@ -1264,6 +1264,7 @@ ul.logo .pnglogo:hover { background: #555; }
 
 ul.colors {
 
+
 	margin: 0 !important;
 }
 
@@ -1391,7 +1392,7 @@ thead th {
     background: #ebeff9;
     background: #d8e0f3;
 	}
-.Development, .D, .DS{
+.Development, .D, .DS, .DS-CSR{
 	background:#FFC78F;
     background: #fff1ec;
     background: #ffddd1;
