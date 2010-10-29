@@ -26,12 +26,8 @@ from BeautifulSoup import BeautifulSoup
 
 from django.db.models.signals import post_save
 
-
-
 def my_callback(sender, **kwargs):
     print "Request finished!"
-
-post_save.connect(my_callback, sender=Visit)
 
 def save_cls_modes():
     page = urllib2.urlopen("http://www.lightsource.ca/operations/schedule.php")
@@ -105,6 +101,8 @@ def get_cls_modes():
     w = 0
     stats = WebStatus.objects.all()
 
+    
+
     for x in range(len(dat)):
         z = 0
         for y in range(len(dat[w])):
@@ -151,7 +149,6 @@ def get_cls_modes():
             mode_day = []
             for y in range(0,4):
                 mode_day.append(dat[y][x])
-            print "z", z, "x", x, "mode_day[0]", mode_day[0], "dat now is", dat[0][0]
             dates.append(mode_day[0])
             mode_calendar.append(mode_day)
         if x == 6:
@@ -177,6 +174,7 @@ def get_cls_modes():
 
     return mode_calendar
 
+post_save.connect(my_callback, sender=Visit)
 
 def get_one_week(dt=None):
     if dt is None:
@@ -212,6 +210,7 @@ def current_week(request, day=None):
     this_wk = get_one_week(dt)
     prev_wk_day = (dt + timedelta(weeks=-1)).strftime('%Y-%m-%d')
     next_wk_day = (dt + timedelta(weeks=1)).strftime('%Y-%m-%d')
+    print this_wk, prev_wk_day, next_wk_day
     
     calendar = []    
     bl_keys = []
@@ -221,7 +220,7 @@ def current_week(request, day=None):
     beamlines = Beamline.objects.all()
     week_personnel = OnCall.objects.week_occurences(dt)
     modes = Stat.objects.all()
-    mode_calendar = get_cls_modes()
+    #mode_calendar = get_cls_modes()
 
     for bl in beamlines:
         bl_week[bl.name] = bl.visit_set.week_occurences(dt)
@@ -252,17 +251,24 @@ def current_week(request, day=None):
 
         found = False
 
-        for x in range(len(mode_calendar)):
-            if mode_calendar[x][0][:6] == key.split(' ')[1]:
-                mode_day = mode_calendar[x][1:]
-                found = True
+        #for x in range(len(mode_calendar)):
+        #    if mode_calendar[x][0][:6] == key.split(' ')[1]:
+        #        mode_day = mode_calendar[x][1:]
+        #        found = True
         if found == False:
             mode_day = []
-            for stat in WebStatus.objects.all():
-                if key.split(' ')[1] == stat.date[:6]:
-                    mode_day.append(stat.status1)
-                    mode_day.append(stat.status2)
-                    mode_day.append(stat.status3)
+            if day is not None:
+                yr = str(day)
+            else:
+                yr = str(datetime.now().date())
+            if WebStatus.objects.filter(date=key.split(' ')[1] + '/' + yr[:4]):
+                stat = WebStatus.objects.get(date=key.split(' ')[1] + '/' + yr[:4])
+                #for stat in WebStatus.objects.all():
+                #    if key.split(' ')[1] == stat.date[:6]:
+                mode_day.append(stat.status1)
+                mode_day.append(stat.status2)
+                mode_day.append(stat.status3)
+                
         
         print mode_day
         calendar.append((key, day_shifts, on_call, mode_shifts, mode_day))
