@@ -461,8 +461,14 @@ p.link {
     cursor:pointer;
     background-image: url(/media/img/BackToTop_blue_fade.png)
 }
+#toTop.wiki, #toTop a.wiki {
+    background-image: url(/media/img/BackToTop_purple_fade.png)
+}
 #toTop:hover, #toTop a:hover {
     background-image: url(/media/img/BackToTop_blue.png);
+}
+#toTop.wiki:hover, #toTop a.wiki:hover {
+    background-image: url(/media/img/BackToTop_purple.png)
 }
 .quicklinks {
 	background: #fff7db;
