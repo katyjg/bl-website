@@ -93,6 +93,9 @@ sup {
 	margin: 0 auto;
 	clear: both;
 }
+div#header-print {
+    display: none;
+}
 
 #header {
 	height: 88px;
