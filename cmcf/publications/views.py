@@ -24,7 +24,7 @@ def publications_brief(request):
     author_list = []
     data_list = []
     i = 0
-    for publication in Publication.objects.all():
+    for publication in sorted(Publication.objects.all(), key=lambda Publication: Publication.created, reverse=True):
         if i <= 2:
 	    data_list = []
 	    author_list = publication.authors.split(', ')
@@ -62,7 +62,7 @@ def publication_list(request, **kwargs):
     year_list = []
     pub_list = []
     for publication in Publication.objects.all():
-	all_years_list.append(publication.year)
+        all_years_list.append(publication.year)
         if all_years_list.count(publication.year)==1:
             year_list.append(publication.year)
     for publication in sorted(Publication.objects.all(), key=lambda Publication: Publication.authors.split(',')[0].split(' ')[1].capitalize()):
