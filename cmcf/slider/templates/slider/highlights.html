@@ -5,11 +5,13 @@
 		<div class="panel">
 			<div class="panel-wrapper" >
 				{% if post.highlight or post.publish %}
-        			<div class="slider-image">
-                        <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
-                            <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" >
-                        </a>
-                    </div>
+                    {% if post.image_filename %}
+            			<div class="slider-image">
+                            <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
+                                <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" >
+                            </a>
+                        </div>
+                    {% endif %}
 				    <div class="slider-content">
                         <h1>{{ post.title }}</h1>
 				        <p><span>{{ post.tease|removetags:"p"|safe }}</span></p>
