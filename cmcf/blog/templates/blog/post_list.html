@@ -12,11 +12,11 @@
     {% for post in object_list %}
         <li>
             <div class="news-post">
-                {% if post.image_filename %}
+                {% ifnotequal post.image 'default' %}
                 <div class="{% cycle 'image' 'image-odd' %}">
                     <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
                 </div>
-                {% endif %}
+                {% endifnotequal %}
 
   	            <div>
    	                <h3 class="subtitle">
