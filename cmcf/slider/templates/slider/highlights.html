@@ -13,18 +13,22 @@
                         </div>
                     {% endifnotequal %}
 				    <div class="slider-content">
-                        <h1><a href="/research-highlights/#{{ post.slug }}" title="View this Post">{{ post.title }}</a></h1>
+                        <h1>
+                            <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
+                                {{ post.title }}
+                            </a>
+                        </h1>
 				        <p><span>{{ post.tease|removetags:"p"|safe }}</span></p>
                         {% if post.link %}
                             <p><a href="{{post.link}}">{{ post.citation|removetags:"p"|safe }}</a></p>
                         {% endif %}
                     </div>
-<!--				    <div class="slider-links">
+                    <!--<div class="slider-links">
                         {% if post.link %}
                             <a href="{{post.link}}">{{ post.citation|removetags:"p"|safe }}</a>
                         {% endif %}
-                    </div>
--->				{% endif %}
+                    </div>-->
+				{% endif %}
 				
 				{% if post.photo_highlight %}
 				    <div class="image">
