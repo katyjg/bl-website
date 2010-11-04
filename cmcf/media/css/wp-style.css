@@ -408,9 +408,11 @@ a.download-button {
 }
 .news-post .image{
     float: left;
+    padding-right: 10px;
 }
 .news-post .image-odd{
     float: right;
+    padding-left: 10px;
 }
 .news-post {
     min-height: 200px;
