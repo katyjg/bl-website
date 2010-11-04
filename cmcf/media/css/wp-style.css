@@ -415,10 +415,10 @@ a.download-button {
     padding-left: 10px;
 }
 .news-post {
-    min-height: 200px;
+/*    min-height: 200px;*/
 }
 .news-post div {
-    min-height: 155px;
+    /*min-height: 155px;*/
 }
 p.link {
     margin: 10px 0 0 0 !important;
@@ -1587,4 +1587,7 @@ div.aca ul li ul {
 }
 div.aca table ul {
     list-style-image: url("/media/img/stock_right4.png") !important;
+}
+.clear {
+	clear: both !important;
 }
