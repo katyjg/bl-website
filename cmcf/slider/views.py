@@ -17,7 +17,10 @@ def cmcf_slider(request):
     full_news_feed = []
     i = 0
     for post in Post.objects.all():
-	if i <= -1:
+        if not post.image:
+            post.image='default'
+        print "cmcf_slider", post.image_filename()
+        if i <= -1:
             post_list.append(post)
             i = i+1
         elif post.highlight:
