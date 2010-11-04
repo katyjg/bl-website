@@ -21,7 +21,11 @@
    	                <h3 class="subtitle">
                         <a name="{{ post.slug }}"></a>
                         {{ post.categories.all.0 }}: 
-                        <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a>
+                        {% if post.link %}
+                            <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a>
+                        {% else %}
+                            <b class="title-style">{{ post.title }}</b>
+                        {% endif %}
                     </h3>
 	                Posted on {{ post.publish|date:"F d, Y" }} <br>			
                     {{ post.body|removetags:"p"|safe }}
