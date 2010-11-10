@@ -42,9 +42,10 @@ def application_form(request, form_class=ApplicationForm,
         staff = request.POST.get('staff', '') 
         other = request.POST.get('other', '') 
         other_text = request.POST.get('other_text','')
-	if request.POST.get == 'yes':
+	print request.POST.get('travel', '')
+	if request.POST.get('travel','') is 'yes':
 		travel = 1
-	elif request.POST.get == 'no':
+	elif request.POST.get('travel','') is 'no':
 		travel=0
         #travel = request.POST.get('travel', '') 
         visa = request.POST.get('visa', '') 
