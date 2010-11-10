@@ -574,8 +574,8 @@ h4, h3.head {
 	border-bottom: 1px solid #dedede;
 	padding-bottom: 4px;
 	color: #333;
-	margin-bottom: 18px;
-	margin-top: -20px;
+	margin-bottom: 11px;
+	/*margin-top: -20px;*/
 }
 h3.subtitle {
 	font-variant: small-caps !important;
@@ -853,7 +853,7 @@ p.person {
 
 #pagebody h4 {
 	padding-bottom: 0px;
-	margin-top: -30px;
+	/*margin-top: -30px;*/
 }
 #pagebody img {
     max-width: 692px;
