@@ -42,14 +42,18 @@ def application_form(request, form_class=ApplicationForm,
         staff = request.POST.get('staff', '') 
         other = request.POST.get('other', '') 
         other_text = request.POST.get('other_text','')
-	print request.POST.get('travel', '')
-	if request.POST.get('travel','') is 'yes':
+	if request.POST.get('travel','') == 'yes':
 		travel = 1
-	elif request.POST.get('travel','') is 'no':
+	else:
 		travel=0
-        #travel = request.POST.get('travel', '') 
-        visa = request.POST.get('visa', '') 
-        crystals = request.POST.get('crystals', '') 
+	if request.POST.get('visa','') == 'yes':
+		visa = 1
+	else:
+		visa = 0
+	if request.POST.get('crystals','') == 'yes':
+		crystals = 1
+	else:
+		crystals = 0
         research = request.POST.get('research', '') 
         benefit = request.POST.get('benefit', '') 
         applicant = Application(name=name, email=email, phone=phone, institution=institution, addr1=addr1, addr2=addr2, city=city, state=state, code=code, country=country, sup_name=sup_name, sup_email=sup_email, sup_phone=sup_phone, sup_addr1=sup_addr1, sup_addr2=sup_addr2, sup_city=sup_city, sup_state=sup_state, sup_code=sup_code, sup_country=sup_country, undergrad=undergrad, masters=masters, phd=phd, postdoc=postdoc, faculty=faculty, staff=staff, other=other, other_text=other_text, travel=travel, visa=visa, crystals=crystals, research=research, benefit=benefit)
