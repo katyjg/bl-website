@@ -41,8 +41,12 @@ def application_form(request, form_class=ApplicationForm,
         faculty = request.POST.get('faculty', '') 
         staff = request.POST.get('staff', '') 
         other = request.POST.get('other', '') 
-        other_text = request.POST.get('other_text','') 
-        travel = request.POST.get('travel', '') 
+        other_text = request.POST.get('other_text','')
+	if request.POST.get == 'yes':
+		travel = 1
+	elif request.POST.get == 'no':
+		travel=0
+        #travel = request.POST.get('travel', '') 
         visa = request.POST.get('visa', '') 
         crystals = request.POST.get('crystals', '') 
         research = request.POST.get('research', '') 
