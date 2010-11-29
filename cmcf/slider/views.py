@@ -19,7 +19,6 @@ def cmcf_slider(request):
     for post in Post.objects.all():
         if not post.image:
             post.image='default'
-        print "cmcf_slider", post.image_filename()
         if i <= -1:
             post_list.append(post)
             i = i+1
