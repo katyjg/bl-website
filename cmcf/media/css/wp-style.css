@@ -168,7 +168,7 @@ h1 {
 	margin-right: 14px;
 	float: right;
 	list-style: none;
-	min-width: 500px;
+	max-width: 500px;
     margin-top: 54px;
 }
 
