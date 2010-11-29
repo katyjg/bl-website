@@ -11,12 +11,15 @@
 /* Graublau-Web */
 @font-face {
     font-family: "graublau-web";
-    src: url(/media/fnt/GraublauWeb.otf) format("opentype");
+    src: local('☺'), url(/media/fnt/GraublauWeb.otf) format("opentype");
+    font-weight: normal;
+    font-style: normal;
 }
 @font-face {
     font-family: "graublau-web";
-    src: url(/media/fnt/GraublauWebBold.otf) format("opentype");
+    src: local('☺'), url(/media/fnt/GraublauWebBold.otf) format("opentype");
     font-weight: bold;
+    font-style: normal;
 }
 
 /* Gentium */
@@ -48,39 +51,5 @@
 	font-weight: bold;
 	font-style: italic;
 }
-/*
-@font-face {
-    font-family: "gentium";
-	src: url('/media/fnt/GenBkBasR-webfont.eot');
-	src: local('☺'), url('/media/fnt/GenBkBasR-webfont.woff') format('woff'), url('/media/fnt/GenBkBasR-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasR-webfont.svg#webfontOawVVQSm') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-    font-family: "gentium";
-	src: url('/media/fnt/GenBkBasI-webfont.eot');
-	src: local('☺'), url('/media/fnt/GenBkBasI-webfont.woff') format('woff'), url('/media/fnt/GenBkBasI-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasI-webfont.svg#webfontIR41rMy5') format('svg');
-	font-weight: normal;
-	font-style: italic;
-}
-
-@font-face {
-    font-family: "gentium";
-	src: url('/media/fnt/GenBkBasB-webfont.eot');
-	src: local('☺'), url('/media/fnt/GenBkBasB-webfont.woff') format('woff'), url('/media/fnt/GenBkBasB-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasB-webfont.svg#webfonttS5RtN7j') format('svg');
-	font-weight: bold;
-	font-style: normal;
-}
-
-@font-face {
-    font-family: "gentium";
-	src: url('/media/fnt/GenBkBasBI-webfont.eot');
-	src: local('☺'), url('/media/fnt/GenBkBasBI-webfont.woff') format('woff'), url('/media/fnt/GenBkBasBI-webfont.ttf') format('truetype'), url('/media/fnt/GenBkBasBI-webfont.svg#webfontiSviAAwr') format('svg');
-	font-weight: bold;
-	font-style: italic;
-}
-*/
-
 
 

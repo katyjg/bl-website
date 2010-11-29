@@ -16,7 +16,6 @@ def news_brief(request):
     for post in Post.objects.all():
         if not post.image:
             post.image='default'
-        print "news_brief", post.image_filename()
         if i <= 4:
             post_list.append(post)
             i = i+1
@@ -39,7 +38,6 @@ def post_list(request):
     for post in Post.objects.all():
         if not post.image:
             post.image='default'
-        print "post_list", post.image_filename()
         post_list.append(post)
 
     return render_to_response(
