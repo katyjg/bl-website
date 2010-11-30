@@ -28,12 +28,6 @@ def application_form(request, form_class=ApplicationForm,
         sup_name = request.POST.get('sup_name', '')
         sup_email = request.POST.get('sup_email', '')
         sup_phone = request.POST.get('sup_phone', '')
-        sup_addr1 = request.POST.get('sup_addr1', '')
-        sup_addr2 = request.POST.get('sup_addr2', '')
-        sup_city = request.POST.get('sup_city', '') 
-        sup_state = request.POST.get('sup_state', '') 
-        sup_code = request.POST.get('sup_code', '') 
-        sup_country = request.POST.get('sup_country', '') 
         undergrad = request.POST.get('undergrad', '') 
         masters = request.POST.get('masters', '') 
         phd = request.POST.get('phd', '') 
@@ -56,7 +50,7 @@ def application_form(request, form_class=ApplicationForm,
 		crystals = 0
         research = request.POST.get('research', '') 
         benefit = request.POST.get('benefit', '') 
-        applicant = Application(name=name, email=email, phone=phone, institution=institution, addr1=addr1, addr2=addr2, city=city, state=state, code=code, country=country, sup_name=sup_name, sup_email=sup_email, sup_phone=sup_phone, sup_addr1=sup_addr1, sup_addr2=sup_addr2, sup_city=sup_city, sup_state=sup_state, sup_code=sup_code, sup_country=sup_country, undergrad=undergrad, masters=masters, phd=phd, postdoc=postdoc, faculty=faculty, staff=staff, other=other, other_text=other_text, travel=travel, visa=visa, crystals=crystals, research=research, benefit=benefit)
+        applicant = Application(name=name, email=email, phone=phone, institution=institution, addr1=addr1, addr2=addr2, city=city, state=state, code=code, country=country, sup_name=sup_name, sup_email=sup_email, sup_phone=sup_phone, undergrad=undergrad, masters=masters, phd=phd, postdoc=postdoc, faculty=faculty, staff=staff, other=other, other_text=other_text, travel=travel, visa=visa, crystals=crystals, research=research, benefit=benefit)
 
         applicant.save()
         if form.is_valid():
