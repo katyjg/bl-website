@@ -21,12 +21,12 @@ class Application(models.Model):
     sup_name = models.CharField(_('supervisor Name'), max_length=100, blank=False)
     sup_email = models.EmailField(_('supervisor Email'), blank=False)
     sup_phone = models.CharField(_('supervisor Phone'), max_length=100, blank=False)
-    sup_addr1 = models.CharField(_('supervisor Address'), max_length=100, blank=False)
-    sup_addr2 = models.CharField(_(' '), max_length=100, blank=False)
-    sup_city = models.CharField(_('supervisor City'), max_length=100, blank=False)
-    sup_state = models.CharField(_('supervisor State/Province'), max_length=100, blank=False)
-    sup_code = models.CharField(_('supervisor Area Code/Zip Code'), max_length=100, blank=False)
-    sup_country = models.CharField(_('supervisor Country'), max_length=100, blank=False)
+    #sup_addr1 = models.CharField(_('supervisor Address'), max_length=100, blank=False)
+    #sup_addr2 = models.CharField(_(' '), max_length=100, blank=False)
+    #sup_city = models.CharField(_('supervisor City'), max_length=100, blank=False)
+    #sup_state = models.CharField(_('supervisor State/Province'), max_length=100, blank=False)
+    #sup_code = models.CharField(_('supervisor Area Code/Zip Code'), max_length=100, blank=False)
+    #sup_country = models.CharField(_('supervisor Country'), max_length=100, blank=False)
 
     undergrad = models.BooleanField(blank=False)
     masters = models.BooleanField(blank=False)
@@ -45,5 +45,5 @@ class Application(models.Model):
     benefit = models.TextField(_('benefit/Experience'))
     
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'institution',)
+    list_display = ('name', 'institution', 'state', 'country')
 admin.site.register(Application, ApplicationAdmin)
