@@ -29,29 +29,30 @@
 <p class="complex">
     <label class="desc" id="addr1" for="addr1">Mailing Address<span class="req"> *</span></label><br>
 
-    <input name="addr1" type="text" class="full" value="" tabindex="5"  /><br>
     <label class="subdesc" for="addr1">Street Address</label><br>
+    <input name="addr1" type="text" class="full" value="" tabindex="5"  /><br>
 
-    <input name="addr2" type="text" class="full" value="" tabindex="6"  /><br>
     <label class="subdesc" for="addr2">Address Line 2 (if needed)</label><br>
+    <input name="addr2" type="text" class="full" value="" tabindex="6"  /><br>
 
+    <nobr>
+        <label class="subdesc" for="city">City</label>
+        <label class="subdesc" for="state">State / Province / Region</label>
+    </nobr>
+    <br>
     <nobr>     
         <input name="city" type="text" class="half" value="" tabindex="7"  />        
         <input name="state" type="text" class="half" value="" tabindex="8"  />
     </nobr>
-    <nobr>
-        <label class="subdesc" for="city">City</label>
-        <label class="subdesc" for="state">State / Province / Region</label>
-    </nobr><br>
-
+    <br>
  
-    <nobr>
-        <input name="code" type="text" class="half" value="" maxlength="15" tabindex="9" />
-        <input name="country" type="text" class="half" value="" maxlength="50" tabindex="10" />
-    </nobr>
     <nobr>
         <label class="subdesc" for="code">Postal Code / Zip Code</label>
         <label class="subdesc" for="country">Country</label>
+    </nobr><br>
+    <nobr>
+        <input name="code" type="text" class="half" value="" maxlength="15" tabindex="9" />
+        <input name="country" type="text" class="half" value="" maxlength="50" tabindex="10" />
     </nobr>
 </p>
 <br>
@@ -98,7 +99,7 @@
     <label class="desc" for="sup_phone">Supervisor's Phone Number</label><br>
     <input name="sup_phone" type="text" class="medium" value="" size="15" maxlength="15" tabindex="21"  />
 </p>
-
+<!--
 <p class="complex">
     <label class="desc" for="sup_addr1">Supervisor's Mailing Address</label><br>
 
@@ -128,6 +129,7 @@
     </nobr>
 </p>
 <br>
+-->
 <h2>Travel</h2>
 
 <p>
@@ -159,17 +161,17 @@
 <p>There will be a limited number of spaces availabe at the school to ensure that the maximum amount of practical instruction can be given at the beamlines and while analyzing data.  The following questions will help us in selecting the most suitable candidates.</p>
 
 <p>
-    <label class="desc" for="research">Please provide a short abstract of the crystallography research you are presently conducting or plan to be involved in.<span class="req"> *</span></label><br>
+    <label class="desc" for="research">Please provide a short abstract of the crystallography research you are presently conducting or plan to be involved in.  (Maximum 200 words)<span class="req"> *</span></label><br>
     <textarea class="full" name="research" rows="5" tabindex="34"></textarea>
 </p>
 
 <p>
-    <label class="desc" for="benefit">Please describe briefly your experience collecting diffraction data, processing data and/or solving structures, including any programs you are familiar with or courses you have taken.  How do you think this course would benefit you?<span class="req"> *</span></label><br>
+    <label class="desc" for="benefit">Please describe briefly your experience collecting diffraction data, processing data and/or solving structures, including any programs you are familiar with or courses you have taken.  How do you think this course would benefit you? (Maximum 200 words)<span class="req"> *</span></label><br>
     <textarea class="full" name="benefit" rows="5" tabindex="35"></textarea>
 </p>
 
 
-<p><input type='submit' value='Send' tabindex="36"></p>
+<p><input type='submit' value='Submit Application' tabindex="36"></p>
 
 </form>
 

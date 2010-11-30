@@ -21,7 +21,7 @@ SUPERVISOR CONTACT INFORMATION:
 
 {% if sup_name %}Name: {{sup_name}}
 Email: {{sup_email}}
-Phone: {{sup_phone}}
+Phone: {{sup_phone}}{% if sup_addr1 or sup_addr2 or sup_city or sup_state or sup_code or sup_country %}
 Mailing Address: 
     {{sup_addr1}}{% if sup_addr2 %}
     {{sup_addr2}}{% endif %}
@@ -29,13 +29,14 @@ Mailing Address:
     {{sup_state}}
     {{sup_code}}
     {{sup_country}}
+    {% endif %}
 {% else %} None provided {% endif %}
 
 TRAVEL INFORMATION:
 
-Travel Assistance: {% if travel %}{{travel}}{% else %}Not specified{% endif %}
-Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
-Bringing Crystals: {{crystals}}
+Request Travel Assistance: {% if travel %}{{travel}}{% else %}Not specified{% endif %}
+Require Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
+Plan to Bring Crystals: {% if crystals %}{{crystals}}{% else %}Not specified{% endif %}
 
 RESEARCH INTERESTS/EXPERIENCE:
 
