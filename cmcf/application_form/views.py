@@ -48,9 +48,13 @@ def application_form(request, form_class=ApplicationForm,
 		crystals = 1
 	else:
 		crystals = 0
+        if request.POST.get('stay','') == 'yes':
+            stay = 1
+        else:
+            stay = 0
         research = request.POST.get('research', '') 
         benefit = request.POST.get('benefit', '') 
-        applicant = Application(name=name, email=email, phone=phone, institution=institution, addr1=addr1, addr2=addr2, city=city, state=state, code=code, country=country, sup_name=sup_name, sup_email=sup_email, sup_phone=sup_phone, undergrad=undergrad, masters=masters, phd=phd, postdoc=postdoc, faculty=faculty, staff=staff, other=other, other_text=other_text, travel=travel, visa=visa, crystals=crystals, research=research, benefit=benefit)
+        applicant = Application(name=name, email=email, phone=phone, institution=institution, addr1=addr1, addr2=addr2, city=city, state=state, code=code, country=country, sup_name=sup_name, sup_email=sup_email, sup_phone=sup_phone, undergrad=undergrad, masters=masters, phd=phd, postdoc=postdoc, faculty=faculty, staff=staff, other=other, other_text=other_text, travel=travel, visa=visa, stay=stay, crystals=crystals, research=research, benefit=benefit)
 
         applicant.save()
         if form.is_valid():
