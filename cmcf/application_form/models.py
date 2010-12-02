@@ -39,6 +39,8 @@ class Application(models.Model):
 
     travel = models.BooleanField(_('Requests Travel Assistance'), blank=False)
     visa = models.BooleanField(_('Requires VISA'), blank=False)
+    stay = models.BooleanField(_('Requests Accommodations'), blank=False)
+    
     crystals = models.BooleanField(_('bringing crystals'))
 
     research = models.TextField(_('research Interests'))

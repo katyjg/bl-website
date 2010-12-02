@@ -55,6 +55,8 @@ class ApplicationForm(forms.Form):
 
     travel = forms.ChoiceField(choices=choices,widget=forms.RadioSelect, required=False)
     visa = forms.ChoiceField(choices=choices,widget=forms.RadioSelect, required=False)
+    stay = forms.ChoiceField(choices=choices,widget=forms.RadioSelect, required=False)
+
     crystals = forms.ChoiceField(choices=choices,widget=forms.RadioSelect)
 
     research = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))
