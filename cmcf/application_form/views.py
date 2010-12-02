@@ -36,18 +36,18 @@ def application_form(request, form_class=ApplicationForm,
         staff = request.POST.get('staff', '') 
         other = request.POST.get('other', '') 
         other_text = request.POST.get('other_text','')
-	if request.POST.get('travel','') == 'yes':
-		travel = 1
-	else:
-		travel=0
-	if request.POST.get('visa','') == 'yes':
-		visa = 1
-	else:
-		visa = 0
-	if request.POST.get('crystals','') == 'yes':
-		crystals = 1
-	else:
-		crystals = 0
+        if request.POST.get('travel','') == 'yes':
+            travel = 1
+        else:
+            travel=0
+        if request.POST.get('visa','') == 'yes':
+            visa = 1
+        else:
+            visa = 0
+        if request.POST.get('crystals','') == 'yes':
+            crystals = 1
+        else:
+            crystals = 0
         if request.POST.get('stay','') == 'yes':
             stay = 1
         else:

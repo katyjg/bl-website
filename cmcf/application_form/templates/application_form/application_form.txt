@@ -36,6 +36,13 @@ TRAVEL INFORMATION:
 
 Request Travel Assistance: {% if travel %}{{travel}}{% else %}Not specified{% endif %}
 Require Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
+
+ACCOMMODATIONS:
+
+{% if stay == 'yes' %}Request accommodations at Saskatchewan Hall.{% else %}{% if stay == 'no' %}Will make own accommodation arrangements.{% else %}Not specified {% endif %}{% endif %}
+
+CRYSTALS:
+
 Plan to Bring Crystals: {% if crystals %}{{crystals}}{% else %}Not specified{% endif %}
 
 RESEARCH INTERESTS/EXPERIENCE:

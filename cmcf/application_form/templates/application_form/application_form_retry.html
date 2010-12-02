@@ -1,7 +1,6 @@
 <span class="req">It looks like some information is missing from your form.  Click the "Back" button on your browser to return to your form, and make sure you have filled out all of the required fields.</span>
 
-<form action="" method='POST'>
-
+<form action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 <h2>Personal Information</h2>
 
 <p class="name">
@@ -28,29 +27,30 @@
 <p class="complex">
     <label class="desc" id="addr1" for="addr1">Mailing Address<span class="req"> *</span></label><br>
 
-    <input name="addr1" type="text" class="full" value="" tabindex="5"  /><br>
     <label class="subdesc" for="addr1">Street Address</label><br>
+    <input name="addr1" type="text" class="full" value="" tabindex="5"  /><br>
 
-    <input name="addr2" type="text" class="full" value="" tabindex="6"  /><br>
     <label class="subdesc" for="addr2">Address Line 2 (if needed)</label><br>
+    <input name="addr2" type="text" class="full" value="" tabindex="6"  /><br>
 
+    <nobr>
+        <label class="subdesc" for="city">City</label>
+        <label class="subdesc" for="state">State / Province / Region</label>
+    </nobr>
+    <br>
     <nobr>     
         <input name="city" type="text" class="half" value="" tabindex="7"  />        
         <input name="state" type="text" class="half" value="" tabindex="8"  />
     </nobr>
-    <nobr>
-        <label class="subdesc" for="city">City</label>
-        <label class="subdesc" for="state">State / Province / Region</label>
-    </nobr><br>
-
+    <br>
  
-    <nobr>
-        <input name="code" type="text" class="half" value="" maxlength="15" tabindex="9" />
-        <input name="country" type="text" class="half" value="" maxlength="50" tabindex="10" />
-    </nobr>
     <nobr>
         <label class="subdesc" for="code">Postal Code / Zip Code</label>
         <label class="subdesc" for="country">Country</label>
+    </nobr><br>
+    <nobr>
+        <input name="code" type="text" class="half" value="" maxlength="15" tabindex="9" />
+        <input name="country" type="text" class="half" value="" maxlength="50" tabindex="10" />
     </nobr>
 </p>
 <br>
@@ -97,7 +97,7 @@
     <label class="desc" for="sup_phone">Supervisor's Phone Number</label><br>
     <input name="sup_phone" type="text" class="medium" value="" size="15" maxlength="15" tabindex="21"  />
 </p>
-
+<!--
 <p class="complex">
     <label class="desc" for="sup_addr1">Supervisor's Mailing Address</label><br>
 
@@ -106,32 +106,32 @@
 
     <input name="sup_addr2" type="text" class="full" value="" tabindex="23"  />
     <label class="subdesc" for="sup_addr2">Address Line 2 (if needed)</label>
-     
-    <nobr>
-    <input name="sup_city" type="text" class="half" value="" tabindex="24"  />
-    <input name="sup_state" type="text" class="half" value="" tabindex="25"  />
-    </nobr>
-     
-    <nobr>
-    <label class="subdesc" for="sup_city">City</label>
-    <label class="subdesc" for="sup_state">State / Province / Region</label>
-    </nobr>
  
     <nobr>
-    <input name="sup_code" type="text" class="half" value="" maxlength="15" tabindex="26"  />
-    <input name="sup_country" type="text" class="half" value="" maxlength="20" tabindex="27"  />
+        <input name="sup_city" type="text" class="half" value="" tabindex="24"  />
+        <input name="sup_state" type="text" class="half" value="" tabindex="25"  />
+    </nobr>
     <nobr>
+        <label class="subdesc" for="sup_city">City</label>
+        <label class="subdesc" for="sup_state">State / Province / Region</label>
+    </nobr><br>
+ 
+    <nobr>
+        <input name="sup_code" type="text" class="half" value="" maxlength="15" tabindex="26"  />
+        <input name="sup_country" type="text" class="half" value="" maxlength="20" tabindex="27"  />
+    </nobr>
      
     <nobr>
-    <label class="subdesc" for="sup_code">Postal Code / Zip Code</label>
-    <label class="subdesc" for="sup_country">Country</label>
+        <label class="subdesc" for="sup_code">Postal Code / Zip Code</label>
+        <label class="subdesc" for="sup_country">Country</label>
     </nobr>
 </p>
 <br>
+-->
 <h2>Travel</h2>
 
 <p>
-    <label class="desc" for="travel">Do you wish to be considered for travel assistance? (For Canadian students only)</label><br>
+    <label class="desc" for="travel">Support of up to $300 can be provided to Canadian students from outside of the Prairie Provinces.  Do you wish to be considered for this travel assistance? (For Canadian students only.)</label><br>
     <input name="travel" type="radio" value="yes" tabindex="28"/>
     <label class="choice" for="travel">Yes</label><br>
     <input name="travel" type="radio" value="no" tabindex="29"/>
@@ -139,12 +139,28 @@
 </p>
     
 <p>
-    <label class="desc" for="visa">If you are not a Canadian citizen, would you need to obtain a VISA to attend the course? (If you are not sure, information can be found <a href="http://www.cic.gc.ca/EnGLish/visit/visas.asp">here</a>.)</label><br>
+    <label class="desc" for="visa">If you are not a Canadian citizen, would you need to obtain a VISA to attend the course? (If you are not sure, information can be found <a href="http://www.cic.gc.ca/EnGLish/visit/visas.asp" target="_blank">here</a>.)</label><br>
     <input name="visa" type="radio" value="yes" tabindex="30"/>
     <label class="choice" for="visa">Yes</label><br>
     <input name="visa" type="radio" value="no" tabindex="31"/>
     <label class="choice" for="visa">No</label><br>
 </p>
+
+<h2>Accommodations</h2>
+
+<p> The organizing committee will be making arrangements for participants to stay at Saskatchewan Hall on the University of Saskatchewan campus.  The fee for registration including accommodations is $600; the fee for registration alone (if you will make your own accommodation arrangements) is $400.  More information is available <a href="/school/participant-information/#accommodations" target="_blank">here</a>.
+</p>
+
+<p>
+    <label class="desc" for="stay">If selected, would you like the organizing committee to make accommodation arrangements for you at Saskatchewan Hall?</label><br>
+    <input name="stay" type="radio" value="yes" tabindex="30"/>
+    <label class="choice" for="stay">Yes</label><br>
+    <input name="stay" type="radio" value="no" tabindex="31"/>
+    <label class="choice" for="stay">No, I will make my own accommodation arrangements.</label><br>
+</p>
+
+
+<h2>Crystals</h2>
 
 <p>
     <label class="desc" for="crystals">If selected, do you plan to bring crystals for the practical sessions?<span class="req"> *</span></label><br>
@@ -159,16 +175,17 @@
 <p>There will be a limited number of spaces availabe at the school to ensure that the maximum amount of practical instruction can be given at the beamlines and while analyzing data.  The following questions will help us in selecting the most suitable candidates.</p>
 
 <p>
-    <label class="desc" for="research">Please provide a short abstract of the crystallography research you are presently conducting or plan to be involved in.<span class="req"> *</span></label><br>
+    <label class="desc" for="research">Please provide a short abstract of the crystallography research you are presently conducting or plan to be involved in.  (Maximum 200 words)<span class="req"> *</span></label><br>
     <textarea class="full" name="research" rows="5" tabindex="34"></textarea>
 </p>
 
 <p>
-    <label class="desc" for="benefit">Please describe briefly your experience collecting diffraction data, processing data and/or solving structures, including any programs you are familiar with or courses you have taken.  How do you think this course would benefit you?<span class="req"> *</span></label><br>
+    <label class="desc" for="benefit">Please describe briefly your experience collecting diffraction data, processing data and/or solving structures, including any programs you are familiar with or courses you have taken.  How do you think this course would benefit you? (Maximum 200 words)<span class="req"> *</span></label><br>
     <textarea class="full" name="benefit" rows="5" tabindex="35"></textarea>
 </p>
 
 
-<p><input type='submit' value='Send' tabindex="36"></p>
+<p><input type='submit' value='Submit Application' tabindex="36"></p>
 
 </form>
+
