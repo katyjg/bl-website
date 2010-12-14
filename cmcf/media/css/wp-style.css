@@ -1421,7 +1421,9 @@ thead th {
     background: #d6e0d6;
     text-align: center !important;
 }
-
+.tdcenter {
+    text-align: center !important;
+}
 table.legend tr, table.legend{
     width: 100%;
     text-align: center !important;
