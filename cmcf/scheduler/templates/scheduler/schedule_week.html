@@ -16,10 +16,10 @@
             <tr>
                 <th class="date" scope="col" abbr="Date">Date</th>
                 <th class="date" scope="col" abbr="Shift">Shift</th>
-                {% for bl in beamlines %}
+                {% for bl in beamlines reversed %}
                     <th class="beamline" scope="col" abbr="{{bl.name}}">{{bl.name}}</th>
                 {% endfor %}
-                <th class="oncall" scope="col" abbr="On Call">On Call</th>
+                <th class="date" scope="col" abbr="On Call">On Call</th>
             </tr>
         </thead>
         <tbody>
@@ -29,18 +29,18 @@
                     <td class="{% if day.3.0.0 %}{{day.3.0.0}}{% else %}{{day.4.0}}{% endif %}">
                         08:00-16:00
                     </td>
-                    {% for bl in day.1 %}
+                    {% for bl in day.1 reversed %}
                         <td class="{% if day.3.0.0 %}{{day.3.0.0}}{% else %}{{day.4.0}}{% endif %}">
                             {{bl.0}}
                         </td>       
                     {% endfor %}
-                    <td rowspan=3 class="column1">{{day.2}}</td>
+                    <td rowspan=2 class="{% if day.2 %}oncall{% else %}column1{% endif %}">{{day.2}}</td>
                 </tr>
                 <tr>      
                     <td class="{% if day.3.0.1 %}{{day.3.0.1}}{% else %}{{day.4.1}}{% endif %}">
                         16:00-24:00
                     </td>
-                    {% for bl in day.1 %}
+                    {% for bl in day.1 reversed %}
                         <td class="{% if day.3.0.1 %}{{day.3.0.1}}{% else %}{{day.4.1}}{% endif %}">
                             {{bl.1}}
                         </td>       
@@ -50,11 +50,12 @@
                     <td class="{% if day.3.0.2 %}{{day.3.0.2}}{% else %}{{day.4.2}}{% endif %}">
                         24:00-08:00
                     </td>
-                    {% for bl in day.1 %}
+                    {% for bl in day.1 reversed %}
                         <td class="{% if day.3.0.2 %}{{day.3.0.2}}{% else %}{{day.4.2}}{% endif %}">
                             {{bl.2}}
                         </td>       
                     {% endfor %}
+                    <td class="column1"></td>
                 </tr>
             {% endfor %}
         </tbody>
