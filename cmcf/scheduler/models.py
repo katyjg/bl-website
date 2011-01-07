@@ -21,8 +21,6 @@ from django.db.models.signals import post_save
 def get_storage_path(instance, filename):
     return os.path.join('uploads/contacts/', 'photos', filename)
 
-
-
 #cls_modes = django.dispatch.Signal(providing_args=["year", "week"])
 
 def get_cls_modes(sender, **kwargs):
@@ -47,9 +45,23 @@ def get_cls_modes(sender, **kwargs):
         else:
             dat.pop(w)
     
-    month = "Oct"
-    year = "2010"
-    
+    x = 0
+    while x is not len(dat):
+        if len(dat[x]) < 7:
+            dat.pop(x)
+        else:
+            empty = True
+            for y in range(len(dat[x])):
+                if len(dat[x][y]):
+                    empty = False
+            if empty:
+                dat.pop(x)
+            else:
+                x = x+1
+
+    month = "Jan"
+    year = "2011"
+
     for x in range(len(dat)):
         if dat[x][0][2:3] != ':':
             if len(dat[x][0]) > 8:
@@ -61,7 +73,7 @@ def get_cls_modes(sender, **kwargs):
                     if len(dat[x][y]) == 2:
                         dat[x][y] = month + '/' + dat[x][y] + '/' + year
             else:
-                for y in range(0,7):
+                for y in range(len(dat[x])):
                     if len(dat[x][y]) == 1:
                         dat[x][y] = '0' + dat[x][y]
                     if month:
@@ -204,7 +216,7 @@ class VisitManager(models.Manager):
         )
         
         return qs
-        
+  
 
 class Visit(models.Model):
     '''
