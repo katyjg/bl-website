@@ -101,6 +101,8 @@ div#header-print {
 	height: 88px;
 	min-width: 960px;
 	background: #dcdcdc url(/media/img/header_bg_2.png) top right repeat-x;
+    /*background: -moz-linear-gradient( top, #6666cc, #999999)*/
+
 }
 #header.wiki{
 	background: #dcdcdc url(/media/img/header_blue.png) top right repeat-x;
@@ -341,7 +343,6 @@ p.intro a {
 	background: #21759b url(images/button-grad.png) repeat-x scroll left bottom !important;
 }
 
-/* */
 /*
 .download-button {
 	font-size: 14px;
