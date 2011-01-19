@@ -109,10 +109,10 @@ def get_cls_modes(sender, **kwargs):
         if WebStatus.objects.filter(date=day_status.date):
             no_print = True
         if no_print:
-            print "Skipping", day_status.date
+            #print "Skipping", day_status.date
             no_print=False
         else:
-            print "Saving...", day_status.date
+            #print "Saving...", day_status.date
             day_status.save()
 
     return mode_calendar
@@ -136,7 +136,7 @@ class SupportPerson(models.Model):
     '''
     STAFF_CHOICES = (
         (0, u'Beamline Staff'),
-        (1, u'Students'),
+        (1, u'Associated Personnel'),
     )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
