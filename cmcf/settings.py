@@ -11,6 +11,7 @@ ADMINS = (
 #MANAGERS will receive online application forms
 MANAGERS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
+    ('Shaun', 'shaun.labiuk@lightsource.ca'),
 )
 
 #DATABASE_ENGINE = 'sqlite3'
