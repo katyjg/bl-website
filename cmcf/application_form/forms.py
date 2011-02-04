@@ -140,6 +140,9 @@ class ApplicationForm(forms.Form):
         for message_part in ('from_email', 'message', 'recipient_list', 'subject'):
             if message_part == 'recipient_list':
                 attr = [getattr(self, message_part)[0]]
+                for mail_tuple in settings.MANAGERS:
+                    if mail_tuple[1] not in attr:
+                        attr.append(str(mail_tuple[1]))
                 attr.append(str(self.clean_recipients()))
                 message_dict[message_part] = callable(attr) and attr() or attr
             else:

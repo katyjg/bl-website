@@ -1,13 +1,12 @@
 {% load i18n %}
-{% load email_filters %}
-
+{% load contact_extras %}
 
 {% for category in categories %}
-    <h2>{{category.1}}</h2>
+    {% ifnotequal category.0|num_people 0 %}<h2>{{category.1}}</h2>{% endifnotequal %}
     {% for person in contact_list %}{% ifequal person.category category.0 %}
     <div class="contacts">
             <img src="/media/{{person.image}}" alt="" >
-            <p><a name="{{person.first_name}}-{{person.last_name}}" href="javascript:mailto_cmcf('{{person.first_name}}.{{person.last_name}}','lightsource.ca');">{{person.first_name}} {{person.last_name}}</a>
+            <p><a name="{{person.first_name}}-{{person.last_name}}" href="javascript:mailto_cmcf('{{person.email|email_part:0}}','{{person.email|email_part:1}}');">{{person.first_name}} {{person.last_name}}</a>
             <br>
             {{person.position}}<br>
             Office Location: {{person.office}}<br>
