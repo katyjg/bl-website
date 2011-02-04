@@ -1,4 +1,6 @@
 from django import template  
+from scheduler.models import SupportPerson
+
 register = template.Library()  
  
 @register.filter("hide_email")  
@@ -14,6 +16,11 @@ def hide_email(value):
    
      	return truncd_val + "..."   
 
+@register.filter("email_part")
+def email_part(value, position):
+    return value.split('@')[position]
 
-
+@register.filter("num_people")
+def num_people(value):
+    return len(SupportPerson.objects.filter(category=value))
 
