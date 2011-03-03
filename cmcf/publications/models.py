@@ -138,7 +138,7 @@ class Journal(models.Model):
 class Publication(models.Model):
     title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
-    authors = models.CharField(_('authors'), max_length=250, blank=True)
+    authors = models.CharField(_('authors'), max_length=500, blank=True)
     journal = models.ForeignKey(Journal, blank=False)
     year = models.IntegerField(_('year'), blank=False)
     citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
