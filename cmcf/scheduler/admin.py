@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from scheduler.forms import VisitForm
-from scheduler.models import Beamline, SupportPerson, Visit, OnCall, Stat, WebStatus
+from scheduler.models import Beamline, SupportPerson, Visit, OnCall, Stat, WebStatus, UpdateModes
 
 class VisitAdmin(admin.ModelAdmin):
     search_fields = ['description']
@@ -11,11 +11,10 @@ class VisitAdmin(admin.ModelAdmin):
             'fields': ('beamline', 'description', ('start_date', 'first_shift'), ('end_date', 'last_shift')), 
         }),
     )
-    
-    
 
 admin.site.register(Beamline)
 admin.site.register(SupportPerson)
 admin.site.register(Visit, VisitAdmin)
 admin.site.register(OnCall)
 admin.site.register(Stat)
+admin.site.register(UpdateModes)
