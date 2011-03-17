@@ -3,7 +3,6 @@ from dateutil import rrule
 from datetime import datetime, date, timedelta
 from django.utils.translation import ugettext_lazy as _
 import os
-from django.db.models.signals import post_save
 from django.conf import settings
 
 from jsonfield import JSONField
@@ -24,27 +23,45 @@ def get_storage_path(instance, filename):
 #cls_modes = django.dispatch.Signal(providing_args=["year", "week"])
 
 def get_cls_modes(sender, **kwargs):
+    ''' Read the schedule table from the CLS website, and save the information there into 
+        the database.
+    '''
+
     page = urllib2.urlopen("http://www.lightsource.ca/operations/schedule.php")
     soup = BeautifulSoup(page)
-    t = soup.find("table", "schedule")
+    t = soup.find("table", "excel1")
     dat = [ map(str, row.findAll("td")) for row in t.findAll("tr") ]
     mode_calendar = []
     dates = []
     w = 0
 
+    # Strip empty and formatting rows
     for x in range(len(dat)):
         z = 0
         for y in range(len(dat[w])):
             if dat[w][z].endswith('&nbsp;</td>'):
                 dat[w].pop(z)
             else:
-                dat[w][z] = dat[w][z].split('>')[1].split('<')[0]
+                dat[w][z] = ' '.join(' '.join(dat[w][z].split('>')[1:]).split('<')[:-1])
                 z += 1
         if dat[w]:
             w += 1
         else:
             dat.pop(w)
     
+    if dat[0][0][:2] == 'Su':   
+        dat.pop(0)
+
+    month = "Jan"
+    year = "1999"
+
+    # get initial month and year from the table
+    for i in range(0, len(dat)):
+        if dat[i][0][0] not in [0,1,2,3,4,5,6,7,8,9]:
+            month = dat[i][0].split(" ")[0][:3]
+            year = dat[i][0].split(" ")[-1][-4:]
+            break
+
     x = 0
     while x is not len(dat):
         if len(dat[x]) < 7:
@@ -59,9 +76,6 @@ def get_cls_modes(sender, **kwargs):
             else:
                 x = x+1
 
-    month = "Jan"
-    year = "2011"
-
     for x in range(len(dat)):
         if dat[x][0][2:3] != ':':
             if len(dat[x][0]) > 8:
@@ -69,15 +83,15 @@ def get_cls_modes(sender, **kwargs):
                     if len(dat[x][y]) == 1:
                         month = dat[x][0][:3]
                         year = dat[x][0][-4:]
-                        dat[x][y] = month + '/0' + dat[x][y] + '/' + year
+                        dat[x][y] = month + '/0' + dat[x][y].split(' ')[0] + '/' + year
                     if len(dat[x][y]) == 2:
-                        dat[x][y] = month + '/' + dat[x][y] + '/' + year
+                        dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
             else:
                 for y in range(len(dat[x])):
                     if len(dat[x][y]) == 1:
                         dat[x][y] = '0' + dat[x][y]
                     if month:
-                        dat[x][y] = month + '/' + dat[x][y] + '/' + year
+                        dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
 
     for x in range(len(dat)):
         if len(dat[x]) > 7:
@@ -368,7 +382,29 @@ class Stat(models.Model):
             )
         get_latest_by = "date"
         verbose_name = "Beamline Status (to override CLS status)"
-	verbose_name_plural = "Beamline Statuses (manually override CLS statuses)"
+	verbose_name_plural = "Beamline Statuses (override CLS status)"
 
-post_save.send(sender=Stat)
-post_save.connect(get_cls_modes, sender=Stat)
+
+class UpdateModes(models.Model):
+    modified = models.DateTimeField('date modified',auto_now=True, editable=True)
+    date_range = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = "Auto Beam Modes"
+        verbose_name_plural = "Beam Modes from CLS"
+
+post_save.send(sender=UpdateModes)
+post_save.connect(get_cls_modes, sender=UpdateModes)
+
+
+
+
+
+
+
+
+
+
+
+
+
