@@ -1,6 +1,6 @@
 import os
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 #ADMINS will receive feedback from the website and 500 errors if they arise
@@ -233,4 +233,10 @@ FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
 
 ADMIN_TOOLS_INDEX_DASHBOARD = 'cmcf.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'cmcf.dashboard.CustomAppIndexDashboard'
+
+try:
+    from settings_local import *
+except ImportError:
+    pass
+
 
