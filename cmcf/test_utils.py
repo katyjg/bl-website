@@ -22,6 +22,7 @@ from coverage import coverage
 
 sys.path = [os.path.join(os.path.dirname(__file__), "lib")] + sys.path
 
+
 from django.test.simple import run_tests as django_test_runner
 from django.conf import settings
 from django.db.models import get_app, get_apps
