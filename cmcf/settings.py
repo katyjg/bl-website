@@ -1,6 +1,6 @@
 import os
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 #ADMINS will receive feedback from the website and 500 errors if they arise
