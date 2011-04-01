@@ -14,7 +14,6 @@
         {% feincms_navigation of ml as submidlevel level=4 %}
 
 {% if submidlevel %}
-
 <div id="headline">
     <div class="wrapper">
 	    <h2>
@@ -124,6 +123,7 @@
                     </ul>
 	        	</td></tr></table>
             {% endifnotequal %}
+            {% feincms_render_region feincms_page "col2" request %}
  	        {% feincms_navigation of feincms_page as toplevel level=1 %}
     	    {% for p in toplevel %}
 	        	{% feincms_navigation of p as sublevel level=2 %}
@@ -141,7 +141,7 @@
 		            {% endfor %}
 		        {% endif %}
    	        {% endfor %}			
-            {% feincms_render_region feincms_page "col2" request %}
+
 	    </div>
 
      	<div class="col-3">
