@@ -62,13 +62,6 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'OnCall', fields ['local_contact', 'date']
         db.create_unique('scheduler_oncall', ['local_contact_id', 'date'])
 
-        # Adding model 'Mode'
-        db.create_table('scheduler_mode', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=30)),
-        ))
-        db.send_create_signal('scheduler', ['Mode'])
-
         # Adding model 'Stat'
         db.create_table('scheduler_stat', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -112,9 +105,6 @@ class Migration(SchemaMigration):
 
         # Removing unique constraint on 'OnCall', fields ['local_contact', 'date']
         db.delete_unique('scheduler_oncall', ['local_contact_id', 'date'])
-
-        # Deleting model 'Mode'
-        db.delete_table('scheduler_mode')
 
         # Deleting model 'Stat'
         db.delete_table('scheduler_stat')
