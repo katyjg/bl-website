@@ -4,11 +4,10 @@
 *~
 *.bak
 *.cache
-<<<<<<< HEAD
 uploads/
+attachments/
+migrations/
 junk/
 cmcf.db
 .svn/
-=======
-
->>>>>>> ff0fed969b685ec05fb371441c7b296c342504f8
+settings_local.py
