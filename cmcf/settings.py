@@ -34,7 +34,7 @@ SITE_ID = 1
 USE_I18N = True
 
 INTERNAL_IPS = ('70.76.64.163',)
-ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.45.2.0/255.255.252.0',)
+ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.45.2.0/255.255.252.0','10.63.240.0/255.255.252.0',)
 
 
 TINYMCE_JS_URL = 'http://cmcf.lightsource.ca/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js'
