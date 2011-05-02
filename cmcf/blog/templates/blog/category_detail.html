@@ -13,13 +13,36 @@
 
 
 {% block content %}
-  <div class="post_list">
+<ul class="hr-list">
     {% for post in object_list %}
-    <div>
-      <h3 class="title"><a href="{{ post.get_absolute_url }}" title="{% trans "View this post" %}">{{ post.title }}</a></h3>
-      <p class="date">{{ post.publish|date:"Y F d" }}</p>
-      <p class="tease">{{ post.tease|safe }}</p>
-    </div>
+        <li>
+            <div class="news-post">
+                {% ifnotequal post.image 'default' %}
+                    <div class="{% cycle 'image' 'image-odd' %}">
+                        <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
+                    </div>
+                {% endifnotequal %}
+  	            <div>
+   	                <h3 class="subtitle">
+                        <a name="{{ post.slug }}"></a>
+                        <text class="category" title="View all {{post.categories.all.0}}" href="/research-highlights/categories/{{post.categories.all.0.slug}}">{{ post.categories.all.0 }}</text>: 
+                        {% if post.link %}
+                            <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a>
+                        {% else %}
+                            <b class="title-style">{{ post.title }}</b>
+                        {% endif %}
+                    </h3>
+	                Posted on {{ post.publish|date:"F d, Y" }} <br>			
+                    {{ post.body|removetags:"p"|safe }}
+	                <p class="link">
+                        <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">
+                            {{ post.citation|removetags:"p"|safe }}
+                        </a>
+                    </p>
+                </div>	      
+            </div>
+            <br class="clear">
+        </li>
     {% endfor %}
-  </div>
+</ul>
 {% endblock %}
