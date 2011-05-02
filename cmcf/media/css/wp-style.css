@@ -578,7 +578,7 @@ h4, h3.head {
 	margin-bottom: 11px;
 	/*margin-top: -20px;*/
 }
-h3.subtitle {
+h3.subtitle a.category {
 	font-variant: small-caps !important;
 }
 h5 {
