@@ -1,5 +1,5 @@
 {% load i18n %}
-
+{% load blog %}
 <!--
 {% ifequal categories|length 1 %}{% else %}
     <a href="#{{ category }}"> {{ category }} </a> 
@@ -20,7 +20,7 @@
   	            <div>
    	                <h3 class="subtitle">
                         <a name="{{ post.slug }}"></a>
-                        {{ post.categories.all.0 }}: 
+                        <a class="category" title="View all {{post.categories.all.0}}" href="/research-highlights/categories/{{post.categories.all.0.slug}}">{{ post.categories.all.0 }}</a>: 
                         {% if post.link %}
                             <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a>
                         {% else %}
