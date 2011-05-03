@@ -384,17 +384,8 @@ class Stat(models.Model):
         verbose_name = "Beamline Status (to override CLS status)"
 	verbose_name_plural = "Beamline Statuses (override CLS status)"
 
-
-class UpdateModes(models.Model):
-    modified = models.DateTimeField('date modified',auto_now=True, editable=True)
-    date_range = models.CharField(max_length=100)
-
-    class Meta:
-        verbose_name = "Auto Beam Modes"
-        verbose_name_plural = "Beam Modes from CLS"
-
-post_save.send(sender=UpdateModes)
-post_save.connect(get_cls_modes, sender=UpdateModes)
+post_save.send(sender=Stat)
+post_save.connect(get_cls_modes, sender=Stat)
 
 
 
