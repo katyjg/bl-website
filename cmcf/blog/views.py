@@ -25,41 +25,20 @@ def news_brief(request):
         )
 
 def post_list(request):
-    post_list = []
     category = []
-    for cat in Category.objects.all():
-        i = 0
-        for post in Post.objects.all():
-            for post_cat in post.categories.all():
-                if post_cat == cat:
-                    i = 1
-        if i == 1:
-            category.append(cat)
+    # This can be fixed up with Django >= 1.3 (.values(<ManytoManyField>) won't give an error then)
     for post in Post.objects.all():
-        if not post.image:
-            post.image='default'
-        post_list.append(post)
+        for cat in post.categories.all():
+            if cat not in category:
+                category.append(cat)
 
     return render_to_response(
         'blog/post_list.html', 
         {
-            'object_list': post_list,
+            'object_list': Post.objects.all(),
             'categories': category,
         },
         )
-
-'''def post_list(request, page=0, paginate_by=20, **kwargs):
-    page_size = getattr(settings,'BLOG_PAGESIZE', paginate_by)
-
-    return list_detail.object_list(
-        request,
-        queryset=Post.objects.published(),
-        paginate_by=page_size,
-        page=page,
-        **kwargs
-    )
-post_list.__doc__ = list_detail.object_list.__doc__
-'''
 
 def post_archive_year(request, year, **kwargs):
     return date_based.archive_year(
@@ -148,12 +127,19 @@ def category_detail(request, slug, template_name = 'blog/category_detail.html', 
         category
             Given category.
     """
+    category_list = []
+    # This can be fixed up with Django >= 1.3 (.values(<ManytoManyField>) won't give an error then)
+    for post in Post.objects.all():
+        for cat in post.categories.all():
+            if cat not in category_list:
+                category_list.append(cat)
+                
     category = get_object_or_404(Category, slug__iexact=slug)
 
     return list_detail.object_list(
         request,
         queryset=category.post_set.published(),
-        extra_context={'category': category},
+        extra_context={'category': category, 'categories': category_list},
         template_name=template_name,
         **kwargs
     )
