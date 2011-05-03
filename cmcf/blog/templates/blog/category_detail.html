@@ -13,15 +13,25 @@
 
 
 {% block content %}
+	{% for category in categories %}
+		<a href="/research-highlights/categories/{{ category.slug }}"> {{ category }}{% ifnotequal category|make_list|last 's' %}s{% endifnotequal %}  </a>
+		{% if forloop.last %}{% else %}-{% endif %}
+	{% endfor %} 
+	<a class="right-subtitle" href="/research-highlights/">Back to all News and Updates</a>
+
+{% for post in object_list %}{% if forloop.first %}
+	<h2>{{ category }}{% ifnotequal category|make_list|last 's' %}s{% endifnotequal %}</h2>
+{% endif %}{% endfor %}
+
 <ul class="hr-list">
     {% for post in object_list %}
         <li>
             <div class="news-post">
-                {% ifnotequal post.image 'default' %}
+                {% if post.image %}
                     <div class="{% cycle 'image' 'image-odd' %}">
                         <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
                     </div>
-                {% endifnotequal %}
+                {% endif %}
   	            <div>
    	                <h3 class="subtitle">
                         <a name="{{ post.slug }}"></a>

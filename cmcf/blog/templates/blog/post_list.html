@@ -8,18 +8,25 @@
 -->
 
 <ul class="hr-list">
+		<li>
+			{% for category in categories %}
+				<a href="/research-highlights/categories/{{ category.slug }}"> {{ category }}{% ifnotequal category|make_list|last 's' %}s{% endifnotequal %}  </a>
+				{% if forloop.last %}{% else %}-{% endif %}
+			{% endfor %} 
+			<div class="clear"><br></div>
+		</li>
     {% for post in object_list %}
         <li>
             <div class="news-post">
-                {% ifnotequal post.image 'default' %}
+                {% if post.image %}
                     <div class="{% cycle 'image' 'image-odd' %}">
                         <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
                     </div>
-                {% endifnotequal %}
+                {% endif %}
   	            <div>
    	                <h3 class="subtitle">
                         <a name="{{ post.slug }}"></a>
-                        <a class="category" title="View all {{post.categories.all.0}}" href="/research-highlights/categories/{{post.categories.all.0.slug}}">{{ post.categories.all.0 }}</a>: 
+                        <a class="category" title="View all {{post.categories.all.0}} items" href="/research-highlights/categories/{{post.categories.all.0.slug}}">{{ post.categories.all.0 }}</a>: 
                         {% if post.link %}
                             <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a>
                         {% else %}
