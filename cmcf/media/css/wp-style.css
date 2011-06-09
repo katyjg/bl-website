@@ -1415,7 +1415,7 @@ thead th {
 .NormalMode, .N{
     background: #d6f0d6;
 	}
-.Special, .NS, .SB{
+.Special, .NS, .SB, .Si {
     background: #e9d1ff;
 	}
 .oncall {

@@ -22,9 +22,62 @@ def get_storage_path(instance, filename):
 
 #cls_modes = django.dispatch.Signal(providing_args=["year", "week"])
 
+def cls(**kwargs):
+    '''
+        Jun/09/2011 - To use this function, save the year-long beam mode spreadsheet
+        from the intranet as a .csv (comma separated) file. Strip the header info.
+        and make sure all one-digit dates have a preceding zero.  Change year.
+
+        TODO: allow for one-digit dates and read in year from header info.
+    '''
+    year = 2011
+    f = open('/users/kathryn/Documents/CopyofRun_Schedule.csv')
+    data = f.read()
+    dat = []
+    for row in data.split(',,,,,,\n'):
+        dat.append(row.split(','))
+        
+    mode_calendar = []
+    dates = []
+    w = 0
+
+    for x in range(len(dat)):
+        if len(dat[x]) is not 8:
+            dat.pop(x)
+
+    for x in range(len(dat)/4):
+        for x in range(1,8):
+            if dat[0][x]:
+                date =  '%s/%s/%s' % (dat[0][x].split('-')[1][:3], dat[0][x].split('-')[0][-2:], str(year))
+                mode_calendar.append([date, dat[1][x], dat[2][x], dat[3][x]])
+        for x in range(4):
+            dat.pop(0)
+
+    no_print = False
+    
+    for x in range(len(mode_calendar)):
+        status1 = mode_calendar[x][2][:min(mode_calendar[x][2],2)]
+        status2 = mode_calendar[x][3][:min(mode_calendar[x][3],2)]
+        try:
+            status3 = mode_calendar[x+1][1][:min(mode_calendar[x+1][1],2)]
+        except IndexError:
+            status3 = ''
+        day_status = WebStatus(date=mode_calendar[x][0], status1=status1, status2=status2, status3=status3)
+        if WebStatus.objects.filter(date=day_status.date):
+            no_print = True
+        if no_print:
+            no_print=False
+        else:
+            print "Saving...", day_status.date, status1, status2, status3
+            day_status.save()
+
+    return mode_calendar
+
+
 def get_cls_modes(sender, **kwargs):
     ''' Read the schedule table from the CLS website, and save the information there into 
-        the database.
+        the database.  This can be set up as a post_save function.  After every manual 
+        Status is saved, new modes will be updated if they are available.
     '''
 
     page = urllib2.urlopen("http://www.lightsource.ca/operations/schedule.php")
@@ -48,7 +101,7 @@ def get_cls_modes(sender, **kwargs):
             w += 1
         else:
             dat.pop(w)
-    
+
     if dat[0][0][:2] == 'Su':   
         dat.pop(0)
 
@@ -112,8 +165,6 @@ def get_cls_modes(sender, **kwargs):
             for i in range(0,4):
                 dat.pop(0)
 
-    #GONE
-    
     for x in range(len(mode_calendar)):
         mode_calendar[x][1] = mode_calendar[x][2]
         mode_calendar[x][2] = mode_calendar[x][3]
