@@ -22,7 +22,7 @@
                              | PDB: 
                             {% for pdb in publication.1 %}
                                 <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId={{pdb}}">
-                                    {{ forloop.counter }}
+                                    {{pdb}}
                                 </a>
                             {% endfor %}
                         {% endif %}
