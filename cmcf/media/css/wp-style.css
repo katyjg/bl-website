@@ -1444,6 +1444,10 @@ table.legend td, table.legend th{
 	text-align:center;
 }
 
+#sidebar.calendar {
+	padding-top: 50px;
+}
+
 div.sitemap{ 
     -moz-column-count: 3;
     -moz-column-gap: 20px;
