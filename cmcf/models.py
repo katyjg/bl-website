@@ -75,7 +75,8 @@ Page.register_templates({
     'path': 'wp-calendar.html',
     'regions': (
         ('col1', 'Main Column'),
-        ('col2', 'Sidebar Column',),
+        ('col2', 'Sidebar Column'),
+        ('col3', 'Sidebar Top'),
         ),
     })
 
