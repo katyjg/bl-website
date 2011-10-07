@@ -7,7 +7,7 @@
  *
  * http://docs.jquery.com/UI/Datepicker#theming
  */
-.ui-datepicker { width: 100%; padding: 53px .2em 0; }
+.ui-datepicker { width: 100%; padding: 0px .2em 0; }
 .ui-datepicker .ui-datepicker-header { position:relative; padding:1px 0; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 40px; height: 20px; }
 .ui-datepicker .ui-datepicker-prev { left:0px; background: url("/media/img/prev.png") no-repeat transparent}
