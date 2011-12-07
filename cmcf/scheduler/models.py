@@ -24,35 +24,42 @@ def get_storage_path(instance, filename):
 
 def cls(**kwargs):
     '''
-        Jun/09/2011 - To use this function, save the year-long beam mode spreadsheet
-        from the intranet as a .csv (comma separated) file. Strip the header info.
-        and make sure all one-digit dates have a preceding zero.  Change year.
+        Dec/07/2011 - To use this function, save the year-long beam mode spreadsheet
+        from the intranet as a .csv (comma separated) file. Strip the header info (including
+        the first line with the days of the week).  Change year.
 
-        TODO: allow for one-digit dates and read in year from header info.
+        TODO: read in year from header info.
     '''
-    year = 2011
-    f = open('/users/kathryn/Documents/CopyofRun_Schedule.csv')
+    year = 2012
+    f = open('/users/kathryn/Documents/CopyofRun_Schedule_2012.csv')
     data = f.read()
     dat = []
-    for row in data.split(',,,,,,\n'):
-        dat.append(row.split(','))
         
+    for row in data.split('\n'):
+        dat.append(row.split(','))
+
     mode_calendar = []
     dates = []
     w = 0
 
     for x in range(len(dat)):
-        if len(dat[x]) is not 8:
-            dat.pop(x)
+        try:
+            if len(dat[x]) is not 8:
+                dat.pop(x)
+        except IndexError:
+            pass
 
     for x in range(len(dat)/4):
         for x in range(1,8):
             if dat[0][x]:
-                date =  '%s/%s/%s' % (dat[0][x].split('-')[1][:3], dat[0][x].split('-')[0][-2:], str(year))
+                day = dat[0][x].split('-')[0].replace(' ','')
+                if len(day) is 1:
+                    day = '0' + day
+                date = '%s/%s/%s' % (dat[0][x].split('-')[1].replace(' ','')[:3], day, str(year))
                 mode_calendar.append([date, dat[1][x], dat[2][x], dat[3][x]])
         for x in range(4):
             dat.pop(0)
-
+    
     no_print = False
     
     for x in range(len(mode_calendar)):
