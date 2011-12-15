@@ -53,7 +53,7 @@ div#wiki_article code, pre
 }
 div#wiki_article img
 {
-    max-width: 612px;
+    max-width: 592px;
 }
 div#wiki_article h1
 {
@@ -72,9 +72,12 @@ div#wiki_article h1
 
 div#wiki_article h2
 {
-	font-size: 150%;
+	font-size: 110%;
 	font-weight: normal;
-	color: #025;
+	color: #444;
+    border-bottom: none;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 div#wiki_article h3
@@ -346,4 +349,19 @@ blockquote p {
     display: none; 
     color: #000;
 
+}
+div#watermark {
+    display: none;
+    margin-left: -300px;
+    margin-top: 225px;
+}
+div#watermark p {
+    -webkit-transform: rotate(-90deg); 
+    -moz-transform: rotate(-90deg);	
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    font-family: 'NuvoWeb-Medi', graublau-web, sans-serif;
+    font-size: 72pt;
+    width: 800px;
+    color: #ddd;
+    float: left;
 }

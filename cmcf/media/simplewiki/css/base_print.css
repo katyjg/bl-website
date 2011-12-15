@@ -1,6 +1,14 @@
-div#wiki_panel
-{
+div#wiki_panel, div#header {
 	display:none;
+}
+div#watermark {
+    display:block;
+}
+.col-8 {
+    width: 772px;
+}
+.col-4 {
+    width: 132px;
 }
 
 
