@@ -1,14 +1,12 @@
 div#wiki_panel, div#header {
 	display:none;
 }
-div#watermark {
-    display:block;
-}
 .col-8 {
-    width: 772px;
+    width: 934px;
 }
-.col-4 {
-    width: 132px;
+div#wiki_article {
+    padding-right: 132px;
+    background-image: url(/media/img/staffman.png);
+    background-repeat: repeat-y;
+    background-position: 100% 24px;
 }
-
-

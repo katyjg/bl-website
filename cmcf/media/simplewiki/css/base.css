@@ -350,18 +350,5 @@ blockquote p {
     color: #000;
 
 }
-div#watermark {
-    display: none;
-    margin-left: -300px;
-    margin-top: 225px;
-}
-div#watermark p {
-    -webkit-transform: rotate(-90deg); 
-    -moz-transform: rotate(-90deg);	
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-    font-family: 'NuvoWeb-Medi', graublau-web, sans-serif;
-    font-size: 72pt;
-    width: 800px;
-    color: #ddd;
-    float: left;
-}
+
+
