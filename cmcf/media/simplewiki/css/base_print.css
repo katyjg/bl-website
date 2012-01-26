@@ -10,3 +10,6 @@ div#wiki_article {
     background-repeat: repeat-y;
     background-position: 100% 24px;
 }
+#toTop.wiki, a.wiki {
+    display: none !important;
+}

@@ -1,4 +1,4 @@
-Thank you for applying for the 1st Annual CLS Mx Data Collection School!  Here is a copy of the information you provided on our online application form:
+Thank you for applying for the 2nd Annual CLS Mx Data Collection School!  Here is a copy of the information you provided on our online application form:
 
 PERSONAL INFORMATION:
 
@@ -21,15 +21,7 @@ SUPERVISOR CONTACT INFORMATION:
 
 {% if sup_name %}Name: {{sup_name}}
 Email: {{sup_email}}
-Phone: {{sup_phone}}{% if sup_addr1 or sup_addr2 or sup_city or sup_state or sup_code or sup_country %}
-Mailing Address: 
-    {{sup_addr1}}{% if sup_addr2 %}
-    {{sup_addr2}}{% endif %}
-    {{sup_city}}
-    {{sup_state}}
-    {{sup_code}}
-    {{sup_country}}
-    {% endif %}
+Phone: {{sup_phone}}
 {% else %} None provided {% endif %}
 
 TRAVEL INFORMATION:
@@ -37,11 +29,9 @@ TRAVEL INFORMATION:
 Request Travel Assistance: {% if travel %}{{travel}}{% else %}Not specified{% endif %}
 Require Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
 
-ACCOMMODATIONS: {% if stay == 'yes' %}Request accommodations at Saskatchewan Hall.{% else %}{% if stay == 'no' %}Will make own accommodation arrangements.{% else %}Not specified {% endif %}{% endif %}
+ACCOMMODATIONS: {% if stay == 'yes' %}Request accommodations on campus.{% else %}{% if stay == 'no' %}Will make own accommodation arrangements.{% else %}Not specified {% endif %}{% endif %}
 
-CRYSTALS:
-
-Plan to Bring Crystals: {% if crystals %}{{crystals}}{% else %}Not specified{% endif %}
+PLAN TO BRING CRYSTALS: {% if crystals %}{{crystals}}{% else %}Not specified{% endif %}
 
 RESEARCH INTERESTS/EXPERIENCE:
 
