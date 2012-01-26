@@ -1604,3 +1604,23 @@ div.aca table ul {
 b.title-style{
 	color:#21759B;
 }
+div.bio p {
+    font-size: 85%;
+    font-family: "NuvoWeb-Medi", "graublau-web", sans-serif;
+    line-height: 120%;
+    text-align: justify;
+}
+div.bio h3 {
+    text-align: center;
+    color: #5c5c5c;
+}
+div.bio { 
+    margin-top: 20px;
+    padding: 2em;
+    background-color: #F0ECF3;
+    color: #5c5c5c;
+}
+div.bio img {
+  height: auto;
+  width: 100%;
+}
