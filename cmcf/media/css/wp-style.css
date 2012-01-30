@@ -114,7 +114,7 @@ div#header-print {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
-	background: url(/media/img/clslogo_2.png) top left no-repeat;
+	background: url(/media/img/clslogo_white.png) top left no-repeat;
     height: 88px;    
 }
 #header .aca-logo {
@@ -1619,8 +1619,27 @@ div.bio {
     padding: 2em;
     background-color: #F0ECF3;
     color: #5c5c5c;
+    width: 75%;
 }
 div.bio img {
+  border: 4px solid #D8CDE0;
+  padding: 25px;
   height: auto;
-  width: 100%;
+  width: 75%;
+}
+.FirstLetter{
+  display      : block;
+  font-family: "gentium", serif;
+  float        : left;
+  margin-top   : -0.63em; /* use -0.205em for two lines */
+  margin-right : 0.5em;
+  height       : 4.7em;
+}
+
+.FirstLetter span{
+  font-size    : 6.5em;   /* use 3.33em for two lines */
+  line-height  : 1.0em;
+}
+.FirstLetter + span{
+  margin-left  : -0.5em;
 }
