@@ -25,7 +25,7 @@ html * {
     line-height: 130%;
 }
 
-#bodyContent a.right-subtitle {
+#bodyContent .right-subtitle {
     float: right;
 }
 
