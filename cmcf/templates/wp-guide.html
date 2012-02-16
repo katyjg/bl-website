@@ -102,7 +102,7 @@
 
 <div id="headline">
     <div class="wrapper">
-	    <h2>{% feincms_navigation of feincms_page as toplevel level=1 %}{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}{{ p.title }}{% endif %}{% endfor %} &ndash; <span>{{feincms_page.title}}</span></h2>
+	    <h2>{% feincms_navigation of feincms_page as toplevel level=1 %}{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}{{ p.title }} &ndash; {% endif %}{% endfor %}<span>{{feincms_page.title}}</span></h2>
     </div>
 </div>
 
