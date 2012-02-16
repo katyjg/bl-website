@@ -455,23 +455,23 @@ p.link {
 }
 
 #toTop, #toTop a { 
-    min-width: 45px;
+    min-width: 42px;
     min-height: 42px;
     position:fixed;
     display: scroll;
     bottom:10px;
     right:10px;
     cursor:pointer;
-    background-image: url(/media/img/BackToTop_blue_fade.png)
+    background-image: url(/media/img/to_top_fade.png)
 }
 #toTop.wiki, #toTop a.wiki {
-    background-image: url(/media/img/BackToTop_purple_fade.png)
+    background-image: url(/media/img/to_top_fade.png)
 }
 #toTop:hover, #toTop a:hover {
-    background-image: url(/media/img/BackToTop_blue.png);
+    background-image: url(/media/img/to_top.png);
 }
 #toTop.wiki:hover, #toTop a.wiki:hover {
-    background-image: url(/media/img/BackToTop_purple.png)
+    background-image: url(/media/img/to_top.png)
 }
 .quicklinks {
 	background: #eaeaf7;
