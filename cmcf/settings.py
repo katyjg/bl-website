@@ -72,8 +72,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'cmcf.urls'
 
 TEMPLATE_DIRS = (
-    '/users/kathryn/Code/cmcf-website/cmcf/templates/',
-    '/var/website/cmcf-website/cmcf/templates/',
+    os.path.join(os.path.dirname(__file__), 'templates/'),
 )
 
 INSTALLED_APPS = (

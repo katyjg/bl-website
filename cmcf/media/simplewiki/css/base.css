@@ -72,7 +72,8 @@ div#wiki_article h1
 
 div#wiki_article h2
 {
-	font-size: 110%;
+    font-family: "Open Sans", sans-serif;
+    font-size: 110%;
 	font-weight: normal;
 	color: #444;
     border-bottom: none;

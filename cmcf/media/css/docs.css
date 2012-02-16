@@ -4,19 +4,19 @@ html * {
 }
 
 #bodyContent h2 {
-	font-family: NuvoWeb-Medi, graublau-web, sans-serif;
-	font-size: 22px;
+	font-family: "Yanone Kaffeesatz", sans-serif;
+	font-size: 24px;
 	margin-bottom: 22px;
 	color: #333;
     line-height: 130%;
 }
 #bodyContent h2, #bodyContent h3, #bodyContent h4, #bodyContent h5, #bodyContent h6 {
-		border-bottom: 1px solid #cccccc;
+		border-bottom: 1px solid #ddd;
 		font-weight: normal;
 }
 #bodyContent h2.pagetitle {
-	font-family:  "NuvoWeb-Medi", "graublau-web", sans-serif;
-	font-size: 28px;
+	font-family:  "Yanone Kaffeesatz", sans-serif;
+	font-size: 30px;
 	font-weight: normal;
 	color: #777;
 	padding-bottom: 2px;
@@ -30,38 +30,44 @@ html * {
 }
 
 #bodyContent h2 {
-	margin-top: 22px;
-	margin-bottom: 11px;
+	margin-top: 0.5em;
+	margin-bottom: 0px;
 }
 
 .editsection {
-font-size: 10px;
+font-size: 12px;
 font-weight: normal !important;
-font-family: "NuvoWeb-Medi", "graublau-web", sans-serif;
+font-family: "Yanone Kaffeesatz", "Open Sans Condensed", sans-serif;
 }
 #bodyContent h3 {
 	padding-bottom: 4px;
 	margin-bottom: 4px;
 }
 #bodyContent h2 {
-font-size: 150%;
+font-size: 180%;
 }
 #bodyContent h3 {
-font-size: 140%;
+font-size: 150%;
 border-color: #eee;
 }
 #bodyContent h4 {
-font-size: 120%;
+font-size: 130%;
 }
 
 #bodyContent h5 {
-font-size: 100%;
+font-size: 110%;
 font-weight: bold;
 }
 
 #bodyContent {
-color: #000;
+    margin-top: 0.5em;
+    color: #000;
 }
+
+#home-below #bodyContent {
+    margin-top: 0 !important;
+}
+
 #bodyContent p {
 	clear: left;
 }
@@ -79,6 +85,9 @@ color: #000;
 	margin-bottom: 15px;
     margin-top: 15px;
 	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
+	font-size: 14px;
+	text-shadow: #fff 0px 1px 0px, #999 0px 0px 1px;
+	
 	font-weight: inherit;
 	overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
 	white-space: pre-wrap; /* css-3 */
@@ -109,9 +118,8 @@ textarea:focus, input:focus {
 	background: #f1f1f1;
 	border: 1px solid #dadada;
 	float: right;
-	margin-left: 16px;
+	margin:  0 0 1em 1em;
 	padding: 8px;
-	margin-bottom: 12px;
 	max-width: 212px;
 }
 #pagebody #toc ul {
@@ -154,101 +162,3 @@ input[type="checkbox"] {
 	margin-right: 4px;
 }
 
-label {
-/*	margin-right: 8px;*/
-}
-/*
-.printfooter, hr, .urlexpansion {
-	display: none !important;
-}
-#bodyContent h2.subtitle {
-    margin-top: 0px;
-    font-family: "Lucida Grande", Verdana, sans-serif; 
-}
-#bodyContent h2.subtitle a {
-    font-weight: bold;
-    font-size: 1em;
-}
-.col-2 h3 {
-	margin-top: 3px;
-}
-
-h4 b {
-font-weight: normal;
-}
-p.login a {
-	margin-right: 6px;
-}
-
-#editpage-copywarn p {
-	margin-top: 18px !important;
-}
-
-blockquote {
-	padding: 11px 22px !important;
-}
-dl dt {
-	font-weight: bold;
-	font-size: 110%;
-}
-
-dl dd {
-	margin-bottom: 11px;
-	margin-left: 1em;
-}
-#tocinside td {
-	padding-top: 4px;
-	font-size: 10px;
-}
-
-.tocindent p {
-	padding-left: 12px;
-	margin-bottom: 0 !important;
-}
-
-.tocindent .tocindent p {
-	padding-left: 32px;
-}
-
-table.diff { background:white; }
-td.diff-otitle { background:#ffffff; }
-td.diff-ntitle { background:#ffffff; }
-td.diff-addedline {
-    background:#ccffcc;
-    font-size: smaller;
-}
-td.diff-deletedline {
-    background:#ffffaa;
-    font-size: smaller;
-}
-td.diff-context {
-    background:#eeeeee;
-    font-size: smaller;
-}
-span.diffchange { color: red; font-weight: bold; }
-
-// image css //
-a img.alignright, .tright img, img.alignright, img.right {float:right; margin:0 0 1em 1em}
-a img.alignleft, .tleft img, img.alignleft, img.left {float:left; margin:0 1em 1em 0}
-a img.aligncenter, img.aligncenter, img.center {display: block; margin-left: auto; margin-right: auto}
-
-#bodyContent hr {
-display: block !important;
-border: 0;
-border-top: 1px solid #ddd;
-}
-
-#bodyContent #Copyedit {
-border: solid 1px transparent; 
-	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;	
-	-webkit-border-radius: 3px;
-background-color: #eef; 
-text-align: center; 
-padding: 1em 1em 1px 1em; 
-margin: 1em 0;
-
-}
-
-.new, .new:link, .new:visited { color: red !important; }
-.new:hover, .new:active { text-decoration: underline !important; }*/

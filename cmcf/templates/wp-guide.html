@@ -1,7 +1,5 @@
 {% extends "wp-root.html" %}
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
-@import "http://s.wordpress.org/style/codex-wp4.css?2";
-@import "http://s.wordpress.org/style/wp4.css?10";
 
 {% block "page-content" %}
 
@@ -13,6 +11,7 @@
     {% if ml|is_equal_or_parent_of:feincms_page %}
         {% feincms_navigation of ml as submidlevel level=4 %}
 
+
 {% if submidlevel %}
 <div id="headline">
     <div class="wrapper">
@@ -23,6 +22,7 @@
                     {{ p.title }}
             	{% endif %}
             {% endfor %}
+             &ndash; <span>{{feincms_page.title}}</span>
         </h2>
     </div>
 </div>
@@ -31,7 +31,6 @@
     <div class="wrapper">
 	    <div class="col-9" id="bodyContent">
             <div id="guide">
-            	<h2 class="pagetitle">{{feincms_page.title}}</h2>
         	  	{% feincms_navigation of feincms_page as sublevel level=4 %}
 	        	{% feincms_navigation of feincms_page as toplevel level=2 %}
 	        	{% for p in toplevel %}
@@ -103,7 +102,7 @@
 
 <div id="headline">
     <div class="wrapper">
-	    <h2>{% feincms_navigation of feincms_page as toplevel level=1 %}{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}{{ p.title }}{% endif %}{% endfor %}</h2>
+	    <h2>{% feincms_navigation of feincms_page as toplevel level=1 %}{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}{{ p.title }}{% endif %}{% endfor %} &ndash; <span>{{feincms_page.title}}</span></h2>
     </div>
 </div>
 
@@ -111,7 +110,6 @@
     <div class="wrapper">
 
        	<div class="col-9" id="bodyContent">
-            <h2 class="pagetitle">{{feincms_page.title}}</h2>
       	    {% feincms_navigation of feincms_page as sublevel level=3 %}
             {% ifnotequal sublevel.count 0 %}
 	        	<table id="toc" class="toc" summary="Contents"><tr><td>
