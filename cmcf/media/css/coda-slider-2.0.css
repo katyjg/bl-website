@@ -61,8 +61,9 @@ div.slider-image {
     position: absolute;
 }
 div.slider-image img{
-    vertical-align: middle !important;
-    max-height: 270px;
+    vertical-align: top !important;
+    padding: 15px 0;
+    max-height: 235px;
     max-width: 250px;
 }
 div.slider-image a {
