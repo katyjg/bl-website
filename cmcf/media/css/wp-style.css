@@ -758,13 +758,10 @@ p.person {
 }
 
 #footer {
-	clear: both;
-	border-top: 1px solid #dedede;
-	padding-top: 4px;
-	margin: 0 auto;
+    clear: both;
     background: none repeat scroll 0 0 #F7F7F7;
     border-top: 1px solid #DFDFDF;
-    height: 95px;
+    height: 99px;
     margin-top: -100px;
     position: relative;
 }
@@ -781,8 +778,9 @@ p.person {
 
 #footer p {
 /*	font-family: "NuvoWeb-Medi", "graublau-web", sans-serif;*/
-	float: left;
 	color: #bbb;
+	padding-top: 1em;
+	padding-left: 10px;
 }
 
 #footer p a {
