@@ -757,6 +757,11 @@ p.person {
 	padding-left: 14px;
 }
 
+.push {
+	clear: both;
+	height: 100px;
+}
+
 #footer {
     clear: both;
     background: none repeat scroll 0 0 #F7F7F7;
@@ -772,15 +777,10 @@ p.person {
     min-height: 100%;
 }
 
-#footer .wrapper {
-	width: 932px;
-}
-
 #footer p {
-/*	font-family: "NuvoWeb-Medi", "graublau-web", sans-serif;*/
 	color: #bbb;
 	padding-top: 1em;
-	padding-left: 10px;
+    margin-left: 10px;
 }
 
 #footer p a {
