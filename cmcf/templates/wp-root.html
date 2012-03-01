@@ -1,4 +1,5 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load get_version %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <html dir="ltr" lang="en">
@@ -9,6 +10,7 @@
     <title>CMCF - {{ feincms_page.title }}</title>
     <meta name="description" content="CMCF is an umbrella facility which operates two beamlines, 08ID-1 and 08B1-1, at the Canadian Light Source. Together, both beamlines enable high-resolution structural studies of proteins, nucleic acids and other macromolecules, satisfying the requirements of the most challenging and diverse crystallographic experiments." >
     <meta name="keywords" content="CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein" >
+    <meta name="generator" content="CMCF-Web {{ 0|get_version }}" >
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700|Open+Sans+Condensed:300,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
     <link type="text/css" href="/media/css/wp-style.css" rel="stylesheet" media="screen">

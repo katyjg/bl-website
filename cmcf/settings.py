@@ -3,6 +3,12 @@ import os
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+_version_file = os.path.join(os.path.dirname(__file__), 'VERSION')
+if os.path.exists(_version_file):
+    VERSION = (file(_version_file)).readline().strip()
+else:
+    VERSION = '- Development -'
+    
 #ADMINS will receive feedback from the website and 500 errors if they arise
 ADMINS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
