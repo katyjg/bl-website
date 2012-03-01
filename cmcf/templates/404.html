@@ -33,53 +33,54 @@ function addBookmark(title,url) {
 </head>
 <body>
 <div id="main-wrapper">
-<div id="header">
-    <div class="banner">
-    <div class="logo">
-	<div class="wrapper"> 
-        <!--<a href="/"><h1>Canadian Macromolecular Crystallography Facility</h1></a>-->
-<!--        <h1>Canadian Macromolecular<br/>Crystallography Facility</h1>-->
-        <!--<h2>Beamlines 08ID-1 & 08B1-1 at the Canadian Light Source </h2>-->
-    </div>
-    <ul>
-    {% feincms_navigation of / as toplevel level=1 %}
-    {% for p in toplevel %}
-    <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
-        {% feincms_navigation of p as sublevel level=2 %}
-            {% if sublevel %}{% for sp in sublevel %}
-                {% if forloop.first %}<ul class="nav-submenu">{% endif %}
-                <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
-                {% if forloop.last %}</ul>{% endif %}
-            {% endfor %}{% endif %}
-        </li>
-    {% endfor %}
-</ul>
-    </div>
-    </div>
-</div>
-
-
-<div id="headline">
-	<div class="wrapper">
-		<h2>Oops... </h2>
+	<div id="header">
+	    <div class="banner">
+	    <div class="logo">
+		<div class="wrapper"> 
+	        <!--<a href="/"><h1>Canadian Macromolecular Crystallography Facility</h1></a>-->
+	        <!--<h1>Canadian Macromolecular<br/>Crystallography Facility</h1>-->
+	        <!--<h2>Beamlines 08ID-1 & 08B1-1 at the Canadian Light Source </h2>-->
+	    </div>
+	    <ul>
+	    {% feincms_navigation of / as toplevel level=1 %}
+	    {% for p in toplevel %}
+	    <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
+	        {% feincms_navigation of p as sublevel level=2 %}
+	            {% if sublevel %}{% for sp in sublevel %}
+	                {% if forloop.first %}<ul class="nav-submenu">{% endif %}
+	                <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
+	                {% if forloop.last %}</ul>{% endif %}
+	            {% endfor %}{% endif %}
+	        </li>
+	    {% endfor %}
+	</ul>
+	    </div>
+	    </div>
 	</div>
-</div>
 
-<div id="pagebody">
-    <div class="wrapper">
-        <div id="bodyContent" class="col-12">
-            <h2>Sorry, we couldn't find {{ request_path }}</h2>
-            <p>Things to try:
-                <ul>
-                    <li>Check that the URL you entered is correct.</li>
-                    <li>Visit our <a href="/sitemap/">Sitemap</a> to find the topic you were looking for.</li>
-                    <li>Return to our <a href="/">home page</a> and use the navigation menu to find what you need.</li>
-                    <li><a href="/contact-us/">Contact us</a> and we'll see if we can point you in the right direction</li>
-                </ul>
-            </p>
-        </div>
-    </div>
-</div>
+
+	<div id="headline">
+		<div class="wrapper">
+			<h2>Oops... </h2>
+		</div>
+	</div>
+
+	<div id="pagebody">
+	    <div class="wrapper">
+	        <div id="bodyContent" class="col-12">
+	            <h2>Sorry, we couldn't find {{ request_path }}</h2>
+	            <p>Things to try:
+	                <ul>
+	                    <li>Check that the URL you entered is correct.</li>
+	                    <li>Visit our <a href="/sitemap/">Sitemap</a> to find the topic you were looking for.</li>
+	                    <li>Return to our <a href="/">home page</a> and use the navigation menu to find what you need.</li>
+	                    <li><a href="/contact-us/">Contact us</a> and we'll see if we can point you in the right direction</li>
+	                </ul>
+	            </p>
+	        </div>
+	    </div>
+	</div>
+    <div class="push"></div>
 </div>
 <div id="footer">
 	<div class="wrapper">

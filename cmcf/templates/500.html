@@ -33,47 +33,48 @@ function addBookmark(title,url) {
 </head>
 <body>
 <div id="main-wrapper">
-<div id="header">
-    <div class="banner">
-    <div class="logo">
-	<div class="wrapper"> 
-        <!--<a href="/"><h1>Canadian Macromolecular Crystallography Facility</h1></a>-->
-<!--        <h1>Canadian Macromolecular<br/>Crystallography Facility</h1>-->
-        <!--<h2>Beamlines 08ID-1 & 08B1-1 at the Canadian Light Source </h2>-->
-    </div>
-    <ul>
-    {% feincms_navigation of / as toplevel level=1 %}
-    {% for p in toplevel %}
-    <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
-        {% feincms_navigation of p as sublevel level=2 %}
-            {% if sublevel %}{% for sp in sublevel %}
-                {% if forloop.first %}<ul class="nav-submenu">{% endif %}
-                <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
-                {% if forloop.last %}</ul>{% endif %}
-            {% endfor %}{% endif %}
-        </li>
-    {% endfor %}
-</ul>
-    </div>
-    </div>
-</div>
-
-
-<div id="headline">
-	<div class="wrapper">
-		<h2>Oops... </h2>
+	<div id="header">
+	    <div class="banner">
+	    <div class="logo">
+		<div class="wrapper"> 
+	        <!--<a href="/"><h1>Canadian Macromolecular Crystallography Facility</h1></a>-->
+	        <!--<h1>Canadian Macromolecular<br/>Crystallography Facility</h1>-->
+	        <!--<h2>Beamlines 08ID-1 & 08B1-1 at the Canadian Light Source </h2>-->
+	    </div>
+	    <ul>
+	    {% feincms_navigation of / as toplevel level=1 %}
+	    {% for p in toplevel %}
+	    <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
+	        {% feincms_navigation of p as sublevel level=2 %}
+	            {% if sublevel %}{% for sp in sublevel %}
+	                {% if forloop.first %}<ul class="nav-submenu">{% endif %}
+	                <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
+	                {% if forloop.last %}</ul>{% endif %}
+	            {% endfor %}{% endif %}
+	        </li>
+	    {% endfor %}
+	</ul>
+	    </div>
+	    </div>
 	</div>
-</div>
-
-<div id="pagebody">
-    <div class="wrapper">
-        <div id="bodyContent" class="col-12">
-            <h2>We've encountered an Internal Server Error.</h2>
-            <p>A notification has been sent, and we will try to sort out the problem as soon as possible.  (If you would like to help, let us know what you were trying to do when the error occurred through our <a href="/contact-us/feedback/">feedback</a> page.)</p>
-            <p>Sorry for the inconvenience!</p>
-        </div>
-    </div>
-</div>
+	
+	
+	<div id="headline">
+		<div class="wrapper">
+			<h2>Oops... </h2>
+		</div>
+	</div>
+	
+	<div id="pagebody">
+	    <div class="wrapper">
+	        <div id="bodyContent" class="col-12">
+	            <h2>We've encountered an Internal Server Error.</h2>
+	            <p>A notification has been sent, and we will try to sort out the problem as soon as possible.  (If you would like to help, let us know what you were trying to do when the error occurred through our <a href="/contact-us/feedback/">feedback</a> page.)</p>
+	            <p>Sorry for the inconvenience!</p>
+	        </div>
+	    </div>
+	</div>
+    <div class="push"></div>
 </div>
 <div id="footer">
 	<div class="wrapper">

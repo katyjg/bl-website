@@ -422,7 +422,6 @@ p.link {
 .col-11 { width: 852px; }
 .col-12 { width: 932px; }
 
-
 #announcements {
 	background: #f7f7f7;
 	border-bottom: 1px solid #dfdfdf;
@@ -495,6 +494,10 @@ p.link {
 #home-welcome .col-7 {
 	border-right: 1px solid #dfdfdf;
 	width: 531px;
+}
+
+#home-welcome .col-5 {
+	width: 370px;
 }
 
 #home-below {
@@ -1252,16 +1255,19 @@ b.title-style{
 	color:#21759B;
 }
 div.bio p {
-    color: #000;
-    font-size: 15px;
-    font-family: "Open Sans Condensed", sans-serif;
+    color: #222;
+    font-size: 105%;
+    font-family: "gentium", serif;
     line-height: 120%;
     text-align: justify;
 	hyphens: auto;
+	margin-bottom: 15px !important;
 	text-shadow: #fff 0px 1px 0px, #999 0px 0px 1px;
 }
 div.bio h3 {
     text-align: center;
+    font-style: italic;
+    padding-bottom: 20px !important;
     color: #5c5c5c;
 }
 div.bio { 
