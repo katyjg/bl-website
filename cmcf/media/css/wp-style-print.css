@@ -1,8 +1,5 @@
 @import "/media/css/wp-style.css";
 
-html * {
-	font-variant: normal !important;
-}
 div#header {
     display: none;
 }

@@ -11,3 +11,4 @@ junk/
 cmcf.db
 .svn/
 settings_local.py
+cmcf/VERSION
