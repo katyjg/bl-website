@@ -13,3 +13,6 @@ div#wiki_article {
 #toTop.wiki, a.wiki {
     display: none !important;
 }
+img {
+	max-width: 780px !important;
+}
