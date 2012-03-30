@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/img/clslogo.ico'}),
     (r'^wiki/', include('simplewiki.urls')),
     (r'^apply/', include('application_form.urls')),
+    (r'^admin_calendar/', include('scheduler.admin_schedule_urls')),
 
     # This avoids breaking Django admin's localization JavaScript when using
     # the FeinCMS frontend editing:
@@ -60,6 +61,9 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^media/(?P<path>.*)/$', 'django.views.static.serve', {
             'document_root': 'var/website/cmcf-website/cmcf/media' 
+            }),
+        (r'^admin_media/(?P<path>.*)/$', 'django.views.static.serve', {
+            'document_root': 'var/website/cmcf-website/cmcf/admin_media' 
             }),
     )
 

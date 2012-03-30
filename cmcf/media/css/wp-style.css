@@ -1072,6 +1072,41 @@ thead th {
     background: #d6e0d6;
     text-align: center !important;
 }
+
+.modal-form {color: black; cursor: pointer;}
+.admin {color: #666; }
+.modal-form:hover, .modal-form:hover text.admin {color: #d54e21;}
+
+.delete-tool, a.add-tool, a.edit-tool {width: 16px; display: none;}
+.delete-tool {
+	width: 16px; 
+	display: none; 
+	background: url(/media/img/delete-icon-blue.png) no-repeat; 
+	float: right; 
+	z-index: 999;
+	margin-right: -18px;
+}
+td.del {
+	padding-right: 23px !important;
+}
+td:hover .delete-tool {
+	display: inline;
+}
+#schedule td.td-time, #schedule td.column1 {
+	width: 15%;
+}
+.mail-icon, .remote-icon {
+	float: left; 
+	padding:7px 12px; 
+	margin-top:1px; 
+	margin-right: 5px; 
+}
+.delete-tool:hover {background: url(/media/img/delete-icon.png) no-repeat;}
+.remote-icon {background: url(/media/img/remote-icon.png) no-repeat;}
+.mail-icon {background: url(/media/img/mail-icon.png) no-repeat;}
+.beam-main {background-image: url(/media/img/maintenance-pat.png);}
+
+
 .tdcenter {
     text-align: center !important;
 }
@@ -1236,10 +1271,6 @@ input.half {
 }
 span.req {
     color: red;
-}
-div.aca ul {
-    list-style: none !important;
-    list-style-image: none !important;
 }
 div.aca ul li ul {
     list-style-image: url("/media/img/stock_right4.png") !important;

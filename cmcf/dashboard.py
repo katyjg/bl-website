@@ -26,6 +26,10 @@ class CustomIndexDashboard(Dashboard):
                     'title': _('File Browser'),
                     'url': reverse('fb_browse'),
                 },
+                {
+                    'title': _('Schedule Beamtime'),
+                    'url': reverse('admin-scheduler.thisweek'),
+                },
             ]
         ))
         

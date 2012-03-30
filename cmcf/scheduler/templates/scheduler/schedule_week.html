@@ -3,6 +3,7 @@
         <span>Week of {% for day in calendar %}{% if forloop.first %}{{day.0}} to {% endif %}{% if forloop.last %}{{day.0}}{% endif %}{% endfor %}</span>
     </h2>
     <div>
+    {% if not admin %}
         <a class="prev" href='{% url scheduler.anyweek day=prev_week %}' title="Previous Week">
             <img src="/media/img/prev.png" alt="Prev">
         </a>
@@ -10,8 +11,111 @@
         <a class="next" href='{% url scheduler.anyweek day=next_week %}' title="Next Week">
             <img src="/media/img/next.png" alt="Next">
         </a>
+    {% else %}
+        <a class="prev" href='{% url admin-scheduler.anyweek day=prev_week %}' title="Previous Week">
+            <img src="/media/img/prev.png" alt="Prev">
+        </a>
+        <a class="current" href='{% url admin-scheduler.thisweek %}'>Back to Current Week</a>
+        <a class="next" href='{% url admin-scheduler.anyweek day=next_week %}' title="Next Week">
+            <img src="/media/img/next.png" alt="Next">
+        </a>
+    {% endif %}
     </div>
     <table>
+        <thead>
+            <tr>
+                <th class="date" scope="col" abbr="Date">Date</th>
+                <th class="date" scope="col" abbr="Shift">Shift</th>
+                    {% for bl in beamlines %}
+                        <th class="beamline" scope="col" abbr="{{bl.name}}">{{bl.name}}</th>
+                    {% endfor %}
+                <th class="date" scope="col" abbr="On Call">On Call</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% load schedule_extras %}
+        {% for day in calendar %}
+            <tr>
+                <td rowspan=3 class="column1">{{day.0}}</td>
+                    {% for mode in day.3.0 %}
+                        {% with forloop.counter0 as index %}
+                        <td class="td-time {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %} tdcenter">
+                            {% cycle '08:00-16:00' '16:00-24:00' '00:00-08:00' %}
+                        </td>
+                        
+                        {% for visit in day.1 %}
+                            {% with beamlines|get_webmode:forloop.counter0 as bl %}
+                            <td {% if admin %}
+                                    class="del {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}
+                                           {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
+                                                {% if vis.maintenance %}beam-main{% endif %}
+                                           {% endwith %}{% else %}
+                                                modal-form link-cell
+                                           {% endif %}"
+                                    {% if not visit|get_webmode:index %}
+	                                    href="{% url cmcf-add-visit %}?beamline={{bl.pk}}&start_date={{day.5}}&first_shift={{forloop.parentloop.counter0}}"
+	                                    title="Add new visit"
+	                                {% endif %}
+                                {% else %}
+	                                class="{% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}
+	                                       {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
+	                                            {% if vis.maintenance %}beam-main{% endif %}
+	                                       {% endwith %}{% endif %}"
+                                {% endif %}>
+                                {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
+                                    {% if vis.remote %}<div class="remote-icon" title="Remote Access"></div>
+                                    {% else %}{% if vis.mail_in %}<div class="mail-icon" title="Mail-In Access"></div>{% endif %}
+                                    {% endif %}
+                                    <text{% if admin %} class="modal-form"
+                                       href="{% url cmcf-edit-visit vis.pk %}"
+                                       title="Edit this visit"{% endif %}>
+                                       {% if not vis.maintenance %}
+	                                       {% if vis.purchased %}Purchased {% if not admin %}Access{% else %}<text class="admin">- {{ vis.description }}</text>{% endif %}
+	                                       {% else %}{{ vis.parse_name.0 }}{% if admin %}<text class="admin"> ({{ vis.parse_name.1 }})</text>{% endif %}
+	                                       {% endif %}
+                                       {% else %}Beamline Maintenance
+                                           {% if admin %}<text class="admin">{{ vis.description }}</text>{% endif %}
+                                       {% endif %}</text>
+                                    {% if admin %}<div class="modal-form delete-tool" 
+                                       href="{% url cmcf-delete-visit vis.pk %}"
+                                       title="Delete this visit">&nbsp;</div>{% endif %}
+                                {% endwith %}{% endif %}
+                            </td>
+                            {% endwith %}
+                        {% endfor %}
+                            {% if forloop.first %}
+                                <td rowspan=2 
+                                    {% if day.2 %}class="oncall"
+                                    {% else %}
+                                        {% if not admin %}class="column1"
+                                        {% else %}class="column1 modal-form link-cell"
+                                                  href="{% url cmcf-add-oncall %}?date={{day.5}}"
+                                        {% endif %}
+                                    {% endif %}>
+                                    {{day.2.0.local_contact.initials}}
+                                    {% if day.2 %}{% if admin %}
+	                                    <a class="modal-form delete-tool" 
+	                                        href="{% url cmcf-delete-oncall day.2.0.pk %}"
+	                                        title="Delete this on-call shift">&nbsp;</a>
+                                    {% endif %}{% endif %}
+                                </td>
+                            {% else %}{% if forloop.last %}
+                                <td class="column1"></td>
+                            {% endif %}{% endif %}</tr><tr>
+                        {% endwith %}
+                      {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+    <!-- table>
         <thead>
             <tr>
                 <th class="date" scope="col" abbr="Date">Date</th>
@@ -23,43 +127,31 @@
             </tr>
         </thead>
         <tbody>
-            {% for day in calendar %}
-                <tr>
-                    <td rowspan=3 class="column1">{{day.0}}</td>
-                    <td class="{% if day.3.0.0 %}{{day.3.0.0}}{% else %}{{day.4.0}}{% endif %} tdcenter">
-                        08:00-16:00
-                    </td>
-                    {% for bl in day.1 reversed %}
-                        <td class="{% if day.3.0.0 %}{{day.3.0.0}}{% else %}{{day.4.0}}{% endif %} tdcenter">
-                            {{bl.0}}
-                        </td>       
-                    {% endfor %}
-                    <td rowspan=2 class="{% if day.2 %}oncall{% else %}column1{% endif %}">{{day.2}}</td>
-                </tr>
-                <tr>      
-                    <td class="{% if day.3.0.1 %}{{day.3.0.1}}{% else %}{{day.4.1}}{% endif %} tdcenter">
-                        16:00-24:00
-                    </td>
-                    {% for bl in day.1 reversed %}
-                        <td class="{% if day.3.0.1 %}{{day.3.0.1}}{% else %}{{day.4.1}}{% endif %} tdcenter">
-                            {{bl.1}}
-                        </td>       
-                    {% endfor %}
-                </tr>
-                <tr>      
-                    <td class="{% if day.3.0.2 %}{{day.3.0.2}}{% else %}{{day.4.2}}{% endif %} tdcenter">
-                        24:00-08:00
-                    </td>
-                    {% for bl in day.1 reversed %}
-                        <td class="{% if day.3.0.2 %}{{day.3.0.2}}{% else %}{{day.4.2}}{% endif %} tdcenter">
-                            {{bl.2}}
-                        </td>       
-                    {% endfor %}
-                    <td class="column1"></td>
+        {% load schedule_extras %}
+        {% for day in calendar %}
+            <tr>
+                <td rowspan=3 class="column1" href="/calendar">{{day.0}}</td>
+                    {% for mode in day.3.0 %}
+                        {% with forloop.counter0 as index %}
+                        <td class="{% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %} tdcenter">
+                            {% cycle '08:00-16:00' '16:00-24:00' '00:00-08:00' %}
+                        </td>
+                        {% for bl in day.1 reversed%}
+                            <td class="tdcenter {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}">
+                                {{bl|get_webmode:index}}
+                            </td>
+                        {% endfor %}
+                            {% if forloop.first %}
+                                <td rowspan=2 class="{% if day.2 %}oncall{% else %}column1{% endif %}">{{day.2}}</td>
+                            {% else %}{% if forloop.last %}
+                                <td class="column1"></td>
+                            {% endif %}{% endif %}</tr><tr>
+                        {% endwith %}
+                      {% endfor %}
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table-->
 </div>
 
 

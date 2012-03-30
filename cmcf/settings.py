@@ -236,6 +236,8 @@ LANGUAGES = (
 FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
 #FEINCMS_TIDY_HTML = True
 
+LOGIN_URL = '/admin/'
+
 ADMIN_TOOLS_INDEX_DASHBOARD = 'cmcf.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'cmcf.dashboard.CustomAppIndexDashboard'
 

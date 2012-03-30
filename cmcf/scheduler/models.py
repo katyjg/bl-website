@@ -296,25 +296,37 @@ class Visit(models.Model):
     Represents the start and end time for a specific beamline information for ``OnCall`` entries.
     
     '''
+    HELP = {
+        'description': "Should include a name and proposal number in this format: Bruce Wayne (12-3456).  This information will be given to the User's Office.",
+        'mail_in': "If selected, a symbol indicating mail-in access will be displayed along with the user's last name.",
+        'purchased': "If selected, only 'Purchased Access' will appear on the public CMCF schedule.",
+        'remote': "If selected, a symbol indicating remote access will be displayed along with the user's last name.",
+        'maintenance': "If selected, the beamline mode (colour) on the public CMCF schedule will indicate maintenance activities." 
+    }
+    
     SHIFT_CHOICES = (
         (0, u'08:00 - 16:00'),
         (1, u'16:00 - 24:00'),
         (2, u'24:00 - 08:00'),
     )
     
-    description = models.CharField('Visitor', max_length=60)
+    description = models.CharField('Visitor and Proposal Number (eg. John Doe (#14-5290))', max_length=60)
     beamline = models.ForeignKey(Beamline)
-    start_date = models.DateField(blank=True)
-    first_shift = models.IntegerField(blank=True, choices=SHIFT_CHOICES)
-    end_date = models.DateField(blank=True)
-    last_shift = models.IntegerField(blank=False, choices=SHIFT_CHOICES)
+    start_date = models.DateField(blank=True, null=False)
+    first_shift = models.IntegerField(blank=True, choices=SHIFT_CHOICES, null=False)
+    end_date = models.DateField(blank=True, null=False)
+    last_shift = models.IntegerField(blank=True, choices=SHIFT_CHOICES, null=False)
+    remote = models.BooleanField(default=False)
+    mail_in = models.BooleanField(default=False)
+    purchased = models.BooleanField(default=False)
+    maintenance = models.BooleanField(default=False)  
     objects = VisitManager()    
 
     def __unicode__(self):
         """Human readable string for ``Visit``"""
         return '%s, %s to %s' % (self.description, self.start_date, self.end_date)
     
-    def get_shifts(self, dt):
+    def get_shifts(self, dt, ids=False):
         """Get all shifts for given date"""
         shifts = [None, None, None]
         
@@ -326,9 +338,17 @@ class Visit(models.Model):
             if self.end_date == dt:
                 day_last = self.last_shift
             for i in range(day_first, day_last+1):
-                shifts[i] = self.description
-        
+                if ids:
+                    shifts[i] = [self.description, self]
+                else:
+                    shifts[i] = self.description
         return shifts
+    
+    def parse_name(self):
+        try:
+            return [self.description.split('(')[0], self.description.split('(')[1].split(')')[0]]
+        except:
+            return [self.description, None]
 
     class Meta:
         unique_together = (
@@ -376,6 +396,9 @@ class OnCall(models.Model):
         """Human readable string for ``Visit``"""
         return '%s, %s' % (self.local_contact.initials(), self.date)
         
+    def initials(self):
+        return self.local_contact.initials()
+    
     class Meta:
         unique_together = (("local_contact", "date"),)
         get_latest_by = "date"

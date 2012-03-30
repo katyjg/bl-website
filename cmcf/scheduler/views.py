@@ -7,18 +7,140 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic.create_update import delete_object
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.utils.encoding import smart_str
 from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 
 import datetime
 import re
 from django.db.models import Q
 from django.conf import settings
-from tagging.models import Tag, TaggedItem
 
 from scheduler.models import *
 from calendar import Calendar, HTMLCalendar
+
+def admin_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME):
+    """
+    Decorator for views that checks that the user is logged in, redirecting
+    to the log-in page if necessary.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.is_authenticated() and u.is_superuser,
+        redirect_field_name=redirect_field_name
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
+@admin_login_required
+def admin_scheduler(request, day=None, template='scheduler/admin_schedule_week.html'):
+    return current_week(request, day, template, admin=True)
+
+@admin_login_required
+def edit_visit(request, id, model, form, template='wp-root.html'):
+    form_info = {'title': 'Edit Beamline Visit',
+                 'action':  '/admin_calendar/edit-visit/%s/' % id,
+                 'save_label': 'Save',
+                 'enctype' : 'multipart/form-data',
+                 }
+    visit = Visit.objects.get(pk__exact=id)
+    if request.method == 'POST':
+        frm = form(request.POST, instance=visit)
+        if frm.is_valid():
+            frm.save()
+            message =  '%(name)s modified' % {'name': smart_str(model._meta.verbose_name)}
+            request.user.message_set.create(message = message)
+            return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
+        else:
+            return render_to_response(template, {
+            'info': form_info, 
+            'form' : frm, 
+            }, context_instance=RequestContext(request))
+    else:
+        frm = form(instance=visit, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
+        return render_to_response(template, {
+        'info': form_info, 
+        'form' : frm,
+        }, context_instance=RequestContext(request))
+    
+@admin_login_required
+def delete_object(request, id, model, form, template='wp-root.html'):
+    obj = model.objects.get(pk__exact=id)
+    form_info = {        
+        'title': 'Delete %s?' % obj,
+        'sub_title': 'The %s (%s) will be deleted' % ( model._meta.verbose_name, obj),
+        'action':  request.path,
+        'message': 'Are you sure you want to delete this visit?',
+        'save_label': 'Delete'
+        }
+    if request.method == 'POST':
+        frm = form(request.POST, instance=obj)
+        if frm.is_valid():
+            message =  '%(name)s deleted' % {'name': smart_str(model._meta.verbose_name)}
+            obj.delete()
+            request.user.message_set.create(message = message)
+            return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
+        else:
+            return render_to_response(template, {
+            'info': form_info, 
+            'form' : frm, 
+            }, context_instance=RequestContext(request))
+    else:
+        frm = form(instance=obj, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
+        return render_to_response(template, {
+            'info': form_info, 
+            'form' : frm,
+            }, context_instance=RequestContext(request))
+    
+
+@admin_login_required
+def add_object(request, model, form, template='wp-root.html'):
+    """
+    A view which displays a Form of type ``form`` using the Template
+    ``template`` and when submitted will create a new object of type ``model``.
+    """
+    form_info = {'title': 'Add New %s' % model.__name__,
+                 'action':  request.path,
+                 'save_label': 'Submit',
+                 'enctype' : 'multipart/form-data',
+                 }
+
+    if request.method == 'POST':
+        frm = form(request.POST)
+        if frm.is_valid():
+            new_obj = frm.save()
+            if model == Visit:
+                if not new_obj.start_date or not new_obj.first_shift:
+                    start_date = request.POST.get('start_date')
+                    first_shift = int(request.POST.get('first_shift'))
+                    ns = int(request.POST.get('num_shifts'))
+                    extra_shifts = ( ns - ( 3 - first_shift ))
+                    extra_days = extra_shifts/3 + ( bool(extra_shifts%3) and 1 or 0 )
+                    end_date = datetime.strptime(str(start_date), '%Y-%m-%d') + timedelta(days=extra_days)
+                    
+                    new_obj.start_date = start_date
+                    new_obj.first_shift = first_shift
+                    new_obj.last_shift = ( first_shift + ns - 1 ) % 3                  
+                    new_obj.end_date = end_date.date()
+                    new_obj.save()
+            message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
+            request.user.message_set.create(message = message)
+            return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
+        else:
+            return render_to_response(template, {
+                'info': form_info,
+                'form': frm,
+                }, context_instance=RequestContext(request))
+    else:
+        frm = form(initial=request.GET.items())
+        return render_to_response(template, {
+            'info': form_info, 
+            'form': frm, 
+            }, context_instance=RequestContext(request))
+    
 
 def get_one_week(dt=None):
     if dt is None:
@@ -32,19 +154,18 @@ def get_one_week(dt=None):
         week.append( wk_dt )
     return week
         
-def combine_shifts(shifts):
+def combine_shifts(shifts, ids=False):
     new_shifts = [[],[],[]]
     for shift in shifts:
         for i in range(3):
             if shift[i] is not None:
                 new_shifts[i].append(shift[i])
-    for i in range(3):
-        new_shifts[i] = ','.join(new_shifts[i])
-    
+    if not ids:
+        for i in range(3):
+            new_shifts[i] = ','.join(new_shifts[i])
     return new_shifts
-            
-    
-def current_week(request, day=None):
+
+def current_week(request, day=None, template='scheduler/schedule_week.html', admin=False):
     if day is not None:
         dt = datetime.strptime(day, '%Y-%m-%d').date()
     else:
@@ -71,6 +192,7 @@ def current_week(request, day=None):
     for day in this_wk:
         key = day.strftime('%a %b/%d')
         shifts = {}
+        date = day.strftime('%Y-%m-%d')
 	mode_shifts = []
 	beammode = []
 
@@ -82,13 +204,13 @@ def current_week(request, day=None):
             shifts[blkey] = []
 
             for vis in blvis:
-                shifts[blkey].append(vis.get_shifts(day))
+                shifts[blkey].append(vis.get_shifts(day, True))
 
         day_shifts = []
         for blkey in bl_keys:
-            day_shifts.append(combine_shifts(shifts[blkey]))
+            day_shifts.append(combine_shifts(shifts[blkey], True))
 
-        on_call = ','.join([o.local_contact.initials() for o in week_personnel if o.date == day])
+        on_call = [o for o in week_personnel if o.date == day]
         mode_day = []
 
         if day is not None:
@@ -101,15 +223,16 @@ def current_week(request, day=None):
             mode_day.append(stat.status2)
             mode_day.append(stat.status3)
                 
-        calendar.append((key, day_shifts, on_call, mode_shifts, mode_day))
+        calendar.append((key, day_shifts, on_call, mode_shifts, mode_day, date))
 
     return render_to_response(
-        'scheduler/schedule_week.html', 
+        template, 
         {
             'beamlines': beamlines,
             'calendar': calendar,
             'next_week': next_wk_day,
             'prev_week': prev_wk_day,
+            'admin':     admin,
         },
         context_instance=RequestContext(request),
     )
