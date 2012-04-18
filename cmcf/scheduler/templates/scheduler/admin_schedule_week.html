@@ -76,7 +76,8 @@
 		                dateFormat: "yy-mm-dd", /* Choose appropriate date format for path */
 		                onSelect: function(dateText,inst){
 		                /* replace "/admin_calendar/" with appropriate path */
-		                window.location['pathname'] = '/admin_calendar/' + dateText + '/';
+		                var ext = {% if admin %}'admin/'{% else %}'staff/'{% endif %}
+   		                window.location['pathname'] = '/beamtime/' + ext + dateText + '/';
 		                }
 		            });
 		        });
