@@ -164,6 +164,8 @@ class AdminVisitForm(forms.ModelForm):
     num_shifts = forms.IntegerField(widget=widgets.LeftHalfInput, initial=1, label='Number of Shifts' )
     first_shift = forms.IntegerField(required=True, widget=forms.HiddenInput)
     start_date = forms.DateField(widget=forms.HiddenInput)
+    last_shift = forms.IntegerField(required=False, widget=forms.HiddenInput)
+    end_date = forms.DateField(required=False, widget=forms.HiddenInput)
     remote = widgets.LeftCheckBoxField(required=False)
     mail_in = widgets.RightCheckBoxField(required=False)
     purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access")
@@ -171,7 +173,7 @@ class AdminVisitForm(forms.ModelForm):
     
     class Meta:
         model = Visit
-        fields = ('beamline','proposal','remote','mail_in','purchased','maintenance','description','num_shifts','first_shift','start_date')
+        fields = ('beamline','proposal','remote','mail_in','purchased','maintenance','description','num_shifts','first_shift','start_date','last_shift','end_date')
 
     def __init__(self, *args, **kwargs):
         super(AdminVisitForm, self).__init__(*args, **kwargs)
