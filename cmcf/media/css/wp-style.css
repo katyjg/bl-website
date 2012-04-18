@@ -1086,6 +1086,7 @@ thead th {
 	z-index: 999;
 	margin-right: -18px;
 }
+td.oncall .delete-tool {margin-right: 0px;}
 td.del {
 	padding-right: 23px !important;
 }

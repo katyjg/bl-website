@@ -1,15 +1,15 @@
 from django.contrib import admin
 
 from scheduler.forms import VisitForm
-from scheduler.models import Beamline, SupportPerson, Visit, OnCall, Stat, WebStatus
+from scheduler.models import *
 
 class VisitAdmin(admin.ModelAdmin):
     search_fields = ['description']
-    list_display = ('beamline', 'description', 'start_date', 'first_shift', 'end_date', 'last_shift')
+    list_display = ('beamline', 'proposal_display','description', 'start_date', 'first_shift', 'end_date', 'last_shift','remote','mail_in','maintenance','purchased')
     form = VisitForm
     fieldsets = (
         (None, {
-            'fields': ('beamline', 'description', ('start_date', 'first_shift'), ('end_date', 'last_shift')), 
+            'fields': ('beamline', 'proposal', ('remote','mail_in','maintenance','purchased'), 'description', ('start_date', 'first_shift'), ('end_date', 'last_shift')), 
         }),
     )
 
@@ -21,6 +21,7 @@ class SupportPersonAdmin(admin.ModelAdmin):
     list_display = ('last_name','first_name','phone_number','category','office')
 
 admin.site.register(Beamline)
+admin.site.register(Proposal)
 admin.site.register(SupportPerson, SupportPersonAdmin)
 admin.site.register(Visit, VisitAdmin)
 admin.site.register(OnCall, OnCallAdmin)

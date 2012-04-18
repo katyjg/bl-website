@@ -17,6 +17,7 @@ from feincms.content.image.models import ImageContent
 from feincms.content.richtext.models import RichTextContent
 import ImageFile
 
+import re
 import os
 import datetime
 import tagging
@@ -134,7 +135,6 @@ class Journal(models.Model):
         """Human readable string for Beamline"""
         return self.name        
 
-
 class Publication(models.Model):
     title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
@@ -144,7 +144,7 @@ class Publication(models.Model):
     citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
     original = models.CharField(_('DOI Reference'), blank=True, max_length=200)
     pdb_entries = models.CharField(_('PDB entries'), max_length=100, help_text="Comma-separated list of PDB codes (no spaces)", blank=True, default="") 
-    publish = models.DateTimeField(_('publish'), default=datetime.datetime.now, editable=False)
+    publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
     created = models.DateTimeField(_('created'), auto_now_add=True, editable=False)
     modified = models.DateTimeField(_('modified'), auto_now=True)
     tags = TagField()
@@ -175,10 +175,18 @@ class Publication(models.Model):
 
     def get_next_publication(self):
         return self.get_next_by_year(status__gte=2)
+    
+    def get_authors(self):
+        return len(self.authors) <= 35 and self.authors or '%s...' % self.authors[:35]
+    
+    def get_title(self):
+        p = re.compile(r'<.*?>')
+        title = p.sub('', self.title)
+        return len(title) <= 40 and title or '%s...' % title[:40]
 
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display  = ('year', 'authors')
+    list_display  = ('year', 'get_authors', 'publish', 'get_title', 'journal')
     search_fields = ('title', 'year', 'authors', 'journal')
 
     class Media:

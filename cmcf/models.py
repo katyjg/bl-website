@@ -189,7 +189,6 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('scheduler.urls', 'Schedule'),
     ('scheduler.contacts_urls', 'Contact List'),
     ('scheduler.oncall_urls', 'Oncall Legend'),
-    ('scheduler.admin_schedule_urls', 'Admin Scheduler'),
     ('slider.urls', 'Slider'),
     ('galleriffic.urls', 'Galleriffic'),
     ('blog.urls', 'News Full'),

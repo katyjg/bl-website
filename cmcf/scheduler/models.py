@@ -202,6 +202,34 @@ class Beamline(models.Model):
         """Human readable string for Beamline"""
         return self.name        
         
+class Proposal(models.Model):
+    '''
+    Basic proposal information for ``Visit`` entries.
+    '''
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    proposal_id = models.CharField(max_length=7)
+    description = models.CharField(max_length=200)
+    expiration = models.DateTimeField()
+
+    def __unicode__(self):
+        """Human readable string for ``Proposal``"""
+        detail = ''
+        if Proposal.objects.filter(last_name__exact=self.last_name).values('description').distinct().count() > 1:
+            length = 30 - len(self.last_name)
+            detail = '- %s%s' % (self.description[:length],(length < len(self.description) and '...' or ' '))
+        return '%s, %s (%s)%s' % (self.last_name, self.first_name[0], self.proposal_id, detail)
+    
+    def display(self):
+        return '%s, %s #%s' % (self.last_name, self.first_name, self.proposal_id)
+ 
+    class Meta:
+        unique_together = (
+            ("proposal_id"),
+            )
+        verbose_name = "Active Proposal"   
+        ordering = ['last_name']
+        
 class SupportPerson(models.Model):
     '''
     Identification and contact information for ``OnCall`` entries.
@@ -297,7 +325,8 @@ class Visit(models.Model):
     
     '''
     HELP = {
-        'description': "Should include a name and proposal number in this format: Bruce Wayne (12-3456).  This information will be given to the User's Office.",
+        'proposal': "Proposal titles are only shown for users with multiple proposals with different titles.",
+        'description': "If an LDAP account for someone other than the PI should be used, give the account name here.",
         'mail_in': "If selected, a symbol indicating mail-in access will be displayed along with the user's last name.",
         'purchased': "If selected, only 'Purchased Access' will appear on the public CMCF schedule.",
         'remote': "If selected, a symbol indicating remote access will be displayed along with the user's last name.",
@@ -310,26 +339,47 @@ class Visit(models.Model):
         (2, u'24:00 - 08:00'),
     )
     
-    description = models.CharField('Visitor and Proposal Number (eg. John Doe (#14-5290))', max_length=60)
+    description = models.CharField(max_length=60, blank=True)
     beamline = models.ForeignKey(Beamline)
-    start_date = models.DateField(blank=True, null=False)
-    first_shift = models.IntegerField(blank=True, choices=SHIFT_CHOICES, null=False)
-    end_date = models.DateField(blank=True, null=False)
-    last_shift = models.IntegerField(blank=True, choices=SHIFT_CHOICES, null=False)
+    proposal = models.ForeignKey(Proposal, null=True)
+    start_date = models.DateField(null=False)
+    first_shift = models.IntegerField(choices=SHIFT_CHOICES, null=False)
+    end_date = models.DateField(null=False)
+    last_shift = models.IntegerField(choices=SHIFT_CHOICES, null=False)
     remote = models.BooleanField(default=False)
     mail_in = models.BooleanField(default=False)
     purchased = models.BooleanField(default=False)
     maintenance = models.BooleanField(default=False)  
+    created = models.DateTimeField('date created', auto_now_add=True, editable=False)
+    modified = models.DateTimeField('date modified',auto_now=True, editable=False)
     objects = VisitManager()    
 
     def __unicode__(self):
         """Human readable string for ``Visit``"""
-        return '%s, %s to %s' % (self.description, self.start_date, self.end_date)
+        return (self.proposal and self.proposal_display()) or '%s, %s to %s' % (self.description, self.start_date, self.end_date)
     
+    def proposal_display(self):
+        return self.proposal and self.proposal.display() or 'No proposal specified'
+    
+    def notify(self):
+        return self.brief_notify(long=True)
+      
+    def brief_notify(self, long=False):
+        sd = self.first_shift < 2 and self.start_date or self.start_date + timedelta(days=1)
+        fs = self.first_shift < 2 and self.get_first_shift_display() or '00:00 - 08:00'
+        ed = self.last_shift < 2 and self.end_date or self.end_date + timedelta(days=1)
+        ls = self.last_shift < 2 and self.get_last_shift_display() or '00:00 - 08:00'
+        pre = (self.purchased and 'PURCHASED ACCESS') or (self.mail_in and 'MAIL-IN') or (self.remote and 'REMOTE') or ''
+        pre = (pre and '%s - ' % pre) or ''
+        suf = ((sd != ed or fs != ls) and ' (to %s - %s)' % (ed.strftime('%a, %b %d, %Y'), ls[:5])) or ''
+        if long:
+            return '%s%s - %s - %s%s' %(pre,self.proposal_display(),sd.strftime('%a, %b %d, %Y'),fs[:5],suf) 
+        return '%s%s - %s' %(pre,self.proposal_display(),sd.strftime('%a, %b %d, %Y'))
+                             
     def get_shifts(self, dt, ids=False):
         """Get all shifts for given date"""
         shifts = [None, None, None]
-        
+
         if self.start_date <= dt <= self.end_date:
             day_first = 0
             day_last = 2
@@ -344,12 +394,6 @@ class Visit(models.Model):
                     shifts[i] = self.description
         return shifts
     
-    def parse_name(self):
-        try:
-            return [self.description.split('(')[0], self.description.split('(')[1].split(')')[0]]
-        except:
-            return [self.description, None]
-
     class Meta:
         unique_together = (
             ("beamline", "start_date", "first_shift"),

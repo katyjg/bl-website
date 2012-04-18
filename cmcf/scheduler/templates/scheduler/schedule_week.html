@@ -3,7 +3,15 @@
         <span>Week of {% for day in calendar %}{% if forloop.first %}{{day.0}} to {% endif %}{% if forloop.last %}{{day.0}}{% endif %}{% endfor %}</span>
     </h2>
     <div>
-    {% if not admin %}
+    {% if admin %}
+        <a class="prev" href='{% url admin-scheduler.anyweek day=prev_week %}' title="Previous Week">
+            <img src="/media/img/prev.png" alt="Prev">
+        </a>
+        <a class="current" href='{% url admin-scheduler.thisweek %}'>Back to Current Week</a>
+        <a class="next" href='{% url admin-scheduler.anyweek day=next_week %}' title="Next Week">
+            <img src="/media/img/next.png" alt="Next">
+        </a>
+    {% else %}{% if not staff %}
         <a class="prev" href='{% url scheduler.anyweek day=prev_week %}' title="Previous Week">
             <img src="/media/img/prev.png" alt="Prev">
         </a>
@@ -12,14 +20,14 @@
             <img src="/media/img/next.png" alt="Next">
         </a>
     {% else %}
-        <a class="prev" href='{% url admin-scheduler.anyweek day=prev_week %}' title="Previous Week">
+        <a class="prev" href='{% url staff-scheduler.anyweek day=prev_week %}' title="Previous Week">
             <img src="/media/img/prev.png" alt="Prev">
         </a>
-        <a class="current" href='{% url admin-scheduler.thisweek %}'>Back to Current Week</a>
-        <a class="next" href='{% url admin-scheduler.anyweek day=next_week %}' title="Next Week">
+        <a class="current" href='{% url staff-scheduler.thisweek %}'>Back to Current Week</a>
+        <a class="next" href='{% url staff-scheduler.anyweek day=next_week %}' title="Next Week">
             <img src="/media/img/next.png" alt="Next">
         </a>
-    {% endif %}
+    {% endif %}{% endif %}
     </div>
     <table>
         <thead>
@@ -66,16 +74,25 @@
                                     {% if vis.remote %}<div class="remote-icon" title="Remote Access"></div>
                                     {% else %}{% if vis.mail_in %}<div class="mail-icon" title="Mail-In Access"></div>{% endif %}
                                     {% endif %}
-                                    <text{% if admin %} class="modal-form"
+                                    <var{% if admin %} class="modal-form"
                                        href="{% url cmcf-edit-visit vis.pk %}"
                                        title="Edit this visit"{% endif %}>
                                        {% if not vis.maintenance %}
-	                                       {% if vis.purchased %}Purchased {% if not admin %}Access{% else %}<text class="admin">- {{ vis.description }}</text>{% endif %}
-	                                       {% else %}{{ vis.parse_name.0 }}{% if admin %}<text class="admin"> ({{ vis.parse_name.1 }})</text>{% endif %}
+	                                       {% if vis.purchased %}Purchased 
+	                                           {% if not staff %}Access
+	                                           {% else %}<text class="admin">- {{ vis.proposal_display }} {% if vis.description %}({{vis.description}}){% endif %}</text>
+	                                           {% endif %}
+	                                       {% else %}
+	                                           {% if vis.proposal %}{{ vis.proposal.last_name }}{% if staff %}<text class="admin">, {{ vis.proposal.first_name }}
+	                                               {% if vis.description %}({{vis.description}}){% endif %}
+	                                               </text>{% endif %}
+                                               {% else %}{{vis.description }}
+                                               {% endif %}
+	                                           {% if staff %}{% if vis.proposal %}<text class="admin"> #{{ vis.proposal.proposal_id }}</text>{% endif %}{% endif %}
 	                                       {% endif %}
                                        {% else %}Beamline Maintenance
-                                           {% if admin %}<text class="admin">{{ vis.description }}</text>{% endif %}
-                                       {% endif %}</text>
+                                           {% if staff %}<text class="admin">{{ vis.proposal.display }}</text>{% endif %}
+                                       {% endif %}</var>
                                     {% if admin %}<div class="modal-form delete-tool" 
                                        href="{% url cmcf-delete-visit vis.pk %}"
                                        title="Delete this visit">&nbsp;</div>{% endif %}

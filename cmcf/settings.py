@@ -14,6 +14,12 @@ ADMINS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
 )
 
+#SCHEDULERS will receive e-mail notifications about schedule changes
+SCHEDULERS = (
+    ('CMCF Staff', 'cmcf-support@lightsource.ca'),
+    ('CLS Users Office', 'clsuo@lightsource.ca'),
+)
+
 #MANAGERS will receive online application forms
 MANAGERS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),

@@ -9,7 +9,7 @@ from django.contrib.admin.widgets import AdminDateWidget
 class VisitForm(forms.ModelForm):
     class Meta:
         model = Visit
-    
+
     def clean(self):
         '''Override clean to check for overlapping visits'''
         data = super(VisitForm, self).clean()
@@ -53,34 +53,46 @@ class BasicForm(forms.ModelForm):
     
     class Meta:
         fields = ('id',)
-
-class AdminEditForm(VisitForm):
+        
+class AdminEditForm(forms.ModelForm):
     id = forms.IntegerField(widget=forms.HiddenInput)
     beamline = forms.ModelChoiceField(queryset=Beamline.objects.all(), required=True)
-    description = widgets.LargeCharField(required=True, help_text=Visit.HELP['description'])
+    proposal = forms.ModelChoiceField(queryset=Proposal.objects.all(),required=True, widget=widgets.LargeSelect, label="Active Proposal")
+    description = widgets.LargeCharField(required=False)
     start_date = DateField(widget=widgets.LeftHalfDate, required=True)
     end_date = DateField(widget=widgets.RightHalfDate, required=True)
     first_shift = forms.ChoiceField(choices=Visit.SHIFT_CHOICES, widget=widgets.LeftHalfSelect, required=True)
     last_shift = forms.ChoiceField(choices=Visit.SHIFT_CHOICES, widget=widgets.RightHalfSelect, required=True)
-    remote = widgets.LeftCheckBoxField(required=False, help_text=Visit.HELP['remote'])
-    mail_in = widgets.RightCheckBoxField(required=False, help_text=Visit.HELP['mail_in'])
-    purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access", help_text=Visit.HELP['purchased'])
-    maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance", help_text=Visit.HELP['maintenance'])
+    remote = widgets.LeftCheckBoxField(required=False)
+    mail_in = widgets.RightCheckBoxField(required=False)
+    purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access")
+    maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance")
     
     class Meta:
         model = Visit
-        fields = ('id','beamline','description', 'remote','mail_in','purchased','maintenance','start_date','end_date','first_shift','last_shift')
+        fields = ('id','beamline','proposal','remote','mail_in','purchased','maintenance','description','start_date','end_date','first_shift','last_shift')
 
     def __init__(self, *args, **kwargs):
-        super(VisitForm, self).__init__(*args, **kwargs)
-        
+        super(AdminEditForm, self).__init__(*args, **kwargs)
+        if self._meta.fields:
+            self.fields.keyOrder = self._meta.fields
+            if self._meta.model and hasattr(self._meta.model, 'HELP'):
+                for field in self._meta.fields:
+                    if not self.fields[field].help_text:
+                        try:
+                            self.fields[field].help_text = self._meta.model.HELP[field]
+                        except KeyError:
+                            pass
+        self.fields['proposal'].queryset=Proposal.objects.filter(expiration__gte=self.initial['start_date'])
+    
     def clean(self):
         '''Override clean to check for overlapping visits'''
-        data = super(VisitForm, self).clean()
+        data = super(AdminEditForm, self).clean()
    
         for field in self.fields:
             try: 
-                val = data[field]
+                if field != 'description':
+                    val = data[field]
             except:
                 msg = 'Please enter a valid %s' % (field)
                 self._errors[field] = self.error_class([msg])
@@ -100,6 +112,12 @@ class AdminEditForm(VisitForm):
             Q(end_date__exact=data['end_date'],start_date__lt=data['end_date'],
               last_shift__gte=data['first_shift'],)
             |
+            Q(end_date__exact=data['start_date'],
+              last_shift__gte=data['first_shift'],)
+            |
+            Q(start_date__exact=data['end_date'],
+              first_shift__lte=data['last_shift'],)
+            |
             Q(end_date__exact=data['end_date'],start_date__exact=data['start_date'],
               last_shift__gte=data['first_shift'],last_shift__lte=data['last_shift'],)
             |
@@ -114,25 +132,23 @@ class AdminEditForm(VisitForm):
         )
         
         if overlaps.count() > 0:
-            conflicts = [v.description for v in overlaps.all()]
+            conflicts = [v.proposal.display() for v in overlaps.all()]
             msg = 'This visit overlaps with existing visits:\n %s!' % (', '.join(conflicts))
-            self._errors['description'] = self.error_class([msg])
+            self._errors['proposal'] = self.error_class([msg])
             raise forms.ValidationError(msg)
 
         if data['start_date'] > data['end_date'] or (data['start_date'] == data['end_date'] and data['first_shift'] > data['last_shift']):
             msg = 'Starting time cannot be after ending time!'
             self._errors['start_time'] = self.error_class([msg])
             raise forms.ValidationError(msg)
-            
-        blname = 'CMCF1'
-        if blname is not 'CMCF1' and blname is not 'CMCF2':
-            raise forms.ValidationError(
-                'This visit does not have a selected beamline'
-            )
+        
+        if not Proposal.objects.filter(pk__exact=data['proposal'].pk).filter(expiration__gte=data['end_date']):
+            msg = 'This proposal will expire before the visit is over (on %s).' % data['proposal'].expiration.strftime('%Y-%m-%d')
+            self._errors['proposal'] = self.error_class([msg])
+            raise forms.ValidationError(msg)
 
         return data
         
-
 class AdminOnCallForm(forms.ModelForm):
     date = forms.DateField(widget=forms.HiddenInput)
     local_contact = forms.ModelChoiceField(queryset=SupportPerson.objects.all(), required=True)
@@ -143,30 +159,34 @@ class AdminOnCallForm(forms.ModelForm):
 
 class AdminVisitForm(forms.ModelForm):
     beamline = forms.ModelChoiceField(queryset=Beamline.objects.all(), required=True, widget=forms.HiddenInput)
-    description = widgets.LargeCharField(required=True, help_text=Visit.HELP['description'])
+    proposal = forms.ModelChoiceField(queryset=Proposal.objects.all(), required=True, widget=widgets.LargeSelect, label="Active Proposal")
+    description = widgets.LargeCharField(required=False)
     num_shifts = forms.IntegerField(widget=widgets.LeftHalfInput, initial=1, label='Number of Shifts' )
     first_shift = forms.IntegerField(required=True, widget=forms.HiddenInput)
     start_date = forms.DateField(widget=forms.HiddenInput)
-    remote = widgets.LeftCheckBoxField(required=False, help_text=Visit.HELP['remote'])
-    mail_in = widgets.RightCheckBoxField(required=False, help_text=Visit.HELP['mail_in'])
-    purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access", help_text=Visit.HELP['purchased'])
-    maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance", help_text=Visit.HELP['maintenance'])
-    
+    remote = widgets.LeftCheckBoxField(required=False)
+    mail_in = widgets.RightCheckBoxField(required=False)
+    purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access")
+    maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance")
     
     class Meta:
         model = Visit
-        fields = ('beamline','description', 'remote','mail_in','purchased','maintenance','num_shifts')
- 
-    def clean_description(self):
-        cleaned_data = self.cleaned_data['description']
-        try:
-            parts = [cleaned_data.split('(')[0], cleaned_data.split('(')[1].split(')')[0]]
-        except:
-            msg = 'A name and proposal number are required. Please use the following format: Bruce Wayne (12-3456).'
-            self._errors['description'] = self.error_class([msg])
-            raise forms.ValidationError(msg)
-        return cleaned_data
-    
+        fields = ('beamline','proposal','remote','mail_in','purchased','maintenance','description','num_shifts','first_shift','start_date')
+
+    def __init__(self, *args, **kwargs):
+        super(AdminVisitForm, self).__init__(*args, **kwargs)
+        if self._meta.fields:
+            self.fields.keyOrder = self._meta.fields
+            if self._meta.model and hasattr(self._meta.model, 'HELP'):
+                for field in self._meta.fields:
+                    if not self.fields[field].help_text:
+                        try:
+                            self.fields[field].help_text = self._meta.model.HELP[field]
+                        except KeyError:
+                            pass
+        if self.initial:
+            self.fields['proposal'].queryset=Proposal.objects.filter(expiration__gte=self.initial['start_date'])
+
     def clean(self):
         '''Override clean to check for overlapping visits'''
         cleaned_data = self.cleaned_data
@@ -194,6 +214,12 @@ class AdminVisitForm(forms.ModelForm):
             Q(end_date__exact=data['end_date'],start_date__lt=data['end_date'],
               last_shift__gte=data['first_shift'],)
             |
+            Q(end_date__exact=data['start_date'],
+              last_shift__gte=data['first_shift'],)
+            |
+            Q(start_date__exact=data['end_date'],
+              first_shift__lte=data['last_shift'],)
+            |
             Q(end_date__exact=data['end_date'],start_date__exact=data['start_date'],
               last_shift__gte=data['first_shift'],last_shift__lte=data['last_shift'],)
             |
@@ -207,9 +233,15 @@ class AdminVisitForm(forms.ModelForm):
               first_shift__gte=data['first_shift'],first_shift__lte=data['last_shift'],)
         )
         if overlaps.count() > 0:
-            conflicts = [v.description for v in overlaps.all()]
+            conflicts = [v.proposal.display() for v in overlaps.all()]
             msg = 'This visit overlaps with existing visits:\n %s!' % (', '.join(conflicts))
-            self._errors['description'] = self.error_class([msg])
+            self._errors['num_shifts'] = self.error_class([msg])
             raise forms.ValidationError(msg)
+        
+        if not Proposal.objects.filter(pk__exact=data['proposal'].pk).filter(expiration__gte=data['end_date']):
+            msg = 'This proposal will expire before the visit is over (on %s).' % data['proposal'].expiration.strftime('%Y-%m-%d')
+            self._errors['proposal'] = self.error_class([msg])
+            raise forms.ValidationError(msg)
+        
         return data
     
