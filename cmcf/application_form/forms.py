@@ -62,7 +62,7 @@ class ApplicationForm(forms.Form):
     research = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))
     benefit = forms.CharField(widget=forms.Textarea(attrs=attrs_dict))
     
-    from_email = settings.DEFAULT_FROM_EMAIL
+    from_email = settings.SCHOOL_FROM_EMAIL
     
     recipient_list = [mail_tuple[1] for mail_tuple in settings.MANAGERS]
 

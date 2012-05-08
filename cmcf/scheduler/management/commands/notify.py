@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import send_mail
 from optparse import make_option
-from cmcf.scheduler.models import Visit, Proposal, Beamline
+from scheduler.models import Visit, Proposal, Beamline
 import datetime
 from datetime import datetime, date, timedelta
 from django.conf import settings
@@ -35,7 +35,7 @@ class Command(BaseCommand):
         self.data = {}
         for bl in Beamline.objects.filter(name__startswith='08'):
             self.data[bl.name] = [[],[]]
-        for v in Visit.objects.filter(start_date__gte=this_monday).order_by('start_date'):
+        for v in Visit.objects.filter(start_date__gte=this_monday).filter(start_date__lte=next_monday+timedelta(days=21)).order_by('start_date'):
             type = (v.created.date() >= last_monday and '    NEW: ') or (v.modified.date() >= last_monday and "    MOD: ") or None
             index = (v.start_date > next_monday and 1) or 0
             msg = '%s%s' % (((not self.visit and type) or '    '), v.notify())

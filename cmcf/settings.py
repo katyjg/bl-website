@@ -9,6 +9,10 @@ if os.path.exists(_version_file):
 else:
     VERSION = '- Development -'
     
+SCHOOL_FROM_EMAIL = 'cmcf-support@lightsource.ca'
+SERVER_EMAIL = 'cmcf-web@no-reply.ca'
+EMAIL_SUBJECT_PREFIX = 'Web:'
+
 #ADMINS will receive feedback from the website and 500 errors if they arise
 ADMINS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
