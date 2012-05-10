@@ -91,7 +91,7 @@
 	                                           {% if staff %}{% if vis.proposal %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}"> #{{ vis.proposal.proposal_id }}</text>{% endif %}{% endif %}
 	                                       {% endif %}
                                        {% else %}Beamline Maintenance
-                                           {% if staff %}<text class="admin inactive">{{ vis.proposal.display }}</text>{% endif %}
+                                           {% if staff %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">{{ vis.proposal.display }}</text>{% endif %}
                                        {% endif %}</var>
                                     {% if admin %}<div class="modal-form delete-tool" 
                                        href="{% url cmcf-delete-visit vis.pk %}"
