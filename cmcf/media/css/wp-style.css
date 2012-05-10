@@ -1075,7 +1075,8 @@ thead th {
 
 .modal-form {color: black; cursor: pointer;}
 .admin {color: #666; }
-.modal-form:hover, .modal-form:hover text.admin {color: #d54e21;}
+.inactive {color: #cc3300; }
+.modal-form:hover, .modal-form:hover text.admin {color: #1a6600;}
 
 .delete-tool, a.add-tool, a.edit-tool {width: 16px; display: none;}
 .delete-tool {

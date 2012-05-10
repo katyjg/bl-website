@@ -210,10 +210,12 @@ class Proposal(models.Model):
     last_name = models.CharField(max_length=20)
     proposal_id = models.CharField(max_length=7)
     description = models.CharField(max_length=200)
-    expiration = models.DateTimeField()
+    expiration = models.DateTimeField(blank=True)
 
     def __unicode__(self):
         """Human readable string for ``Proposal``"""
+        if not self.expiration:
+            return '%s, %s - SUBMITTED' % (self.last_name, self.first_name[0])
         detail = ''
         if Proposal.objects.filter(last_name__exact=self.last_name).values('description').distinct().count() > 1:
             length = 30 - len(self.last_name)

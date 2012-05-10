@@ -83,7 +83,7 @@ class AdminEditForm(forms.ModelForm):
                             self.fields[field].help_text = self._meta.model.HELP[field]
                         except KeyError:
                             pass
-        self.fields['proposal'].queryset=Proposal.objects.filter(expiration__gte=self.initial['start_date'])
+        self.fields['proposal'].queryset=Proposal.objects.filter(Q(expiration__gte=self.initial['start_date']) | Q(expiration=None))
     
     def clean(self):
         '''Override clean to check for overlapping visits'''
@@ -112,10 +112,10 @@ class AdminEditForm(forms.ModelForm):
             Q(end_date__exact=data['end_date'],start_date__lt=data['end_date'],
               last_shift__gte=data['first_shift'],)
             |
-            Q(end_date__exact=data['start_date'],
+            Q(end_date__exact=data['start_date'], start_date__lt=data['start_date'],
               last_shift__gte=data['first_shift'],)
             |
-            Q(start_date__exact=data['end_date'],
+            Q(start_date__exact=data['end_date'], end_date__gt=data['end_date'],
               first_shift__lte=data['last_shift'],)
             |
             Q(end_date__exact=data['end_date'],start_date__exact=data['start_date'],
@@ -142,7 +142,7 @@ class AdminEditForm(forms.ModelForm):
             self._errors['start_time'] = self.error_class([msg])
             raise forms.ValidationError(msg)
         
-        if not Proposal.objects.filter(pk__exact=data['proposal'].pk).filter(expiration__gte=data['end_date']):
+        if not Proposal.objects.filter(pk__exact=data['proposal'].pk).filter(Q(expiration__gte=data['end_date']) | Q(expiration=None)):
             msg = 'This proposal will expire before the visit is over (on %s).' % data['proposal'].expiration.strftime('%Y-%m-%d')
             self._errors['proposal'] = self.error_class([msg])
             raise forms.ValidationError(msg)
@@ -187,7 +187,7 @@ class AdminVisitForm(forms.ModelForm):
                         except KeyError:
                             pass
         if self.initial:
-            self.fields['proposal'].queryset=Proposal.objects.filter(expiration__gte=self.initial['start_date'])
+            self.fields['proposal'].queryset=Proposal.objects.filter(Q(expiration__gte=self.initial['start_date']) | Q(expiration=None))
 
     def clean(self):
         '''Override clean to check for overlapping visits'''
@@ -216,10 +216,10 @@ class AdminVisitForm(forms.ModelForm):
             Q(end_date__exact=data['end_date'],start_date__lt=data['end_date'],
               last_shift__gte=data['first_shift'],)
             |
-            Q(end_date__exact=data['start_date'],
+            Q(end_date__exact=data['start_date'], start_date__lt=data['start_date'],
               last_shift__gte=data['first_shift'],)
             |
-            Q(start_date__exact=data['end_date'],
+            Q(start_date__exact=data['end_date'], end_date__gt=data['end_date'],
               first_shift__lte=data['last_shift'],)
             |
             Q(end_date__exact=data['end_date'],start_date__exact=data['start_date'],
@@ -234,13 +234,14 @@ class AdminVisitForm(forms.ModelForm):
             Q(start_date__exact=data['start_date'],end_date__exact=data['end_date'],
               first_shift__gte=data['first_shift'],first_shift__lte=data['last_shift'],)
         )
+        
         if overlaps.count() > 0:
             conflicts = [v.proposal.display() for v in overlaps.all()]
             msg = 'This visit overlaps with existing visits:\n %s!' % (', '.join(conflicts))
             self._errors['num_shifts'] = self.error_class([msg])
             raise forms.ValidationError(msg)
         
-        if not Proposal.objects.filter(pk__exact=data['proposal'].pk).filter(expiration__gte=data['end_date']):
+        if not Proposal.objects.filter(pk__exact=data['proposal'].pk).filter(Q(expiration__gte=data['end_date']) | Q(expiration=None)):
             msg = 'This proposal will expire before the visit is over (on %s).' % data['proposal'].expiration.strftime('%Y-%m-%d')
             self._errors['proposal'] = self.error_class([msg])
             raise forms.ValidationError(msg)

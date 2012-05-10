@@ -35,11 +35,13 @@ class Command(BaseCommand):
         self.data = {}
         for bl in Beamline.objects.filter(name__startswith='08'):
             self.data[bl.name] = [[],[]]
-        for v in Visit.objects.filter(start_date__gte=this_monday).filter(start_date__lte=next_monday+timedelta(days=21)).order_by('start_date'):
-            type = (v.created.date() >= last_monday and '    NEW: ') or (v.modified.date() >= last_monday and "    MOD: ") or None
+        for v in Visit.objects.filter(start_date__gte=this_monday).filter(start_date__lte=next_monday+timedelta(days=14)).order_by('start_date'):
+            type = (not v.proposal.expiration and '    NEEDS APPROVAL: ') or \
+                   (v.created.date() >= last_monday and '    NEW: ') or \
+                   (v.modified.date() >= last_monday and "    MOD: ") or None
             index = (v.start_date > next_monday and 1) or 0
-            msg = '%s%s' % (((not self.visit and type) or '    '), v.notify())
-            msg = (self.visit and v == self.visit and '    ***%s  ***' % msg) or msg
+            msg = '%s%s' % ( (((not v.proposal.expiration or not self.visit) and type) or '    '), v.notify() )
+            msg = (self.visit and v == self.visit and '    ***%s***' % msg.replace('  ', '')) or msg
             if self.visit:
                 if self.mod_type[:3] != "DEL" or msg[:7] != '    ***':
                     self.data[v.beamline.name][index].append(msg)
@@ -47,7 +49,7 @@ class Command(BaseCommand):
                 self.data[v.beamline.name][index].append(msg)
             self.sendable = True
         if self.visit and self.visit.start_date >= this_monday and self.visit.start_date <= next_monday:
-            self.mod = [self.mod_type, self.visit.notify(), self.mod_msg]
+            self.mod = [self.mod_type, '%s%s' %(( (not v.proposal.expiration and 'NEEDS APPROVAL - ') or '' ), self.visit.notify()), self.mod_msg]
         else:
             self.mod = False
 
@@ -133,14 +135,20 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'myproj.settings'
 
 
 '''
+PROPS = Proposal.objects.all().values('proposal_id')
+PROPOSALS = []
+for p in PROPS:
+    PROPOSALS.append(p['proposal_id'])
 for prop in proposals:
-    new_proposal = Proposal()
-    new_proposal.description = prop[2]
-    new_proposal.first_name = prop[1]
-    new_proposal.last_name = prop[0]
-    new_proposal.proposal_id = prop[3]
-    new_proposal.expiration = datetime.strptime(str(prop[4]), '%Y-%m-%d')
-    new_proposal.save()
+    if prop[3] not in PROPOSALS:
+        new_proposal = Proposal()
+        new_proposal.description = prop[2]
+        new_proposal.first_name = prop[1]
+        new_proposal.last_name = prop[0]
+        new_proposal.proposal_id = prop[3]
+        if prop[7] is not 'SUBMITTED':
+            new_proposal.expiration = datetime.strptime(str(prop[7]).replace(' ',''), '%Y-%m-%d')
+        new_proposal.save()
 '''
 proposals = [["Grigg","Jason","Iron uptake in Staphylococcus aureus","11-2354","2012-06-30"],
 ["Anzar","Muhammad","Detection of ice crystallization in vitrified bovine oocytes","11-2403","2012-06-30"],
