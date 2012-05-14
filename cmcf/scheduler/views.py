@@ -58,6 +58,8 @@ def edit_visit(request, id, model, form, template='wp-root.html'):
     today = datetime.now().date()
     this_monday = today - timedelta(days=datetime.now().date().weekday())
     next_monday = this_monday + timedelta(days=7)
+    etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
+    
     visit = Visit.objects.get(pk__exact=id)
     mod_msg = ''
     if request.method == 'POST':
@@ -69,9 +71,8 @@ def edit_visit(request, id, model, form, template='wp-root.html'):
         frm = form(request.POST, instance=visit)
         if frm.is_valid():
             frm.save()
-            if mod_msg:
-                if visit.modified > datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30):
-                    call_command('notify', visit.pk, 'MODIFIED: ', 'Changed %s.' % mod_msg) 
+            if mod_msg and visit.modified > etime:
+                call_command('notify', visit.pk, 'MODIFIED: ', 'Changed %s.' % mod_msg) 
             message =  '%(name)s modified' % {'name': smart_str(model._meta.verbose_name)}
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -81,7 +82,7 @@ def edit_visit(request, id, model, form, template='wp-root.html'):
             'form' : frm, 
             }, context_instance=RequestContext(request))
     else:
-        form.warning_message = (visit.start_date <= next_monday and visit.start_date >= today and WARNING) or None
+        form.warning_message = (visit.start_date <= next_monday and visit.start_date >= today and datetime.now() > etime and  WARNING) or None
         frm = form(instance=visit, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
         return render_to_response(template, {
         'info': form_info, 
@@ -94,6 +95,8 @@ def delete_object(request, id, model, form, template='wp-root.html'):
     today = datetime.now().date()
     this_monday = today - timedelta(days=datetime.now().date().weekday())
     next_monday = this_monday + timedelta(days=7)
+    etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
+    
     form_info = {        
         'title': 'Delete %s?' % obj,
         'sub_title': 'The %s (%s) will be deleted' % ( model._meta.verbose_name, obj),
@@ -106,9 +109,8 @@ def delete_object(request, id, model, form, template='wp-root.html'):
         if frm.is_valid():
             message =  '%(name)s deleted' % {'name': smart_str(model._meta.verbose_name)}
             if model == Visit:
-                if obj.start_date <= next_monday and obj.start_date >= today:
-                    if obj.modified > datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30):
-                        call_command('notify', obj.pk, 'DELETED: ')
+                if obj.start_date <= next_monday and obj.start_date >= today and obj.modified > etime:
+                    call_command('notify', obj.pk, 'DELETED: ')
             obj.delete()
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -120,7 +122,7 @@ def delete_object(request, id, model, form, template='wp-root.html'):
     else:
         frm = form(instance=obj, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
         if model == Visit:
-            form.warning_message = (obj.start_date <= next_monday and obj.start_date >= today and WARNING) or None
+            form.warning_message = (obj.start_date <= next_monday and obj.start_date >= today and datetime.now() > etime  and WARNING) or None
         return render_to_response(template, {
             'info': form_info, 
             'form' : frm,
@@ -141,6 +143,7 @@ def add_object(request, model, form, template='wp-root.html'):
     today = datetime.now().date()
     this_monday = today - timedelta(days=datetime.now().date().weekday())
     next_monday = this_monday + timedelta(days=7)
+    etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
 
     if request.method == 'POST':
         frm = form(request.POST)
@@ -159,9 +162,8 @@ def add_object(request, model, form, template='wp-root.html'):
                 new_obj.last_shift = ( first_shift + ns - 1 ) % 3                  
                 new_obj.end_date = end_date.date()
                 new_obj.save()
-                if new_obj.start_date <= next_monday and new_obj.start_date >= today:
-                    if new_obj.modified > datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30):
-                        call_command('notify', new_obj.pk, 'ADDED: ')
+                if new_obj.start_date <= next_monday and new_obj.start_date >= today and new_obj.modified > etime:
+                    call_command('notify', new_obj.pk, 'ADDED: ')
             message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -174,7 +176,7 @@ def add_object(request, model, form, template='wp-root.html'):
         frm = form(initial=request.GET.items())
         if model == Visit:
             start_date = datetime.strptime(str(request.GET.get('start_date')), '%Y-%m-%d').date()
-            form.warning_message = (start_date <= next_monday and start_date >= today and WARNING) or None
+            form.warning_message = (start_date <= next_monday and start_date >= today and datetime.now() > etime and WARNING) or None
         return render_to_response(template, {
             'info': form_info, 
             'form': frm, 
