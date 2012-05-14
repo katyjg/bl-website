@@ -70,7 +70,8 @@ def edit_visit(request, id, model, form, template='wp-root.html'):
         if frm.is_valid():
             frm.save()
             if mod_msg:
-                call_command('notify', visit.pk, 'MODIFIED: ', 'Changed %s.' % mod_msg)
+                if visit.modified > datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30):
+                    call_command('notify', visit.pk, 'MODIFIED: ', 'Changed %s.' % mod_msg) 
             message =  '%(name)s modified' % {'name': smart_str(model._meta.verbose_name)}
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -106,7 +107,8 @@ def delete_object(request, id, model, form, template='wp-root.html'):
             message =  '%(name)s deleted' % {'name': smart_str(model._meta.verbose_name)}
             if model == Visit:
                 if obj.start_date <= next_monday and obj.start_date >= today:
-                    call_command('notify', obj.pk, 'DELETED: ')
+                    if obj.modified > datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30):
+                        call_command('notify', obj.pk, 'DELETED: ')
             obj.delete()
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -158,7 +160,8 @@ def add_object(request, model, form, template='wp-root.html'):
                 new_obj.end_date = end_date.date()
                 new_obj.save()
                 if new_obj.start_date <= next_monday and new_obj.start_date >= today:
-                    call_command('notify', new_obj.pk, 'ADDED: ')
+                    if new_obj.modified > datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30):
+                        call_command('notify', new_obj.pk, 'ADDED: ')
             message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -300,3 +303,5 @@ def contact_list(request):
         },
         )
 
+
+    
