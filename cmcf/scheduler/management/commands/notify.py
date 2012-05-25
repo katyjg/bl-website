@@ -36,11 +36,15 @@ class Command(BaseCommand):
         for bl in Beamline.objects.filter(name__startswith='08'):
             self.data[bl.name] = [[],[]]
         for v in Visit.objects.filter(start_date__gte=this_monday).filter(start_date__lte=next_monday+timedelta(days=14)).order_by('start_date'):
-            type = (not v.proposal.expiration and '    NEEDS APPROVAL: ') or \
-                   (v.created.date() >= last_monday and '    NEW: ') or \
-                   (v.modified.date() >= last_monday and "    MOD: ") or None
+            if not v.proposal:
+                type = '    NO PROPOSAL: '
+                msg = '%s%s' % (type, v.notify())
+            else:
+                type = (not v.proposal.expiration and '    NEEDS APPROVAL: ') or \
+                       (v.created.date() >= last_monday and '    NEW: ') or \
+                       (v.modified.date() >= last_monday and "    MOD: ") or None
+                msg = '%s%s' % ( (((not v.proposal or not v.proposal.expiration or not self.visit) and type) or '    '), v.notify() )
             index = (v.start_date > next_monday and 1) or 0
-            msg = '%s%s' % ( (((not v.proposal.expiration or not self.visit) and type) or '    '), v.notify() )
             msg = (self.visit and v == self.visit and '    ***%s***' % msg.replace('  ', '')) or msg
             if self.visit:
                 if self.mod_type[:3] != "DEL" or msg[:7] != '    ***':
@@ -49,7 +53,10 @@ class Command(BaseCommand):
                 self.data[v.beamline.name][index].append(msg)
             self.sendable = True
         if self.visit and self.visit.start_date >= this_monday and self.visit.start_date <= next_monday:
-            self.mod = [self.mod_type, '%s%s' %(( (not v.proposal.expiration and 'NEEDS APPROVAL - ') or '' ), self.visit.notify()), self.mod_msg]
+            prefix = ''
+            if self.visit.proposal:
+                if not self.visit.proposal.expiration: prefix = 'NEEDS APPROVAL - '
+            self.mod = [self.mod_type, '%s%s' %(prefix, self.visit.notify()), self.mod_msg]
         else:
             self.mod = False
 
