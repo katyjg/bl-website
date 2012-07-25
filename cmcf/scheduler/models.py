@@ -211,6 +211,7 @@ class Proposal(models.Model):
     proposal_id = models.CharField(max_length=7)
     description = models.CharField(max_length=200)
     expiration = models.DateTimeField(blank=True, null=True)
+    account = models.CharField(max_length=300, blank=True, null=True)
 
     def __unicode__(self):
         """Human readable string for ``Proposal``"""
@@ -395,6 +396,23 @@ class Visit(models.Model):
                 else:
                     shifts[i] = self.description
         return shifts
+    
+    def get_num_shifts(self):
+        num = 0
+        one_day = timedelta(days=1)
+        if self.start_date != self.end_date:
+            for i in range(3):
+                if i >= self.first_shift: num += 1
+            next_day = self.start_date + one_day
+            while next_day < self.end_date:
+                num += 3
+                next_day += one_day
+            for i in range(3):
+                if i <= self.last_shift: num += 1
+        else:
+            for i in range(3):
+                if i >= self.first_shift and i <= self.last_shift: num += 1
+        return num
     
     class Meta:
         unique_together = (
