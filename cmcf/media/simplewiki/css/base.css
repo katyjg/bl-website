@@ -128,7 +128,7 @@ div#header.wiki {
 div.wiki_box
 {
 	width: 230px;
-	padding: 5px;
+	padding: 5px 0;
     color: #3d7ab8;
 /*	color: #fff;*/
     font-size: 80%;
@@ -352,4 +352,6 @@ blockquote p {
 
 }
 
+.col-4 { width: 230px; }
+.col-8 { width: 664px; }
 
