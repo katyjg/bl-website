@@ -200,7 +200,7 @@ def combine_shifts(shifts, ids=False):
     for shift in shifts:
         for i in range(3):
             if shift[i] is not None:
-                new_shifts[i].append(shift[i])
+                if not new_shifts[i]: new_shifts[i].append(shift[i])
     if not ids:
         for i in range(3):
             new_shifts[i] = ','.join(new_shifts[i])

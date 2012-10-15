@@ -90,9 +90,16 @@
 	    <div id="main-wrapper">
 	        <div id="header">
 	            <div class="banner">
-	                <div class="logo">
+	                <div class="logo" style="width: 400px; float: left;">
 	                    <div class="wrapper"></div>
 	                </div>
+	                {% if admin %}
+                    <div id="user-tools">
+                        Logged-in as <strong>admin</strong> |
+                        <a href="/admin/">Site Admin</a> |
+                        <a href="/schedule/" target="_blank">View Public Site</a>
+                    </div>
+                    {% endif %}
 	            </div>
 	        </div>
 	        <div id="header-print">

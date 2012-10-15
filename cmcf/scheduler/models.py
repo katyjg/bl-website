@@ -527,10 +527,10 @@ class Stat(models.Model):
             )
         get_latest_by = "date"
         verbose_name = "Beamline Status (to override CLS status)"
-	verbose_name_plural = "Beamline Statuses (override CLS status)"
+        verbose_name_plural = "Beamline Statuses (override CLS status)"
 
-post_save.send(sender=Stat)
-post_save.connect(get_cls_modes, sender=Stat)
+#post_save.send(sender=Stat)
+#post_save.connect(get_cls_modes, sender=Stat)
 
 
 
