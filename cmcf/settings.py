@@ -82,14 +82,19 @@ MIDDLEWARE_CLASSES = (
     #'django.middleware.csrf.CsrfResponseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.redirects.middleware.RedirectFallbackMiddleware'
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    'cmcf.middleware.MobileMiddleware'
 )
 
 ROOT_URLCONF = 'cmcf.urls'
 
-TEMPLATE_DIRS = (
+DESKTOP_TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates/'),
 )
+MOBILE_TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'mobile_templates/'),
+) + DESKTOP_TEMPLATE_DIRS
+TEMPLATE_DIRS = DESKTOP_TEMPLATE_DIRS
 
 INSTALLED_APPS = (
     'django.contrib.auth',

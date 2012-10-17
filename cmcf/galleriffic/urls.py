@@ -6,7 +6,7 @@ urlpatterns = patterns('galleriffic.views',
         view='all_display',
         name='post_list'
     ),
-    url(r'^(?P<slug>\w{4,5})/$',
+    url(r'^(?P<slug>[-\w]+)/$',
         view='gallery_display',
         name='post_list'
     ),

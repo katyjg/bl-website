@@ -1,5 +1,6 @@
 {% extends "admin_tools/dashboard/module.html" %}
 {% block module_content %}
+{% ifnotequal request.user.username 'view' %}
 {% if subindex %}
     <div class="module link-list {% for item in module.css_classes %}{{ item }} {% endfor %}">
         <h3>{{ module.title }}</h3>
@@ -17,4 +18,5 @@
             {% endspaceless %}
         </ul>
     </div>
+{% endifnotequal %}
 {% endblock %}

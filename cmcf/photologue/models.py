@@ -473,20 +473,16 @@ class ImageModel(models.Model):
 
 
 class Photo(ImageModel):
-    GALLERY_CHOICES = (
-        (1, _('CMCF1 (08ID1-1)')),
-        (2, _('CMCF2 (08B1-1)')),
-    )
     title = models.CharField(_('title'), max_length=100, unique=True)
     title_slug = models.SlugField(_('slug'), unique=True,
                                   help_text=('A "slug" is a unique URL-friendly title for an object.'))
-    gallery = models.IntegerField(_('gallery'), choices=GALLERY_CHOICES, default=0)
+    #gallery = models.IntegerField(_('gallery'), choices=GALLERY_CHOICES, default=0)
     caption = models.TextField(_('caption'), blank=True)
     is_public = models.BooleanField(_('is public'), default=True, help_text=_('Public photographs will be displayed in the default views.'))
     photo_highlight = models.BooleanField(_('highlight'), default=False, help_text=_('Should this item be featured in the content slider on the home page?'))
     date_added = models.DateTimeField(_('date added'), default=datetime.now, editable=True)
     tags = TagField(help_text=tagfield_help_text, verbose_name=_('tags'))
-#    gallery = models.ForeignKey('Gallery', null=True, blank=True, verbose_name=_('gallery'))
+    gallery = models.ForeignKey('Gallery', null=True, blank=True, verbose_name=_('gallery'))
    
     class Meta:
         ordering = ['gallery', 'title']

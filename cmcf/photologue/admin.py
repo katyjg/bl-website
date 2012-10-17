@@ -11,7 +11,7 @@ except ImportError:
 
 class GalleryAdmin(BatchModelAdmin):
     batch_actions = ['delete_selected']
-    list_display = ('title', 'date_added', 'photo_count', 'is_public')
+    list_display = ('title', 'date_added', 'photo_count', 'is_public', 'title_slug')
     list_filter = ['date_added', 'is_public']
     date_hierarchy = 'date_added'
     prepopulated_fields = {'title_slug': ('title',)}
