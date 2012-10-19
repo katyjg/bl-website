@@ -23,9 +23,9 @@ from django.conf import settings
 
 from scheduler.models import *
 from calendar import Calendar, HTMLCalendar
-from cmcf.decorators import protectview
+from decorators import protectview
 
-WARNING = "This is a last-minute change. It will take a few moments to send a notification e-mail to the Users Office and to CMCF staff."
+WARNING = "This is a last-minute change. It will take a few moments to send a notification e-mail to the Users Office and to beamline staff."
 
 def staff_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME):
     """
@@ -51,7 +51,7 @@ def admin_scheduler(request, day=None, template='scheduler/admin_schedule_week.h
 @staff_login_required
 def edit_visit(request, id, model, form, template='wp-root.html'):
     form_info = {'title': 'Edit Beamline Visit',
-                 'action':  reverse('cmcf-edit-visit', args=[id]),
+                 'action':  reverse('bl-edit-visit', args=[id]),
                  'save_label': 'Save',
                  'enctype' : 'multipart/form-data',
                  }

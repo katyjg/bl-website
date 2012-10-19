@@ -1,6 +1,6 @@
 import os
 
-DEBUG = False
+DEBUG = False # Set to True to see full error messages in browser
 TEMPLATE_DEBUG = DEBUG
 
 _version_file = os.path.join(os.path.dirname(__file__), 'VERSION')
@@ -8,6 +8,15 @@ if os.path.exists(_version_file):
     VERSION = (file(_version_file)).readline().strip()
 else:
     VERSION = '- Development -'
+    
+############ The following lines need to be configured #########################
+SITE_ID = 1
+URL_ROOT = 'http://cmcf.lightsource.ca'
+SITE_NAME_SHORT = 'CMCF'
+SITE_NAME_LONG = 'Canadian Macromolecular Crystallography Facility'
+SITE_DESCRIPTION = 'CMCF is an umbrella facility which operates two beamlines, 08ID-1 and 08B1-1, at the Canadian Light Source. Together, both beamlines enable high-resolution structural studies of proteins, nucleic acids and other macromolecules, satisfying the requirements of the most challenging and diverse crystallographic experiments.'
+SITE_KEYWORDS = 'CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein'
+ABSOLUTE_PATH_TO_FILES = 'var/website/cmcf-website/cmcf' # no leading or trailing slashes
     
 SCHOOL_FROM_EMAIL = 'cmcf-support@lightsource.ca'
 SERVER_EMAIL = 'cmcf-web@no-reply.ca'
@@ -17,21 +26,20 @@ EMAIL_SUBJECT_PREFIX = 'Web:'
 ADMINS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
 )
-
 #SCHEDULERS will receive e-mail notifications about schedule changes
 SCHEDULERS = (
     ('CMCF Staff', 'cmcf-support@lightsource.ca'),
     ('CLS Users Office', 'clsuo@lightsource.ca'),
 )
-
 #MANAGERS will receive online application forms
 MANAGERS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
     ('Shaun', 'shaun.labiuk@lightsource.ca'),
 )
 
+#If using sqlite3 for your database, the following two lines are all you need
 #DATABASE_ENGINE = 'sqlite3'
-#DATABASE_NAME = os.path.join(os.path.dirname(__file__), 'cmcf.db')
+#DATABASE_NAME = os.path.join(os.path.dirname(__file__), 'web.db')
 
 DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
 DATABASE_NAME = 'website'             # Or path to database file if using sqlite3.
@@ -40,25 +48,28 @@ DATABASE_PASSWORD = 'cmcfweb123'         # Not used with sqlite3.
 DATABASE_HOST = '10.52.4.19'             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
+# Specific IP addresses you want to have access to your wiki
+INTERNAL_IPS = ('70.76.64.163',) 
+# IP networks that you want to have access to your wiki (eg. CLS network)
+ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.45.2.0/255.255.252.0','10.63.240.0/255.255.252.0',)
+
+########## The rest of this file shouldn't need any configuration ##############
+
+
+
 
 TIME_ZONE = 'America/Regina'
 
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
-
 USE_I18N = True
 
-INTERNAL_IPS = ('70.76.64.163',)
-ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.45.2.0/255.255.252.0','10.63.240.0/255.255.252.0',)
-
-
-TINYMCE_JS_URL = 'http://cmcf.lightsource.ca/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js'
+TINYMCE_JS_URL = URL_ROOT + '/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js'
 TINYMCE_CONTENT_CSS_URL = '/admin_media/tinymce/jscripts/tiny_mce/themes/advanced/skins/grappelli/ui.css'
 
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
 MEDIA_URL = '/media/'
-ADMIN_MEDIA_PREFIX = 'http://cmcf.lightsource.ca/admin_media/'
+ADMIN_MEDIA_PREFIX = URL_ROOT + '/admin_media/'
 FEINCMS_ADMIN_MEDIA = '/feincms_media/'
 
 SECRET_KEY = '_wn95s-apfd-442cby5m^_^ak6+5(fyn3lvnvtn7!si&o)1x^w'
@@ -83,18 +94,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
-    'cmcf.middleware.MobileMiddleware'
 )
 
 ROOT_URLCONF = 'cmcf.urls'
 
-DESKTOP_TEMPLATE_DIRS = (
+TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates/'),
 )
-MOBILE_TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), 'mobile_templates/'),
-) + DESKTOP_TEMPLATE_DIRS
-TEMPLATE_DIRS = DESKTOP_TEMPLATE_DIRS
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -235,7 +241,7 @@ COVERAGE_MODULES = ['feincms',
 try:
     # see http://nedbatchelder.com/code/coverage/
     import coverage
-    TEST_RUNNER = 'cmcf.test_utils.test_runner_with_coverage'
+    TEST_RUNNER = 'test_utils.test_runner_with_coverage'
 except ImportError:
     # run without coverage support
     pass
@@ -253,8 +259,8 @@ FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
 
 LOGIN_URL = '/admin/'
 
-ADMIN_TOOLS_INDEX_DASHBOARD = 'cmcf.dashboard.CustomIndexDashboard'
-ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'cmcf.dashboard.CustomAppIndexDashboard'
+ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
 try:
     from settings_local import *

@@ -4,7 +4,7 @@ from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 
 # to activate your index dashboard add the following to your settings.py:
 #
-# ADMIN_TOOLS_INDEX_DASHBOARD = 'cmcf.dashboard.CustomIndexDashboard'
+# ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
 class CustomIndexDashboard(Dashboard):
     def __init__(self, **kwargs):

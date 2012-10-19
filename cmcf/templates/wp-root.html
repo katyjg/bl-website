@@ -7,10 +7,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 
-    <title>CMCF - {{ feincms_page.title }}</title>
-    <meta name="description" content="CMCF is an umbrella facility which operates two beamlines, 08ID-1 and 08B1-1, at the Canadian Light Source. Together, both beamlines enable high-resolution structural studies of proteins, nucleic acids and other macromolecules, satisfying the requirements of the most challenging and diverse crystallographic experiments." >
-    <meta name="keywords" content="CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein" >
-    <meta name="generator" content="CMCF-Web {{ 0|get_version }}" >
+    <title>{{ 'SITE_NAME_SHORT'|get_from_settings }} - {{ feincms_page.title }}</title>
+    <meta name="description" content="{{ 'SITE_DESCRIPTION'|get_from_settings }}" >
+    <meta name="keywords" content="{{ 'SITE_KEYWORDS'|get_from_settings }}" >
+    <meta name="generator" content="{{ 'SITE_NAME_SHORT'|get_from_settings }}-Web {{ 0|get_version }}" >
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700|Open+Sans+Condensed:300,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
     <link type="text/css" href="/media/css/wp-style.css" rel="stylesheet" media="screen">
@@ -34,7 +34,7 @@
                 return true;
             }
         } 
-        function contact_cmcf(domain, email) {
+        function contact_staff(domain, email) {
             document.location = "mailto:" + email + '@' + domain ;
         } 
     </script>
@@ -45,8 +45,8 @@
     <link type="text/css" href="/media/css/ie.css" rel="stylesheet">
     <![endif]-->
 
-    <link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="Canadian Macromolecular Crystallography Facility">
-    <link REL="SHORTCUT ICON" HREF="http://cmcf.lightsource.ca/media/img/clslogo.ico">
+    <link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="{{ 'SITE_NAME_LONG'|get_from_settings }}">
+    <link REL="SHORTCUT ICON" HREF="/media/img/clslogo.ico">
     <script type="text/javascript">
 
       var _gaq = _gaq || [];
@@ -85,7 +85,7 @@
     </div>
 </div>
 <div id="header-print">
-    <img class="logo" src="/media/img/clslogo_print.png" alt="Canadian Macromolecular Crystallography Facility">
+    <img class="logo" src="/media/img/clslogo_print.png" alt="{{ 'SITE_NAME_LONG'|get_from_settings }}">
 </div>
 
 {% block "page-content" %}
@@ -129,7 +129,7 @@
 			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
 			<a href="/sitemap/">Site Map</a> |
             <a href="/contact-us/feedback/">Feedback</a> |
-            <a href="javascript:addBookmark('Canadian Macromolecular Crystallography Facility', 'http://cmcf.lightsource.ca')">Add Bookmark</a> | 
+            <a href="javascript:addBookmark('{{ 'SITE_NAME_LONG'|get_from_settings }}', '{{ 'URL_ROOT'|get_from_settings }}')">Add Bookmark</a> | 
             <a href="/links/">Links</a> |
             <a href="/feeds/latest/" class="feed">RSS</a> 
 		</p>

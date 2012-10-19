@@ -34,7 +34,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     (r'^feincms_media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': '/var/website/cmcf-website/cmcf/media/feincms/'}),
+        {'document_root': '/%s/media/feincms/' % settings.ABSOLUTE_PATH_TO_FILES}),
 #        {'document_root': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'feincms/media/feincms/')}),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': os.path.join(os.path.dirname(__file__), 'media/')}),
@@ -60,10 +60,10 @@ urlpatterns = patterns('',
 if settings.DEBUG:       
     urlpatterns += patterns('',
         (r'^media/(?P<path>.*)/$', 'django.views.static.serve', {
-            'document_root': 'var/website/cmcf-website/cmcf/media' 
+            'document_root': '%s/media' % settings.ABSOLUTE_PATH_TO_FILES 
             }),
         (r'^admin_media/(?P<path>.*)/$', 'django.views.static.serve', {
-            'document_root': 'var/website/cmcf-website/cmcf/admin_media' 
+            'document_root': '%s/admin_media' % settings.ABSOLUTE_PATH_TO_FILES
             }),
     )
 

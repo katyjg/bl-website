@@ -7,22 +7,22 @@ from django.contrib.comments.models import Comment
 from django.core.urlresolvers import reverse
 from blog.models import Post, Category
 from django.utils.feedgenerator import Rss201rev2Feed
-
+from django.conf import settings
 
 class RssFooFeedGenerator(Rss201rev2Feed):
     def add_root_elements(self, handler):
         super(RssFooFeedGenerator, self).add_root_elements(handler)
         handler.addQuickElement(u"image", '',
             {
-                 'url': u"http://cmcf.lightsource.ca/media/img/clslogo_feed.png",
+                 'url': u"%s/media/img/clslogo_feed.png" % getattr(settings, 'URL_ROOT', ''),
                  'title': u"Some title",
-                 'link': u"http://cmcf.lightsource.ca/", 
+                 'link': u"%s" % getattr(settings, 'URL_ROOT', ''), 
              })     
 
 class LatestEntries(Feed):
     feed_type = RssFooFeedGenerator
     _site = Site.objects.get_current()
-    description = "Updates from CMCF at the Canadian Light Source."
+    description = "Updates from %s at the Canadian Light Source." % getattr(settings, 'SITE_NAME_SHORT', 'the beamline')
     title = '%s News' % _site.name
 #    description = '%s posts feed.' % _site.name
     link = '/research-highlights/'
@@ -39,18 +39,6 @@ class LatestEntries(Feed):
     def item_description(self, item):
         return item.tease
 
-'''     url_link.append(":8000/research-highlights")
-        url_link.append(str(item.publish.year))
-        url_link.append(item.publish.strftime('%b').lower())
-        url_link.append(str(item.publish.day))'''
-
-'''({
-            'year': item.publish.year,
-            'month': item.publish.strftime('%b').lower(),
-            'day': item.publish.day,
-            'slug': item.slug
-        })
-'''
 
 class BlogPostsFeed(Feed):
     _site = Site.objects.get_current()

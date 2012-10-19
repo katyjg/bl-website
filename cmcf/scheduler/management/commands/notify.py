@@ -24,7 +24,9 @@ class Command(BaseCommand):
                     self.mod_msg = args[2]
             except:
                 raise CommandError('Visit %s does not exist' % args[0])
-        self.from_email = "cmcf-schedule@no-reply.ca"
+        self.from_email = getattr(settings, 'SCHOOL_FROM_EMAIL', "sender@no-reply.ca")
+        self.url_root = getattr(settings, 'URL_ROOT', "")
+        self.site_name = getattr(settings, 'SITE_NAME_SHORT', "")
         self.template_name = 'scheduler/email_body.txt'
         self.subject_template_name = "scheduler/email_subject.txt"
         self.recipient_list = [mail_tuple[1] for mail_tuple in settings.SCHEDULERS]
@@ -77,6 +79,7 @@ class Command(BaseCommand):
         return loader.render_to_string(template_name, dictionary={
                                             'data': self.data,
                                             'mod': self.mod,
+                                            'site': [self.url_root, self.site_name],
                                             })
 
     def subject(self):

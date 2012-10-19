@@ -14,7 +14,7 @@ from django.conf import settings
 from models import *
 from settings import *
 
-from cmcf.decorators import protectview
+from decorators import protectview
 
 @protectview
 def view(request, wiki_url):

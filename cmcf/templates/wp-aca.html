@@ -1,4 +1,5 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load get_version %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <html dir="ltr" lang="en">
@@ -9,9 +10,8 @@
     <meta name="y_key" content="938dd3092c8a9feb">
 
     <title>ACA CanDiv - {{ feincms_page.title }}</title>
-    <meta name="description" content="CMCF is an umbrella facility which operates two beamlines, 08ID-1 and 08B1-1, at the Canadian Light Source. Together, both beamlines enable high-resolution structural studies of proteins, nucleic acids and other macromolecules, satisfying the requirements of the most challenging and diverse crystallographic experiments." >
-    <meta name="keywords" content="CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein" >
-
+    <meta name="description" content="{{ 'SITE_DESCRIPTION'|get_from_settings }}" >
+    <meta name="keywords" content="{{ 'SITE_KEYWORDS'|get_from_settings }}" >
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
     <link type="text/css" href="/media/css/wp-style.css" rel="stylesheet">
 
@@ -42,8 +42,8 @@
     <link type="text/css" href="/media/css/ie.css" rel="stylesheet">
     <![endif]-->
 
-    <link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="Canadian Macromolecular Crystallography Facility">
-    <link REL="SHORTCUT ICON" HREF="http://cmcf.lightsource.ca/media/img/ikka.ico">
+    <link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="{{ 'SITE_NAME_LONG'|get_from_settings }}">
+    <link REL="SHORTCUT ICON" HREF="/media/img/ikka.ico">
 </head>
 
 <body>
@@ -97,7 +97,7 @@
 			<a href="http://www.iucr.org/" title="International Union of Crystallography">IUCr</a> |
             <a href="http://www.amercrystalassn.org/" title="American Crystallographic Association">ACA</a> |
             <a href="http://www.lightsource.ca/" title="Canadian Light Source">CLS</a> |
-            <a href="javascript:addBookmark('ACA CanDiv', 'http://cmcf.lightsource.ca/aca')">Add Bookmark</a> | 
+            <a href="javascript:addBookmark('ACA CanDiv', '{{ 'URL_ROOT'|get_from_settings }}/aca')">Add Bookmark</a> | 
             <a href="/aca/about-aca-candiv/candiv-logo">About our Logo</a> |  
             <a href="/aca/contacting-candiv/#webmaster">Contact the Webmaster</a> 
 		</p>

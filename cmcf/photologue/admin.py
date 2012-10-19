@@ -17,14 +17,6 @@ class GalleryAdmin(BatchModelAdmin):
     prepopulated_fields = {'title_slug': ('title',)}
     filter_horizontal = ('photos',)
 
-def add_to_cmcf1(modeladmin, request, queryset):
-    queryset.update(gallery='1')
-add_to_cmcf1.short_description = "Move to CMCF1 Gallery"
-
-def add_to_cmcf2(modeladmin, request, queryset):
-    queryset.update(gallery='2')
-add_to_cmcf2.short_description = "Move to CMCF2 Gallery"
-
 def highlight(modeladmin, request, queryset):
     queryset.update(photo_highlight=True)
 highlight.short_description = "Add to highlights"
@@ -35,7 +27,7 @@ unhighlight.short_description = "Remove from Highlights"
 
 class PhotoAdmin(BatchModelAdmin):
     batch_actions = ['delete_selected']
-    actions = [add_to_cmcf1, add_to_cmcf2, highlight, unhighlight]
+    actions = [highlight, unhighlight]
     list_display = ('title', 'gallery', 'date_taken', 'date_added', 'is_public', 'photo_highlight', 'tags', 'view_count', 'admin_thumbnail')
     list_filter = ['date_added', 'is_public']
     list_per_page = 10

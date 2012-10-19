@@ -3,7 +3,7 @@ from blog.models import *
 
 urlpatterns = patterns('slider.views',
     url(r'^$',
-        view='cmcf_slider',
+        view='news_slider',
         name='blog_posts'
     ),
 )

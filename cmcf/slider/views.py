@@ -12,7 +12,7 @@ from blog.models import Post
 from tagging.models import Tag, TaggedItem
 from photologue.models import *
 
-def cmcf_slider(request):
+def news_slider(request):
     post_list = []
     full_news_feed = []
     i = 0

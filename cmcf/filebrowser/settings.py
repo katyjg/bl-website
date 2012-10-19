@@ -7,7 +7,6 @@ import os
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-
 # settings for django-tinymce
 try:
     import tinymce.settings
@@ -22,12 +21,8 @@ DEBUG = getattr(settings, "FILEBROWSER_DEBUG", False)
 
 # Main Media Settings
 
-#MEDIA_ROOT = "/users/kathryn/Code/cmcf-website/cmcf/media/"
 MEDIA_ROOT = getattr(settings, "FILEBROWSER_MEDIA_ROOT", settings.MEDIA_ROOT)
-#MEDIA_URL = "http://cmcf.lightsource.ca:8000/media/"
 MEDIA_URL = getattr(settings, "FILEBROWSER_MEDIA_URL", settings.MEDIA_URL)
-
-
 
 # Main FileBrowser Directory. This has to be a directory within MEDIA_ROOT.
 # Leave empty in order to browse all files under MEDIA_ROOT.
@@ -41,8 +36,7 @@ URL_FILEBROWSER_MEDIA = getattr(settings, "FILEBROWSER_URL_FILEBROWSER_MEDIA", "
 PATH_FILEBROWSER_MEDIA = getattr(settings, "FILEBROWSER_PATH_FILEBROWSER_MEDIA", os.path.join(settings.MEDIA_ROOT, 'filebrowser/'))
 
 # The URL/PATH to your TinyMCE Installation.
-URL_TINYMCE = "http://cmcf.lightsource.ca/admin_media/tinymce/jscripts/tiny_mce/"
-#URL_TINYMCE = getattr(settings, "FILEBROWSER_URL_TINYMCE", DEFAULT_URL_TINYMCE)
+URL_TINYMCE = getattr(settings, "FILEBROWSER_URL_TINYMCE", DEFAULT_URL_TINYMCE)
 PATH_TINYMCE = getattr(settings, "FILEBROWSER_PATH_TINYMCE", DEFAULT_PATH_TINYMCE)
 
 # Allowed Extensions for File Upload. Lower case is important.

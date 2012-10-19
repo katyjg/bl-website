@@ -1,10 +1,11 @@
 {% load i18n simplewiki_utils %}
+{% load get_version %}
 <!--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="{{ LANGUAGE_CODE }}">-->
 <head>
 <!--title>{{ wiki_title }}</title-->
-<title>CMCF - Staff Manual</title>
-<link href="http://cmcf.lightsource.ca/media/img/wikilogo.ico" rel="SHORTCUT ICON">
+<title>{{ 'SITE_NAME_SHORT'|get_from_settings }} - Staff Manual</title>
+<link href="/media/img/wikilogo.ico" rel="SHORTCUT ICON">
 
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
 <link type="text/css" href="/media/css/wp-style.css" rel="stylesheet">

@@ -61,7 +61,7 @@
                                                 modal-form link-cell
                                            {% endif %}"
                                     {% if not visit|get_webmode:index %}
-	                                    href="{% url cmcf-add-visit %}?beamline={{bl.pk}}&start_date={{day.5}}&first_shift={{forloop.parentloop.counter0}}"
+	                                    href="{% url bl-add-visit %}?beamline={{bl.pk}}&start_date={{day.5}}&first_shift={{forloop.parentloop.counter0}}"
 	                                    title="Add new visit"
 	                                {% endif %}
                                 {% else %}
@@ -79,7 +79,7 @@
                                         {% if vis.mail_in %}<div class="mail-icon" title="Mail-In Access"></div>{% endif %}{% endif %}
                                     {% endif %}{% endif %}
                                     <var{% if admin %} class="modal-form {% if not vis.proposal.expiration %}inactive{% endif %}"
-                                       href="{% url cmcf-edit-visit vis.pk %}"
+                                       href="{% url bl-edit-visit vis.pk %}"
                                        title="Edit this visit"{% endif %}>
                                        {% if not vis.maintenance %}
 	                                       {% if vis.purchased %}Purchased 
@@ -98,7 +98,7 @@
                                            {% if staff %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">{{ vis.proposal.display }}</text>{% endif %}
                                        {% endif %}</var>
                                     {% if admin %}<div class="modal-form delete-tool" 
-                                       href="{% url cmcf-delete-visit vis.pk %}"
+                                       href="{% url bl-delete-visit vis.pk %}"
                                        title="Delete this visit">&nbsp;</div>{% endif %}
                                 {% endwith %}{% endif %}
                             </td>
@@ -110,13 +110,13 @@
                                     {% else %}
                                         {% if not admin %}class="column1"
                                         {% else %}class="column1 modal-form link-cell"
-                                                  href="{% url cmcf-add-oncall %}?date={{day.5}}"
+                                                  href="{% url bl-add-oncall %}?date={{day.5}}"
                                         {% endif %}
                                     {% endif %}>
                                     {{day.2.0.local_contact.initials}}
                                     {% if day.2 %}{% if admin %}
 	                                    <a class="modal-form delete-tool" 
-	                                        href="{% url cmcf-delete-oncall day.2.0.pk %}"
+	                                        href="{% url bl-delete-oncall day.2.0.pk %}"
 	                                        title="Delete this on-call shift">&nbsp;</a>
                                     {% endif %}{% endif %}
                                 </td>
