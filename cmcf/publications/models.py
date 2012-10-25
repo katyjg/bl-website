@@ -187,10 +187,14 @@ class Publication(models.Model):
         p = re.compile(r'<.*?>')
         title = p.sub('', self.title)
         return len(title) <= 40 and title or '%s...' % title[:40]
-
+    
+    def get_beamlines(self):
+        if self.beamline.all().count() > 1: return [bl.name for bl in self.beamline.all()]
+        elif self.beamline.all(): return self.beamline.all()[0].name
+        else: return ''
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display  = ('year', 'get_authors', 'publish', 'get_title', 'journal')
+    list_display  = ('year', 'get_authors', 'publish', 'get_beamlines', 'get_title', 'journal')
     search_fields = ('title', 'year', 'authors', 'journal')
 
     class Media:
