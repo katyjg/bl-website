@@ -6,22 +6,24 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib import admin
-from blog.managers import PublicManager
-from feincms.content.application.models import ApplicationContent
 
 from django.db.models import CharField
 from django.utils.encoding import force_unicode
 from django.template.defaultfilters import slugify
 
+from feincms.content.application.models import ApplicationContent
 from feincms.content.image.models import ImageContent
 from feincms.content.richtext.models import RichTextContent
-import ImageFile
 
+from blog.managers import PublicManager
+
+import ImageFile
 import re
 import os
 import datetime
 import tagging
 from tagging.fields import TagField
+from scheduler.models import Beamline
 
 def _get_field(instance, name):
     try:
@@ -125,6 +127,7 @@ def get_storage_path(instance, filename):
 class Journal(models.Model):
     name = models.CharField(blank=False,max_length=50)
     description = models.CharField(max_length=200)
+    impact_factor = models.DecimalField(null=True, max_digits=10, decimal_places=3, blank=True)
 
     class Meta:
         verbose_name = _('journal')
@@ -139,6 +142,7 @@ class Publication(models.Model):
     title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
     authors = models.CharField(_('authors'), max_length=500, blank=True)
+    beamline = models.ManyToManyField(Beamline)
     journal = models.ForeignKey(Journal, blank=False)
     year = models.IntegerField(_('year'), blank=False)
     citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
@@ -192,7 +196,10 @@ class PublicationAdmin(admin.ModelAdmin):
     class Media:
         js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
 
+class JournalAdmin(admin.ModelAdmin):
+    list_display  = ('name', 'impact_factor','description')
+
 admin.site.register(Publication, PublicationAdmin)
-admin.site.register(Journal)
+admin.site.register(Journal, JournalAdmin)
 
 

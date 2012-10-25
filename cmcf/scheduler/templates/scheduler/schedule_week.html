@@ -115,8 +115,7 @@
                             {% endwith %}
                         {% endfor %}
                             {% if forloop.first %}
-                                <td rowspan=2 class=" {% ifequal day.0 today.0 %}today{% endifequal %} 
-                                    {% if day.2 %}oncall"
+                                <td rowspan=2 class="{% if day.2 %}oncall {% ifequal day.0 today.0 %}today{% endifequal %}"
                                     {% else %}
                                         {% if not admin %}column1"
                                         {% else %}column1 modal-form link-cell"

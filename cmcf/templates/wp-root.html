@@ -85,7 +85,9 @@
                 {% feincms_navigation of p as sublevel level=2 %}
                 {% if sublevel %}{% for sp in sublevel %}
                     {% if forloop.first %}<ul class="nav-submenu">{% endif %}
+                    {% ifnotequal sp.title "Search Results" %}
                         <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
+                    {% endifnotequal %}
                 {% if forloop.last %}</ul>{% endif %}
             {% endfor %}{% endif %}
                 </li>
