@@ -34,24 +34,20 @@ except ImportError:
     except ImportError:
         raise ImportError('Photologue was unable to import the Python Imaging Library. Please confirm it`s installed and available on your current Python path.')
 
-def gallery_display(request, slug):
+def gallery_display(request, slug=None):
     photo_list = []
-    gallery = Gallery.objects.get(title_slug__exact=slug)
+    try:
+        gallery = Gallery.objects.get(title_slug__exact=slug)
+    except:
+        gallery = None
     for photo in Photo.objects.all():
-        if gallery == photo.gallery:
-            photo.galleryname = gallery.title
+        if gallery:
+            if gallery == photo.gallery:
+                photo.galleryname = gallery.title
+                photo_list.append(photo)
+        else: 
+            photo.galleryname = 'All Images'
             photo_list.append(photo)
-
-    return render_to_response(
-        'galleriffic/gallery_display.html', 
-        {'gallery_list': photo_list}
-        )
-
-def all_display(request):
-    photo_list = []
-    for photo in Photo.objects.all():
-        photo.galleryname = "All Images"
-	photo_list.append(photo)
 
     return render_to_response(
         'galleriffic/gallery_display.html', 

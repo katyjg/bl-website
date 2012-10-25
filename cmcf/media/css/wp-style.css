@@ -1073,13 +1073,22 @@ thead th {
     text-align: center !important;
 }
 
+.today {
+	background-image: url(/media/img/today-pat.png);
+}
+span.now {
+    margin-top: 5px; 
+    margin-right: -10px;
+	padding-right: 10px;
+    background: url(/media/img/stock_right2.png) no-repeat center;
+}
 .modal-form {color: black; cursor: pointer;}
 .admin {color: #666; }
 .inactive {color: #cc3300; }
 .modal-form:hover, .modal-form:hover text.admin {color: #1a6600;}
 
-.delete-tool, a.add-tool, a.edit-tool {width: 16px; display: none;}
-.delete-tool {
+.delete-tool, a.add-tool, a.edit-tool, .update-tool {width: 16px; display: none;}
+.delete-tool, .update-tool {
 	width: 16px; 
 	display: none; 
 	background: url(/media/img/delete-icon-blue.png) no-repeat; 
@@ -1087,15 +1096,23 @@ thead th {
 	z-index: 999;
 	margin-right: -18px;
 }
+.update-tool {
+	background: url(/media/img/update-icon.png) no-repeat;
+	margin-right: 0px; 
+}
 td.oncall .delete-tool {margin-right: 0px;}
 td.del {
 	padding-right: 23px !important;
 }
-td:hover .delete-tool {
+td:hover .delete-tool, td .update-tool {
 	display: inline;
 }
 #schedule td.td-time, #schedule td.column1 {
 	width: 15%;
+}
+td.td-time.update {
+	padding-left: 5 !important;
+	padding-right: 0 !important;
 }
 .mail-icon, .remote-icon {
 	float: left; 

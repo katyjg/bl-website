@@ -162,3 +162,13 @@ input[type="checkbox"] {
 	margin-right: 4px;
 }
 
+// Google Custom Search Engine Adjustments
+input.gsc-input:focus {
+    background-color: #fff !important;
+}
+input.gsc-input {
+    height: 21px !important;
+}
+input.gsc-search-button {
+	padding: 6px 10px !important;
+}

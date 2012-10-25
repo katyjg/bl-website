@@ -14,7 +14,7 @@ from django.utils.encoding import smart_str
 from django.core.management import call_command
 
 import datetime
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, time
 from dateutil.relativedelta import relativedelta
 
 import re, string
@@ -149,7 +149,7 @@ def add_object(request, model, form, template='wp-root.html'):
         frm = form(request.POST)
         if frm.is_valid():
             new_obj = frm.save()
-            if model == Visit:
+            if model in [Visit, Stat]:
                 start_date = new_obj.start_date or request.POST.get('start_date')
                 first_shift = int(new_obj.first_shift) or int(request.POST.get('first_shift'))
                 ns = int(request.POST.get('num_shifts'))
@@ -162,8 +162,9 @@ def add_object(request, model, form, template='wp-root.html'):
                 new_obj.last_shift = ( first_shift + ns - 1 ) % 3                  
                 new_obj.end_date = end_date.date()
                 new_obj.save()
-                if new_obj.start_date <= next_monday and new_obj.start_date >= today and new_obj.modified > etime:
-                    call_command('notify', new_obj.pk, 'ADDED: ')
+                if model == Visit:
+                    if new_obj.start_date <= next_monday and new_obj.start_date >= today and new_obj.modified > etime:
+                        call_command('notify', new_obj.pk, 'ADDED: ')
             message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -174,14 +175,148 @@ def add_object(request, model, form, template='wp-root.html'):
                 }, context_instance=RequestContext(request))
     else:
         frm = form(initial=request.GET.items())
-        if model == Visit:
+        if model in [Visit, Stat]:
             start_date = datetime.strptime(str(request.GET.get('start_date')), '%Y-%m-%d').date()
-            form.warning_message = (start_date <= next_monday and start_date >= today and datetime.now() > etime and WARNING) or None
+            if model == Visit:
+                form.warning_message = (start_date <= next_monday and start_date >= today and datetime.now() > etime and WARNING) or None
         return render_to_response(template, {
             'info': form_info, 
             'form': frm, 
             }, context_instance=RequestContext(request))
-    
+
+@staff_login_required    
+def upload_modes(request, model, form, template='wp-root.html'):
+    """A generic view which displays a Form of type ``form`` using the Template
+    ``template`` and when submitted will create new data using the LimsWorkbook
+    class
+    """
+    form_info = {
+        'title': 'Upload %s' % object_type,
+        'action':  request.path,
+        'add_another': False,
+        'save_label': 'Upload',
+        'enctype' : 'multipart/form-data',
+    }
+    if request.method == 'POST':
+        frm = form(request.POST, request.FILES)
+        if frm.is_valid():
+            # saving valid data to the database can fail if duplicates are found. in this case
+            # we need to manually rollback the transaction and return a normal rendered form error
+            # to the user, rather than a 500 page
+            try:
+                # Read the schedule table from the CLS website, and save the information to the db.
+                page = urllib2.urlopen("http://www.lightsource.ca/operations/schedule.php")
+                soup = BeautifulSoup(page)
+                t = soup.find("table", "excel1")
+                dat = [ map(str, row.findAll("td")) for row in t.findAll("tr") ]
+                mode_calendar = []
+                dates = []
+                w = 0
+            
+                # Strip empty and formatting rows
+                for x in range(len(dat)):
+                    z = 0
+                    for y in range(len(dat[w])):
+                        if dat[w][z].endswith('&nbsp;</td>'):
+                            dat[w].pop(z)
+                        else:
+                            dat[w][z] = ' '.join(' '.join(dat[w][z].split('>')[1:]).split('<')[:-1])
+                            z += 1
+                    if dat[w]:
+                        w += 1
+                    else:
+                        dat.pop(w)
+            
+                if dat[0][0][:2] == 'Su':   
+                    dat.pop(0)
+            
+                month = "Jan"
+                year = "1999"
+            
+                # get initial month and year from the table
+                for i in range(0, len(dat)):
+                    if dat[i][0][0] not in [0,1,2,3,4,5,6,7,8,9]:
+                        month = dat[i][0].split(" ")[0][:3]
+                        year = dat[i][0].split(" ")[-1][-4:]
+                        break
+            
+                x = 0
+                while x is not len(dat):
+                    if len(dat[x]) < 7:
+                        dat.pop(x)
+                    else:
+                        empty = True
+                        for y in range(len(dat[x])):
+                            if len(dat[x][y]):
+                                empty = False
+                        if empty:
+                            dat.pop(x)
+                        else:
+                            x = x+1
+            
+                for x in range(len(dat)):
+                    if dat[x][0][2:3] != ':':
+                        if len(dat[x][0]) > 8:
+                            for y in range(1,8):
+                                if len(dat[x][y]) == 1:
+                                    month = dat[x][0][:3]
+                                    year = dat[x][0][-4:]
+                                    dat[x][y] = month + '/0' + dat[x][y].split(' ')[0] + '/' + year
+                                if len(dat[x][y]) == 2:
+                                    dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
+                        else:
+                            for y in range(len(dat[x])):
+                                if len(dat[x][y]) == 1:
+                                    dat[x][y] = '0' + dat[x][y]
+                                if month:
+                                    dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
+            
+                for x in range(len(dat)):
+                    if len(dat[x]) > 7:
+                        dat[x].pop(0)
+            
+                no_print = False
+                
+                #GOOD
+                        
+                for z in range(len(dat)/4):
+                    for x in range(0,7):
+                        mode_day = []
+                        for y in range(0,4):
+                            mode_day.append(dat[y][x])
+                        dates.append(mode_day[0])
+                        mode_calendar.append(mode_day)
+                    if x == 6:
+                        for i in range(0,4):
+                            dat.pop(0)
+            
+                for x in range(len(mode_calendar)):
+                    mode_calendar[x][1] = mode_calendar[x][2]
+                    mode_calendar[x][2] = mode_calendar[x][3]
+                    if x != len(mode_calendar)-1:
+                        mode_calendar[x][3] = mode_calendar[x+1][1]
+                    day_status = WebStatus(date=dates[x], status1=mode_calendar[x][1], status2=mode_calendar[x][2], status3=mode_calendar[x][3])
+                    if WebStatus.objects.filter(date=day_status.date):
+                        no_print = True
+                    if no_print:
+                        #print "Skipping", day_status.date
+                        no_print=False
+                    else:
+                        #print "Saving...", day_status.date
+                        day_status.save()
+            
+                return mode_calendar
+
+            except IntegrityError:
+                transaction.rollback()
+                frm.add_excel_error('This data has been uploaded already')
+                return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
+        else:
+            return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
+    else:
+        frm = form(initial={'project': project.pk})
+        return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
+
 
 def get_one_week(dt=None):
     if dt is None:
@@ -207,14 +342,17 @@ def combine_shifts(shifts, ids=False):
     return new_shifts
 
 def current_week(request, day=None, template='scheduler/schedule_week.html', admin=False, staff=False):
+    today = datetime.now()
     if day is not None:
         dt = datetime.strptime(day, '%Y-%m-%d').date()
     else:
-        dt = datetime.now().date()
+        dt = today.date()
         
     this_wk = get_one_week(dt)
     prev_wk_day = (dt + timedelta(weeks=-1)).strftime('%Y-%m-%d')
     next_wk_day = (dt + timedelta(weeks=1)).strftime('%Y-%m-%d')
+    shift = ( today.time() < time(8) and 2 ) or ( today.time() > time(16) and 1 ) or 0 
+    if shift == 2: today = today - timedelta(days=1)
     
     calendar = []    
     bl_keys = []
@@ -275,6 +413,7 @@ def current_week(request, day=None, template='scheduler/schedule_week.html', adm
             'prev_week': prev_wk_day,
             'admin':     admin,
             'staff':     staff,
+            'today':    [(today).strftime('%a %b/%d'), shift],
         },
         context_instance=RequestContext(request),
     )

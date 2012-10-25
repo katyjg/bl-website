@@ -1,5 +1,6 @@
 {% extends "wp-root.html" %}
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load get_version %}
 
 {% block "page-content" %}
 
@@ -57,10 +58,13 @@
 			        <div class="col-3">
 			          	{% feincms_navigation of feincms_page as sublevel level=2 %}
 			            <ul class="submenu" >
+                            <li><!-- Place this tag where you want the search box to render -->
+                                <gcse:searchbox-only></gcse:searchbox-only></li>
 			      	    {% for sp in sublevel %}
+			      	      {% ifnotequal sp.title "Search Results" %}
 				            {% feincms_navigation of sp as subsubsublevel level=4 %}
 			         	    <li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
-			                    <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
+   			                    <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
 			            	    {% if subsubsublevel %}
 			            	    	<span class="{% if sp|is_equal_or_parent_of:feincms_page %}open
 			            	    	             {% else %}closed{% endif %}"></span>
@@ -76,6 +80,7 @@
 				                    {% endfor %}
 				        	    {% endif %}
 				        	{% endif %}
+                          {% endifnotequal %}				        	
 			        	{% endfor %}
 			            </ul>
 			        	{% feincms_render_region feincms_page "col1" request %}

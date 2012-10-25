@@ -44,31 +44,41 @@
         {% load schedule_extras %}
         {% for day in calendar %}
             <tr>
-                <td rowspan=3 class="column1">{{day.0}}</td>
+                <td rowspan=3 class="column1 {% ifequal day.0 today.0 %}today{% endifequal %}">{{day.0}}</td>
                     {% for mode in day.3.0 %}
                         {% with forloop.counter0 as index %}
-                        <td class="td-time {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %} tdcenter">
+                        <td class="{% ifequal day.0 today.0 %}today{% endifequal %} 
+                                   td-time {% if mode %}{{mode}}{% else %}
+                                   {% if day.4|get_webmode:index %}{{ day.4|get_webmode:index }}{% else %}
+                                   {% if admin %}update {% endif %}{% endif %}{% endif %} tdcenter">
+                            {% if admin %}{% if not mode %}{% if not day.4|get_webmode:index %}
+                                <div class="modal-form update-tool" 
+                                       href="{% url bl-add-mode %}?start_date={{day.5}}&first_shift={{forloop.counter0}}"
+                                       title="Update beam status">&nbsp;</div>
+                            {% endif %}{% endif %}{% endif %}
                             {% cycle '08:00-16:00' '16:00-24:00' '00:00-08:00' %}
+                            <span class="{% ifequal day.0 today.0 %}{% ifequal index today.1 %}now {% endifequal %}{% endifequal %}">&nbsp;</span>
                         </td>
                         
                         {% for visit in day.1 %}
                             {% with beamlines|get_webmode:forloop.counter0 as bl %}
-                            <td {% if admin %}
-                                    class="del {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}
-                                           {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
-                                                {% if vis.maintenance %}beam-main{% endif %}
-                                           {% endwith %}{% else %}
-                                                modal-form link-cell
-                                           {% endif %}"
+                            <td class="{% ifequal day.0 today.0 %}today {% ifequal index today.1 %}now {% endifequal %}{% endifequal %} 
+                                {% if admin %}
+                                    del {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}
+                                    {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
+                                         {% if vis.maintenance %}beam-main{% endif %}
+                                    {% endwith %}{% else %}
+                                         modal-form link-cell
+                                    {% endif %}"
                                     {% if not visit|get_webmode:index %}
 	                                    href="{% url bl-add-visit %}?beamline={{bl.pk}}&start_date={{day.5}}&first_shift={{forloop.parentloop.counter0}}"
 	                                    title="Add new visit"
 	                                {% endif %}
                                 {% else %}
-	                                class="{% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}
-	                                       {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
-	                                            {% if vis.maintenance %}beam-main{% endif %}
-	                                       {% endwith %}{% endif %}"
+	                                {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}
+                                    {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
+                                         {% if vis.maintenance %}beam-main{% endif %}
+                                    {% endwith %}{% endif %}"
                                 {% endif %}>
                                 {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
                                     {% if not vis.maintenance %}
@@ -105,11 +115,11 @@
                             {% endwith %}
                         {% endfor %}
                             {% if forloop.first %}
-                                <td rowspan=2 
-                                    {% if day.2 %}class="oncall"
+                                <td rowspan=2 class=" {% ifequal day.0 today.0 %}today{% endifequal %} 
+                                    {% if day.2 %}oncall"
                                     {% else %}
-                                        {% if not admin %}class="column1"
-                                        {% else %}class="column1 modal-form link-cell"
+                                        {% if not admin %}column1"
+                                        {% else %}column1 modal-form link-cell"
                                                   href="{% url bl-add-oncall %}?date={{day.5}}"
                                         {% endif %}
                                     {% endif %}>

@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 from scheduler import views
-from scheduler.models import Visit
+from scheduler.models import *
 from scheduler.forms import *
 
 urlpatterns = patterns('',
@@ -27,4 +27,7 @@ urlpatterns = patterns('',
     url(r'^delete-oncall/(?P<id>\d+)/$', 
         views.delete_object, {'model': OnCall, 'form': BasicForm, 'template': 'scheduler/form_full.html'}, 
         name='bl-delete-oncall'), 
+    url(r'^get-modes/$', 
+        views.add_object, {'model': Stat, 'form': AdminStatusForm, 'template': 'scheduler/form_full.html'}, 
+        name='bl-add-mode'), 
 )

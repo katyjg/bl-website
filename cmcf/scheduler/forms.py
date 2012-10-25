@@ -157,6 +157,32 @@ class AdminOnCallForm(forms.ModelForm):
         model = OnCall
         fields = ('date','local_contact')
 
+class AdminStatusForm(forms.ModelForm):
+    mode = forms.ChoiceField(choices=Stat.STATUS_CHOICES, required=True)
+    start_date = DateField(widget=widgets.LeftHalfDate, required=True)
+    end_date = DateField(required=False, widget=forms.HiddenInput)
+    first_shift = forms.ChoiceField(choices=Stat.SHIFT_CHOICES, widget=widgets.RightHalfSelect, required=True)
+    last_shift = forms.ChoiceField(required=False, widget=forms.HiddenInput)
+    num_shifts = forms.IntegerField(widget=widgets.LeftHalfInput, initial=1, label='Number of Shifts' )
+
+    class Meta:
+        model = Stat
+        fields = ('mode','start_date','end_date','first_shift','last_shift','num_shifts')
+
+    def clean(self):
+        '''Override clean to check for overlapping visits'''
+        cleaned_data = self.cleaned_data
+        data = super(AdminStatusForm, self).clean()
+        data['first_shift'] = int(data['first_shift'])
+
+        extra_shifts = ( data['num_shifts'] - ( 3 - data['first_shift'] ))
+        extra_days = extra_shifts/3 + ( bool(extra_shifts%3) and 1 or 0 )
+        end_date = datetime.strptime(str(data['start_date']), '%Y-%m-%d') + timedelta(days=extra_days)
+        
+        data['last_shift'] = ( data['first_shift'] + data['num_shifts'] - 1 ) % 3                  
+        data['end_date'] = end_date.date()
+        return data
+
 class AdminVisitForm(forms.ModelForm):
     beamline = forms.ModelChoiceField(queryset=Beamline.objects.all(), required=True, widget=forms.HiddenInput)
     proposal = forms.ModelChoiceField(queryset=Proposal.objects.all(), required=True, widget=widgets.LargeSelect, label="Active Proposal")

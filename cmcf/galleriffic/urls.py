@@ -3,7 +3,7 @@ from photologue.models import *
 
 urlpatterns = patterns('galleriffic.views',
     url(r'^$',
-        view='all_display',
+        view='gallery_display',
         name='post_list'
     ),
     url(r'^(?P<slug>[-\w]+)/$',
