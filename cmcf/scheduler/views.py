@@ -46,7 +46,7 @@ def staff_calendar(request, day=None, template='scheduler/admin_schedule_week.ht
 
 @staff_login_required
 def admin_scheduler(request, day=None, template='scheduler/admin_schedule_week.html'):
-    return current_week(request, day, template, staff=True, admin=True)
+    return current_week(request, day, template, staff=True, admin=True, title="Beamtime Scheduler")
 
 @staff_login_required
 def edit_visit(request, id, model, form, template='wp-root.html'):
@@ -341,7 +341,7 @@ def combine_shifts(shifts, ids=False):
             new_shifts[i] = ','.join(new_shifts[i])
     return new_shifts
 
-def current_week(request, day=None, template='scheduler/schedule_week.html', admin=False, staff=False):
+def current_week(request, day=None, template='scheduler/schedule_week.html', admin=False, staff=False, title=''):
     today = datetime.now()
     if day is not None:
         dt = datetime.strptime(day, '%Y-%m-%d').date()
@@ -414,6 +414,7 @@ def current_week(request, day=None, template='scheduler/schedule_week.html', adm
             'admin':     admin,
             'staff':     staff,
             'today':    [(today).strftime('%a %b/%d'), shift],
+            'title':    title,
         },
         context_instance=RequestContext(request),
     )

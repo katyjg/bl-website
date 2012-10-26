@@ -30,6 +30,10 @@ class CustomIndexDashboard(Dashboard):
                     'title': _('Schedule Beamtime'),
                     'url': reverse('admin-scheduler.thisweek'),
                 },
+                {
+                    'title': _('Publication Statistics'),
+                    'url': reverse('admin-pub-stats'),
+                },
             ]
         ))
         

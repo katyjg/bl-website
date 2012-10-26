@@ -1053,6 +1053,13 @@ thead th {
 	border-left:1px solid #B5b5b5;
 	text-align:center;
 	}	
+table#objlist-list-table thead th {
+	border-left: none;
+}
+.object-list td {
+	text-align: left !important;
+	white-space: normal !important;
+}
 .Shutdown, .X{
     background: #fff2c2;
 	}
@@ -1348,4 +1355,19 @@ div.bio img {
 }
 .FirstLetter + span{
   margin-left  : -0.5em;
+}
+
+.placeholder {
+	float: left;
+	height: 300px;
+	width: 440px;
+	margin: 0 10px;
+}
+.half {
+	float: left;
+	height: 16px;
+	padding-bottom: 10px;
+	text-align: center;
+	width: 48%;
+	margin: 0 8px;
 }

@@ -142,7 +142,7 @@ class Publication(models.Model):
     title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
     authors = models.CharField(_('authors'), max_length=500, blank=True)
-    beamline = models.ManyToManyField(Beamline)
+    beamline = models.ManyToManyField(Beamline, blank=True)
     journal = models.ForeignKey(Journal, blank=False)
     year = models.IntegerField(_('year'), blank=False)
     citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
@@ -174,6 +174,9 @@ class Publication(models.Model):
             'slug': self.slug
         })
 
+    def display_citation(self):
+        return '%s.(%s).%s.<em>%s</em> %s' % (self.authors, self.year, self.title, self.journal, self.citation)
+
     def get_previous_publication(self):
         return self.get_previous_by_year(status__gte=2)
 
@@ -192,7 +195,10 @@ class Publication(models.Model):
         if self.beamline.all().count() > 1: return [bl.name for bl in self.beamline.all()]
         elif self.beamline.all(): return self.beamline.all()[0].name
         else: return ''
-
+        
+    def get_pdbs(self):
+        return self.pdb_entries.replace(' ', '').split(',')
+    
 class PublicationAdmin(admin.ModelAdmin):
     list_display  = ('year', 'get_authors', 'publish', 'get_beamlines', 'get_title', 'journal')
     search_fields = ('title', 'year', 'authors', 'journal')

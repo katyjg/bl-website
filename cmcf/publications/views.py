@@ -10,6 +10,7 @@ from django.db.models import Q
 from django.conf import settings
 from publications.models import *
 from tagging.models import Tag, TaggedItem
+from scheduler.views import staff_login_required
 
 import string
 from string import *
@@ -18,6 +19,33 @@ from django.db.models import Q
 
 from django.views.generic.list_detail import object_list
 from django.db import connection, transaction
+
+@staff_login_required
+def admin_publication_stats(request, template='publications/publications_stats.html'):
+    pubs = Publication.objects.all().order_by('-journal__impact_factor','-publish')
+    stats = {'norm': { 'pubs': {}, 'pdbs': {},}, 'add': { 'pubs': {}, 'pdbs': {},} }
+    add_stats = { 'pubs': {}, 'pdbs': {},}
+    for p in Publication.objects.all().order_by('year'):
+        if not stats['norm']['pubs'].has_key(p.year):
+            stats['norm']['pubs'][p.year] = 0
+            stats['norm']['pdbs'][p.year] = 0
+            for pub in Publication.objects.filter(year__exact=p.year):
+                stats['norm']['pubs'][p.year] += 1
+                if pub.get_pdbs() != ['']: stats['norm']['pdbs'][p.year] += len(pub.get_pdbs())
+            if stats['add']['pubs'].has_key(p.year-1):
+                stats['add']['pubs'][p.year] = stats['add']['pubs'][p.year-1] + stats['norm']['pubs'][p.year]
+                stats['add']['pdbs'][p.year] = stats['add']['pdbs'][p.year-1] + stats['norm']['pdbs'][p.year] 
+            else: 
+                stats['add']['pubs'][p.year] = stats['norm']['pubs'][p.year] 
+                stats['add']['pdbs'][p.year] = stats['norm']['pdbs'][p.year]
+    
+    return render_to_response(template, { 'title': 'Publication Statistics',
+                                          'admin': True,
+                                          'publications': pubs,
+                                          'stats': stats,
+                                          'addstats': add_stats,
+                                         },
+                              )
 
 def publications_brief(request):
     pub_list = []
