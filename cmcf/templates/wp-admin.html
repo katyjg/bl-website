@@ -74,6 +74,16 @@
                     Logged-in as <strong>admin</strong> |
                     <a href="/admin/">Site Admin</a> |
                     <a href="/" target="_blank">View Public Site</a>
+                    <br>
+	                <ul style="margin-top: 34px;">
+	                    <li>
+	                        <a {% ifequal title 'Publication Statistics'%}class="current"{% endifequal %} 
+	                           href='{% url admin-pub-stats %}'>Statistics</a>
+	                    </li>
+	                    <li>
+	                        <a {% ifequal title 'Beamtime Scheduler'%}class="current"{% endifequal %} href='{% url admin-scheduler.thisweek %}'>Beamtime</a>
+	                    </li>
+	                </ul>
                 </div>
                 {% endif %}
             </div>

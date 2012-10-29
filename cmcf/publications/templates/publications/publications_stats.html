@@ -24,7 +24,7 @@
         <div id="bodyContent" class="wrapper">
             <div class="col-12">
                 <div class="half"><h3>Statistics By Year</h3></div>
-                <div class="half"><h3>Additive Statistics</h3></div>
+                <div class="half"><h3>Total Statistics</h3></div>
                 <div class="clear"></div>
                 <div id="norm" class="placeholder"></div>
                 <div id="add" class="placeholder"></div>
@@ -58,13 +58,16 @@
                         </tbody>
                     </table>
                 </div>
-                
+                <br><br>
                 <div class="clear"></div>
+				<h2>Publications</h2>
+				
 				<div class="object-list">
-				    <h2>Publications by Impact Factor</h2>
+				    <h3>Ranked by Impact Factor</h3>
 					<table id="objlist-list-table" width="100%" cellspacing="0" cellpadding="2" border="0">
 					    <thead>
 					    <tr class="header">
+					        <th>Rank</th>
 					        <th>Reference</th>
                             <th>PDB</th>
 					        <th style="white-space: nowrap">Impact Factor</th>
@@ -72,10 +75,11 @@
 					    </tr>
 					    </thead>
 					    <tbody>
-					    {% for pub in publications %}{% if pub.get_pdbs.0 %}
-					    <tr class="{% cycle 'odd' 'even' %}">
+					    {% for pub in publications %}
+					    <tr class="{% cycle 'odd' 'even' %}{% if not pub.get_pdbs.0 %} complete-row{% endif %}">
+					        <td>{{ forloop.counter }}</td>
 					        <td>{{ pub.display_citation|removetags:"p"|safe }}</td>
-					        <td>
+					        <td style="text-align: center !important;">
 					            {% for pdb in pub.get_pdbs %}
 					            <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId={{pdb}}">{{pdb}}</a>
 					            {% endfor %}
@@ -83,7 +87,7 @@
 					        <td style="text-align: center !important;">{{pub.journal.impact_factor}}</td>
 					        <td>{{ pub.publish|date:"N Y" }}</td>
 					    </tr>
-					    {% endif %}{% endfor %}
+					    {% endfor %}
 					    </tbody>
 					</table>
 			    </div>
@@ -104,14 +108,16 @@
 	        {% for type, statistics in idvals.items %}
 	            data['{{type}}'] = [];
 	            {% for year, val in statistics.items %}
+	                var xvar = {{ year }} - {% ifequal idname 'norm' %}width/2{% else %}0{% endifequal %};
 	                datasets['{{type}}'] = {label: '{{year}}', data: {{val}} };
-	                data['{{type}}'].push([{{year|add:"0"}},{{val}}]);
+	                data['{{type}}'].push([xvar,{{val}}]);
 	            {% endfor %}
 	        {% endfor %}
 	        $.plot($("#{{idname}}"), [ {data: data['pubs'], label: 'Publications'}, 
 	                             {data: data['pdbs'], label: 'PDB Deposits'} ], 
 	            {   series: { 
-	                    lines: {show: true, fill: true, lineWidth: 1 }, 
+	                    lines: {show: {% cycle 'true' 'false' %}, fill: {% cycle 'false' 'true' %}, lineWidth: 1 }, 
+	                    bars: { show: {% cycle 'false' 'true' %}, barWidth: width, fill: 0.25, lineWidth: 0.5, },
 	                    points: { show: true, radius: 2, fill: true },
 	                    shadowSize: 0,                            
 	                },
@@ -119,6 +125,7 @@
 	                legend: { position: 'nw' },
 	                grid: { hoverable: true, borderWidth: 0 }
 	        });             
+	        
 	    {% endfor %}
 
 		function showTooltip(x, y, contents) {
