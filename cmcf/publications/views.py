@@ -41,13 +41,13 @@ def admin_publication_stats(request, template='publications/publications_stats.h
             for pub in Publication.objects.filter(year__exact=p.year):
                 stats['norm']['pubs'][p.year] += 1
                 for bl in pub.get_beamlines().split(','):
-                    stats['bls']['pubs'][bl][p.year] += 1
+                    if bl: stats['bls']['pubs'][bl][p.year] += 1
                 if len(pub.get_beamlines().split(',')) > 1:
                     stats['bls']['pubs']['multi'][p.year] += 1
                 if pub.get_pdbs() != ['']: 
                     stats['norm']['pdbs'][p.year] += len(pub.get_pdbs())
                     for bl in pub.get_beamlines().split(','):
-                        stats['bls']['pdbs'][bl][p.year] += len(pub.get_pdbs())
+                        if bl: stats['bls']['pdbs'][bl][p.year] += len(pub.get_pdbs())
                     if len(pub.get_beamlines().split(',')) > 1:
                         stats['bls']['pdbs']['multi'][p.year] += len(pub.get_pdbs())
             for key in ['pubs','pdbs']:
