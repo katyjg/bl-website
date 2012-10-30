@@ -31,6 +31,17 @@ function addBookmark(title,url) {
 <link REL="SHORTCUT ICON" HREF="/media/img/clslogo.ico">
 <meta name="google-site-verification" content="9T6_aOBqv3je6XSCFybrgP0jym91Y6L7dVLdnBAWDWo" >
 
+<!-- Put the following javascript before the closing </head> tag. -->
+<script>
+  (function() {
+    var cx = '010878230005256235308:khvtu893wew';
+    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
 </head>
 <body>
 <div id="main-wrapper">
@@ -70,10 +81,13 @@ function addBookmark(title,url) {
 	            <p>Things to try:
 	                <ul>
 	                    <li>Check that the URL you entered is correct.</li>
-	                    <li>Visit our <a href="/sitemap/">Sitemap</a> to find the topic you were looking for.</li>
+	                    <li>Visit our <a href="/sitemap/">Sitemap</a> to find the topic you are interested in.</li>
 	                    <li>Return to our <a href="/">home page</a> and use the navigation menu to find what you need.</li>
 	                    <li><a href="/contact-us/">Contact us</a> and we'll see if we can point you in the right direction</li>
+	                    <li>Use this handy dandy search tool to find what you're looking for:</li>
 	                </ul>
+	                <div style="max-width: 400px;">
+	                <gcse:searchbox-only></gcse:searchbox-only></div>
 	            </p>
 	        </div>
 	    </div>

@@ -9,6 +9,7 @@ from django.views.generic import date_based, list_detail
 from django.db.models import Q
 from django.conf import settings
 from publications.models import *
+from scheduler.models import Beamline
 from tagging.models import Tag, TaggedItem
 from scheduler.views import staff_login_required
 
@@ -23,27 +24,41 @@ from django.db import connection, transaction
 @staff_login_required
 def admin_publication_stats(request, template='publications/publications_stats.html'):
     pubs = Publication.objects.all().order_by('-journal__impact_factor','-publish')
-    stats = {'norm': { 'pubs': {}, 'pdbs': {},}, 'add': { 'pubs': {}, 'pdbs': {},} }
-    add_stats = { 'pubs': {}, 'pdbs': {},}
+    stats = {}
+    bls = Beamline.objects.all()
+    for key in ['norm','add','bls']: stats[key] = { 'pubs': {}, 'pdbs': {},}
+    for bl in bls:
+        for key in ['pubs','pdbs']:
+            stats['bls'][key][bl.name] = {}
+            stats['bls'][key]['multi'] = {}
     for p in Publication.objects.all().order_by('year'):
         if not stats['norm']['pubs'].has_key(p.year):
-            stats['norm']['pubs'][p.year] = 0
-            stats['norm']['pdbs'][p.year] = 0
+            for key in ['pubs','pdbs']: 
+                for bl in bls:
+                    stats['bls'][key][bl.name][p.year] = 0
+                    stats['bls'][key]['multi'][p.year] = 0
+                stats['norm'][key][p.year] = 0
             for pub in Publication.objects.filter(year__exact=p.year):
                 stats['norm']['pubs'][p.year] += 1
-                if pub.get_pdbs() != ['']: stats['norm']['pdbs'][p.year] += len(pub.get_pdbs())
-            if stats['add']['pubs'].has_key(p.year-1):
-                stats['add']['pubs'][p.year] = stats['add']['pubs'][p.year-1] + stats['norm']['pubs'][p.year]
-                stats['add']['pdbs'][p.year] = stats['add']['pdbs'][p.year-1] + stats['norm']['pdbs'][p.year] 
-            else: 
-                stats['add']['pubs'][p.year] = stats['norm']['pubs'][p.year] 
-                stats['add']['pdbs'][p.year] = stats['norm']['pdbs'][p.year]
+                for bl in pub.get_beamlines().split(','):
+                    stats['bls']['pubs'][bl][p.year] += 1
+                if len(pub.get_beamlines().split(',')) > 1:
+                    stats['bls']['pubs']['multi'][p.year] += 1
+                if pub.get_pdbs() != ['']: 
+                    stats['norm']['pdbs'][p.year] += len(pub.get_pdbs())
+                    for bl in pub.get_beamlines().split(','):
+                        stats['bls']['pdbs'][bl][p.year] += len(pub.get_pdbs())
+                    if len(pub.get_beamlines().split(',')) > 1:
+                        stats['bls']['pdbs']['multi'][p.year] += len(pub.get_pdbs())
+            for key in ['pubs','pdbs']:
+                last_year = ( stats['add'][key].has_key(p.year-1) and stats['add'][key][p.year-1] ) or 0
+                stats['add'][key][p.year] = stats['norm'][key][p.year] + last_year 
     
     return render_to_response(template, { 'title': 'Publication Statistics',
                                           'admin': True,
                                           'publications': pubs,
                                           'stats': stats,
-                                          'addstats': add_stats,
+                                          'categories': {'pubs': 'Publications', 'pdbs': 'PDB Releases'}
                                          },
                               )
 
@@ -104,3 +119,11 @@ def publication_list(request, **kwargs):
                         extra_context={ 'publication_list': pub_list,
                                         'year_list': year_list},
                         **kwargs)
+    
+def poster_list(request, **kwargs):
+    poster_list = Poster.objects.all()
+    return object_list(request, 
+                        queryset=Poster.objects.all(), 
+                        extra_context={ 'poster_list': poster_list },
+                        **kwargs)
+    

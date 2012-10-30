@@ -10,6 +10,7 @@ else:
     VERSION = '- Development -'
     
 ############ The following lines need to be configured #########################
+
 SITE_ID = 1
 URL_ROOT = 'http://cmcf.lightsource.ca'
 SITE_NAME_SHORT = 'CMCF'
@@ -18,8 +19,8 @@ SITE_DESCRIPTION = 'CMCF is an umbrella facility which operates two beamlines, 0
 SITE_KEYWORDS = 'CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein'
 ABSOLUTE_PATH_TO_FILES = 'var/website/cmcf-website/cmcf' # no leading or trailing slashes
     
-SCHOOL_FROM_EMAIL = 'cmcf-support@lightsource.ca'
-SERVER_EMAIL = 'cmcf-web@no-reply.ca'
+SCHOOL_FROM_EMAIL = 'cmcf-support@lightsource.ca' # This should be an email that exists
+SERVER_EMAIL = 'cmcf-web@no-reply.ca' # This just needs to have the form of an email address
 EMAIL_SUBJECT_PREFIX = 'Web:'
 
 #ADMINS will receive feedback from the website and 500 errors if they arise
@@ -53,10 +54,9 @@ INTERNAL_IPS = ('70.76.64.163',)
 # IP networks that you want to have access to your wiki (eg. CLS network)
 ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.45.2.0/255.255.252.0','10.63.240.0/255.255.252.0',)
 
+ROOT_URLCONF = 'cmcf.urls'
+
 ########## The rest of this file shouldn't need any configuration ##############
-
-
-
 
 TIME_ZONE = 'America/Regina'
 
@@ -93,8 +93,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 )
-
-ROOT_URLCONF = 'cmcf.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates/'),

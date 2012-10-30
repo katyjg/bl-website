@@ -1,28 +1,22 @@
 # Create your models here.
 from django.db import models
+from django.db.models import permalink, CharField
+from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
-from django.db.models import permalink
-from django.contrib.auth.models import User
-from django.conf import settings
-from django.contrib.sites.models import Site
-from django.contrib import admin
-
-from django.db.models import CharField
 from django.utils.encoding import force_unicode
+from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
+from django.conf import settings
 from django.template.defaultfilters import slugify
-
-from feincms.content.application.models import ApplicationContent
-from feincms.content.image.models import ImageContent
-from feincms.content.richtext.models import RichTextContent
-
-from blog.managers import PublicManager
 
 import ImageFile
 import re
 import os
+import subprocess
 import datetime
 import tagging
 from tagging.fields import TagField
+from blog.managers import PublicManager
 from scheduler.models import Beamline
 
 def _get_field(instance, name):
@@ -122,7 +116,7 @@ class AutoSlugField(CharField):
 
 
 def get_storage_path(instance, filename):
-    return os.path.join('publications/', 'photos', filename)
+    return os.path.join('publications/', 'posters', filename)
 
 class Journal(models.Model):
     name = models.CharField(blank=False,max_length=50)
@@ -192,24 +186,43 @@ class Publication(models.Model):
         return len(title) <= 40 and title or '%s...' % title[:40]
     
     def get_beamlines(self):
-        if self.beamline.all().count() > 1: return [bl.name for bl in self.beamline.all()]
+        if self.beamline.all().count() > 1: return ','.join([bl.name for bl in self.beamline.all()])
         elif self.beamline.all(): return self.beamline.all()[0].name
         else: return ''
         
     def get_pdbs(self):
         return self.pdb_entries.replace(' ', '').split(',')
     
-class PublicationAdmin(admin.ModelAdmin):
-    list_display  = ('year', 'get_authors', 'publish', 'get_beamlines', 'get_title', 'journal')
-    search_fields = ('title', 'year', 'authors', 'journal')
-
-    class Media:
-        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
-
-class JournalAdmin(admin.ModelAdmin):
-    list_display  = ('name', 'impact_factor','description')
-
-admin.site.register(Publication, PublicationAdmin)
-admin.site.register(Journal, JournalAdmin)
-
-
+class Poster(models.Model):
+    file = models.FileField(_('poster_file'), upload_to=get_storage_path, help_text="Upload a .pdf file (no larger than 10Mb)")
+    title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
+    author = models.CharField(_('author'), max_length=500, blank=False)
+    institution = models.CharField(max_length=500, blank=True)
+    conference = models.CharField(max_length=500, blank=True)
+    beamline = models.ManyToManyField(Beamline, blank=True)
+    presented = models.DateField(_('presented'), default=datetime.date.today)
+    created = models.DateTimeField(_('created'), auto_now_add=True, editable=False)
+    modified = models.DateTimeField(_('modified'), auto_now=True)    
+    
+    def get_filename(self):
+        return os.path.basename(self.file.path).split('.')[0]
+    
+    def get_imagename(self):
+        if not os.path.exists((self.file.path).split('.')[0]+'.png'):
+            return self.get_filename() + '-0'
+        return self.get_filename() 
+    
+def pdf_to_png(**kwargs):
+    poster = kwargs['instance']
+    directory = os.path.dirname(poster.file.path)
+    image_name = '%s.png' % poster.get_filename()
+    if not os.path.exists(os.path.join(directory, image_name)):
+        params = ['convert', poster.file.path, '-resize', '300x', os.path.join(directory, image_name)]
+        try:
+            subprocess.check_call(params)
+        except:
+            return ''
+    return image_name
+    
+post_save.send(sender=Poster)
+post_save.connect(pdf_to_png, sender=Poster)

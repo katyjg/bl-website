@@ -1117,6 +1117,9 @@ td:hover .delete-tool, td .update-tool {
 #schedule td.td-time, #schedule td.column1 {
 	width: 15%;
 }
+#schedule td.td-time {
+	padding: 0.3em 0.4em;
+}
 td.td-time.update {
 	padding-left: 5 !important;
 	padding-right: 0 !important;

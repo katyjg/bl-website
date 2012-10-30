@@ -3,11 +3,13 @@
 {% load get_version %}
 {% load i18n %}
 {% load truncate_filters %}
+{% load math_filters %}
 
 {% block extra-header %}
     <script type="text/javascript" src="/media/js/jquery.flot.min.js"></script>
     <script type="text/javascript" src="/media/js/jquery.flot.pie.min.js"></script>
     <script type="text/javascript" src="/media/js/jquery.flot.stack.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.flot.axislabels.js"></script>
     
     <link rel="stylesheet" href="/media/css/style.css" />
     <link rel="stylesheet" href="/media/css/imm.css" />
@@ -23,17 +25,24 @@
     <div id="pagebody">
         <div id="bodyContent" class="wrapper">
             <div class="col-12">
-                <div class="half"><h3>Statistics By Year</h3></div>
-                <div class="half"><h3>Total Statistics</h3></div>
+                <div class="half"><h3 style="text-align: center;">Structures and Publications from Data Collected at the CMCF by Year</h3></div>
+                <div class="half"><h3 style="text-align: center;">Total Structures and Publications from Data Collected at the CMCF</h3></div>
+                <div class="half"><h3> </h3></div>
+                <div class="half"><h3> </h3></div>
                 <div class="clear"></div>
                 <div id="norm" class="placeholder"></div>
                 <div id="add" class="placeholder"></div>
+                
                 <div class="clear"></div>
+                <br>
+                
                 <div class="object-list">
+                {% for key, keytitle in categories.items %}
+                    {% for type, stat in stats.norm.items %}{% ifequal key type %}
                     <table id="objlist-list-table" width="100%">
                         <thead>
                             <tr class="header">
-                                <th></th>
+                                <th width="15%">{{ keytitle }}</th>
                                 {% for year, val in stats.norm.pubs.items %}
                                     <th>{{year}}</th>
                                 {% endfor %}    
@@ -41,24 +50,38 @@
                             </tr>                    
                         </thead>
                         <tbody>
+                            {% for bltype, bldict in stats.bls.items %}{% ifequal key bltype %}
+	                            {% for bl, blstats in bldict.items %}{% ifnotequal bl 'multi' %}
+                                <tr class="{% cycle 'odd' 'even' %}">
+                                    <td style="text-align: center !important;">{{ bl }}</td>
+	                                {% for year, val in blstats.items %}
+		                                    <td style="text-align: center !important;">
+		                                        {{ val }}
+		                                        {% for y, v in bldict.multi.items %}{% ifequal y year %}{% ifnotequal v 0 %}
+		                                          ({{v}})*
+		                                        {% endifnotequal %}{% endifequal %}{% endfor %}
+		                                    </td>
+	                                {% endfor %}
+	                                <td style="text-align: center !important;">
+	                                   {{ blstats|get_total }}
+                                       {% ifnotequal bldict.multi|get_total 0 %}
+                                           ({{bldict.multi|get_total}})*
+                                       {% endifnotequal %}</td>
+                                </tr>  
+	                            {% endifnotequal %}{% endfor %}
+	                        {% endifequal %}{% endfor %}
                             <tr class="odd">
-                                <td>Publications</td>
-                                {% for year, val in stats.norm.pubs.items %}
-                                    <td style="text-align: center !important;">{{ val }}</td>
+                                <td style="text-align: center !important; font-weight: bold;"> Total</td>
+                                {% for year, val in stat.items %}
+                                    <td style="text-align: center !important; font-weight: bold;">{{ val }}</td>
                                 {% endfor %}
-                                <td style="text-align: center !important;">{{ stats.add.pubs.2012 }}</td>
-                            </tr>
-                            <tr class="even">
-                                <td>PDB Deposits</td>
-                                {% for year, val in stats.norm.pdbs.items %}
-                                    <td style="text-align: center !important;">{{ val }}</td>
-                                {% endfor %}
-                                <td style="text-align: center !important;">{{ stats.add.pdbs.2012 }}</td>
+                                <td style="text-align: center !important; font-weight: bold;">{{ stat|get_total }}</td>
                             </tr>
                         </tbody>
                     </table>
+                    {% endifequal %}{% endfor %}{% endfor %}
+                    <p>* Numbers in parentheses indicate publications or PDB releases based on data from multiple beamlines.</p>                            
                 </div>
-                <br><br>
                 <div class="clear"></div>
 				<h2>Publications</h2>
 				
@@ -101,7 +124,7 @@
 {% block script %}
     <script type="text/javascript">
     jQuery(document).ready(function() {
-        {% for idname, idvals in stats.items %}
+        {% for idname, idvals in stats.items %}{% ifnotequal idname 'bls' %}
 	        var data = {};
 	        var datasets = {};
 	        var width = 0.4;
@@ -113,20 +136,20 @@
 	                data['{{type}}'].push([xvar,{{val}}]);
 	            {% endfor %}
 	        {% endfor %}
-	        $.plot($("#{{idname}}"), [ {data: data['pubs'], label: 'Publications'}, 
-	                             {data: data['pdbs'], label: 'PDB Deposits'} ], 
+	        $.plot($("#{{idname}}"), [ {data: data['pubs'], label: 'CMCF Publications'}, 
+	                             {data: data['pdbs'], label: 'Protein Data Bank Releases'} ], 
 	            {   series: { 
 	                    lines: {show: {% cycle 'true' 'false' %}, fill: {% cycle 'false' 'true' %}, lineWidth: 1 }, 
-	                    bars: { show: {% cycle 'false' 'true' %}, barWidth: width, fill: 0.25, lineWidth: 0.5, },
+	                    bars: { show: {% cycle 'false' 'true' %}, barWidth: width, fill: 0.35, lineWidth: 0.5, },
 	                    points: { show: true, radius: 2, fill: true },
 	                    shadowSize: 0,                            
 	                },
-	                xaxis: { tickDecimals: 0 },
+	                xaxis: { tickDecimals: 0, axisLabel: 'Year' },
+	                yaxis: { axisLabel: '{% cycle 'Cumulative' 'Total For Year' %}' },
 	                legend: { position: 'nw' },
 	                grid: { hoverable: true, borderWidth: 0 }
 	        });             
-	        
-	    {% endfor %}
+	    {% endifnotequal %}{% endfor %}
 
 		function showTooltip(x, y, contents) {
 			$('<div id="tooltip">' + contents + '</div>').css( {

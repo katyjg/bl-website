@@ -194,6 +194,7 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('blog.urls', 'News Full'),
     ('blog.brief_urls', 'News Brief'),
     ('publications.urls', 'Publications All'),
+    ('publications.poster_urls', 'Posters'),
     ('publications.brief_urls', 'Publications Brief'),
     ('contact_form.urls', 'Contact Form'),
     ('simplewiki.urls', 'Simple Wiki'),
