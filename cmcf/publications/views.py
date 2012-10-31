@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.http import Http404
 from django.views.generic import date_based, list_detail
 from django.db.models import Q
+from django.db.models import Count
 from django.conf import settings
 from publications.models import *
 from scheduler.models import Beamline
@@ -23,42 +24,40 @@ from django.db import connection, transaction
 
 @staff_login_required
 def admin_publication_stats(request, template='publications/publications_stats.html'):
-    pubs = Publication.objects.all().order_by('-journal__impact_factor','-publish')
-    stats = {}
+    pubs = Publication.objects.all().annotate(num_bls=Count('beamline')).order_by('-journal__impact_factor','-publish')
+    stats = {'pubs': {}, 'pdbs': {},}
     bls = Beamline.objects.all()
-    for key in ['norm','add','bls']: stats[key] = { 'pubs': {}, 'pdbs': {},}
-    for bl in bls:
-        for key in ['pubs','pdbs']:
-            stats['bls'][key][bl.name] = {}
-            stats['bls'][key]['multi'] = {}
-    for p in Publication.objects.all().order_by('year'):
-        if not stats['norm']['pubs'].has_key(p.year):
-            for key in ['pubs','pdbs']: 
-                for bl in bls:
-                    stats['bls'][key][bl.name][p.year] = 0
-                    stats['bls'][key]['multi'][p.year] = 0
-                stats['norm'][key][p.year] = 0
-            for pub in Publication.objects.filter(year__exact=p.year):
-                stats['norm']['pubs'][p.year] += 1
-                for bl in pub.get_beamlines().split(','):
-                    if bl: stats['bls']['pubs'][bl][p.year] += 1
-                if len(pub.get_beamlines().split(',')) > 1:
-                    stats['bls']['pubs']['multi'][p.year] += 1
-                if pub.get_pdbs() != ['']: 
-                    stats['norm']['pdbs'][p.year] += len(pub.get_pdbs())
-                    for bl in pub.get_beamlines().split(','):
-                        if bl: stats['bls']['pdbs'][bl][p.year] += len(pub.get_pdbs())
-                    if len(pub.get_beamlines().split(',')) > 1:
-                        stats['bls']['pdbs']['multi'][p.year] += len(pub.get_pdbs())
-            for key in ['pubs','pdbs']:
-                last_year = ( stats['add'][key].has_key(p.year-1) and stats['add'][key][p.year-1] ) or 0
-                stats['add'][key][p.year] = stats['norm'][key][p.year] + last_year 
+    for key, val in stats.items():
+        for k in ['multi','unknown','total','cumulative']:
+            stats[key][k] = {}
+        for bl in bls:
+            stats[key][bl.name] = {}
     
+    first_year = Publication.objects.all().order_by('year')[0].year
+    last_year = Publication.objects.all().order_by('-year')[0].year
+    
+    for year in range(first_year, last_year+1):
+        ypub = pubs.filter(year__exact=year)
+        stats['pubs']['total'][year] = ypub.count()
+        stats['pubs']['cumulative'][year] = pubs.filter(year__lte=year).count()
+        stats['pubs']['multi'][year] = ypub.filter(num_bls__gt=1).count()
+        stats['pubs']['unknown'][year] = ypub.filter(num_bls__exact=0).count()
+        stats['pdbs']['total'][year] = sum(len(p.get_pdbs()) for p in ypub)
+        stats['pdbs']['cumulative'][year] = stats['pdbs']['total'][year] + (stats['pdbs']['cumulative'].has_key(year-1) and stats['pdbs']['cumulative'][year-1] or 0)
+        stats['pdbs']['unknown'][year] = sum(len(p.get_pdbs()) for p in ypub.exclude(num_bls__exact=1))
+        stats['pdbs']['multi'][year] = 0
+        for bl in bls:
+            stats['pubs'][bl.name][year] = ypub.filter(beamline__exact=bl).count()
+            stats['pdbs'][bl.name][year] = sum(len(p.get_pdbs()) for p in ypub.filter(num_bls__exact=1).filter(beamline__exact=bl))
+
     return render_to_response(template, { 'title': 'Publication Statistics',
                                           'admin': True,
                                           'publications': pubs,
                                           'stats': stats,
-                                          'categories': {'pubs': 'Publications', 'pdbs': 'PDB Releases'}
+                                          'categories': {'pubs': 'Publications', 'pdbs': 'PDB Releases'},
+                                          'beamlines': [bl.name for bl in bls],
+                                          'extra_rows': ['unknown','total'],
+                                          'plots': ['total','cumulative'],
                                          },
                               )
 

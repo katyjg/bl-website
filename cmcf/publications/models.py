@@ -191,7 +191,9 @@ class Publication(models.Model):
         else: return ''
         
     def get_pdbs(self):
-        return self.pdb_entries.replace(' ', '').split(',')
+        pdb_list = self.pdb_entries.replace(' ', '').split(',')
+        return ( pdb_list != [''] and pdb_list ) or []
+    
     
 class Poster(models.Model):
     file = models.FileField(_('poster_file'), upload_to=get_storage_path, help_text="Upload a .pdf file (no larger than 10Mb)")
