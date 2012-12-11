@@ -119,6 +119,9 @@ class Proposal(models.Model):
     def display(self):
         return '%s, %s #%s' % (self.last_name, self.first_name, self.proposal_id)
  
+    def account_list(self):
+        return self.account and [a for a in self.account.replace(' ','').split(',')] or [self.last_name.lower()]
+ 
     class Meta:
         unique_together = (
             ("proposal_id"),
@@ -255,7 +258,10 @@ class Visit(models.Model):
         return (self.proposal and self.proposal_display()) or '%s, %s to %s' % (self.description, self.start_date, self.end_date)
     
     def proposal_display(self):
-        return self.proposal and self.proposal.display() or 'No proposal specified'
+        return self.proposal and self.proposal.display() or self.description
+    
+    def proposal_account(self):
+        return self.proposal and self.proposal.account_list()[0] or None
     
     def notify(self):
         return self.brief_notify(long=True)
@@ -422,15 +428,8 @@ class Stat(models.Model):
         verbose_name = "Beamline Status (to override CLS status)"
         verbose_name_plural = "Beamline Statuses (override CLS status)"
 
-#post_save.send(sender=Stat)
-#post_save.connect(get_cls_modes, sender=Stat)
 
-
-
-
-
-
-
+    
 
 
 
