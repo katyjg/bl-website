@@ -361,7 +361,7 @@ def current_week(request, day=None, template='scheduler/schedule_week.html', adm
     mode_week = {}
     beamlines = Beamline.objects.all()
     week_personnel = OnCall.objects.week_occurences(dt)
-    modes = Stat.objects.all()
+    modes = Stat.objects.all().order_by('-pk')
     #mode_calendar = get_cls_modes()
 
     for bl in beamlines:

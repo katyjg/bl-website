@@ -1374,3 +1374,10 @@ div.bio img {
 	width: 48%;
 	margin: 0 8px;
 }
+span.alert {
+    background: url("/media/img/new-icon.png") center left no-repeat;
+    min-width: 28px;
+    min-height: 23px;
+    float: left;
+    padding: 0 3px 8px;
+}
