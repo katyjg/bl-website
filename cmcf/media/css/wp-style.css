@@ -619,7 +619,7 @@ h5 {
 	margin-bottom: 12px;
 }
 #headline {
-	height: 60px;
+	height: 61px;
 	min-width: 960px;
 	background: #f7f7f7;
 	border-bottom: 1px solid #dfdfdf;
@@ -1378,6 +1378,6 @@ span.alert {
     background: url("/media/img/new-icon.png") center left no-repeat;
     min-width: 28px;
     min-height: 23px;
-    float: left;
-    padding: 0 3px 8px;
+    float: right;
+    padding: 0 125px 8px;
 }
