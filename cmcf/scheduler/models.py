@@ -385,6 +385,7 @@ class Stat(models.Model):
 	('Development', 	'Development Mode'),
 	('NormalMode', 	'Normal Mode'),
 	('Special', 	'Special Request/Commissioning'),
+    ('FacilityRepair',  'Unplanned Facility Repairs'),
     )
     SHIFT_CHOICES = (
         (0, u'08:00 - 16:00'),
@@ -425,14 +426,6 @@ class Stat(models.Model):
             ("mode", "end_date", "last_shift"),
             )
         get_latest_by = "date"
-        verbose_name = "Beamline Status (to override CLS status)"
-        verbose_name_plural = "Beamline Statuses (override CLS status)"
-
-
-    
-
-
-
-
-
+        verbose_name = "Facility Status"
+        verbose_name_plural = "Facility Statuses"
 

@@ -80,37 +80,43 @@
                                          {% if vis.maintenance %}beam-main{% endif %}
                                     {% endwith %}{% endif %}"
                                 {% endif %}>
+                                <!-- Print text in the table cells -->
+                                {% if mode|find_in:"FacilityRepair" and not staff %}
+                                	Facility Repairs
+                                {% else %}
                                 {% if visit|get_webmode:index %}{% with visit|get_webmode:index|get_webmode:0|get_webmode:1 as vis %}
-                                    {% if not vis.maintenance %}
+                                    {% if not staff and mode|find_in:"FacilityRepair" %}{% else %}
+                                    <!-- Add icons for remote or mail-in collection -->
+                                    {% if staff or not vis.maintenance %}{% if staff or not mode|find_in:"FacilityRepair" %}
 	                                    {% if vis.remote %}<div class="remote-icon" title="Remote Access"></div>{% else %}
 	                                    {% if vis.mail_in %}<div class="mail-icon" title="Mail-In Access"></div>{% endif %}{% endif %}
-                                    {% else %}{% if admin %}
-                                        {% if vis.remote %}<div class="remote-icon" title="Remote Access"></div>{% else %}
-                                        {% if vis.mail_in %}<div class="mail-icon" title="Mail-In Access"></div>{% endif %}{% endif %}
                                     {% endif %}{% endif %}
-                                    <var{% if admin %} class="modal-form {% if not vis.proposal.expiration %}inactive{% endif %}"
-                                       href="{% url bl-edit-visit vis.pk %}"
-                                       title="Edit this visit"{% endif %}>
-                                       {% if not vis.maintenance %}
-	                                       {% if vis.purchased %}Purchased 
-	                                           {% if not staff %}Access
-	                                           {% else %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">- {{ vis.proposal_display }} {% if vis.description %}({{vis.description}}){% endif %}</text>
-	                                           {% endif %}
-	                                       {% else %}
-	                                           {% if vis.proposal %}{{ vis.proposal.last_name }}{% if staff %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">, {{ vis.proposal.first_name }}
-	                                               {% if vis.description %}({{vis.description}}){% endif %}
-	                                               </text>{% endif %}
-                                               {% else %}{{vis.description }}
-                                               {% endif %}
-	                                           {% if staff %}{% if vis.proposal %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}"> #{{ vis.proposal.proposal_id }}</text>{% endif %}{% endif %}
-	                                       {% endif %}
-                                       {% else %}Beamline Maintenance
-                                           {% if staff %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">{{ vis.proposal.display }}</text>{% endif %}
-                                       {% endif %}</var>
-                                    {% if admin %}<div class="modal-form delete-tool" 
-                                       href="{% url bl-delete-visit vis.pk %}"
-                                       title="Delete this visit">&nbsp;</div>{% endif %}
-                                {% endwith %}{% endif %}
+                                    
+                                    <!-- Editable from admin side -->
+                                    {% if admin %}<var class="modal-form {% if not vis.proposal.expiration %}inactive{% endif %}"
+                                       href="{% url bl-edit-visit vis.pk %}" title="Edit this visit">{% endif %}
+                                       
+                                    {% if not vis.maintenance %}
+                                     {% if vis.purchased %}Purchased 
+                                         {% if not staff %}Access
+                                         {% else %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">- {{ vis.proposal_display }} {% if vis.description %}({{vis.description}}){% endif %}</text>
+                                         {% endif %}
+                                     {% else %}
+                                         {% if vis.proposal %}{{ vis.proposal.last_name }}{% if staff %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">, {{ vis.proposal.first_name }}
+                                             {% if vis.description %}({{vis.description}}){% endif %}
+                                             </text>{% endif %}
+                                            {% else %}{{vis.description }}
+                                            {% endif %}
+                                         {% if staff %}{% if vis.proposal %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}"> #{{ vis.proposal.proposal_id }}</text>{% endif %}{% endif %}
+                                     {% endif %}
+                                    {% else %}Beamline Maintenance
+                                        {% if staff %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">{{ vis.proposal.display }}</text>{% endif %}
+                                    {% endif %}
+                                    
+                                    <!-- Deletable from admin side -->
+                                    {% if admin %}</var><div class="modal-form delete-tool" 
+                                       href="{% url bl-delete-visit vis.pk %}" title="Delete this visit">&nbsp;</div>{% endif %}
+                                {% endif %}{% endwith %}{% endif %}{% endif %}
                             </td>
                             {% endwith %}
                         {% endfor %}

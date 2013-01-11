@@ -335,6 +335,7 @@ def combine_shifts(shifts, ids=False):
     for shift in shifts:
         for i in range(3):
             if shift[i] is not None:
+                if new_shifts[i] and (new_shifts[i] == ['FacilityRepair'] or shift[i] == 'FacilityRepair') : new_shifts[i][0] += ' '+shift[i]
                 if not new_shifts[i]: new_shifts[i].append(shift[i])
     if not ids:
         for i in range(3):
@@ -347,22 +348,19 @@ def current_week(request, day=None, template='scheduler/schedule_week.html', adm
         dt = datetime.strptime(day, '%Y-%m-%d').date()
     else:
         dt = today.date()
-        
+    
     this_wk = get_one_week(dt)
     prev_wk_day = (dt + timedelta(weeks=-1)).strftime('%Y-%m-%d')
     next_wk_day = (dt + timedelta(weeks=1)).strftime('%Y-%m-%d')
     shift = ( today.time() < time(8) and 2 ) or ( today.time() > time(16) and 1 ) or 0 
     if shift == 2: today = today - timedelta(days=1)
-    
+
     calendar = []    
     bl_keys = []
-    mode_keys = []
     bl_week = {}
-    mode_week = {}
     beamlines = Beamline.objects.all()
     week_personnel = OnCall.objects.week_occurences(dt)
-    modes = Stat.objects.all().order_by('-pk')
-    #mode_calendar = get_cls_modes()
+    modes = Stat.objects.filter(start_date__lte=this_wk[-1],end_date__gte=this_wk[0]).order_by('-pk')
 
     for bl in beamlines:
         bl_week[bl.name] = bl.visit_set.week_occurences(dt)
@@ -372,13 +370,13 @@ def current_week(request, day=None, template='scheduler/schedule_week.html', adm
         key = day.strftime('%a %b/%d')
         shifts = {}
         date = day.strftime('%Y-%m-%d')
-	mode_shifts = []
-	beammode = []
-
-	for current_mode in modes:
-	    beammode.append(current_mode.get_shifts(day))
-
-	mode_shifts.append(combine_shifts(beammode))
+        
+        mode_shifts = []
+        beammode = []
+        for current_mode in modes:
+            beammode.append(current_mode.get_shifts(day))
+        beammode = [m for m in beammode if m != [None, None, None]]
+        mode_shifts.append(combine_shifts(beammode))
         for blkey, blvis in bl_week.items():
             shifts[blkey] = []
 

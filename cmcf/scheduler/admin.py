@@ -23,9 +23,12 @@ class OnCallAdmin(admin.ModelAdmin):
 class SupportPersonAdmin(admin.ModelAdmin):
     list_display = ('last_name','first_name','phone_number','category','office')
 
+class StatAdmin(admin.ModelAdmin):
+    list_display = ('mode','start_date','first_shift','end_date','last_shift')
+
 admin.site.register(Beamline)
 admin.site.register(Proposal, ProposalAdmin)
 admin.site.register(SupportPerson, SupportPersonAdmin)
 admin.site.register(Visit, VisitAdmin)
 admin.site.register(OnCall, OnCallAdmin)
-admin.site.register(Stat)
+admin.site.register(Stat, StatAdmin)

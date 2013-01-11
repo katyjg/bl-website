@@ -1075,6 +1075,11 @@ table#objlist-list-table thead th {
 .Special, .NS, .SB, .Si {
     background: #e9d1ff;
 	}
+	
+.FacilityRepair {
+	background-image: url(/media/img/maintenance-pat.png);
+}
+	
 .oncall {
     background: #d6e0d6;
     text-align: center !important;
