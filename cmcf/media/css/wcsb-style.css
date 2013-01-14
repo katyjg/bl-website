@@ -1,0 +1,11 @@
+.wcsb #header ul li a:hover {
+}
+.wcsb #header .banner {
+	background: url("/media/img/wcsbbanner.png") no-repeat scroll right top transparent;
+}
+.wcsb #header {
+	background: url("/media/img/header_bg_wcsb.png") repeat-x scroll left top #DCDCDC;
+}
+.wcsb .logo {
+	background: url("/media/img/wcsblogo.png") no-repeat scroll left top transparent !important;
+}

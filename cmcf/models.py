@@ -75,6 +75,7 @@ Page.register_templates({
     'path': 'wp-wcsb-base.html',
     'regions': (
     ('main', 'Main Content'),
+    ('tabs', 'Navigation Tabs'),
     )
     })
 

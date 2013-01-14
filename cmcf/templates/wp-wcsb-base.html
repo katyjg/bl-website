@@ -15,6 +15,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700|Open+Sans+Condensed:300,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
     <link type="text/css" href="/media/css/wp-style.css" rel="stylesheet" media="screen">
     <link type="text/css" href="/media/css/wp-style-print.css" rel="stylesheet" media="print">
+    <link type="text/css" href="/media/css/wcsb-style.css" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" ></script>
     <script type="text/javascript" src="/media/js/jquery.scroll.pack.js"></script>
 
@@ -71,28 +72,14 @@
 
 </head>
 
-<body>
+<body class="wcsb">
 <div id="main-wrapper">
 <div id="header">
     <div class="banner">
         <div class="logo">
         	<div class="wrapper"></div>
-        	
-            <ul>
-            {% feincms_navigation of feincms_page as toplevel level=1 %}
-            {% for p in toplevel %}
-                <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
-                {% feincms_navigation of p as sublevel level=2 %}
-                {% if sublevel %}{% for sp in sublevel %}
-                    {% if forloop.first %}<ul class="nav-submenu">{% endif %}
-                    {% ifnotequal sp.title "Search Results" %}
-                        <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
-                    {% endifnotequal %}
-                {% if forloop.last %}</ul>{% endif %}
-            {% endfor %}{% endif %}
-                </li>
-            {% endfor %}
-            </ul>
+        	{% feincms_render_region feincms_page "tabs" request %}
+            
     </div>
     </div>
 </div>
@@ -119,19 +106,7 @@
 {% feincms_frontend_editing feincms_page request %}
 <div class="push"></div>
 </div>
-<div id="footer">
-	<div class="wrapper">
-        <span id="something">{% get_fragment request "something" %}</span>
-		<p> 
-			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
-			<a href="/sitemap/">Site Map</a> |
-            <a href="/contact-us/feedback/">Feedback</a> |
-            <a href="javascript:addBookmark('{{ 'SITE_NAME_LONG'|get_from_settings }}', '{{ 'URL_ROOT'|get_from_settings }}')">Add Bookmark</a> | 
-            <a href="/links/">Links</a> |
-            <a href="/feeds/latest/" class="feed">RSS</a> 
-		</p>
-	</div>
-</div>
+
 <div><a id="toTop" title="Scroll To Top">&nbsp;</a></div>
 </body>
 </html>
