@@ -70,6 +70,15 @@ Page.register_templates({
     })
 
 Page.register_templates({
+    'key': 'wp-wcsb-base',
+    'title': 'WCSB Base',
+    'path': 'wp-wcsb-base.html',
+    'regions': (
+    ('main', 'Main Content'),
+    )
+    })
+
+Page.register_templates({
     'key': 'wp-calendar',
     'title': 'WP Calendar',
     'path': 'wp-calendar.html',
