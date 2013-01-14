@@ -1291,17 +1291,19 @@ background: url(/media/img/minus1.png) no-repeat;
 .subdesc {
     color: #777;
     display: block;
-    width: 346px;
+    width: 290px;
     float: left;
 }
 input.medium {
     width: 60%;
 }
 input.full, textarea.full {
-    width: 678px;
+    width: 559px;
 }
 input.half {
-    width: 333px;
+	margin-left: 0px !important;
+	margin-right: 8px !important;
+    width: 272px;
 }
 span.req {
     color: red;
