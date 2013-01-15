@@ -5,36 +5,42 @@
     <tr>
         <th>Name</th>
         <th>Institution</th>
-        <th>Country</th>
-        <th>Status</th>
+        <th>Supervisor</th>
+        <th>Position</th>
+        <th>Travel</th>
+        <th>Xtals</th>
+        <th>Dorm</th>
     </tr>
     </thead>
     {% for app in applicant_list %}
         <tr>
             <td><a href="/{{app.pk}}">{{app.name}}</a></td>
             <td>{{app.institution}}</td>
-            <td>{{app.country}}</td>
+            <td>{{app.sup_name}}</td>
             <td>
-                {% if app.undergrad %}Undergraduate Student
+                {% if app.undergrad %}Undergrad
                     {% if app.masters or app.phd or app.postdoc or app.faculty or app.staff or app.other %}/{% endif %}
                 {% endif %}
-                {% if app.masters %}Masters Student
+                {% if app.masters %}MSc
                     {% if app.phd or app.postdoc or app.faculty or app.staff or app.other %}/{% endif %}
                 {% endif %}
-                {% if app.phd %}PhD Student
+                {% if app.phd %}PhD
                     {% if app.postdoc or app.faculty or app.staff or app.other %}/{% endif %}
                 {% endif %}
-                {% if app.postdoc %}Postdoctoral Fellow
+                {% if app.postdoc %}Postdoc
                     {% if app.faculty or app.staff or app.other %}/{% endif %}
                 {% endif %}
                 {% if app.faculty %}Faculty
                     {% if app.staff or app.other %}/{% endif %}
                 {% endif %}
-                {% if app.staff %}Research Staff
+                {% if app.staff %}Staff
                     {% if app.other %}/{% endif %}
                 {% endif %}
                 {% if app.other %}Other ({{app.other_text}}){% endif %}
             </td>
+            <td>{% if app.travel %}&#10004;{% endif %}</td>
+            <td>{% if app.crystals %}&#10004;{% endif %}</td>
+            <td>{% if app.stay %}&#10004;{% endif %}</td>
         </tr>
     {% endfor %}
 </table>

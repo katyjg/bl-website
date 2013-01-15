@@ -1304,6 +1304,7 @@ input.half {
 	margin-left: 0px !important;
 	margin-right: 8px !important;
     width: 272px;
+    text-align: left;
 }
 span.req {
     color: red;

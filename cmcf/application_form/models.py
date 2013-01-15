@@ -41,6 +41,12 @@ class Application(models.Model):
     benefit = models.TextField(_('benefit/Experience'))
     created = models.DateTimeField(_('created'), auto_now_add=True)
     
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.institution)
+    
+    def year(self):
+        return self.created.year
+    
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'institution', 'state', 'country')
+    list_display = ('name', 'institution', 'state', 'country','year')
 admin.site.register(Application, ApplicationAdmin)

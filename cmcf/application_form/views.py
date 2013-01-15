@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+import datetime
+from scheduler.views import staff_login_required
 from application_form.forms import ApplicationForm
 from application_form.models import Application
 
@@ -75,10 +77,12 @@ def application_form(request, form_class=ApplicationForm,
     return render_to_response(template_name,
                               { 'form': form },
                               context_instance=context)
-    
+
+@staff_login_required
 def applicant_list(request):
     applicant_list = []
-    for applicant in Application.objects.all():
+    this_year = datetime.date.today().year
+    for applicant in Application.objects.filter(created__year=this_year):
         applicant_list.append(applicant)
 
     return render_to_response(
