@@ -86,7 +86,7 @@
 {% block "page-content" %}
 <div id="headline">
 	<div class="wrapper">
-		<h2>{{ feincms_page.title }}</h2>
+		<h2>{% ifequal feincms_page.title 'Main' %}1<sup>st</sup> Annual Western Canadian Structural Biology Meeting{% else %}{{ feincms_page.title }}{% endifequal %}</h2>
 	</div>
 </div>
 

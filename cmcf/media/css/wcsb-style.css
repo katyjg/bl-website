@@ -7,3 +7,10 @@
 .wcsb .logo {
 	background: url("/media/img/wcsblogo.png") no-repeat scroll left top transparent !important;
 }
+body.wcsb {
+	font-size: 15px !important;
+}
+.wcsb h2 sup {
+	line-height: 11px;
+	font-size: 60%;
+}
