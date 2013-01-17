@@ -1077,7 +1077,7 @@ table#objlist-list-table thead th {
 	}
 	
 .FacilityRepair {
-	background-image: url(/media/img/maintenance-pat.png);
+	background-image: url(/media/img/repair-pat.png) !important;
 }
 	
 .oncall {
