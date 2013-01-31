@@ -26,9 +26,13 @@ class SupportPersonAdmin(admin.ModelAdmin):
 class StatAdmin(admin.ModelAdmin):
     list_display = ('mode','start_date','first_shift','end_date','last_shift')
 
+class WebStatusAdmin(admin.ModelAdmin):
+    list_display = ('date','status1','status2','status3')
+
 admin.site.register(Beamline)
 admin.site.register(Proposal, ProposalAdmin)
 admin.site.register(SupportPerson, SupportPersonAdmin)
 admin.site.register(Visit, VisitAdmin)
 admin.site.register(OnCall, OnCallAdmin)
 admin.site.register(Stat, StatAdmin)
+admin.site.register(WebStatus, WebStatusAdmin)

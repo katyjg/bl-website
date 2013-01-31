@@ -58,13 +58,15 @@ def application_form(request, form_class=ApplicationForm,
         benefit = request.POST.get('benefit', '') 
         applicant = Application(name=name, email=email, phone=phone, institution=institution, addr1=addr1, addr2=addr2, city=city, state=state, code=code, country=country, sup_name=sup_name, sup_email=sup_email, sup_phone=sup_phone, undergrad=undergrad, masters=masters, phd=phd, postdoc=postdoc, faculty=faculty, staff=staff, other=other, other_text=other_text, travel=travel, visa=visa, stay=stay, crystals=crystals, research=research, benefit=benefit)
 
-        applicant.save()
         if form.is_valid():
+            applicant.save()
             form.save(fail_silently=fail_silently)
             return HttpResponseRedirect(success_url)
         else:
             retry_url = reverse('application_form_retry')
-            return HttpResponseRedirect(retry_url)
+            return render_to_response('application_form/application_form_retry.html',
+                                      {'form': form},
+                                      context_instance=RequestContext(request))
     else:
         form = form_class(request=request)
 

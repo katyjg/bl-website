@@ -1389,3 +1389,23 @@ span.alert {
     float: right;
     padding: 0 125px 8px;
 }
+.comment label {
+	display: block;
+}
+.comment input[type=text] {
+	width: 47%
+}
+.comment input[type=submit] {
+	margin-top: 5px;
+}
+.comment textarea {
+	width: 47.5%
+}
+
+.application textarea {
+	display: block;
+}
+.application ul {
+	list-style: none !important;
+	margin-top: -15px !important;
+}

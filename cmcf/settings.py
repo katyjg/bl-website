@@ -56,6 +56,8 @@ ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.4
 
 ROOT_URLCONF = 'cmcf.urls'
 
+RECAPTCHA_PUBLIC_KEY = '6LegXtwSAAAAAN3Xy2oy3hQhSiMuqC8FS4HbXIC_' 
+
 ########## The rest of this file shouldn't need any configuration ##############
 
 TIME_ZONE = 'America/Regina'
@@ -131,6 +133,7 @@ INSTALLED_APPS = (
 
     'mptt',
     'south',
+    'captcha',
 )
 
 COVERAGE_MODULES = ['feincms',

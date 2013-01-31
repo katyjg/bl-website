@@ -1,28 +1,17 @@
-# Create your views here.
-
-from urllib import quote
-from django.shortcuts import render_to_response, get_object_or_404
-from django.views.generic.create_update import delete_object
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.generic.create_update import delete_object
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.utils.encoding import smart_str
 from django.core.management import call_command
 
-import datetime
 from datetime import datetime, date, timedelta, time
-from dateutil.relativedelta import relativedelta
 
-import re, string
-from django.db.models import Q
+import string
 from django.conf import settings
 
-from scheduler.models import *
-from calendar import Calendar, HTMLCalendar
+from scheduler.models import Visit, Stat, OnCall, SupportPerson, Beamline, WebStatus
 from decorators import protectview
 
 WARNING = "This is a last-minute change. It will take a few moments to send a notification e-mail to the Users Office and to beamline staff."
@@ -49,9 +38,9 @@ def admin_scheduler(request, day=None, template='scheduler/admin_schedule_week.h
     return current_week(request, day, template, staff=True, admin=True, title="Beamtime Scheduler")
 
 @staff_login_required
-def edit_visit(request, id, model, form, template='wp-root.html'):
+def edit_visit(request, pk, model, form, template='wp-root.html'):
     form_info = {'title': 'Edit Beamline Visit',
-                 'action':  reverse('bl-edit-visit', args=[id]),
+                 'action':  reverse('bl-edit-visit', args=[pk]),
                  'save_label': 'Save',
                  'enctype' : 'multipart/form-data',
                  }
@@ -60,7 +49,7 @@ def edit_visit(request, id, model, form, template='wp-root.html'):
     next_monday = this_monday + timedelta(days=7)
     etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
     
-    visit = Visit.objects.get(pk__exact=id)
+    visit = Visit.objects.get(pk__exact=pk)
     mod_msg = ''
     if request.method == 'POST':
         if visit.start_date <= next_monday and visit.start_date >= today:
@@ -90,8 +79,8 @@ def edit_visit(request, id, model, form, template='wp-root.html'):
         }, context_instance=RequestContext(request))
     
 @staff_login_required
-def delete_object(request, id, model, form, template='wp-root.html'):
-    obj = model.objects.get(pk__exact=id)
+def delete_object(request, pk, model, form, template='wp-root.html'):
+    obj = model.objects.get(pk__exact=pk)
     today = datetime.now().date()
     this_monday = today - timedelta(days=datetime.now().date().weekday())
     next_monday = this_monday + timedelta(days=7)
@@ -183,6 +172,9 @@ def add_object(request, model, form, template='wp-root.html'):
             'info': form_info, 
             'form': frm, 
             }, context_instance=RequestContext(request))
+
+import urllib2
+import BeautifulSoup
 
 @staff_login_required    
 def upload_modes(request, model, form, template='wp-root.html'):
@@ -326,8 +318,7 @@ def get_one_week(dt=None):
     wk_dt = dt - timedelta(days=dt.weekday())
     week = [wk_dt]
     for i in range(6):
-        wk_dt = wk_dt + timedelta(days=1)
-        week.append( wk_dt )
+        week.append( wk_dt + timedelta(days=i+1) )
     return week
         
 def combine_shifts(shifts, ids=False):
