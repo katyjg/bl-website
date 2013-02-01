@@ -165,8 +165,8 @@ class ApplicationForm(forms.Form):
         Build and send the email message.
         
         """
-        print self.get_message_dict()
-        #send_mail(fail_silently=fail_silently, **self.get_message_dict())
+        '''print self.get_message_dict()'''
+        send_mail(fail_silently=fail_silently, **self.get_message_dict())
         
 class AkismetContactForm(ApplicationForm):
     """
