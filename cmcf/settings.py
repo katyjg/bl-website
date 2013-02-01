@@ -19,6 +19,7 @@ SITE_DESCRIPTION = 'CMCF is an umbrella facility which operates two beamlines, 0
 SITE_KEYWORDS = 'CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein'
 ABSOLUTE_PATH_TO_FILES = 'var/website/cmcf-website/cmcf' # no leading or trailing slashes
     
+CONF_FROM_EMAIL = 'kathryn.janzen@lightsource.ca'
 SCHOOL_FROM_EMAIL = 'cmcf-support@lightsource.ca' # This should be an email that exists
 SERVER_EMAIL = 'cmcf-web@no-reply.ca' # This just needs to have the form of an email address
 EMAIL_SUBJECT_PREFIX = 'Web:'
@@ -36,6 +37,9 @@ SCHEDULERS = (
 MANAGERS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
     ('Shaun', 'shaun.labiuk@lightsource.ca'),
+)
+CONF_MANAGERS = (
+    ('Kathryn', 'kathryn.janzen@lightsource.ca'),
 )
 
 #If using sqlite3 for your database, the following two lines are all you need

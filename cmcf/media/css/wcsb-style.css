@@ -40,3 +40,6 @@ body.wcsb {
 	color: #00289E;
 	font-family: "Open Sans", serif !important;
 }
+.wcsb pre.application {
+	text-align: left;
+}

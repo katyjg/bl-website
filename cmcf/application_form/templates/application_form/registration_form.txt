@@ -1,0 +1,36 @@
+Thank you for registering for the 1st Annual Protein Structure, Function and Malfunction Meeting!  Here is a copy of the information you provided on our online registration form:
+
+PERSONAL INFORMATION:
+
+Name: {{name}} 
+Email: {{email}}
+Phone: {{phone}}
+Institution: {{institution}}
+Mailing Address: 
+    {{addr1}}{% if addr2 %}
+    {{addr2}}{% endif %}
+    {{city}}, {{state}}
+    {{code}}
+    {{country}}
+Position: {% if undergrad or masters or phd or postdoc or faculty or staff or other %}{% if undergrad %}Undergraduate Student{% if masters or phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if masters %}Masters Student{% if phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if phd %}PhD Student{% if postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if postdoc %}Postdoctoral Fellow{% if faculty or staff or other %}/{% endif %}{% endif %}{% if faculty %}Faculty{% if staff or other %}/{% endif %}{% endif %}{% if staff %}Research Staff{% if other %}/{% endif %}{% endif %}{% if other %}Other ({{other_text}}){% endif %}{% else %}Not specified{% endif %}
+
+SUPERVISOR CONTACT INFORMATION:
+
+{% if sup_name %}Name: {{sup_name}}
+Email: {{sup_email}}
+Phone: {{sup_phone}}
+{% else %}    None provided {% endif %}
+
+ABSTRACT SUBMISSION:
+
+Presenting Work?: {{talk|capfirst}}{% ifnotequal talk 'no' %}
+Presentation Preference: {% ifequal type '0' %}Poster{% else %}{% ifequal type '1' %}Oral Presentation{% endifequal %}{% endifequal %}
+Authors: {{authors}}
+Abstract:
+{{abstract}}{% endifnotequal %}
+
+For information on accommodations in Saskatoon, visit our website at http://cmcf.lightsource.ca/psfam/accommodations.  Please contact us if you have any questions while planning your trip, or if any of the information above has changed or is incorrect.  We look forward to seeing you in Saskatoon in June! 
+
+Sincerely,
+
+The PSFaM Meeting Organizers

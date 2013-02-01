@@ -3,4 +3,5 @@
 <pre class="application">
 {% for key, val in form.errors.items %}{{key|capfirst}}: {{ val|striptags}}{% if not forloop.last %}<br>{% endif %}{% endfor %}
 </pre>
-{% include 'application_form/application_form.html' %}
+
+{% include 'application_form/registration_form.html' %}

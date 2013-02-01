@@ -5,66 +5,46 @@ from django.template import RequestContext
 
 import datetime
 from scheduler.views import staff_login_required
-from application_form.forms import ApplicationForm
-from application_form.models import Application
+from application_form.forms import ApplicationForm, RegistrationForm
+from application_form.models import Application, Registration
 
-def application_form(request, form_class=ApplicationForm,
+def application_form(request, form_class=ApplicationForm, model=Application,
                  template_name='application_form/application_form.html',
+                 template_retry='application_form/application_form_retry.html',
                  success_url=None, extra_context=None,
                  fail_silently=False):
 
-    if success_url is None:
-        success_url = reverse('application_form_sent')
+    success_url = ( success_url is None and reverse('application_form_sent') or reverse(success_url) )
     if request.method == 'POST':
         form = form_class(data=request.POST, files=request.FILES, request=request)
-        name = request.POST.get('name', '')
-        email = request.POST.get('email', '')
-        phone = request.POST.get('phone', '')
-        institution = request.POST.get('institution', '')
-        addr1 = request.POST.get('addr1', '')
-        addr2 = request.POST.get('addr2', '')
-        city = request.POST.get('city', '')
-        state = request.POST.get('state', '')
-        code = request.POST.get('code', '')
-        country = request.POST.get('country', '') 
-        sup_name = request.POST.get('sup_name', '')
-        sup_email = request.POST.get('sup_email', '')
-        sup_phone = request.POST.get('sup_phone', '')
-        undergrad = request.POST.get('undergrad', '') 
-        masters = request.POST.get('masters', '') 
-        phd = request.POST.get('phd', '') 
-        postdoc = request.POST.get('postdoc', '') 
-        faculty = request.POST.get('faculty', '') 
-        staff = request.POST.get('staff', '') 
-        other = request.POST.get('other', '') 
-        other_text = request.POST.get('other_text','')
-        if request.POST.get('travel','') == 'yes':
-            travel = 1
-        else:
-            travel=0
-        if request.POST.get('visa','') == 'yes':
-            visa = 1
-        else:
-            visa = 0
-        if request.POST.get('crystals','') == 'yes':
-            crystals = 1
-        else:
-            crystals = 0
-        if request.POST.get('stay','') == 'yes':
-            stay = 1
-        else:
-            stay = 0
-        research = request.POST.get('research', '') 
-        benefit = request.POST.get('benefit', '') 
-        applicant = Application(name=name, email=email, phone=phone, institution=institution, addr1=addr1, addr2=addr2, city=city, state=state, code=code, country=country, sup_name=sup_name, sup_email=sup_email, sup_phone=sup_phone, undergrad=undergrad, masters=masters, phd=phd, postdoc=postdoc, faculty=faculty, staff=staff, other=other, other_text=other_text, travel=travel, visa=visa, stay=stay, crystals=crystals, research=research, benefit=benefit)
+        form_dict = {}
+        for field in model._meta.fields:
+            if field.name not in ['id','created']:
+                form_dict[field.name] = request.POST.get(field.name,'')
+
+        if form_class == ApplicationForm:    
+            bools = ['travel','visa','crystals','stay']
+            for key in ['travel','visa','crystals','stay']:
+                if request.POST.get(key,'') == 'yes': form_dict[key] = 1
+                else: form_dict[key] = 0
+            applicant = Application()
+        elif form_class == RegistrationForm:
+            bools = ['talk']
+            applicant = Registration()
+        
+        for key in bools:
+            if request.POST.get(key,'') == 'yes': form_dict[key] = 1
+            else: form_dict[key] = 0
+
+        for key, val in form_dict.items(): 
+            setattr(applicant, key, val)
 
         if form.is_valid():
             applicant.save()
             form.save(fail_silently=fail_silently)
             return HttpResponseRedirect(success_url)
         else:
-            retry_url = reverse('application_form_retry')
-            return render_to_response('application_form/application_form_retry.html',
+            return render_to_response(template_retry,
                                       {'form': form},
                                       context_instance=RequestContext(request))
     else:
@@ -93,3 +73,8 @@ def applicant_list(request):
             'applicant_list': applicant_list,
         },
         )
+
+@staff_login_required
+def participant_list(request):
+    return render_to_response('application_form/participant_list.html',
+                              {'participant_list': Registration.objects.all(),},)

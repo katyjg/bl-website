@@ -1,4 +1,4 @@
-<h2>Applications Received:</h2>
+<h2>Registrations Received:</h2>
 <div id="schedule">
 <table>
     <thead>
@@ -7,14 +7,14 @@
         <th>Institution</th>
         <th>Supervisor</th>
         <th>Position</th>
-        <th>Travel</th>
-        <th>Xtals</th>
-        <th>Dorm</th>
+        <th>Talk?</th>
+        <th>Type</th>
+        <th>Abstract</th>
     </tr>
     </thead>
-    {% for app in applicant_list %}
+    {% for app in participant_list %}
         <tr>
-            <td><a href="/admin/application_form/application/{{app.pk}}">{{app.name}}</a></td>
+            <td><a href="/admin/application_form/registration/{{app.pk}}">{{app.name}}</a></td>
             <td>{{app.institution}}</td>
             <td>{{app.sup_name}}</td>
             <td>
@@ -38,9 +38,9 @@
                 {% endif %}
                 {% if app.other %}Other ({{app.other_text}}){% endif %}
             </td>
-            <td>{% if app.travel %}&#10004;{% endif %}</td>
-            <td>{% if app.crystals %}&#10004;{% endif %}</td>
-            <td>{% if app.stay %}&#10004;{% endif %}</td>
+            <td>{% if app.talk %}&#10004;{% endif %}</td>
+            <td>{% ifequal app.type 0 %}Poster{% else %}{% ifequal app.type 1 %}Oral{% endifequal %}{% endifequal %}</td>
+            <td>{% if app.abstract_provided %}&#10004;{% endif %}</td>
         </tr>
     {% endfor %}
 </table>

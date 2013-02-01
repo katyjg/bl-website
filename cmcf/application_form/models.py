@@ -50,3 +50,58 @@ class Application(models.Model):
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ('name', 'institution', 'state', 'country','year')
 admin.site.register(Application, ApplicationAdmin)
+
+
+class Registration(models.Model):
+    TALK_CHOICES = (
+        (0, u'Poster'),
+        (1, u'Oral'),
+    )
+
+    # Personal Information
+    name = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=100, blank=False)
+    institution = models.CharField(max_length=100, )
+    addr1 = models.CharField(_('Address'), max_length=100)
+    addr2 = models.CharField(_(' '), max_length=100, blank=False)
+    city = models.CharField(max_length=100)
+    state = models.CharField(_('Province/State'), max_length=100)
+    code = models.CharField(_('Area Code/ZipCode'), max_length=100)
+    country = models.CharField(max_length=100)
+
+    undergrad = models.BooleanField(blank=False)
+    masters = models.BooleanField(blank=False)
+    phd = models.BooleanField(blank=False)
+    postdoc = models.BooleanField(blank=False)
+    faculty = models.BooleanField(blank=False)
+    staff = models.BooleanField(blank=False)
+    other = models.BooleanField(blank=False)
+    other_text = models.CharField(_('Other'), max_length=100, blank=False)
+
+    # Supervisor Information
+    sup_name = models.CharField(_('supervisor Name'), max_length=100, blank=False)
+    sup_email = models.EmailField(_('supervisor Email'), blank=False)
+    sup_phone = models.CharField(_('supervisor Phone'), max_length=100, blank=False)
+
+    # Abstract Submission
+    talk = models.BooleanField()
+    type = models.IntegerField(choices=TALK_CHOICES)
+    authors = models.CharField(_('Authors'), max_length=500, blank=False)
+    abstract = models.TextField(_('Abstract'), blank=False)
+    
+    created = models.DateTimeField(_('created'), auto_now_add=True)
+
+    class Meta:
+        unique_together = (("email"),)
+
+    def __unicode__(self):
+        return '%s, %s' % (self.name, self.institution)
+    
+    def abstract_provided(self):
+        return self.abstract and True or False
+    
+    
+class RegistrationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'institution', 'state', 'country', 'talk','type','abstract_provided')
+admin.site.register(Registration, RegistrationAdmin)
