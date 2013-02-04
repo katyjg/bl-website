@@ -31,6 +31,7 @@ def application_form(request, form_class=ApplicationForm, model=Application,
         elif form_class == RegistrationForm:
             bools = ['talk']
             applicant = Registration()
+            if not request.POST.has_key('type'): form_dict['type'] = None
         
         for key in bools:
             if request.POST.get(key,'') == 'yes': form_dict[key] = 1
