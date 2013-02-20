@@ -129,6 +129,8 @@ class Proposal(models.Model):
         verbose_name = "Active Proposal"   
         ordering = ['last_name']
         
+    expiration.is_active_filter = True
+        
 class SupportPerson(models.Model):
     '''
     Identification and contact information for ``OnCall`` entries.

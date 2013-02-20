@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from scheduler.forms import VisitForm
 from scheduler.models import *
+from scheduler.filter import IsActiveFilterSpec
 
 class VisitAdmin(admin.ModelAdmin):
     search_fields = ['description']
@@ -15,6 +16,7 @@ class VisitAdmin(admin.ModelAdmin):
 
 class ProposalAdmin(admin.ModelAdmin):
     list_display = ('__unicode__','last_name','proposal_id','expiration','account')
+    list_filter = ('expiration',)
 
 class OnCallAdmin(admin.ModelAdmin):
     search_fields = ['local_contact', 'date']
