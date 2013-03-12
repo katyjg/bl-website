@@ -298,6 +298,27 @@ class Visit(models.Model):
                     shifts[i] = self.description
         return shifts
     
+    def get_visit_shifts(self):
+        """Get all shifts for given date"""
+        day = self.start_date
+        shifts = []
+        while day <= self.end_date:
+            for i in range(3):
+                x = '%s - %s' % (day.strftime('%a, %b %d, %Y'), self.SHIFT_CHOICES[i][1])
+                if self.start_date == self.end_date:
+                    if i >= self.first_shift and i <= self.last_shift:
+                        if x not in shifts: shifts.append(x)
+                elif self.start_date == day:
+                    if i >= self.first_shift:
+                        if x not in shifts: shifts.append(x)
+                elif self.start_date < day and self.end_date > day:
+                    if x not in shifts: shifts.append(x)
+                elif self.end_date == day:
+                    if i <= self.last_shift:
+                        if x not in shifts: shifts.append(x)
+            day = day + timedelta(days=1)
+        return shifts
+                    
     def get_num_shifts(self):
         num = 0
         one_day = timedelta(days=1)
@@ -431,3 +452,19 @@ class Stat(models.Model):
         verbose_name = "Facility Status"
         verbose_name_plural = "Facility Statuses"
 
+
+def get_shift_lists(blname='08B1-1', first_date=datetime.now(), last_date=datetime.now()):
+    data = {}
+    for v in Visit.objects.filter(end_date__gte=first_date).filter(start_date__lte=last_date).filter(beamline__name=blname):
+        prop = v.proposal_display()
+        if prop not in data.keys(): data[prop] = []
+        day = v.start_date
+        last_day = v.end_date
+        while day <= last_day:
+            for sh in v.get_visit_shifts():
+                if sh not in data[prop]:
+                    data[prop].append(sh)
+            day = day + timedelta(days=1)
+    return data
+    
+    
