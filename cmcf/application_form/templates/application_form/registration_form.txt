@@ -2,7 +2,7 @@ Thank you for registering for the 1st Annual Protein Structure, Function and Mal
 
 PERSONAL INFORMATION:
 
-Name: {{name}} 
+Name: {{title}} {{first_name}} {{last_name}} 
 Email: {{email}}
 Phone: {{phone}}
 Institution: {{institution}}

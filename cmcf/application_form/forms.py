@@ -204,46 +204,49 @@ class RegistrationForm(forms.Form):
         super(RegistrationForm, self).__init__(data=data, files=files, *args, **kwargs)
         self.request = request
     
-    name = forms.CharField(max_length=100, required=True,
-               widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=1)))
+    title = forms.ChoiceField(choices=Registration.TITLE_CHOICES,widget=forms.Select(attrs={'class': 'required sm-title', 'tabindex':1}), required=True)
+    first_name = forms.CharField(max_length=100, required=True,
+               widget=forms.TextInput(attrs={'class': 'required sm-half', 'tabindex':2}))
+    last_name = forms.CharField(max_length=100, required=True,
+               widget=forms.TextInput(attrs={'class': 'required sm-half', 'tabindex':3}))
     email = forms.EmailField(required=True,
-               widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=2)))
+               widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=4)))
     phone = forms.CharField(max_length=100, required=False,
-               widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=3)))
-    institution = forms.CharField(max_length=100, 
-               widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=4)))
-    addr1 = forms.CharField(max_length=100,  label='Street Address',
                widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=5)))
-    addr2 = forms.CharField(max_length=100, required=False, label='Address Line 2 (if needed)',
+    institution = forms.CharField(max_length=100, 
                widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=6)))
+    addr1 = forms.CharField(max_length=100,  label='Street Address',
+               widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=7)))
+    addr2 = forms.CharField(max_length=100, required=False, label='Address Line 2 (if needed)',
+               widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=8)))
     city = forms.CharField(max_length=100,  label='City',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':7}))
+               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':9}))
     state = forms.CharField(max_length=100,  label='Province / State / Region',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':8}))
+               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':10}))
     code = forms.CharField(max_length=100,  label='Postal Code / Zip Code',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':9}))
+               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':11}))
     country = forms.CharField(max_length=100, label='Country',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':10}))
+               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':12}))
 
-    undergrad = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=11)), required=False)
-    masters = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=12)), required=False)
-    phd = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=13)), required=False)
-    postdoc = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=14)), required=False)
-    faculty = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=15)), required=False)
-    staff = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=16)), required=False)
-    other = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=17)), required=False)
-    other_text = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':18, 'style': 'float:none;'}), required=False)
+    undergrad = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=13)), required=False)
+    masters = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=14)), required=False)
+    phd = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=15)), required=False)
+    postdoc = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=16)), required=False)
+    faculty = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=17)), required=False)
+    staff = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=18)), required=False)
+    other = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=19)), required=False)
+    other_text = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':20, 'style': 'float:none;'}), required=False)
 
-    sup_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=19)), required=False)
-    sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=20)), required=False)
-    sup_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=21)), required=False)
+    sup_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=21)), required=False)
+    sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=22)), required=False)
+    sup_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=23)), required=False)
 
-    talk = forms.ChoiceField(choices=ApplicationForm.choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=22)), required=False)
-    type = forms.ChoiceField(choices=Registration.TALK_CHOICES,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=23)), required=False)
-    authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=24)))
-    abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=25)), required=False)
+    talk = forms.ChoiceField(choices=ApplicationForm.choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=24)), required=False)
+    type = forms.ChoiceField(choices=Registration.TALK_CHOICES,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=25)), required=False)
+    authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=26)))
+    abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=27)), required=False)
     
-    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 26})
+    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 28})
     
     from_email = settings.CONF_FROM_EMAIL
     
@@ -283,6 +286,10 @@ class RegistrationForm(forms.Form):
             self.errors['email'] = 'Someone has already registered for the meeting with the e-mail address %s.' % data
             return None
         return data
+
+    def clean_title(self):
+        data = self.cleaned_data['title']
+        return data and Registration.TITLE_CHOICES[int(data)][1] or data
 
     def get_message_dict(self):
         if not self.is_valid():

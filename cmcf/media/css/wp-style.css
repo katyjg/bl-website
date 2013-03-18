@@ -1306,6 +1306,22 @@ input.half {
     width: 272px;
     text-align: left;
 }
+input.sm-half {
+	text-align: left;
+	margin-left: 0px !important;
+	margin-right: 8px !important;
+    width: 277px;
+    text-align: left;
+}
+input.reg-half {
+	width: 320px !important;
+}
+select.sm-title {
+	margin-left: 0px !important;
+	margin-right: 8px !important;
+    width: 8%;
+    text-align: left;
+}
 span.req {
     color: red;
 }
@@ -1381,6 +1397,19 @@ div.bio img {
 	text-align: center;
 	width: 48%;
 	margin: 0 8px;
+}
+.label-half {
+	float: left;
+	margin-left: 5px !important;
+    text-align: left;
+	width: 295px;
+}
+.label-sm {
+	float: left;
+	margin-right: 8px !important;
+	margin-left: 0px !important;
+    text-align: left;
+    width: 8%;
 }
 span.alert {
     background: url("/media/img/new-icon.png") center left no-repeat;

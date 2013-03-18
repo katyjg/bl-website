@@ -57,9 +57,17 @@ class Registration(models.Model):
         (0, u'Poster'),
         (1, u'Oral'),
     )
-
+    TITLE_CHOICES = (
+        (0, u'Prof.'),
+        (1, u'Dr.'),
+        (2, u'Mr.'),
+        (3, u'Ms.'),
+        (4, u'Mrs.'),
+        )
     # Personal Information
-    name = models.CharField(max_length=100, blank=True)
+    title = models.IntegerField(choices=TITLE_CHOICES, blank=True, null=True)
+    last_name = models.CharField(max_length=100, blank=True)
+    first_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=100, blank=False)
     institution = models.CharField(max_length=100, )
@@ -96,12 +104,12 @@ class Registration(models.Model):
         unique_together = (("email"),)
 
     def __unicode__(self):
-        return '%s, %s' % (self.name, self.institution)
+        return '%s, %s' % (self.last_name, self.institution)
     
     def abstract_provided(self):
         return self.abstract and True or False
     
     
 class RegistrationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'institution', 'state', 'country', 'talk','type','abstract_provided')
+    list_display = ('last_name', 'institution', 'state', 'country', 'talk','type','abstract_provided')
 admin.site.register(Registration, RegistrationAdmin)

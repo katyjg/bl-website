@@ -1,13 +1,17 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 
-<p>The deadline for registration is May 10, 2013, but early registration is encouraged.</p>
+<p>The deadline for registration is May 15, 2013, but early registration is encouraged.</p>
 
 <b>Required fields are marked by <span class="req">*</span>.</b>
 
 <h2>Personal Information</h2>
 	<p class="name">
-	    <label class="desc" for="title">Name<span class="req"> *</span></label><br>
-	    {{ form.name }}
+	    <label class="desc label-sm" for="title">Title<span class="req"> *</span></label>
+	    <label class="desc label-half" style="text-align:left" for="title">Given Name<span class="req"> *</span></label>
+	    <label class="desc label-half" for="title">Surname<span class="req"> *</span></label><br>
+	    {{ form.title }}
+	    {{ form.first_name }}
+	    {{ form.last_name }}
 	</p><p>
 	    <label class="desc" for="email">Email<span class="req"> *</span> </label><br>
 	    {{ form.email }}
@@ -24,15 +28,15 @@
 	    <label class="subdesc" for="addr2">Address Line 2 (if needed)</label><br>
 	    {{ form.addr2 }}
 	    <nobr>
-	        <label class="subdesc" for="city">City</label>
-	        <label class="subdesc" for="state">State / Province / Region</label>
+	        <label class="subdesc" style="width: 338px !important" for="city">City</label>
+	        <label class="subdesc" style="width: 338px !important" for="state">State / Province / Region</label>
 	    </nobr><br><br>
 	        {{ form.city }}
 	        {{ form.state }}
 	 	<div class="clear"></div>
 	    <nobr>
-	        <label class="subdesc" for="code">Postal Code / Zip Code</label>
-	        <label class="subdesc" for="country">Country</label>
+	        <label class="subdesc" style="width: 338px !important" for="code">Postal Code / Zip Code</label>
+	        <label class="subdesc" style="width: 338px !important" for="country">Country</label>
 	    </nobr><br><nobr>
 	        {{ form.code }}
 	        {{ form.country }}
@@ -82,7 +86,7 @@
 		Before completing your registration, please type the two words you see in the box.<br>
 		{{ form.captcha }}
 	</p><p>
-		<input type='submit' value='Register' tabindex="26" />
+		<input type='submit' value='Register' tabindex="28" />
 	</p>
 
 </form>
