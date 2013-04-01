@@ -1,1 +1,1 @@
-Re: PSFaM Meeting Registration - {{first_name}} {{last_name}}
+PSFaM Meeting Registration - {{first_name}} {{last_name}}

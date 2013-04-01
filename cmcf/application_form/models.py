@@ -106,6 +106,9 @@ class Registration(models.Model):
     def __unicode__(self):
         return '%s, %s' % (self.last_name, self.institution)
     
+    def name(self):
+        return '%s %s %s' % (self.get_title_display(), self.first_name, self.last_name)
+    
     def abstract_provided(self):
         return self.abstract and True or False
     

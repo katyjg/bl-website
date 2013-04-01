@@ -24,12 +24,12 @@ Phone: {{sup_phone}}
 ABSTRACT SUBMISSION:
 
 Presenting Work?: {{talk|capfirst}}{% ifnotequal talk 'no' %}
-Presentation Preference: {% ifequal type '0' %}Poster{% else %}{% ifequal type '1' %}Oral Presentation{% endifequal %}{% endifequal %}
-Authors: {{authors}}
-Abstract:
+Presentation Preference: {% ifequal type '0' %}Poster{% else %}{% ifequal type '1' %}Oral Presentation{% else %}Not Specified{% endifequal %}{% endifequal %}
+Authors: {% if authors %}{{authors}}{% else %}None Provided{% endif %}
+Abstract: {% if not abstract %}None Provided{% endif %}
 {{abstract}}{% endifnotequal %}
 
-For information on accommodations in Saskatoon, visit our website at http://cmcf.lightsource.ca/psfam/accommodations.  Please contact us if you have any questions while planning your trip, or if any of the information above has changed or is incorrect.  We look forward to seeing you in Saskatoon in June! 
+For information on accommodations in Saskatoon, visit our website at http://cmcf.lightsource.ca/psfam/accommodations.  Please contact us if you have any questions while planning your trip, and e-mail Doreen Stumborg at doreen.stumborg@usask.ca with any additions or corrections to the information above.  We look forward to seeing you in Saskatoon in June! 
 
 Sincerely,
 
