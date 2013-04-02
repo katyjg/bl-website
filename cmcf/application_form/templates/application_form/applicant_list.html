@@ -3,6 +3,7 @@
 <table>
     <thead>
     <tr>
+    	<th></th>
         <th>Name</th>
         <th>Institution</th>
         <th>Supervisor</th>
@@ -14,8 +15,13 @@
     </thead>
     {% for app in applicant_list %}
         <tr>
+        	<td>{{ forloop.counter }}</td>
             <td><a href="/admin/application_form/application/{{app.pk}}">{{app.name}}</a></td>
             <td>{{app.institution}}</td>
+            <!-- td>{% if app.addr1 %}{{app.addr1}}<br>{% endif %}
+            	{% if app.addr2 %}{{app.addr2}}<br>{% endif %}
+            	{% if app.city %}{{app.city}}, {{app.state}}<br>{% endif %}
+            	{% if app.country %}{{app.country}}    {{app.code}}{% endif %}</td-->
             <td>{{app.sup_name}}</td>
             <td>
                 {% if app.undergrad %}Undergrad

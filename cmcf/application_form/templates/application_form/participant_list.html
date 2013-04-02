@@ -3,18 +3,24 @@
 <table>
     <thead>
     <tr>
-        <th>Name</th>
+    	<th></th>
+    	<th>Title</th>
+    	<th>First</th>
+        <th>Last</th>
         <th>Institution</th>
         <th>Supervisor</th>
         <th>Position</th>
         <th>Talk?</th>
-        <th>Type</th>
-        <th>Abstract</th>
+        <th>Type?</th>
+        <th>Abstract?</th>
     </tr>
     </thead>
     {% for app in participant_list %}
         <tr>
-            <td><a href="/admin/application_form/registration/{{app.pk}}">{{app.name}}</a></td>
+        	<td>{{ forloop.counter }}</td>
+            <td>{{app.get_title_display}}</td>
+            <td>{{app.first_name}}</td>
+            <td>{{app.last_name}}</td>
             <td>{{app.institution}}</td>
             <td>{{app.sup_name}}</td>
             <td>

@@ -43,3 +43,6 @@ body.wcsb {
 .wcsb pre.application {
 	text-align: left;
 }
+.wcsb #schedule table {
+	font-size: 80%;	
+}

@@ -9,5 +9,5 @@ urlpatterns = patterns('',
    url(r'^$', application_form, {'model': Registration, 'form_class': RegistrationForm, 'template_name': 'application_form/registration_form.html', 'template_retry': 'application_form/registration_form_retry.html', 'success_url': 'registration_form_sent' }, name='registration_form'),
    url(r'^sent/$', direct_to_template, { 'template': 'application_form/registration_form_sent.html' }, name='registration_form_sent'),
    url(r'^oops/$', direct_to_template, { 'template': 'application_form/registration_form_retry.html' }, name='registration_form_retry'),
-   url(r'^participant-list/$', participant_list, name='participant_list'),
+   url(r'^706d24997bff1968c50212f81a58e369/$', participant_list, name='participant_list'),
    )
