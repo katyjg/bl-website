@@ -1,5 +1,5 @@
 <h2>Registrations Received:</h2>
-<div id="schedule">
+<div style="margin-left:-48px; margin-right: -37px;" id="schedule">
 <table>
     <thead>
     <tr>
@@ -7,12 +7,14 @@
     	<th>Title</th>
     	<th>First</th>
         <th>Last</th>
+        <th>Email</th>
         <th>Institution</th>
         <th>Supervisor</th>
         <th>Position</th>
         <th>Talk?</th>
         <th>Type?</th>
-        <th>Abstract?</th>
+        <th>Abs?</th>
+        <th>Diet</th>
     </tr>
     </thead>
     {% for app in participant_list %}
@@ -21,6 +23,7 @@
             <td>{{app.get_title_display}}</td>
             <td>{{app.first_name}}</td>
             <td>{{app.last_name}}</td>
+            <td>{{app.email}}</td>
             <td>{{app.institution}}</td>
             <td>{{app.sup_name}}</td>
             <td>
@@ -44,12 +47,12 @@
                 {% endif %}
                 {% if app.other %}Other ({{app.other_text}}){% endif %}
             </td>
-            <td>{% if app.talk %}&#10004;{% endif %}</td>
+            <td>{% if app.talk %}<a style="text-align: center; display:block;">&#10004;</a>{% endif %}</td>
             <td>{% ifequal app.type 0 %}Poster{% else %}{% ifequal app.type 1 %}Oral{% endifequal %}{% endifequal %}</td>
-            <td>{% if app.abstract_provided %}&#10004;{% endif %}</td>
+            {% if app.abstract_provided %}<td><a style="display:block; text-align: center;" href="{% url registration_abstract_list %}#{{app.first_name}}-{{app.last_name}}">View</a></td>{% else %}
+            <td></td>{% endif %}
+            <td>{{app.diet}}</td>
         </tr>
     {% endfor %}
 </table>
 </div>
-    
-    

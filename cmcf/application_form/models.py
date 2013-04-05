@@ -98,6 +98,8 @@ class Registration(models.Model):
     authors = models.CharField(_('Authors'), max_length=500, blank=False)
     abstract = models.TextField(_('Abstract'), blank=False)
     
+    diet = models.TextField(_('Dietary Concerns'), blank=False)
+    
     created = models.DateTimeField(_('created'), auto_now_add=True)
 
     class Meta:

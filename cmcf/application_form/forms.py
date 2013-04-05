@@ -237,13 +237,15 @@ class RegistrationForm(forms.Form):
     other = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=19)), required=False)
     other_text = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':20, 'style': 'float:none;'}), required=False)
 
-    sup_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=21)), required=False)
-    sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=22)), required=False)
-    sup_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=23)), required=False)
+    diet = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=21)))
 
-    talk = forms.ChoiceField(choices=ApplicationForm.choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=24)), required=False)
-    type = forms.ChoiceField(choices=Registration.TALK_CHOICES,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=25)), required=False)
-    authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=26)))
+    sup_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=22)), required=False)
+    sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=23)), required=False)
+    sup_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=24)), required=False)
+
+    talk = forms.ChoiceField(choices=ApplicationForm.choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=25)), required=False)
+    type = forms.ChoiceField(choices=Registration.TALK_CHOICES,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=26)), required=False)
+    authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=27)))
     abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=27)), required=False)
     
     captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 28})

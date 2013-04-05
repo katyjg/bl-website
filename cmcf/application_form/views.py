@@ -75,6 +75,6 @@ def applicant_list(request):
         },
         )
 
-def participant_list(request):
-    return render_to_response('application_form/participant_list.html',
-                              {'participant_list': Registration.objects.all(),},)
+def participant_list(request, template='application_form/participant_list.html'):
+    return render_to_response(template,
+                              {'participant_list': Registration.objects.all().order_by('last_name'),},)
