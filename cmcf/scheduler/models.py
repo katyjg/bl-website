@@ -268,7 +268,7 @@ class Visit(models.Model):
     def proposal_account(self):
         return self.proposal and self.proposal.account_list()[0] or None
     
-    def notify(self):
+    def long_notify(self):
         return self.brief_notify(long=True)
       
     def brief_notify(self, long=False):

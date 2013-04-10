@@ -40,12 +40,12 @@ class Command(BaseCommand):
         for v in Visit.objects.filter(start_date__gte=this_monday).filter(start_date__lte=next_monday+timedelta(days=14)).order_by('start_date'):
             if not v.proposal:
                 type = '    NO PROPOSAL: '
-                msg = '%s%s' % (type, v.notify())
+                msg = '%s%s' % (type, v.long_notify())
             else:
                 type = (not v.proposal.expiration and '    NEEDS APPROVAL: ') or \
                        (v.created.date() >= last_monday and '    NEW: ') or \
                        (v.modified.date() >= last_monday and "    MOD: ") or None
-                msg = '%s%s' % ( (((not v.proposal or not v.proposal.expiration or not self.visit) and type) or '    '), v.notify() )
+                msg = '%s%s' % ( (((not v.proposal or not v.proposal.expiration or not self.visit) and type) or '    '), v.long_notify() )
             index = (v.start_date > next_monday and 1) or 0
             msg = (self.visit and v == self.visit and '    ***%s***' % msg.replace('  ', '')) or msg
             if self.visit:
@@ -58,7 +58,7 @@ class Command(BaseCommand):
             prefix = ''
             if self.visit.proposal:
                 if not self.visit.proposal.expiration: prefix = 'NEEDS APPROVAL - '
-            self.mod = [self.mod_type, '%s%s' %(prefix, self.visit.notify()), self.mod_msg]
+            self.mod = [self.mod_type, '%s%s' %(prefix, self.visit.long_notify()), self.mod_msg]
         else:
             self.mod = False
 
