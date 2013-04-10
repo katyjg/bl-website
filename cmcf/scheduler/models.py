@@ -101,6 +101,7 @@ class Proposal(models.Model):
     '''
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
+    email = models.EmailField(blank=True, null=True)
     proposal_id = models.CharField(max_length=7)
     description = models.CharField(max_length=200)
     expiration = models.DateTimeField(blank=True, null=True)
@@ -253,7 +254,9 @@ class Visit(models.Model):
     maintenance = models.BooleanField(default=False)  
     created = models.DateTimeField('date created', auto_now_add=True, editable=False)
     modified = models.DateTimeField('date modified',auto_now=True, editable=False)
-    objects = VisitManager()    
+    objects = VisitManager()  
+    notify = models.BooleanField(default=False)  
+    sent = models.BooleanField(default=False)
 
     def __unicode__(self):
         """Human readable string for ``Visit``"""
