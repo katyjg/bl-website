@@ -33,6 +33,9 @@ SCHEDULERS = (
     ('CMCF Staff', 'cmcf-support@lightsource.ca'),
     ('CLS Users Office', 'clsuo@lightsource.ca'),
 )
+AUTO_SCHEDULERS = (
+    ('CMCF Staff', 'cmcf-support@lightsource.ca'),
+)
 #MANAGERS will receive online application forms
 MANAGERS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),

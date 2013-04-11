@@ -232,7 +232,8 @@ class Visit(models.Model):
         'mail_in': "If selected, a symbol indicating mail-in access will be displayed along with the user's last name.",
         'purchased': "If selected, only 'Purchased Access' will appear on the public CMCF schedule.",
         'remote': "If selected, a symbol indicating remote access will be displayed along with the user's last name.",
-        'maintenance': "If selected, the beamline mode (colour) on the public CMCF schedule will indicate maintenance activities." 
+        'maintenance': "If selected, the beamline mode (colour) on the public CMCF schedule will indicate maintenance activities.",
+        'notify': "If selected, an e-mail notification will be sent to the PI and to cmcf-support one week prior to the start date." 
     }
     
     SHIFT_CHOICES = (
@@ -321,7 +322,7 @@ class Visit(models.Model):
                         if x not in shifts: shifts.append(x)
             day = day + timedelta(days=1)
         return shifts
-                    
+                  
     def get_num_shifts(self):
         num = 0
         one_day = timedelta(days=1)
@@ -391,8 +392,8 @@ class OnCall(models.Model):
     class Meta:
         unique_together = (("local_contact", "date"),)
         get_latest_by = "date"
-        verbose_name = "On Call Person"
-        verbose_name_plural = "On Call Personnel"
+        verbose_name = "Local Contact"
+        verbose_name_plural = "Local Contacts"
 
 class WebStatus(models.Model):
     date = models.CharField(max_length=15, default='')

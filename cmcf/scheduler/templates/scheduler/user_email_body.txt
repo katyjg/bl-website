@@ -1,0 +1,42 @@
+Dear {{proposal.first_name}},
+
+This e-mail is being sent as a reminder of your upcoming {% ifnotequal type 'Local' %}{{type}} {% endifnotequal %}beamtime at the Canadian 
+Macromolecular Crystallography Facility (CMCF) {{visit.beamline}} beamline at the Canadian 
+Light Source.  Your data collection is {% ifequal type 'Mail-In' %}anticipated{% else %}scheduled{% endifequal %} 
+to begin on {{start.0}}{% if not visit.mail_in %} at {{start.1|slice:":5"}} {% if visit.remote %}local time{% endif %}{% endif %} ({{num_shifts}} shift{% ifnotequal num_shifts 1 %}s{% endifnotequal %}).  {% if not visit.mail_in %}To find the local contact person for your beamtime, visit our online schedule at http://cmcf.lightsource.ca/schedule.{% endif %}
+{% ifequal type 'Local' %}
+Before your beamtime, please be sure to complete safety training as per the User Services Office instructions, and review information on our website regarding:
+	- shipping samples,
+	- hard drive requirements,
+	- using MxLIVE for shipment tracking and sample management, and
+	- sample requirements if you plan to use the automounter.
+
+	http://cmcf.lightsource.ca/user-guide
+
+You can find information about local accommodations here:
+
+	http://www.lightsource.ca/uso/housing.php 
+   
+{% endifequal %}{% ifnotequal type 'Local' %} 
+{% if visit.mail_in %}In order to proceed with data collection, w{% else %}{% if visit.remote %}W{% endif %}{% endif %}e ask that you ensure we receive the following before this date:
+	1. Your sample/experiment information, submitted through MxLIVE, and
+	2. Your samples, along with a properly formatted hard drive.
+
+Please find on our website information about sample requirements{% if visit.remote %} when using the automounter{% endif %}, 
+using MxLIVE for shipment tracking and sample management, hard drive requirements, 
+{% if visit.mail_in %}the number of crystals to send, {% endif %}and shipping:
+
+{% if visit.mail_in %}	http://cmcf.lightsource.ca/user-guide/remote-control-mail-in/#mail-crystallography
+
+{% endif %}{% if visit.remote %}	http://cmcf.lightsource.ca/user-guide/
+
+Prior to your beamtime, please provide your local contact with a phone number where you can be reached during your beamtime, 
+as well as a list of personnel that will be operating the beamline remotely.  Anyone operating the beamline must complete 
+a Remote Beamline Specific Orientation (if they have not already done so) and should review the remote connection and training information:
+
+	http://cmcf.lightsource.ca/media/uploads/medialibrary/userremoteguide.pdf
+
+{% endif %}{% endifnotequal %}If you have any questions or concerns about your {% ifnotequal type 'Local' %}{{type}} {% endifnotequal %}data collection, please {% if not visit.mail_in %}call or e-mail your local contact{% else %}contact Shaun Labiuk at shaun.labiuk@lightsource.ca{% endif %}.
+
+Best regards,
+The {{site.1}} Team

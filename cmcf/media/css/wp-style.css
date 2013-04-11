@@ -1045,7 +1045,7 @@ hr { border: none; border-top: 1px solid #dfdfdf; }
 	text-align:center;
 	border-bottom: 1px solid #B5b5b5;
 	border-left:1px solid #B5b5b5;
-	padding:.3em 1em;
+	padding:.3em .75em;
 	}	
 thead th {
 	background:#dcdcdc;
@@ -1129,7 +1129,7 @@ td.td-time.update {
 	padding-left: 5 !important;
 	padding-right: 0 !important;
 }
-.mail-icon, .remote-icon {
+.mail-icon, .remote-icon, .notify-icon, .notify-done-icon {
 	float: left; 
 	padding:7px 12px; 
 	margin-top:1px; 
@@ -1139,7 +1139,13 @@ td.td-time.update {
 .remote-icon {background: url(/media/img/remote-icon.png) no-repeat;}
 .mail-icon {background: url(/media/img/mail-icon.png) no-repeat;}
 .beam-main {background-image: url(/media/img/maintenance-pat.png);}
-
+.notify-icon, .notify-done-icon {
+	padding: 7px 10px;
+	margin-left: -10px;
+	left: -10px;
+}
+.notify-icon {background: url(/media/img/notify.png) no-repeat scroll 0 0 transparent;}
+.notify-done-icon {background: url(/media/img/notify-done.png) no-repeat scroll 0 0 transparent;}
 
 .tdcenter {
     text-align: center !important;

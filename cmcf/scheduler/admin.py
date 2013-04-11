@@ -6,16 +6,16 @@ from scheduler.filter import IsActiveFilterSpec
 
 class VisitAdmin(admin.ModelAdmin):
     search_fields = ['description']
-    list_display = ('beamline', 'proposal_display','description', 'start_date', 'first_shift', 'end_date', 'last_shift','remote','mail_in','maintenance','purchased')
+    list_display = ('beamline', 'proposal_display','description','notify', 'start_date', 'first_shift', 'end_date', 'last_shift','remote','mail_in','maintenance','purchased')
     form = VisitForm
     fieldsets = (
         (None, {
-            'fields': ('beamline', 'proposal', ('remote','mail_in','maintenance','purchased'), 'description', ('start_date', 'first_shift'), ('end_date', 'last_shift')), 
+            'fields': ('beamline', 'proposal', ('remote','mail_in','maintenance','purchased'), 'description', ('start_date', 'first_shift'), ('end_date', 'last_shift'),'notify'), 
         }),
     )
 
 class ProposalAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','last_name','proposal_id','expiration','account')
+    list_display = ('__unicode__','last_name','proposal_id','email','expiration','account')
     list_filter = ('expiration',)
 
 class OnCallAdmin(admin.ModelAdmin):

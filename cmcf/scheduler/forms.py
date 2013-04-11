@@ -67,10 +67,11 @@ class AdminEditForm(forms.ModelForm):
     mail_in = widgets.RightCheckBoxField(required=False)
     purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access")
     maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance")
+    notify = widgets.LeftCheckBoxField(required=False, label="Send E-mail Notification")
     
     class Meta:
         model = Visit
-        fields = ('id','beamline','proposal','remote','mail_in','purchased','maintenance','description','start_date','end_date','first_shift','last_shift')
+        fields = ('id','beamline','proposal','remote','mail_in','purchased','maintenance','description','notify','start_date','end_date','first_shift','last_shift')
 
     def __init__(self, *args, **kwargs):
         super(AdminEditForm, self).__init__(*args, **kwargs)
@@ -196,10 +197,11 @@ class AdminVisitForm(forms.ModelForm):
     mail_in = widgets.RightCheckBoxField(required=False)
     purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access")
     maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance")
+    notify = widgets.LeftCheckBoxField(required=False, label="Send E-mail Notification")
     
     class Meta:
         model = Visit
-        fields = ('beamline','proposal','remote','mail_in','purchased','maintenance','description','num_shifts','first_shift','start_date','last_shift','end_date')
+        fields = ('beamline','proposal','remote','mail_in','purchased','maintenance','description','notify','num_shifts','first_shift','start_date','last_shift','end_date')
 
     def __init__(self, *args, **kwargs):
         super(AdminVisitForm, self).__init__(*args, **kwargs)
