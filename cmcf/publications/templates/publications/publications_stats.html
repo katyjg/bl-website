@@ -84,39 +84,28 @@
                     {% endfor %}
                            
                 </div>
+                
 				<h2>Publications</h2>
 				
-				<div class="object-list">
-				    <h3>Ranked by Impact Factor</h3>
+				<div class="object-list widget statistics" style="height:auto;" data="{% url admin-pub-table 'publish' %}">
+					<h3>Ranked by <var class="sort-title">Published Date</var></h3>
 					<table id="objlist-list-table" width="100%" cellspacing="0" cellpadding="2" border="0">
-					    <thead>
-					    <tr class="header">
-					        <th>Rank</th>
-					        <th>Reference</th>
-                            <th>PDB</th>
-                            <th>Beamline</th>
-					        <th style="white-space: nowrap">Impact Factor</th>
-					        <th>Published</th>
-					    </tr>
-					    </thead>
-					    <tbody>
-					    {% for pub in publications %}
-					    <tr class="{% cycle 'odd' 'even' %}{% if not pub.get_pdbs.0 %} complete-row{% endif %}">
-					        <td>{{ forloop.counter }}</td>
-					        <td>{{ pub.display_citation|removetags:"p"|safe }}</td>
-					        <td style="text-align: center !important;">
-					            {% for pdb in pub.get_pdbs %}
-					            <a href="http://www.rcsb.org/pdb/explore/explore.do?structureId={{pdb}}">{{pdb}}</a>
-					            {% endfor %}
-					        </td>
-					        <td style="text-align: center !important;">{{ pub.get_beamlines }}</td>
-					        <td style="text-align: center !important;">{{pub.journal.impact_factor}}</td>
-					        <td>{{ pub.publish|date:"N Y" }}</td>
-					    </tr>
-					    {% endfor %}
-					    </tbody>
+						<thead>
+							<tr class="header">
+							    <th>Rank</th>
+							    <th>Reference</th>
+					            <th>PDB</th>
+			                    <th class='clickable-header' 
+			                    	ref='beamline' label='Beamline'>Beamline</th>
+							    <th class='clickable-header' 
+							    	ref='journal__impact_factor' label="Impact Factor">Impact Factor</th>
+							    <th class='clickable-header sorted ascending' 
+							    	ref='publish' label='Published Date'>Published</th>
+							</tr>
+							</thead>
+							<tbody></tbody>
 					</table>
-			    </div>
+				</div>
             </div>
         </div>
     </div>
@@ -126,6 +115,22 @@
     
 {% block script %}
 <script type="text/javascript">
+	function loadWidgets() {
+	    jQuery(".widget").each(function(i, widget) {
+	        var $widget = jQuery(widget);
+	        $widget.find("tbody").load($widget.attr("data"));
+	    });
+	}
+	jQuery(".clickable-header").click(function() {
+		var data = window.location.pathname + "extra/"+jQuery(this).attr('ref');
+		jQuery(".widget").attr("data",data);
+		loadWidgets();
+		jQuery(".sort-title").html(jQuery(this).attr('label'));
+		jQuery(".clickable-header").each(function(i, widget) {
+			jQuery(widget).attr('class','clickable-header');
+		});
+        jQuery(this).attr('class','clickable-header sorted ascending')
+    });
     jQuery(document).ready(function() {
         var data = {};
         var width = 0.4;
@@ -187,6 +192,7 @@
 				previousPoint = null;
 			}
 		});
+		loadWidgets();
     });
 </script>
 {% endblock %}

@@ -52,7 +52,7 @@ def admin_publication_stats(request, template='publications/publications_stats.h
 
     return render_to_response(template, { 'title': 'Publication Statistics',
                                           'admin': True,
-                                          'publications': pubs,
+                                          'publications': pubs.order_by('-publish'),
                                           'stats': stats,
                                           'categories': {'pubs': 'Publications', 'pdbs': 'PDB Releases'},
                                           'beamlines': [bl.name for bl in bls],
@@ -61,6 +61,13 @@ def admin_publication_stats(request, template='publications/publications_stats.h
                                          },
                               )
 
+@staff_login_required
+def admin_pub_table(request, field, template='publications/publication_table.html'):
+    pubs = Publication.objects.all().annotate(num_bls=Count('beamline')).order_by('-'+field,'-publish')
+    return render_to_response(template, {  'admin': True,
+                                           'publications': pubs,
+                                         }, context_instance=None)
+     
 def publications_brief(request):
     pub_list = []
     author_list = []

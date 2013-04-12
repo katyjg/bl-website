@@ -1060,6 +1060,27 @@ table#objlist-list-table thead th {
 	text-align: left !important;
 	white-space: normal !important;
 }
+div.object-list th.sorted
+{
+	padding-right: 10px;
+	/*background-color:#fff!important;*/
+}
+
+div.object-list th.ascending a, div.object-list th.ascending
+{
+	background:url(/media/img/arrow-down.png) right 50% no-repeat;
+}
+
+div.object-list th.descending a, div.object-list th.descending
+{
+	background:url(/media/img/arrow-up.png) right 50% no-repeat;
+}
+.clickable-header {
+	color: #2f637a;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
 .Shutdown, .X{
     background: #fff2c2;
 	}
