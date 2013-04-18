@@ -65,8 +65,7 @@ def application_form(request, form_class=ApplicationForm, model=Application,
 def applicant_list(request):
     applicant_list = []
     this_year = datetime.date.today().year
-    for applicant in Application.objects.filter(created__year=this_year).order_by('created'):
-        applicant_list.append(applicant)
+    applicant_list = Application.objects.filter(created__year=this_year).order_by('sup_name','created')
 
     return render_to_response(
         'application_form/applicant_list.html', 
