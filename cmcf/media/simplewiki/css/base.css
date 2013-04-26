@@ -54,6 +54,7 @@ div#wiki_article code, pre
 div#wiki_article img
 {
     max-width: 100%;
+    float: right;
 }
 div#wiki_article h1
 {
@@ -68,6 +69,7 @@ div#wiki_article h1
 	margin-bottom: 22px;
 	color: #333;
     margin-top: 0;
+    clear: both;
 }
 
 div#wiki_article h2
