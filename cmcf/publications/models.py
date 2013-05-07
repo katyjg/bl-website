@@ -142,7 +142,7 @@ class Publication(models.Model):
     citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
     original = models.CharField(_('DOI Reference'), blank=True, max_length=200)
     pdb_entries = models.CharField(_('PDB entries'), max_length=100, help_text="Comma-separated list of PDB codes (no spaces)", blank=True, default="") 
-    publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
+    publish = models.DateTimeField(_('Date of Publication'), default=datetime.datetime.now)
     created = models.DateTimeField(_('created'), auto_now_add=True, editable=False)
     modified = models.DateTimeField(_('modified'), auto_now=True)
     tags = TagField()

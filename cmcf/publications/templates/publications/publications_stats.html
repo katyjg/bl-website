@@ -87,8 +87,8 @@
                 
 				<h2>Publications</h2>
 				
-				<div class="object-list widget statistics" style="height:auto;" data="{% url admin-pub-table 'publish' %}">
-					<h3>Ranked by <var class="sort-title">Published Date</var></h3>
+				<div class="object-list widget statistics" style="height:auto;" data="{% url admin-pub-table 'journal__impact_factor' %}">
+					<h3>Ranked by <var class="sort-title">Impact Factor</var></h3>
 					<table id="objlist-list-table" width="100%" cellspacing="0" cellpadding="2" border="0">
 						<thead>
 							<tr class="header">
@@ -97,9 +97,9 @@
 					            <th>PDB</th>
 			                    <th class='clickable-header' 
 			                    	ref='beamline' label='Beamline'>Beamline</th>
-							    <th class='clickable-header' 
-							    	ref='journal__impact_factor' label="Impact Factor">Impact Factor</th>
 							    <th class='clickable-header sorted ascending' 
+							    	ref='journal__impact_factor' label="Impact Factor">Impact Factor</th>
+							    <th class='clickable-header' 
 							    	ref='publish' label='Published Date'>Published</th>
 							</tr>
 							</thead>
