@@ -114,7 +114,7 @@ def publication_list(request, **kwargs):
         all_years_list.append(publication.year)
         if all_years_list.count(publication.year)==1:
             year_list.append(publication.year)
-    for publication in sorted(Publication.objects.all(), key=lambda Publication: Publication.authors.split(',')[0].split(' ')[1].capitalize()):
+    for publication in sorted(Publication.objects.all(), key=lambda Publication: Publication.authors.split(',')[0].split(' ')[-1]):
         data_list = []
         data_list.append(publication)
         data_list.append(publication.pdb_entries.split(','))
