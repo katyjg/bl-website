@@ -26,7 +26,7 @@ class Command(BaseCommand):
         self.subject_template_name = "scheduler/user_email_subject.txt"
 
         today = datetime.now().date()
-        for visit in Visit.objects.filter(start_date__exact=today+timedelta(days=7)):
+        for visit in Visit.objects.filter(start_date__exact=today+timedelta(days=7)).filter(notify__exact=True):
             self.save(visit)
 
     def message(self):
@@ -109,7 +109,14 @@ class Command(BaseCommand):
             self.start_time = self.visit.first_shift == 2 and "00:00" or self.visit.get_first_shift_display()
             
             #print self.get_message_dict()
-            send_mail(fail_silently=fail_silently, **self.get_message_dict())
+            message_dict = self.get_message_dict()
+            send_mail(fail_silently=fail_silently, **message_dict)
+
+            message_dict['subject'] = 'FW: %s' % message_dict['subject']
+            message_dict['message'] = 'The following message has been sent:\n\n%s' % message_dict['message']
+            message_dict['recipient_list'] = [mail_tuple[1] for mail_tuple in settings.CC_AUTO_SCHEDULERS]
+            send_mail(fail_silently=fail_silently, **message_dict)
+
             self.visit.sent = True
             self.visit.save()
 

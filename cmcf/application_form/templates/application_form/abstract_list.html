@@ -7,7 +7,6 @@
         <h4>{% ifequal title 'Poster' %}P{% else %}T{% endifequal %}{{forloop.counter}}. {{app.authors}}</h4>
         <p><em>Presented by {{app.get_title_display}} {{app.first_name}} {{app.last_name}}</em></p>
         <p>{{app.abstract}}</p>
-        <a style="float:right; clear: both;" href='{% url participant_list %}'>Back to list of registrants</a><br>
       </li>
     {% endfor %}
   </ul>

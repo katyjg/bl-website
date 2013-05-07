@@ -75,5 +75,14 @@ def applicant_list(request):
         )
 
 def participant_list(request, template='application_form/participant_list.html'):
+    regs = Registration.objects.exclude(abstract__exact='').order_by('last_name')
     return render_to_response(template,
-                              {'participant_list': Registration.objects.all().order_by('last_name'),},)
+                              {'present': {'Oral': regs.filter(type__exact=1), 'Poster': regs.filter(type__exact=0)},
+                               'participant_list': Registration.objects.all().order_by('last_name'),},)
+
+def abstract_list(request, template='application_form/registration_abstract_list.html'):
+    regs = Registration.objects.exclude(abstract__exact='').order_by('last_name')
+    return render_to_response(template,
+                              {'present': {'Oral': regs.filter(type__exact=1), 'Poster': regs.filter(type__exact=0)},},)
+    
+    
