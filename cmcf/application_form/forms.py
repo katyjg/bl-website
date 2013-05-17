@@ -245,10 +245,11 @@ class RegistrationForm(forms.Form):
 
     talk = forms.ChoiceField(choices=ApplicationForm.choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=25)), required=False)
     type = forms.ChoiceField(choices=Registration.TALK_CHOICES,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=26)), required=False)
-    authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=27)))
-    abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=27)), required=False)
+    headline = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=27)))
+    authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=28)))
+    abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=29)), required=False)
     
-    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 28})
+    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 30})
     
     from_email = settings.CONF_FROM_EMAIL
     

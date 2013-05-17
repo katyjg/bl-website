@@ -26,6 +26,7 @@ ABSTRACT SUBMISSION:
 
 Presenting Work?: {{talk|capfirst}}{% ifnotequal talk 'no' %}
 Presentation Preference: {% ifequal type '0' %}Poster{% else %}{% ifequal type '1' %}Oral Presentation{% else %}Not Specified{% endifequal %}{% endifequal %}
+Title: {% if headline %}{{headline}}{% else %}None Provided{% endif %}
 Authors: {% if authors %}{{authors}}{% else %}None Provided{% endif %}
 Abstract: {% if not abstract %}None Provided{% endif %}
 {{abstract}}{% endifnotequal %}
