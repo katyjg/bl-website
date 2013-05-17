@@ -78,6 +78,9 @@
 		<label for="type">Would you prefer to give a short (10-15 minute) oral presentation, or to participate in a poster session?</label>
 		{{ form.type }}
 	</p><p>
+	    <label for="headline">Presentation Title</label><br>
+	    {{ form.headline }}
+	</p><p>	
 	    <label for="authors">Authors</label><br>
 	    {{ form.authors }}
 	</p><p>
@@ -90,7 +93,7 @@
 		Before completing your registration, please type the two words you see in the box.<br>
 		{{ form.captcha }}
 	</p><p>
-		<input type='submit' value='Register' tabindex="28" />
+		<input type='submit' value='Register' tabindex="30" />
 	</p>
 
 </form>
