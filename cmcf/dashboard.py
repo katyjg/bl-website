@@ -13,6 +13,7 @@ class CustomIndexDashboard(Dashboard):
         # append a link list module for "quick links"
         self.children.append(modules.LinkList(
             title=_('Quick links'),
+            column=2,
             layout='inline',
             draggable=False,
             deletable=False,
