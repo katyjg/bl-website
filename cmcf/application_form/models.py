@@ -69,7 +69,7 @@ class Registration(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     first_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(blank=True)
-    phone = models.CharField(max_length=100, blank=False)
+    phone = models.CharField(max_length=100, blank=True)
     institution = models.CharField(max_length=100, )
     addr1 = models.CharField(_('Address'), max_length=100)
     addr2 = models.CharField(_(' '), max_length=100, blank=True)
