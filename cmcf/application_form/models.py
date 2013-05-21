@@ -72,7 +72,7 @@ class Registration(models.Model):
     phone = models.CharField(max_length=100, blank=False)
     institution = models.CharField(max_length=100, )
     addr1 = models.CharField(_('Address'), max_length=100)
-    addr2 = models.CharField(_(' '), max_length=100, blank=False)
+    addr2 = models.CharField(_(' '), max_length=100, blank=True)
     city = models.CharField(max_length=100)
     state = models.CharField(_('Province/State'), max_length=100)
     code = models.CharField(_('Area Code/ZipCode'), max_length=100)
@@ -85,21 +85,21 @@ class Registration(models.Model):
     faculty = models.BooleanField(blank=False)
     staff = models.BooleanField(blank=False)
     other = models.BooleanField(blank=False)
-    other_text = models.CharField(_('Other'), max_length=100, blank=False)
+    other_text = models.CharField(_('Other'), max_length=100, blank=True)
 
     # Supervisor Information
-    sup_name = models.CharField(_('supervisor Name'), max_length=100, blank=False)
-    sup_email = models.EmailField(_('supervisor Email'), blank=False)
-    sup_phone = models.CharField(_('supervisor Phone'), max_length=100, blank=False)
+    sup_name = models.CharField(_('supervisor Name'), max_length=100, blank=True)
+    sup_email = models.EmailField(_('supervisor Email'), blank=True)
+    sup_phone = models.CharField(_('supervisor Phone'), max_length=100, blank=True)
 
     # Abstract Submission
     talk = models.BooleanField()
     type = models.IntegerField(choices=TALK_CHOICES, blank=True, null=True)
-    headline = models.CharField(_('Presentation Title'), max_length=500, blank=False)
-    authors = models.CharField(_('Authors'), max_length=500, blank=False)
-    abstract = models.TextField(_('Abstract'), blank=False)
+    headline = models.CharField(_('Presentation Title'), max_length=500, blank=True)
+    authors = models.CharField(_('Authors'), max_length=500, blank=True)
+    abstract = models.TextField(_('Abstract'), blank=True)
     
-    diet = models.TextField(_('Dietary Concerns'), blank=False)
+    diet = models.TextField(_('Dietary Concerns'), blank=True)
     
     created = models.DateTimeField(_('created'), auto_now_add=True)
 
