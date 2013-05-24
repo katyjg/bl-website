@@ -35,11 +35,11 @@
                     </h3>
 	                Posted on {{ post.publish|date:"F d, Y" }} <br>			
                     {{ post.body|removetags:"p"|safe }}
-	                <p class="link">
+	                {% ifnotequal post.citation "Click for full story..." %}<p class="link">
                         <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">
                             {{ post.citation|removetags:"p"|safe }}
                         </a>
-                    </p>
+                    </p>{% endifnotequal %}
                 </div>	      
             </div>
             <br class="clear">
