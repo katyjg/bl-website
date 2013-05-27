@@ -11,10 +11,11 @@
         <th>Institution</th>
         <th>Supervisor</th>
         <th>Position</th>
-        <th>Talk?</th>
+        <th>Present Research?</th>
         <th>Type?</th>
         <th>Abs?</th>
         <th>Diet</th>
+        <th style="min-width:300px;">Presentation Title</th>
     </tr>
     </thead>
     {% for app in participant_list %}
@@ -52,6 +53,7 @@
             {% if app.abstract_provided %}<td><a style="display:block; text-align: center;" href="{% url registration_abstract_list %}#{{app.first_name}}-{{app.last_name}}">View</a></td>{% else %}
             <td></td>{% endif %}
             <td>{{app.diet}}</td>
+            <td>{{app.headline}}</td>
         </tr>
     {% endfor %}
 </table>
