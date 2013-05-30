@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils.datastructures import SortedDict
 
 import datetime
 from scheduler.views import staff_login_required
@@ -81,8 +82,8 @@ def participant_list(request, template='application_form/participant_list.html')
                                'participant_list': Registration.objects.all().order_by('last_name'),},)
 
 def abstract_list(request, template='application_form/registration_abstract_list.html'):
-    regs = Registration.objects.exclude(abstract__exact='').order_by('last_name')
+    regs = Registration.objects.exclude(abstract__exact='')
     return render_to_response(template,
-                              {'present': {'Oral': regs.filter(type__exact=1), 'Poster': regs.filter(type__exact=0)},},)
+                              {'present': SortedDict([('Oral',regs.filter(type__exact=1)), ('Poster',regs.filter(type__exact=0))]),},)
     
     
