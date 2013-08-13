@@ -105,7 +105,7 @@ class Proposal(models.Model):
     proposal_id = models.CharField(max_length=7)
     description = models.CharField(max_length=200)
     expiration = models.DateTimeField(blank=True, null=True)
-    account = models.CharField(max_length=300, blank=True, null=True)
+    account = models.CharField('PI Account', help_text="Principle Investigator's Account Name" ,max_length=300, blank=True, null=True)
 
     def __unicode__(self):
         """Human readable string for ``Proposal``"""
@@ -145,7 +145,7 @@ class SupportPerson(models.Model):
     last_name = models.CharField(max_length=50)
     position = models.CharField(max_length=100)
     email = models.EmailField()
-    phone_number = models.CharField(max_length=20, help_text="Seven digit number", blank=True)
+    phone_number = models.CharField(max_length=20, help_text="Ten digit number", blank=True)
     image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
     office = models.CharField(blank=True, max_length=50)
     category = models.IntegerField(blank=False, choices=STAFF_CHOICES)

@@ -10,8 +10,8 @@
             <br>
             {{person.position}}<br>
             Office Location: {{person.office}}<br>
-            {% if person.phone_number %}Tel. (306) {{person.phone_number}}<br>{% endif %}
-            Fax: (306) 657-3535<br></p>
+            {% if person.phone_number %}Tel. &nbsp;{{person.phone_number}}<br>{% endif %}
+            Fax. &nbsp;306-657-3535<br></p>
             {% if not person.phone_number %}<br>{% endif %}
     </div>
     {% endifequal %}{% endfor %}

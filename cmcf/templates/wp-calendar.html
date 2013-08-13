@@ -17,6 +17,7 @@
         <div id="sidebar" class="calendar col-3">
             {% feincms_render_region feincms_page "col3" request %}
 	        <!-- include this div in the right position of your page -->
+	        <div id="txt" title="Local time in Saskatoon"></div>
 	        <div id="datepicker"></div>
             <h2><span>Colour Legend</span></h2>
             <table class="legend">
@@ -44,15 +45,45 @@
   	  
   	<script type="text/javascript">
   		$(document).ready(function() {
-    			$("#datepicker").datepicker({
-      				showWeek: true,
-      				currentText: "Today",
-      				dateFormat: "yy-mm-dd", /* Choose appropriate date format for path */
-      				onSelect: function(dateText,inst){
-        			/* replace "/schedule/" with appropriate path */
-        			window.location['pathname'] = '/schedule/' + dateText + '/';
-      				}
-    			});
+			startTime();
+			var date=window.location.pathname.split('/')[2].split('-');
+   			$("#datepicker").datepicker({
+     				showWeek: 		true,
+     				currentText: 	"Today",
+     				minDate:		new Date(2010, 2-1, 1),
+     				dateFormat: 	"yy-mm-dd", /* Choose appropriate date format for path */
+     				onSelect: 		function(dateText,inst){
+					    	   			/* replace "/schedule/" with appropriate path */
+						       			window.location['pathname'] = '/schedule/' + dateText + '/';
+				     				}
+   			});
+   			$("#datepicker").datepicker("setDate", new Date(date[0], date[1]-1, date[2]));
   		});
   	</script>
+  	<script language="JavaScript">
+		function startTime() {
+			var today=new Date();
+			var h=today.getHours();
+			var m=today.getMinutes();
+			var s=today.getSeconds();
+			var d=today.getDate();
+			var mon=today.getMonth();
+			var wkd=today.getDay();
+			var y=today.getFullYear();
+			var month=["Jan","Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"];
+			var weekday=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+			m=checkTime(m);
+			s=checkTime(s);
+			wkd=weekday[wkd];
+			mon=month[mon];
+			document.getElementById("txt").innerHTML=h+":"+m+":"+s+"&nbsp;&nbsp;&nbsp;&nbsp;"+wkd+", "+mon+" "+d+", "+y;
+			t=setTimeout(function(){startTime()},500);
+		}
+		function checkTime(i) {
+			if (i<10) {
+				i = "0"+i;
+			}
+			return i;
+		}
+	</script>
 {% endblock %}
