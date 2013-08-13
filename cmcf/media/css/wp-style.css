@@ -1022,6 +1022,16 @@ hr { border: none; border-top: 1px solid #dfdfdf; }
 	border-collapse:collapse;
     empty-cells: show;
 	}
+	
+div#txt {
+	background-color: #f7f7f7;
+	text-align: center;
+	border: 1px solid #ddd;
+	margin-left: 3px;
+	width: 206px;
+	padding: 2px;
+	margin-bottom: 11px;
+}
 .row1 th	{
 	background: #DCDCDC;
 	}
@@ -1047,6 +1057,9 @@ hr { border: none; border-top: 1px solid #dfdfdf; }
 	border-left:1px solid #B5b5b5;
 	padding:.3em .75em;
 	}	
+#schedule th.emph, div.schedule th.emph, #schedule tbody td.emph, div.schedule tbody td.emph {
+	border-bottom: 1px solid #888;
+}
 thead th {
 	background:#dcdcdc;
 	border-bottom:1px solid #B5b5b5;
@@ -1176,7 +1189,7 @@ table.legend tr, table.legend{
     text-align: center !important;
 	border-top:1px solid #b5b5b5;
 	border-right:1px solid #b5b5b5;
-	margin:1em auto;
+	margin:0.6em auto;
 	border-collapse:collapse;
     }
 table.legend td, table.legend th{
@@ -1191,9 +1204,16 @@ table.legend td, table.legend th{
 }
 
 #sidebar.calendar {
-	padding-top: 40px;
+	padding-top: 5px;
 }
-
+#sidebar.calendar h2 {
+	border-bottom: 1px solid #ddd;
+	font-weight: normal;
+	margin-bottom: 6px;
+	font-family: "Open Sans", serif;
+	font-size: 120%;
+	margin-top: 12px;
+}
 div.sitemap{ 
     -moz-column-count: 3;
     -moz-column-gap: 20px;

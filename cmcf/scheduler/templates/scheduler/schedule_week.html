@@ -4,7 +4,17 @@
     {% load schedule_extras %}
     <!-- Header -->
     <h2>
-        <span>Week of {% for day in calendar %}{% if forloop.first %}{{day.0}} to {% endif %}{% if forloop.last %}{{day.0}}{% endif %}{% endfor %}</span>
+        <span>Week of
+        	{% for day in calendar %}
+        		{% if forloop.first %}
+        			{{day.0|cut:"/"|slice:"4:7"}}. {{day.0|cut:"/"|slice:"-2:"}} - {% endif %}
+        		{% if forloop.last %}
+        			{% ifnotequal calendar.0.0|slice:"4:7" day.0|slice:"4:7" %}
+        				{{day.0|slice:"4:7"}}.
+        			{% endifnotequal %}
+        			{{day.0|cut:"/"|slice:"-2:"}}, {{day.5|slice:":4"}}{% endif %}
+        	{% endfor %}
+        </span>
     </h2>
 
     <!-- Navigation Stuff -->
@@ -40,12 +50,12 @@
     <table>
         <thead>
             <tr>
-                <th class="date" scope="col" abbr="Date">Date</th>
-                <th class="date" scope="col" abbr="Shift">Shift</th>
+                <th class="date emph" scope="col" abbr="Date">Date</th>
+                <th class="date emph" scope="col" abbr="Shift">Shift</th>
                     {% for bl in beamlines %}
-                        <th class="beamline" scope="col" abbr="{{bl.name}}">{{bl.name}}</th>
+                        <th class="beamline emph" scope="col" abbr="{{bl.name}}">{{bl.name}}</th>
                     {% endfor %}
-                <th class="date" scope="col" abbr="On Call">Local Contact</th>
+                <th class="date emph" scope="col" abbr="On Call">Local Contact</th>
             </tr>
         </thead>
         <tbody>
@@ -54,7 +64,7 @@
         {% for day in calendar %}
             <tr>
             	<!-- "Date" column -->
-                <td rowspan=3 class="column1 {% ifequal day.0 today.0 %}today{% endifequal %}">{{day.0}}</td>
+                <td rowspan=3 class="column1 emph {% ifequal day.0 today.0 %}today{% endifequal %}">{{day.0}}</td>
                 
                 <!-- Cycle through beam modes for the day -->
                 {% for mode in day.3.0 %}{% with forloop.counter0 as index %}
@@ -63,7 +73,8 @@
                     <td class="{% ifequal day.0 today.0 %}today{% endifequal %} 
                                td-time {% if mode %}{{mode}}{% else %}
                                {% if day.4|get_webmode:index %}{{ day.4|get_webmode:index }}{% else %}
-                               {% if admin %}update {% endif %}{% endif %}{% endif %} tdcenter">
+                               {% if admin %}update {% endif %}{% endif %}{% endif %} tdcenter
+                               {% if forloop.last %}emph{% endif %}">
                         {% if admin %}{% if not mode %}{% if not day.4|get_webmode:index %}
                             <div class="modal-form update-tool" 
                                    href="{% url bl-add-mode %}?start_date={{day.5}}&first_shift={{index}}"
@@ -78,6 +89,7 @@
                     
                     	<!-- "bl" column -->
                         <td class="{% ifequal day.0 today.0 %}today {% ifequal index today.1 %}now {% endifequal %}{% endifequal %} 
+                            {% if forloop.parentloop.last %}emph{% endif %}
                             {% if admin %}
                                 del {% if mode %}{{mode}}{% else %}{{ day.4|get_webmode:index }}{% endif %}
                                 {% if visit|get_webmode:index %}
@@ -86,7 +98,7 @@
                                 	{% endwith %}
                                	{% else %}
                                      modal-form link-cell
-                                {% endif %}"
+                            {% endif %}"
                                 {% if not visit|get_webmode:index %}
                                  	href="{% url bl-add-visit %}?beamline={{bl.pk}}&start_date={{day.5}}&first_shift={{forloop.parentloop.counter0}}"
                                  	title="Add new visit"
@@ -187,7 +199,12 @@
                                     {% else %}column1 modal-form link-cell" href="{% url bl-add-oncall %}?date={{day.5}}"
                                     {% endif %}
                                 {% endif %}>
-                                {{day.2.0.local_contact.initials}}
+                                {% with day.2.0.local_contact as person %}
+                                	<a href="{% if admin %}{% url bl-edit-oncall day.2.0.pk %}
+                                			 {% else %}/contact-us/#{{person.first_name}}-{{person.last_name}}{% endif %}"
+                                	   title="{{person.first_name }} {{ person.last_name}}&#13;{{person.phone_number}}">
+                                		{{person.initials}}</a>
+                                {% endwith %}
                                 {% if day.2 %}{% if admin %}
                                  	<a class="modal-form delete-tool" 
                                        href="{% url bl-delete-oncall day.2.0.pk %}"
@@ -195,7 +212,7 @@
                                 {% endif %}{% endif %}
                             </td>
                         {% else %}{% if forloop.last %}
-                            <td class="column1"></td>
+                            <td class="column1 emph"></td>
                         {% endif %}{% endif %}
                			</tr><tr>
                     {% endwith %}{% endfor %}

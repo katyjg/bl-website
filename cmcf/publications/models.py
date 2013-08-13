@@ -133,12 +133,17 @@ class Journal(models.Model):
         return self.name        
 
 class Publication(models.Model):
+    MONTH_CHOICES=((1,"January"),(2,"February"),(3,"March"),(4,"April"),
+                   (5,"May"),(6,"June"),(7,"July"),(8,"August"),
+                   (9,"September"),(10,"October"),(11,"November"),(12,"December"))
     title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
-    authors = models.CharField(_('authors'), max_length=500, blank=True)
+    authors = models.CharField(_('authors'), help_text="Comma-separated list of authors in format: J. Doe, M.N. Smith", max_length=500, blank=True)
     beamline = models.ManyToManyField(Beamline, blank=True)
     journal = models.ForeignKey(Journal, blank=False)
-    year = models.IntegerField(_('year'), blank=False)
+    year = models.IntegerField(_('year'), help_text="Required", blank=False)
+    month = models.IntegerField(_('month'), help_text="Enter if available", choices=MONTH_CHOICES, blank=True, null=True)
+    day = models.IntegerField(_('day'), help_text="Enter if available", blank=True, null=True)
     citation = models.CharField(_('citation'), max_length=200, blank=False, help_text="Use format 'volume(issue), first_page-last_page",default="")
     original = models.CharField(_('DOI Reference'), blank=True, max_length=200)
     pdb_entries = models.CharField(_('PDB entries'), max_length=100, help_text="Comma-separated list of PDB codes (no spaces)", blank=True, default="") 

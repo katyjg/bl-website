@@ -4,8 +4,13 @@ from publications.forms import PosterForm
 from publications.models import *
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display  = ('year', 'get_authors', 'publish', 'get_beamlines', 'get_title', 'journal')
+    list_display  = ('get_authors', 'year', 'month','day', 'get_beamlines', 'get_title', 'journal')
     search_fields = ('title', 'year', 'authors', 'journal')
+    fieldsets = (
+        (None, {
+            'fields': ('title','slug','authors','journal',('year','month','day'),'citation','original','pdb_entries','beamline'),
+        }),
+    )
 
     class Media:
         js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
