@@ -200,7 +200,7 @@
                                     {% endif %}
                                 {% endif %}>
                                 {% with day.2.0.local_contact as person %}
-                                	<a href="{% if admin %}{% url bl-edit-oncall day.2.0.pk %}
+                                	<a href="{% if admin %}
                                 			 {% else %}/contact-us/#{{person.first_name}}-{{person.last_name}}{% endif %}"
                                 	   title="{{person.first_name }} {{ person.last_name}}&#13;{{person.phone_number}}">
                                 		{{person.initials}}</a>

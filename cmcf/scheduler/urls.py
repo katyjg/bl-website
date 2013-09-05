@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import *
 
-from scheduler import views
+from cmcf.scheduler.views import current_week, get_shift_breakdown
 
 urlpatterns = patterns('',
-    url(r'^$', views.current_week, name='scheduler.thisweek'),
-    url(r'^(?P<day>\d{4}-\d{2}-\d{2})/$', views.current_week, name='scheduler.anyweek'),
+    url(r'^$', current_week, name='scheduler.thisweek'),
+    url(r'^(?P<day>\d{4}-\d{2}-\d{2})/$', current_week, name='scheduler.anyweek'),
 )

@@ -57,5 +57,8 @@ td.ui-datepicker-week-col, th.ui-datepicker-week-col { border-right: 1px solid #
 /* states and images */
 .ui-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
 
+#ui-datepicker-div {
+	max-width: 220px;
+	background-color: #f5f5f5;}
 
 

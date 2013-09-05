@@ -8,10 +8,11 @@ from django.core.management import call_command
 
 from datetime import datetime, date, timedelta, time
 
+
 import string
 from django.conf import settings
 
-from scheduler.models import Visit, Stat, OnCall, SupportPerson, Beamline, WebStatus
+from scheduler.models import Visit, Stat, OnCall, SupportPerson, Beamline, WebStatus, Proposal
 from decorators import protectview
 
 WARNING = "This is a last-minute change. It will take a few moments to send a notification e-mail to the Users Office and to beamline staff."
@@ -81,10 +82,10 @@ def edit_visit(request, pk, model, form, template='wp-root.html'):
 @staff_login_required
 def delete_object(request, pk, model, form, template='wp-root.html'):
     obj = model.objects.get(pk__exact=pk)
-    today = datetime.now().date()
-    this_monday = today - timedelta(days=datetime.now().date().weekday())
-    next_monday = this_monday + timedelta(days=7)
-    etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
+    #today = datetime.now().date()
+    #this_monday = today - timedelta(days=datetime.now().date().weekday())
+    #next_monday = this_monday + timedelta(days=7)
+    #etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
     
     form_info = {        
         'title': 'Delete %s?' % obj,
@@ -97,9 +98,9 @@ def delete_object(request, pk, model, form, template='wp-root.html'):
         frm = form(request.POST, instance=obj)
         if frm.is_valid():
             message =  '%(name)s deleted' % {'name': smart_str(model._meta.verbose_name)}
-            if model == Visit:
-                if obj.start_date <= next_monday and obj.start_date >= today and obj.modified > etime:
-                    call_command('notify', obj.pk, 'DELETED: ')
+            #if model == Visit:
+            #    if obj.start_date <= next_monday and obj.start_date >= today and obj.modified > etime:
+            #        call_command('notify', obj.pk, 'DELETED: ')
             obj.delete()
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -110,8 +111,8 @@ def delete_object(request, pk, model, form, template='wp-root.html'):
             }, context_instance=RequestContext(request))
     else:
         frm = form(instance=obj, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
-        if model == Visit:
-            form.warning_message = (obj.start_date <= next_monday and obj.start_date >= today and datetime.now() > etime  and WARNING) or None
+        #if model == Visit:
+        #    form.warning_message = (obj.start_date <= next_monday and obj.start_date >= today and datetime.now() > etime  and WARNING) or None
         return render_to_response(template, {
             'info': form_info, 
             'form' : frm,
@@ -434,5 +435,40 @@ def contact_list(request):
         },
         )
 
+def get_shift_breakdown(request, start, end, template=''):
+    """ args 'start' and 'end' should be datetime objects """
+    start = date(int(start.split('-')[0]),int(start.split('-')[1]),int(start.split('-')[2]))
+    end = date(int(end.split('-')[0]),int(end.split('-')[1]),int(end.split('-')[2]))
+    bls = Beamline.objects.all()
+    info = {}
+    for bl in bls:
+        visits = Visit.objects.filter(start_date__lte=end).filter(end_date__gte=start).filter(beamline=bl)
+        base = []
+        info[bl] = []
+        for u in visits.values('proposal').distinct():
+            types = []
+            if visits.filter(proposal=u['proposal']).filter(mail_in=True).exists():
+                types.append('Mail-In')
+            if visits.filter(proposal=u['proposal']).filter(remote=True).exists():
+                types.append('Remote')
+            if visits.filter(proposal=u['proposal']).filter(purchased=True).exists():
+                types.append('Purchased')
+            if visits.filter(proposal=u['proposal']).filter(maintenance=True).exists():
+                types.append('Maintenance')
+            if visits.filter(proposal=u['proposal']).filter(maintenance=False).filter(mail_in=False).filter(remote=False).filter(purchased=False).exists():
+                types.append('Normal')
+            base.append((Proposal.objects.get(pk=u['proposal']),[vis.get_visit_shifts() for vis in visits.filter(proposal=u['proposal'])], types))
+        for entry in base:
+            shifts = []
+            for sh in entry[1]:
+                for s in sh:
+                    if '24:00 - 08:00' in s:
+                        d = datetime.strptime(s[:17],'%a, %b %d, %Y') + timedelta(days=1)
+                        s = '%s - 00:00 - 08:00' % ( d.strftime('%a, %b %d, %Y'))
+                    shifts.append(s)
+            info[bl].append((entry[0], shifts, entry[2]))
 
-    
+    return render_to_response('scheduler/shift_breakdown.html',     
+            { 'info': info,
+              'date': (start, end),
+            }, context_instance=RequestContext(request))

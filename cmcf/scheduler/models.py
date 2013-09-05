@@ -303,7 +303,7 @@ class Visit(models.Model):
         return shifts
     
     def get_visit_shifts(self):
-        """Get all shifts for given date"""
+        """Get all shifts for given visit"""
         day = self.start_date
         shifts = []
         while day <= self.end_date:
@@ -470,5 +470,4 @@ def get_shift_lists(blname='08B1-1', first_date=datetime.now(), last_date=dateti
                     data[prop].append(sh)
             day = day + timedelta(days=1)
     return data
-    
     
