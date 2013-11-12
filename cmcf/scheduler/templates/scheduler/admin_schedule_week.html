@@ -11,9 +11,12 @@
     <script type="Text/Javascript">
         $(document).ready(function() {
             initModals();
+            startTime();
+            var date=window.location.pathname.split('/')[3].split('-');
             $("#datepicker").datepicker({
                 showWeek: true,
                 currentText: "Today",
+                minDate:		new Date(2010, 2-1, 1),
                 dateFormat: "yy-mm-dd", /* Choose appropriate date format for path */
                 onSelect: function(dateText,inst){
                 /* replace "/admin_calendar/" with appropriate path */
@@ -21,8 +24,35 @@
  		                window.location['pathname'] = '/beamtime/' + ext + dateText + '/';
                 }
             });
+            $("#datepicker").datepicker("setDate", new Date(date[0], date[1]-1, date[2]));
         });
     </script>
+  	<script language="JavaScript">
+		function startTime() {
+			var today=new Date();
+			var h=today.getHours();
+			var m=today.getMinutes();
+			var s=today.getSeconds();
+			var d=today.getDate();
+			var mon=today.getMonth();
+			var wkd=today.getDay();
+			var y=today.getFullYear();
+			var month=["Jan","Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"];
+			var weekday=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+			m=checkTime(m);
+			s=checkTime(s);
+			wkd=weekday[wkd];
+			mon=month[mon];
+			document.getElementById("txt").innerHTML=h+":"+m+":"+s+"&nbsp;&nbsp;&nbsp;&nbsp;"+wkd+", "+mon+" "+d+", "+y;
+			t=setTimeout(function(){startTime()},500);
+		}
+		function checkTime(i) {
+			if (i<10) {
+				i = "0"+i;
+			}
+			return i;
+		}
+	</script>    
     
 {% endblock %}
 	
@@ -40,6 +70,7 @@
 	        </div>
 	    
 	        <div id="sidebar" class="calendar col-3">
+	            <div id="txt" title="Local time in Saskatoon"></div>
 	            <!-- include this div in the right position of your page -->
 	            <div id="datepicker"></div>
 	            <h2>Get Shifts by Proposal</h2>

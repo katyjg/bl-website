@@ -71,7 +71,7 @@ class ApplicationForm(forms.Form):
     
     captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 28})
     
-    from_email = settings.SCHOOL_FROM_EMAIL
+    from_email = settings.FROM_EMAIL
     
     recipient_list = [mail_tuple[1] for mail_tuple in settings.MANAGERS]
 

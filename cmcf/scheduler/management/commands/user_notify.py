@@ -19,7 +19,7 @@ class Command(BaseCommand):
         except:
             raise CommandError('Visit %s does not exist' % args[0])
         """
-        self.from_email = getattr(settings, 'SCHOOL_FROM_EMAIL', "sender@no-reply.ca")
+        self.from_email = getattr(settings, 'FROM_EMAIL', "sender@no-reply.ca")
         self.url_root = getattr(settings, 'URL_ROOT', "")
         self.site_name = getattr(settings, 'SITE_NAME_SHORT', "")
         self.template_name = 'scheduler/user_email_body.txt'
