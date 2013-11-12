@@ -20,7 +20,7 @@ SITE_KEYWORDS = 'CMCF,lightsource,canadian,macromolecular,crystallography,facili
 ABSOLUTE_PATH_TO_FILES = 'var/website/cmcf-website/cmcf' # no leading or trailing slashes
     
 CONF_FROM_EMAIL = 'kathryn.janzen@lightsource.ca'
-SCHOOL_FROM_EMAIL = 'cmcf-support@lightsource.ca' # This should be an email that exists
+FROM_EMAIL = 'cmcf-support@lightsource.ca' # This should be an email that exists
 SERVER_EMAIL = 'cmcf-web@no-reply.ca' # This just needs to have the form of an email address
 EMAIL_SUBJECT_PREFIX = 'Web:'
 

@@ -283,6 +283,16 @@ class Visit(models.Model):
         if long:
             return '%s%s - %s - %s%s' %(pre,self.proposal_display(),sd.strftime('%a, %b %d, %Y'),fs[:5],suf) 
         return '%s%s - %s' %(pre,self.proposal_display(),sd.strftime('%a, %b %d, %Y'))
+                            
+    def email_notify(self):
+        startwd = (self.first_shift < 2 and self.start_date or self.start_date + timedelta(days=1)).strftime('%a')
+        startsh = self.first_shift < 2 and self.get_first_shift_display()[:5] or '00:00'
+        kind = (self.purchased and 'PURCHASED ACCESS') or (self.mail_in and 'MAIL-IN') or (self.remote and 'REMOTE') or ''
+        if self.proposal:
+            p = self.proposal
+            return '%s, %s. %s\t\t(Starts %s %s)%s' % (p.proposal_id, p.first_name[0].upper(), p.last_name, startwd, startsh, (kind and '-%s' % kind or ''))
+        else:
+            return 'No proposal assigned\t\t(Starts %s %s)%s' % (startwd, startsh, (kind and ' -%s' % kind or ''))
                              
     def get_shifts(self, dt, ids=False):
         """Get all shifts for given date"""
@@ -470,4 +480,11 @@ def get_shift_lists(blname='08B1-1', first_date=datetime.now(), last_date=dateti
                     data[prop].append(sh)
             day = day + timedelta(days=1)
     return data
+
+def get_shift_mode(dt, shift):
+    """Get all shifts for given date"""
+    shifts = [None, None, None]
+    stats = Stat.objects.filter(start_date__lte=dt).filter(end_date__gte=dt).filter(first_shift__lte=shift).filter(last_shift__gte=shift)
+    shift = len(stats) and stats[0].mode or None
+    return shift
     
