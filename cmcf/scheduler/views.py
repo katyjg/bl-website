@@ -58,11 +58,13 @@ def edit_visit(request, pk, model, form, template='wp-root.html'):
                 if str(request.POST.get(field, None)) != str(visit.__dict__[((field == 'proposal' or field == 'beamline') and '%s_id' % field) or field]):
                     msg = string.capwords(field.replace('_', ' '))
                     mod_msg = mod_msg and '%s AND %s' % (mod_msg, msg) or msg
+        firstdate = visit.start_date
         frm = form(request.POST, instance=visit)
         if frm.is_valid():
             frm.save()
             if mod_msg and visit.modified > etime:
-                call_command('notify', visit.pk, 'MODIFIED: ', 'Changed %s.' % mod_msg) 
+                mod_msg = firstdate != visit.start_date and 'This change affects %s and %s' % (firstdate.strftime('%a, %b %d'), visit.start_date.strftime('%a, %b %d')) or 'Changed %s' % mod_msg
+                call_command('notify', visit.pk, 'MODIFIED: ', mod_msg) 
             message =  '%(name)s modified' % {'name': smart_str(model._meta.verbose_name)}
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
@@ -154,7 +156,8 @@ def add_object(request, model, form, template='wp-root.html'):
                 new_obj.save()
                 if model == Visit:
                     if new_obj.start_date <= next_monday and new_obj.start_date >= today and new_obj.modified > etime:
-                        call_command('notify', new_obj.pk, 'ADDED: ')
+                        dates = '%s%s' % (new_obj.start_date.strftime('%A, %b %d'), new_obj.start_date != new_obj.end_date and (' - %s' % new_obj.end_date.strftime('%A, %b %d')) or '')  
+                        call_command('notify', new_obj.pk, 'ADDED: ', 'This change affects %s' % dates)
             message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
             request.user.message_set.create(message = message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))

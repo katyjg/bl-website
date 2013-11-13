@@ -111,13 +111,6 @@ class Command(BaseCommand):
             message_dict = self.get_message_dict()
             send_mail(fail_silently=fail_silently, **message_dict)
 
-            '''
-            message_dict['subject'] = 'FW: %s' % message_dict['subject']
-            message_dict['message'] = 'The following message has been sent to %s %s at %s:\n\n%s' % (self.proposal.first_name, self.proposal.last_name, self.proposal.email, message_dict['message'])
-            message_dict['recipient_list'] = [mail_tuple[1] for mail_tuple in settings.CC_AUTO_SCHEDULERS]
-            send_mail(fail_silently=fail_silently, **message_dict)
-            '''
-
             self.visit.sent = True
             self.visit.save()
 

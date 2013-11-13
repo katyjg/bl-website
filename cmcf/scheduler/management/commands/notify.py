@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import send_mail
 from optparse import make_option
-from scheduler.models import Visit, Proposal, Beamline
+from scheduler.models import Visit, Proposal, Beamline, Stat, get_shift_mode
 import datetime
 from datetime import datetime, date, timedelta
 from django.conf import settings
@@ -15,53 +15,67 @@ class Command(BaseCommand):
         self.visit = None
         self.mod_type = None
         self.mod_msg = None
+        self.mod = False
+        self.pr = False
         self.sendable = False
         if args:
             try:
                 self.visit = Visit.objects.get(pk=args[0])
                 self.mod_type = args[1]
-                if self.mod_type[:3] == 'MOD':
+                if len(args) > 2:
                     self.mod_msg = args[2]
             except:
                 raise CommandError('Visit %s does not exist' % args[0])
-        self.from_email = getattr(settings, 'SCHOOL_FROM_EMAIL', "sender@no-reply.ca")
+        self.from_email = getattr(settings, 'FROM_EMAIL', "sender@no-reply.ca")
         self.url_root = getattr(settings, 'URL_ROOT', "")
         self.site_name = getattr(settings, 'SITE_NAME_SHORT', "")
         self.template_name = 'scheduler/email_body.txt'
         self.subject_template_name = "scheduler/email_subject.txt"
-        self.recipient_list = [mail_tuple[1] for mail_tuple in settings.SCHEDULERS]
+        if args:
+            self.recipient_list = [mail_tuple[1] for mail_tuple in settings.AUTO_SCHEDULERS]
+        else:
+            self.recipient_list = [mail_tuple[1] for mail_tuple in settings.SCHEDULERS]
         
         this_monday = datetime.now().date() - timedelta(days=datetime.now().date().weekday())
-        last_monday = this_monday - timedelta(days=7)
-        next_monday = this_monday + timedelta(days=7)
+        this_day = datetime.now().date()
+        self.run_start = None
+        shift_choices = [s[0] for s in Stat.SHIFT_CHOICES]
+        shift_choices.reverse()
+        mshifts = 0
+        while not self.run_start:
+            for shift in shift_choices:
+                if get_shift_mode(this_day, shift) == 'Maintenance':
+                    mshifts += 1
+                else:
+                    mshifts = 0
+            if mshifts > 3:
+                self.run_start = this_day + timedelta(days=1)
+            this_day = this_day - timedelta(days=1)
         self.data = {}
-        for bl in Beamline.objects.filter(name__startswith='08'):
+        printed = {}
+        for bl in Beamline.objects.exclude(name__startswith='SIM'):
             self.data[bl.name] = [[],[]]
-        for v in Visit.objects.filter(start_date__gte=this_monday).filter(start_date__lte=next_monday+timedelta(days=14)).order_by('start_date'):
-            if not v.proposal:
-                type = '    NO PROPOSAL: '
-                msg = '%s%s' % (type, v.long_notify())
+            printed[bl.name] = []
+        visits = Visit.objects.filter(beamline__name__in=self.data.keys())
+        
+        for v in visits.filter(start_date__lte=this_monday).filter(start_date__gte=self.run_start).order_by('start_date'):
+            prop = v.proposal and '%s, %s. %s' % (v.proposal.proposal_id, v.proposal.first_name[0].upper(), v.proposal.last_name) or None
+            if prop and prop not in printed[v.beamline.name]:
+                printed[v.beamline.name].append(prop)
+        for v in visits.filter(start_date__gte=this_monday).filter(start_date__lte=this_monday+timedelta(days=7)).order_by('start_date'):
+            if v.email_notify()[:7] not in printed[v.beamline.name]:
+                if v.email_notify()[:7] not in [n[:7] for n in self.data[v.beamline.name][0]]:
+                    self.data[v.beamline.name][0].append(v.email_notify())
             else:
-                type = (not v.proposal.expiration and '    NEEDS APPROVAL: ') or \
-                       (v.created.date() >= last_monday and '    NEW: ') or \
-                       (v.modified.date() >= last_monday and "    MOD: ") or None
-                msg = '%s%s' % ( (((not v.proposal or not v.proposal.expiration or not self.visit) and type) or '    '), v.long_notify() )
-            index = (v.start_date > next_monday and 1) or 0
-            msg = (self.visit and v == self.visit and '    ***%s***' % msg.replace('  ', '')) or msg
-            if self.visit:
-                if self.mod_type[:3] != "DEL" or msg[:7] != '    ***':
-                    self.data[v.beamline.name][index].append(msg)
-            else:
-                self.data[v.beamline.name][index].append(msg)
+                if v.email_notify()[:7] not in [n[:7] for n in self.data[v.beamline.name][1]]: 
+                    self.data[v.beamline.name][1].append('%s, %s. %s' % (v.proposal.proposal_id, v.proposal.first_name[0].upper(), v.proposal.last_name))
             self.sendable = True
-        if self.visit and self.visit.start_date >= this_monday and self.visit.start_date <= next_monday:
-            prefix = ''
-            if self.visit.proposal:
-                if not self.visit.proposal.expiration: prefix = 'NEEDS APPROVAL - '
-            self.mod = [self.mod_type, '%s%s' %(prefix, self.visit.long_notify()), self.mod_msg]
-        else:
-            self.mod = False
-
+        if self.visit:
+            self.pr = not visits.exclude(pk=self.visit.pk).filter(start_date__lte=self.visit.start_date).filter(start_date__gte=self.run_start).filter(beamline=self.visit.beamline).exists()
+            if self.mod_msg:
+                prop = '%s, %s. %s' % (self.visit.proposal.proposal_id, self.visit.proposal.first_name[0].upper(), self.visit.proposal.last_name)
+                self.mod = [self.mod_type, prop, self.mod_msg]
+        
         if self.sendable:   
             self.save()
 
@@ -77,8 +91,10 @@ class Command(BaseCommand):
             
         
         return loader.render_to_string(template_name, dictionary={
+                                            'print': self.pr,
                                             'data': self.data,
                                             'mod': self.mod,
+                                            'run': self.run_start,
                                             'site': [self.url_root, self.site_name],
                                             })
 
@@ -90,9 +106,9 @@ class Command(BaseCommand):
         now = datetime.now().date()
         date = now - timedelta(days=now.weekday())
         subject = loader.render_to_string(self.subject_template_name, dictionary={
+                                            'print': self.pr,
                                             'date': date,
-                                            'mod': self.visit,
-                                            'type': self.mod_type})
+                                            'visit': self.visit})
         return ''.join(subject.splitlines())
 
 
