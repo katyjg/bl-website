@@ -11,9 +11,9 @@
 {% block wiki_body %}
     {% for article in wiki_search_results %}
         {% if article.get_url %}
-            <a href="{% url wiki_view article.get_url|stripslash %}/">{{ article.get_url }}</a><br/>
+            <a href="{% url 'wiki_view' article.get_url|stripslash %}/">{{ article.get_url }}</a><br/>
         {% else %}
-            <a href="{% url wiki_view '' %}">/</a><br/>
+            <a href="{% url 'wiki_view' '' %}">/</a><br/>
         {% endif %}
     {% empty %}
         {% trans "No articles were found!" %}

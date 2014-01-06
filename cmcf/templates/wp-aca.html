@@ -70,7 +70,7 @@
 </div>
 		
 <div class="col-3">
-{% feincms_navigation of feincms_page as sublevel level=2 %}
+{% feincms_nav feincms_page level=2 as sublevel %}
 {% if sublevel %} {# stupid django 1.0 compatibility ... :-) #}
     {% for p in sublevel %}
         {% if forloop.first %}<ul>{% endif %}

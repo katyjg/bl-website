@@ -18,9 +18,14 @@ class PostAdmin(admin.ModelAdmin):
     list_filter   = ('publish', 'categories', 'status')
     actions = [highlight, unhighlight]
     search_fields = ('title', 'body')
+    fieldsets = (
+        (None, {
+            'fields': ('title','slug','image','link','citation','body','tease','highlight','status','publish','categories'),
+        }),
+    )
 #    prepopulated_fields = {'slug': ('title',)}
-    class Media:
-        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
+#    class Media:
+#       js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
 admin.site.register(Post, PostAdmin)
 
 

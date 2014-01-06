@@ -78,10 +78,10 @@
 	                <ul style="margin-top: 34px;">
 	                    <li>
 	                        <a {% ifequal title 'Publication Statistics'%}class="current"{% endifequal %} 
-	                           href='{% url admin-pub-stats %}'>Statistics</a>
+	                           href='{% url "admin-pub-stats" %}'>Statistics</a>
 	                    </li>
 	                    <li>
-	                        <a {% ifequal title 'Beamtime Scheduler'%}class="current"{% endifequal %} href='{% url admin-scheduler.thisweek %}'>Beamtime</a>
+	                        <a {% ifequal title 'Beamtime Scheduler'%}class="current"{% endifequal %} href='{% url "admin-thisweek" %}'>Beamtime</a>
 	                    </li>
 	                </ul>
                 </div>

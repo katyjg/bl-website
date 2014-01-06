@@ -4,22 +4,22 @@
 
 {% block "page-content" %}
 
-    {% feincms_navigation of feincms_page as midlevel level=2 %}
+    {% feincms_nav feincms_page level=2 as midlevel %}
 
 	{% for ml in midlevel %}
 	    {% if ml|is_equal_or_parent_of:feincms_page %}
-	        {% feincms_navigation of ml as submidlevel level=4 %}
+	        {% feincms_nav ml level=4 as submidlevel %}
 	
 			{% if submidlevel %}
 	
-	            {% feincms_navigation of feincms_page as toplevel level=2 %}
-				{% feincms_navigation of feincms_page as sublevel level=4 %}
-			    {% feincms_navigation of feincms_page as subsublevel level=3 %}
+	            {% feincms_nav feincms_page level=2 as toplevel %}
+				{% feincms_nav feincms_page level=4 as sublevel %}
+			    {% feincms_nav feincms_page level=3 as subsublevel %}
 
 			{% else %}
 			
-		        {% feincms_navigation of feincms_page as toplevel level=1 %}	
-				{% feincms_navigation of feincms_page as sublevel level=3 %}
+		        {% feincms_nav feincms_page level=1 as toplevel %}	
+				{% feincms_nav feincms_page level=3 as sublevel %}
 			
 			{% endif %}
 	
@@ -36,7 +36,7 @@
 			<div id="pagebody">
 			    <div class="wrapper">
 			        <div class="col-9" id="bodyContent">
-			            {% ifnotequal sublevel.count 0 %}
+			            {% ifnotequal sublevel|length 0 %}
 			                <table id="toc" class="toc" summary="Contents"><tr><td>
 			                    <div id="toctitle"><h2>Page Contents</h2></div>
 			                    <ul>
@@ -56,13 +56,13 @@
 			        </div>
 			
 			        <div class="col-3">
-			          	{% feincms_navigation of feincms_page as sublevel level=2 %}
+			          	{% feincms_nav feincms_page level=2 as sublevel %}
 			            <ul class="submenu" >
                             <li><!-- Place this tag where you want the search box to render -->
                                 <gcse:searchbox-only></gcse:searchbox-only></li>
 			      	    {% for sp in sublevel %}
 			      	      {% ifnotequal sp.title "Search Results" %}
-				            {% feincms_navigation of sp as subsubsublevel level=4 %}
+				            {% feincms_nav sp level=4 as subsubsublevel %}
 			         	    <li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
    			                    <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
 			            	    {% if subsubsublevel %}
@@ -83,7 +83,7 @@
                           {% endifnotequal %}				        	
 			        	{% endfor %}
 			            </ul>
-			        	{% feincms_render_region feincms_page "col1" request %}
+			        	<!-- {% feincms_render_region feincms_page "col1" request %} -->
 			        </div>
 			
 			    </div>

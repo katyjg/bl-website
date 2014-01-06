@@ -10,6 +10,8 @@ from django.template import RequestContext
 
 from contact_form.forms import ContactForm
 
+from feincms.content.application.models import app_reverse
+
 
 def contact_form(request, form_class=ContactForm,
                  template_name='contact_form/contact_form.html',
@@ -72,7 +74,7 @@ def contact_form(request, form_class=ContactForm,
     #
     
     if success_url is None:
-        success_url = reverse('contact_form_sent')
+        success_url = app_reverse('contact_form_sent','contact_form.urls')
     if request.method == 'POST':
         form = form_class(data=request.POST, files=request.FILES, request=request)
         if form.is_valid():

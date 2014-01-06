@@ -12,7 +12,7 @@ Oops...
 {% if wiki_url %}
 <p>
 The page you requested could not be found.
-Click <a href="{% url wiki_create wiki_url %}">here</a> to create it.
+Click <a href="{% url 'wiki_create' wiki_url %}">here</a> to create it.
 </p>
 {% else %}
 <p>

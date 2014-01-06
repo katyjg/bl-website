@@ -2,7 +2,8 @@
 import types
 from django.core.urlresolvers import get_callable
 from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError, HttpResponseForbidden, HttpResponseNotAllowed
-from django.utils import simplejson
+#from django.utils import simplejson
+import json as simplejson
 from django.shortcuts import get_object_or_404, render_to_response 
 from django.template import RequestContext, Context, loader
 from django.utils.translation import ugettext_lazy as _

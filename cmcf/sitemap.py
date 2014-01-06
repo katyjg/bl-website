@@ -1,5 +1,5 @@
 from django.contrib.sitemaps import Sitemap
-
+"""
 from models import Page
 
 class PageSitemap(Sitemap):
@@ -14,3 +14,4 @@ class PageSitemap(Sitemap):
     def priority(self, obj):
         depth = Page.objects.filter(active=True, in_navigation=True).order_by('-level')[0].level
         return 1 - float( float(obj.level + 1) / float(depth + 1)) + 0.01
+"""

@@ -33,7 +33,7 @@
 	var x = window.onload;
 	window.onload = function(){
 			var options = {
-			script: "{% url search_related wiki_article.get_url %}/?self={{wiki_article.pk }}&",
+			script: "{% url 'search_related' wiki_article.get_url %}/?self={{wiki_article.pk }}&",
 			json: true,
 			varname: "query",
 			maxresults: 35,
@@ -90,8 +90,8 @@
 
     <div class="wiki_box">  <!--Search-->
     	<div class="wiki_box_contents">
-            <!--<form method="POST" action='{% url wiki_search_articles wiki_article.get_url|stripslash %}'>-->
-            <form method="POST" action='{% url wiki_search_articles 'mainpage' %}'>
+            <!--<form method="POST" action='{% url 'wiki_search_articles' wiki_article.get_url|stripslash %}'>-->
+            <form method="POST" action='{% url 'wiki_search_articles' 'mainpage' %}'>
             	<nobr>
                 <input type="text" name="value" id="wiki_search_input" style="width: 72%" value="{{wiki_search_query|escape}}"/>
             	<input type="submit" id="wiki_search_input_submit" value={% trans "Search!" %} style="width: 20%" />
@@ -104,7 +104,7 @@
     	<div class="wiki_box_contents" style="position: relative;">
         	<div id="wiki_create_form">
     	        {% with "this.wiki_article_name.value.replace(/([^a-zA-Z0-9\-])/g, '')+'/_create/'" as theaction %}
-    		        <form method="GET" onsubmit="this.action='{% url wiki_view "" %}{{ wiki_article.get_url|stripslash }}/' + {{ theaction }};">
+    		        <form method="GET" onsubmit="this.action='{% url 'wiki_view' "" %}{{ wiki_article.get_url|stripslash }}/' + {{ theaction }};">
     		    {% endwith %}
     			<h2>{% trans "Create article" %}</h2>
     			<p>
@@ -120,12 +120,12 @@
     		        </form>
     	    </div>
             {% if wiki_article %} 
-           	    <input type="button" onclick="javascript:location.href='{% url wiki_view wiki_article.get_url|stripslash %}/'" value="View" /><br />
-                <input type="button" onclick="javascript:location.href='{% url wiki_edit wiki_article.get_url|stripslash %}'" value="Edit" {% if not wiki_write %} disabled="true"{%endif%} /><br />
-                <input type="button" onclick="javascript:location.href='{% url wiki_history wiki_article.get_url|stripslash 1 %}'" value="History" />
+           	    <input type="button" onclick="javascript:location.href='{% url 'wiki_view' wiki_article.get_url|stripslash %}/'" value="View" /><br />
+                <input type="button" onclick="javascript:location.href='{% url 'wiki_edit' wiki_article.get_url|stripslash %}'" value="Edit" {% if not wiki_write %} disabled="true"{%endif%} /><br />
+                <input type="button" onclick="javascript:location.href='{% url 'wiki_history' wiki_article.get_url|stripslash 1 %}'" value="History" />
             {% endif %}
             <input type="button" onclick="document.getElementById('wiki_create_form').style.display='block';" value="{% trans "Create article" %}" class="button" /><br />
-            <input type="button" onclick="javascript:location.href='{% url wiki_random wiki_article.get_url|stripslash %}'" value="{% trans "Random article" %}" class="button" />
+            <input type="button" onclick="javascript:location.href='{% url 'wiki_random' wiki_article.get_url|stripslash %}'" value="{% trans "Random article" %}" class="button" />
             {% if wiki_article %} 
            	    {% if wiki_article.locked %}
             	    <p><strong>{% trans "This article has been locked" %}</strong></p>
@@ -150,7 +150,7 @@
 
         	
             {% if wiki_attachments_write %}
-            	<form method="POST" action="{% url add_attachment wiki_article.get_url %}" enctype="multipart/form-data" target="wiki_attach_frame">
+            	<form method="POST" action="{% url 'add_attachment' wiki_article.get_url %}" enctype="multipart/form-data" target="wiki_attach_frame">
             		<input type="file" class="fileinput" name="attachment" size="10" /><br />
             		<p><input type="checkbox" name="overwrite" id="wiki_attach_overwrite" value="1" /> Overwrite filename</p>
             		<p><input type="submit" value="Attach" /></p>
@@ -185,7 +185,7 @@
         	        <p><i>({% trans "none" %})</i></p>
                 {% endif %}
                 {% if wiki_write %}
-                    <form method="POST" action="{% url add_related wiki_article.get_url %}">
+                    <form method="POST" action="{% url 'add_related' wiki_article.get_url %}">
                     	<nobr><input type="text" name="value" id="wiki_related_input" style="width: 72%" />
                     	<input type="submit" id="wiki_related_input_submit" disabled="true" value="Add" style="width: 20%" /></nobr>
                     	<input type="hidden" name="id" value="" id="wiki_related_input_id" />

@@ -38,7 +38,7 @@ $(function() {
 function submitDates() {
 	var start = $("#startpicker").attr('value');
 	var end = $("#endpicker").attr('value');
-	window.location['pathname'] = '{% url bl.breakdown %}' + start + '/' + end + '/';
+	window.location['pathname'] = '{% url "bl.breakdown" %}' + start + '/' + end + '/';
 } 
 </script>
 

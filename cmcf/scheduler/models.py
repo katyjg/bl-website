@@ -5,17 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 import os
 from django.conf import settings
 
-from jsonfield import JSONField
 #import django.dispatch
+from filer.fields.image import FilerImageField
 
-from feincms.content.image.models import ImageContent
-import ImageFile
-
-import urllib2
-from BeautifulSoup import BeautifulSoup
 from django.db.models.signals import post_save
-
-
 
 def get_storage_path(instance, filename):
     return os.path.join('uploads/contacts/', 'photos', filename)
@@ -146,7 +139,8 @@ class SupportPerson(models.Model):
     position = models.CharField(max_length=100)
     email = models.EmailField()
     phone_number = models.CharField(max_length=20, help_text="Ten digit number", blank=True)
-    image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
+    #image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
+    image = FilerImageField(blank=True, null=True)
     office = models.CharField(blank=True, max_length=50)
     category = models.IntegerField(blank=False, choices=STAFF_CHOICES)
     

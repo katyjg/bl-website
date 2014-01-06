@@ -1,5 +1,7 @@
 # Create your models here.
 from django.db import models
+from ckeditor.fields import RichTextField
+
 from django.db.models import permalink, CharField
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
@@ -9,14 +11,13 @@ from django.contrib.sites.models import Site
 from django.conf import settings
 from django.template.defaultfilters import slugify
 
-import ImageFile
 import re
 import os
 import subprocess
 import datetime
-import tagging
-from tagging.fields import TagField
-from blog.managers import PublicManager
+#import tagging
+#from tagging.fields import TagField
+#from blog.managers import PublicManager
 from scheduler.models import Beamline
 
 def _get_field(instance, name):
@@ -136,7 +137,7 @@ class Publication(models.Model):
     MONTH_CHOICES=((1,"January"),(2,"February"),(3,"March"),(4,"April"),
                    (5,"May"),(6,"June"),(7,"July"),(8,"August"),
                    (9,"September"),(10,"October"),(11,"November"),(12,"December"))
-    title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
+    title = RichTextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
     authors = models.CharField(_('authors'), help_text="Comma-separated list of authors in format: J. Doe, M.N. Smith", max_length=500, blank=True)
     beamline = models.ManyToManyField(Beamline, blank=True)
@@ -150,8 +151,8 @@ class Publication(models.Model):
     publish = models.DateTimeField(_('Date of Publication'), default=datetime.datetime.now)
     created = models.DateTimeField(_('created'), auto_now_add=True, editable=False)
     modified = models.DateTimeField(_('modified'), auto_now=True)
-    tags = TagField()
-    objects = PublicManager()
+    tags = models.TextField()#TagField()
+    #objects = models.TextField()#PublicManager()
 
     class Meta:
         verbose_name = _('publication')
@@ -231,5 +232,5 @@ def pdf_to_png(**kwargs):
             return ''
     return image_name
     
-post_save.send(sender=Poster)
+#post_save.send(sender=Poster, using='default')
 post_save.connect(pdf_to_png, sender=Poster)

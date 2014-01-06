@@ -177,141 +177,141 @@ def add_object(request, model, form, template='wp-root.html'):
             'form': frm, 
             }, context_instance=RequestContext(request))
 
-import urllib2
-import BeautifulSoup
-
-@staff_login_required    
-def upload_modes(request, model, form, template='wp-root.html'):
-    """A generic view which displays a Form of type ``form`` using the Template
-    ``template`` and when submitted will create new data using the LimsWorkbook
-    class
-    """
-    form_info = {
-        'title': 'Upload %s' % object_type,
-        'action':  request.path,
-        'add_another': False,
-        'save_label': 'Upload',
-        'enctype' : 'multipart/form-data',
-    }
-    if request.method == 'POST':
-        frm = form(request.POST, request.FILES)
-        if frm.is_valid():
-            # saving valid data to the database can fail if duplicates are found. in this case
-            # we need to manually rollback the transaction and return a normal rendered form error
-            # to the user, rather than a 500 page
-            try:
-                # Read the schedule table from the CLS website, and save the information to the db.
-                page = urllib2.urlopen("http://www.lightsource.ca/operations/schedule.php")
-                soup = BeautifulSoup(page)
-                t = soup.find("table", "excel1")
-                dat = [ map(str, row.findAll("td")) for row in t.findAll("tr") ]
-                mode_calendar = []
-                dates = []
-                w = 0
-            
-                # Strip empty and formatting rows
-                for x in range(len(dat)):
-                    z = 0
-                    for y in range(len(dat[w])):
-                        if dat[w][z].endswith('&nbsp;</td>'):
-                            dat[w].pop(z)
-                        else:
-                            dat[w][z] = ' '.join(' '.join(dat[w][z].split('>')[1:]).split('<')[:-1])
-                            z += 1
-                    if dat[w]:
-                        w += 1
-                    else:
-                        dat.pop(w)
-            
-                if dat[0][0][:2] == 'Su':   
-                    dat.pop(0)
-            
-                month = "Jan"
-                year = "1999"
-            
-                # get initial month and year from the table
-                for i in range(0, len(dat)):
-                    if dat[i][0][0] not in [0,1,2,3,4,5,6,7,8,9]:
-                        month = dat[i][0].split(" ")[0][:3]
-                        year = dat[i][0].split(" ")[-1][-4:]
-                        break
-            
-                x = 0
-                while x is not len(dat):
-                    if len(dat[x]) < 7:
-                        dat.pop(x)
-                    else:
-                        empty = True
-                        for y in range(len(dat[x])):
-                            if len(dat[x][y]):
-                                empty = False
-                        if empty:
-                            dat.pop(x)
-                        else:
-                            x = x+1
-            
-                for x in range(len(dat)):
-                    if dat[x][0][2:3] != ':':
-                        if len(dat[x][0]) > 8:
-                            for y in range(1,8):
-                                if len(dat[x][y]) == 1:
-                                    month = dat[x][0][:3]
-                                    year = dat[x][0][-4:]
-                                    dat[x][y] = month + '/0' + dat[x][y].split(' ')[0] + '/' + year
-                                if len(dat[x][y]) == 2:
-                                    dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
-                        else:
-                            for y in range(len(dat[x])):
-                                if len(dat[x][y]) == 1:
-                                    dat[x][y] = '0' + dat[x][y]
-                                if month:
-                                    dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
-            
-                for x in range(len(dat)):
-                    if len(dat[x]) > 7:
-                        dat[x].pop(0)
-            
-                no_print = False
-                
-                #GOOD
-                        
-                for z in range(len(dat)/4):
-                    for x in range(0,7):
-                        mode_day = []
-                        for y in range(0,4):
-                            mode_day.append(dat[y][x])
-                        dates.append(mode_day[0])
-                        mode_calendar.append(mode_day)
-                    if x == 6:
-                        for i in range(0,4):
-                            dat.pop(0)
-            
-                for x in range(len(mode_calendar)):
-                    mode_calendar[x][1] = mode_calendar[x][2]
-                    mode_calendar[x][2] = mode_calendar[x][3]
-                    if x != len(mode_calendar)-1:
-                        mode_calendar[x][3] = mode_calendar[x+1][1]
-                    day_status = WebStatus(date=dates[x], status1=mode_calendar[x][1], status2=mode_calendar[x][2], status3=mode_calendar[x][3])
-                    if WebStatus.objects.filter(date=day_status.date):
-                        no_print = True
-                    if no_print:
-                        #print "Skipping", day_status.date
-                        no_print=False
-                    else:
-                        #print "Saving...", day_status.date
-                        day_status.save()
-            
-                return mode_calendar
-
-            except IntegrityError:
-                transaction.rollback()
-                frm.add_excel_error('This data has been uploaded already')
-                return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
-        else:
-            return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
-    else:
-        frm = form(initial={'project': project.pk})
-        return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
+#import urllib2
+#import BeautifulSoup
+#
+#@staff_login_required    
+#def upload_modes(request, model, form, template='wp-root.html'):
+#    """A generic view which displays a Form of type ``form`` using the Template
+#    ``template`` and when submitted will create new data using the LimsWorkbook
+#    class
+#    """
+#    form_info = {
+#        'title': 'Upload %s' % object_type,
+#        'action':  request.path,
+#        'add_another': False,
+#        'save_label': 'Upload',
+#        'enctype' : 'multipart/form-data',
+#    }
+#    if request.method == 'POST':
+#        frm = form(request.POST, request.FILES)
+#        if frm.is_valid():
+#            # saving valid data to the database can fail if duplicates are found. in this case
+#            # we need to manually rollback the transaction and return a normal rendered form error
+#            # to the user, rather than a 500 page
+#            try:
+#                # Read the schedule table from the CLS website, and save the information to the db.
+#                page = urllib2.urlopen("http://www.lightsource.ca/operations/schedule.php")
+#                soup = BeautifulSoup(page)
+#                t = soup.find("table", "excel1")
+#                dat = [ map(str, row.findAll("td")) for row in t.findAll("tr") ]
+#                mode_calendar = []
+#                dates = []
+#                w = 0
+#            
+#                # Strip empty and formatting rows
+#                for x in range(len(dat)):
+#                    z = 0
+#                    for y in range(len(dat[w])):
+#                        if dat[w][z].endswith('&nbsp;</td>'):
+#                            dat[w].pop(z)
+#                        else:
+#                            dat[w][z] = ' '.join(' '.join(dat[w][z].split('>')[1:]).split('<')[:-1])
+#                            z += 1
+#                    if dat[w]:
+#                        w += 1
+#                    else:
+#                        dat.pop(w)
+#            
+#                if dat[0][0][:2] == 'Su':   
+#                    dat.pop(0)
+#            
+#                month = "Jan"
+#                year = "1999"
+#            
+#                # get initial month and year from the table
+#                for i in range(0, len(dat)):
+#                    if dat[i][0][0] not in [0,1,2,3,4,5,6,7,8,9]:
+#                        month = dat[i][0].split(" ")[0][:3]
+#                        year = dat[i][0].split(" ")[-1][-4:]
+#                        break
+#            
+#                x = 0
+#                while x is not len(dat):
+#                    if len(dat[x]) < 7:
+#                        dat.pop(x)
+#                    else:
+#                        empty = True
+#                        for y in range(len(dat[x])):
+#                            if len(dat[x][y]):
+#                                empty = False
+#                        if empty:
+#                            dat.pop(x)
+#                        else:
+#                            x = x+1
+#            
+#                for x in range(len(dat)):
+#                    if dat[x][0][2:3] != ':':
+#                        if len(dat[x][0]) > 8:
+#                            for y in range(1,8):
+#                                if len(dat[x][y]) == 1:
+#                                    month = dat[x][0][:3]
+#                                    year = dat[x][0][-4:]
+#                                    dat[x][y] = month + '/0' + dat[x][y].split(' ')[0] + '/' + year
+#                                if len(dat[x][y]) == 2:
+#                                    dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
+#                        else:
+#                            for y in range(len(dat[x])):
+#                                if len(dat[x][y]) == 1:
+#                                    dat[x][y] = '0' + dat[x][y]
+#                                if month:
+#                                    dat[x][y] = month + '/' + dat[x][y].split(' ')[0] + '/' + year
+#            
+#                for x in range(len(dat)):
+#                    if len(dat[x]) > 7:
+#                        dat[x].pop(0)
+#            
+#                no_print = False
+#                
+#                #GOOD
+#                        
+#                for z in range(len(dat)/4):
+#                    for x in range(0,7):
+#                        mode_day = []
+#                        for y in range(0,4):
+#                            mode_day.append(dat[y][x])
+#                        dates.append(mode_day[0])
+#                        mode_calendar.append(mode_day)
+#                    if x == 6:
+#                        for i in range(0,4):
+#                            dat.pop(0)
+#            
+#                for x in range(len(mode_calendar)):
+#                    mode_calendar[x][1] = mode_calendar[x][2]
+#                    mode_calendar[x][2] = mode_calendar[x][3]
+#                    if x != len(mode_calendar)-1:
+#                        mode_calendar[x][3] = mode_calendar[x+1][1]
+#                    day_status = WebStatus(date=dates[x], status1=mode_calendar[x][1], status2=mode_calendar[x][2], status3=mode_calendar[x][3])
+#                    if WebStatus.objects.filter(date=day_status.date):
+#                        no_print = True
+#                    if no_print:
+#                        #print "Skipping", day_status.date
+#                        no_print=False
+#                    else:
+#                        #print "Saving...", day_status.date
+#                        day_status.save()
+#            
+#                return mode_calendar
+#
+#            except IntegrityError:
+#                transaction.rollback()
+#                frm.add_excel_error('This data has been uploaded already')
+#                return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
+#        else:
+#            return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
+#    else:
+#        frm = form(initial={'project': project.pk})
+#        return render_to_response(template, {'form': frm, 'info': form_info}, context_instance=RequestContext(request))
 
 
 def get_one_week(dt=None):

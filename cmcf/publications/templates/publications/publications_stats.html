@@ -79,7 +79,7 @@
 	                        {% endifequal %}{% endfor %}
                         </tbody>
                     </table>
-                    <p>{% cycle '* Numbers in parentheses indicate publications or PDB releases based on data from multiple beamlines.' "**'Unknown' PDB Releases are associated with a publication citing work on multiple beamlines." %}</p>
+                    <p>{% cycle '* Numbers in parentheses indicate publications or PDB releases based on data from multiple beamlines.' '' %}</p>
                     <div class="clear"></div> 
                     {% endfor %}
                            
@@ -87,7 +87,7 @@
                 
 				<h2>Publications</h2>
 				
-				<div class="object-list widget statistics" style="height:auto;" data="{% url admin-pub-table 'journal__impact_factor' %}">
+				<div class="object-list widget statistics" style="height:auto;" data="{% url 'admin-pub-table' 'journal__impact_factor' %}">
 					<h3>Ranked by <var class="sort-title">Impact Factor</var></h3>
 					<table id="objlist-list-table" width="100%" cellspacing="0" cellpadding="2" border="0">
 						<thead>
@@ -147,7 +147,7 @@
 	    
 	    {% for plot in plots %}
 	        $.plot($("#{{plot}}"), [ {data: data['pubs']['{{plot}}'], label: 'CMCF Publications'}, 
-	                             {data: data['pdbs']['{{plot}}'], label: 'Protein Data Bank Releases'} ], 
+	                             {data: data['rcsb']['{{plot}}'], label: 'Protein Data Bank Releases'} ], 
 	            {   series: { 
 	                    lines: {show: {% cycle 'false' 'true' %}, fill: {% cycle 'true' 'false' %}, lineWidth: 1 }, 
 	                    bars: { show: {% cycle 'true' 'false' %}, barWidth: width, fill: 0.35, lineWidth: 0.5, },

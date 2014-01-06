@@ -5,20 +5,20 @@
 
 {% block "page-content" %}
 
-{% feincms_navigation of feincms_page as subsubsublevel level=4 %}
-{% feincms_navigation of feincms_page as subsublevel level=3 %}
-{% feincms_navigation of feincms_page as midlevel level=2 %}
+{% feincms_nav of feincms_page level=4 as subsubsublevel %}
+{% feincms_nav feincms_page level=3 as subsublevel %}
+{% feincms_nav feincms_page level=2 as midlevel %}
 
 {% for ml in midlevel %}
     {% if ml|is_equal_or_parent_of:feincms_page %}
-        {% feincms_navigation of ml as submidlevel level=4 %}
+        {% feincms_nav ml as level=4 submidlevel %}
 
 {% if submidlevel %}
 
 <div id="headline">
     <div class="wrapper">
 	    <h2>
-            {% feincms_navigation of feincms_page as toplevel level=2 %}
+            {% feincms_nav feincms_page level=2 as toplevel %}
         	{% for p in toplevel %}
             	{% if p|is_equal_or_parent_of:feincms_page %}
                     {{ p.title }}
@@ -34,14 +34,14 @@
 	    <div class="col-9" id="bodyContent">
             <div id="guide">
             	<h2 class="pagetitle">{{feincms_page.title}}</h2>
-        	  	{% feincms_navigation of feincms_page as sublevel level=4 %}
-	        	{% feincms_navigation of feincms_page as toplevel level=2 %}
+        	  	{% feincms_nav feincms_page level=4 as sublevel %}
+	        	{% feincms_nav feincms_page level=2 as toplevel %}
 	        	{% for p in toplevel %}
-	        	    {% feincms_navigation of p as sublevel level=3 %}
+	        	    {% feincms_nav p level=3 as sublevel %}
 	        	    {% if sublevel %}
 	            		{% for sp in sublevel %}
 	            		    {% if sp|is_equal_or_parent_of:feincms_page %}
-	            		        {% feincms_navigation of sp as subsublevel level=4 %}
+	            		        {% feincms_nav sp level=4 as subsublevel %}
 	            		        {% if subsublevel %}
 	                			    {% for ssp in subsublevel %}
                         				{% if forloop.first %}
@@ -61,7 +61,7 @@
                         				{% endif %}
                            
 
-                                        {% feincms_navigation of ssp as subsubsublevel level=5 %}
+                                        {% feincms_nav ssp level=5 as subsubsublevel %}
                                         {% if subsubsublevel %}
                                             {% for sssp in subsubsublevel %}{% if forloop.first %}
                                                 {% if ssp|is_parent_of:feincms_page %}
@@ -86,11 +86,11 @@
 	    </div>
 
         <div class="col-3">
-          	{% feincms_navigation of feincms_page as sublevel level=2 %}
-      	    {% feincms_navigation of feincms_page as subsublevel level=3 %}
+          	{% feincms_nav feincms_page level=2 as sublevel %}
+      	    {% feincms_nav feincms_page level=3 as subsublevel %}
             <ul class="submenu" >
       	    {% for sp in sublevel %}
-	            {% feincms_navigation of sp as subsubsublevel level=4 %}
+	            {% feincms_nav sp level=4 as subsubsublevel %}
          	    <li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
                     <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
             	    {% if subsubsublevel %}
@@ -116,7 +116,7 @@
 
 <div id="headline">
     <div class="wrapper">
-	    <h2>{% feincms_navigation of feincms_page as toplevel level=1 %}{{feincms_page.title}}</h2>
+	    <h2>{% feincms_nav feincms_page level=1 as toplevel %}{{feincms_page.title}}</h2>
     </div>
 </div>
 
@@ -124,7 +124,7 @@
     <div class="wrapper">
 
        	<div class="col-9" id="bodyContent">
-      	    {% feincms_navigation of feincms_page as sublevel level=3 %}
+      	    {% feincms_nav feincms_page level=3 as sublevel %}
             {% ifnotequal sublevel.count 0 %}
 	        	<table id="toc" class="toc" summary="Contents"><tr><td>
 	            	<div id="toctitle"><h2>Page Contents</h2></div>
@@ -135,13 +135,13 @@
                     </ul>
 	        	</td></tr></table>
             {% endifnotequal %}
- 	        {% feincms_navigation of feincms_page as toplevel level=1 %}
+ 	        {% feincms_nav feincms_page level=1 as toplevel %}
     	    {% for p in toplevel %}
-	        	{% feincms_navigation of p as sublevel level=2 %}
+	        	{% feincms_nav p level=2 as sublevel %}
                	{% if sublevel %}
 	 	            {% for sp in sublevel %}
 		            	{% if sp|is_equal_or_parent_of:feincms_page %}
-		        	    {% feincms_navigation of sp as subsublevel level=3 %}
+		        	    {% feincms_nav sp level=3 as subsublevel %}
 		            	    {% if subsublevel %}
 		                		{% for ssp in subsublevel %}         				
 		                		    <h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span></h2>
@@ -152,7 +152,7 @@
 		            {% endfor %}
                 {% else %}
                     {% if forloop.first %}
-                    {% feincms_navigation of feincms_page as subsublevel level=3 %}
+                    {% feincms_nav feincms_page level=3 as subsublevel %}
             	    {% if subsublevel %}
                 		{% for ssp in subsublevel %}         				
                 		    <h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span></h2>
@@ -166,10 +166,10 @@
 	    </div>
 
      	<div class="col-3">
-    	    {% feincms_navigation of feincms_page as sublevel level=2 %}
+    	    {% feincms_nav of feincms_page as sublevel level=2 %}
             <ul class="submenu" >
     	    {% for sp in sublevel %}
-	        	{% feincms_navigation of sp as subsubsublevel level=4 %}
+	        	{% feincms_nav sp level=4 as subsubsublevel %}
      	    	<li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
                     <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
 	            	{% if subsubsublevel %}

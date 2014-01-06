@@ -1,4 +1,4 @@
-
+{% load applicationcontent_tags %}
 
 <div class="calendar">
     {% load schedule_extras %}
@@ -16,31 +16,31 @@
         	{% endfor %}
         </span>
     </h2>
-
+    
     <!-- Navigation Stuff -->
     <div>
     {% if admin %}
-        <a class="prev" href='{% url admin-scheduler.anyweek day=prev_week %}' title="Previous Week">
+        <a class="prev" href='{% url "admin-anyweek" day=prev_week %}' title="Previous Week">
             <img src="/media/img/prev.png" alt="Prev">
         </a>
-        <a class="current" href='{% url admin-scheduler.thisweek %}'>Back to Current Week</a>
-        <a class="next" href='{% url admin-scheduler.anyweek day=next_week %}' title="Next Week">
+        <a class="current" href='{% url "admin-thisweek" %}'>Back to Current Week</a>
+        <a class="next" href='{% url "admin-anyweek" day=next_week %}' title="Next Week">
             <img src="/media/img/next.png" alt="Next">
         </a>
     {% else %}{% if not staff %}
-        <a class="prev" href='{% url scheduler.anyweek day=prev_week %}' title="Previous Week">
+        <a class="prev" href='{% app_reverse "scheduler-anyweek" "scheduler.urls" day=prev_week %}' title="Previous Week">
             <img src="/media/img/prev.png" alt="Prev">
         </a>
-        <a class="current" href='{% url scheduler.thisweek %}'>Back to Current Week</a>
-        <a class="next" href='{% url scheduler.anyweek day=next_week %}' title="Next Week">
+        <a class="current" href='{% app_reverse "scheduler-thisweek" "scheduler.urls" %}'>Back to Current Week</a>
+        <a class="next" href='{% app_reverse "scheduler-anyweek" "scheduler.urls" day=next_week %}' title="Next Week">
             <img src="/media/img/next.png" alt="Next">
         </a>
     {% else %}
-        <a class="prev" href='{% url staff-scheduler.anyweek day=prev_week %}' title="Previous Week">
+        <a class="prev" href='{% url "staff-anyweek" day=prev_week %}' title="Previous Week">
             <img src="/media/img/prev.png" alt="Prev">
         </a>
-        <a class="current" href='{% url staff-scheduler.thisweek %}'>Back to Current Week</a>
-        <a class="next" href='{% url staff-scheduler.anyweek day=next_week %}' title="Next Week">
+        <a class="current" href='{% url "staff-thisweek" %}'>Back to Current Week</a>
+        <a class="next" href='{% url "staff-anyweek" day=next_week %}' title="Next Week">
             <img src="/media/img/next.png" alt="Next">
         </a>
     {% endif %}{% endif %}
@@ -77,7 +77,7 @@
                                {% if forloop.last %}emph{% endif %}">
                         {% if admin %}{% if not mode %}{% if not day.4|get_webmode:index %}
                             <div class="modal-form update-tool" 
-                                   href="{% url bl-add-mode %}?start_date={{day.5}}&first_shift={{index}}"
+                                   href="{% url 'bl-add-mode' %}?start_date={{day.5}}&first_shift={{index}}"
                                    title="Update beam status">&nbsp;</div>
                         {% endif %}{% endif %}{% endif %}
                         {% cycle '08:00-16:00' '16:00-24:00' '00:00-08:00' %}
@@ -100,7 +100,7 @@
                                      modal-form link-cell
                             {% endif %}"
                                 {% if not visit|get_webmode:index %}
-                                 	href="{% url bl-add-visit %}?beamline={{bl.pk}}&start_date={{day.5}}&first_shift={{forloop.parentloop.counter0}}"
+                                 	href="{% url 'bl-add-visit' %}?beamline={{bl.pk}}&start_date={{day.5}}&first_shift={{forloop.parentloop.counter0}}"
                                  	title="Add new visit"
                             	{% endif %}
             				{% else %}
@@ -139,7 +139,7 @@
                                		<!-- Editable from admin side -->
                                		{% if admin %}
                                			<var class="modal-form {% if not vis.proposal.expiration %}inactive{% endif %}"
-                                  				 href="{% url bl-edit-visit vis.pk %}" title="Edit this visit">
+                                  				 href="{% url 'bl-edit-visit' vis.pk %}" title="Edit this visit">
                                   		{% endif %}
                                   
                                		{% if not vis.maintenance %}
@@ -182,7 +182,7 @@
                                		<!-- Deletable from admin side -->
                                		{% if admin %}
                                			</var>
-                               			<div class="modal-form delete-tool" href="{% url bl-delete-visit vis.pk %}" 
+                               			<div class="modal-form delete-tool" href="{% url 'bl-delete-visit' vis.pk %}" 
                                				 title="Delete this visit">&nbsp;</div>
                                   		{% endif %}
                             	{% endwith %}{% endif %}
@@ -196,7 +196,7 @@
                             	{% if day.2 %}oncall {% ifequal day.0 today.0 %}today{% endifequal %}"
                                 {% else %}
                                     {% if not admin %}column1"
-                                    {% else %}column1 modal-form link-cell" href="{% url bl-add-oncall %}?date={{day.5}}"
+                                    {% else %}column1 modal-form link-cell" href="{% url 'bl-add-oncall' %}?date={{day.5}}"
                                     {% endif %}
                                 {% endif %}>
                                 {% with day.2.0.local_contact as person %}
@@ -207,7 +207,7 @@
                                 {% endwith %}
                                 {% if day.2 %}{% if admin %}
                                  	<a class="modal-form delete-tool" 
-                                       href="{% url bl-delete-oncall day.2.0.pk %}"
+                                       href="{% url 'bl-delete-oncall' day.2.0.pk %}"
                                        title="Delete this on-call shift">&nbsp;</a>
                                 {% endif %}{% endif %}
                             </td>

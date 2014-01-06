@@ -1,6 +1,6 @@
 import os
 
-DEBUG = False # Set to True to see full error messages in browser
+DEBUG = True # Set to True to see full error messages in browser
 TEMPLATE_DEBUG = DEBUG
 
 _version_file = os.path.join(os.path.dirname(__file__), 'VERSION')
@@ -13,12 +13,16 @@ else:
 
 SITE_ID = 1
 URL_ROOT = 'http://cmcf.lightsource.ca'
+URL_ROOT = 'http://10.52.7.200:8000'
 SITE_NAME_SHORT = 'CMCF'
 SITE_NAME_LONG = 'Canadian Macromolecular Crystallography Facility'
 SITE_DESCRIPTION = 'CMCF is an umbrella facility which operates two beamlines, 08ID-1 and 08B1-1, at the Canadian Light Source. Together, both beamlines enable high-resolution structural studies of proteins, nucleic acids and other macromolecules, satisfying the requirements of the most challenging and diverse crystallographic experiments.'
 SITE_KEYWORDS = 'CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein'
+
 ABSOLUTE_PATH_TO_FILES = 'var/website/cmcf-website/cmcf' # no leading or trailing slashes
     
+ABSOLUTE_PATH_TO_FILES = '/users/kathryn/Code/test-cmcf'
+
 CONF_FROM_EMAIL = 'kathryn.janzen@lightsource.ca'
 FROM_EMAIL = 'cmcf-support@lightsource.ca' # This should be an email that exists
 SERVER_EMAIL = 'cmcf-web@no-reply.ca' # This just needs to have the form of an email address
@@ -47,16 +51,23 @@ CONF_MANAGERS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
 )
 
-#If using sqlite3 for your database, the following two lines are all you need
-#DATABASE_ENGINE = 'sqlite3'
-#DATABASE_NAME = os.path.join(os.path.dirname(__file__), 'web.db')
+#DATABASES = {
+#    'default': {
+#        'NAME': os.path.join(os.path.dirname(__file__), 'web-tests.db'),
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        }
+#    }
 
-DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
-DATABASE_NAME = os.path.join(os.path.dirname(__file__), 'web.db')             # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'website',
+        'USER': 'cmcfweb',
+        'PASSWORD': 'cmcfweb123',
+        'HOST': '10.52.4.19',
+        'PORT': ''
+        }
+    }
 
 # Specific IP addresses you want to have access to your wiki
 INTERNAL_IPS = ('70.76.64.163',) 
@@ -67,7 +78,36 @@ ROOT_URLCONF = 'cmcf.urls'
 
 RECAPTCHA_PUBLIC_KEY = '6LegXtwSAAAAAN3Xy2oy3hQhSiMuqC8FS4HbXIC_' 
 
+SECRET_KEY = '_wn95s-apfd-442cby5m^_^ak6+5(fyn3lvnvtn7!si&o)1x^w'
+
 ########## The rest of this file shouldn't need any configuration ##############
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': '%s Public Website' % SITE_NAME_SHORT,
+    'CONFIRM_UNSAVED_CHANGES': False,
+    'MENU_ICONS': {
+        'sites': 'icon-leaf',
+        'auth': 'icon-lock',
+        'publications': 'icon-leaf'
+    },
+    'MENU': (
+        {'app': 'page', 'label': 'Web Pages', 'icon': 'icon-share'},
+        {'app': 'blog', 'label': 'News Items', 'icon': 'icon-star','models':('post','category')},
+        {'app': 'publications', 'icon': 'icon-book','models': ('publication','poster','journal')},
+        {'app': 'scheduler', 'label': 'Scheduling', 'icon': 'icon-time'},
+        {'app': 'application_form', 'label': 'Applications', 'icon': 'icon-file'},
+        {'app': 'photologue', 'label': 'Pictures', 'icon': 'icon-picture'},
+        {'app': 'filer', 'label': 'Uploaded Files', 'icon': 'icon-folder-open'},
+        {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
+        '-',
+        {'label': 'Settings', 'icon': 'icon-cog', 'models': ('sites.site','redirects.redirect')},
+        {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
+        '-',
+        {'label': 'Beamtime', 'icon':'icon-calendar', 'url': '/beamtime/admin'},
+        {'label': 'Statistics', 'icon':'icon-signal', 'url': '/statistics/admin'},        
+    ),
+    'LIST_PER_PAGE': 25
+}
 
 TIME_ZONE = 'America/Regina'
 
@@ -75,16 +115,15 @@ LANGUAGE_CODE = 'en-us'
 
 USE_I18N = True
 
-TINYMCE_JS_URL = URL_ROOT + '/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js'
-TINYMCE_CONTENT_CSS_URL = '/admin_media/tinymce/jscripts/tiny_mce/themes/advanced/skins/grappelli/ui.css'
-
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
 MEDIA_URL = '/media/'
+STATIC_ROOT = 'static/'
 ADMIN_MEDIA_PREFIX = URL_ROOT + '/admin_media/'
+STATIC_URL = ADMIN_MEDIA_PREFIX
 FEINCMS_ADMIN_MEDIA = '/feincms_media/'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
@@ -92,8 +131,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,6 +144,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 TEMPLATE_DIRS = (
@@ -110,28 +152,28 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'suit', 
+    'django.contrib.admin', 
+    'feincms',
+    'feincms.module.page', 
+    #'feincms.module.medialibrary',               
+                  
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    'feincms',
-    'feincms.module.page', 
-    'feincms.module.medialibrary',
+    'django.contrib.staticfiles',
 
-    'admin_tools.dashboard',
-    'admin_tools',
-    'grappelli',
-    'filebrowser',
-    'django.contrib.admin',
+    'filer',
+    'easy_thumbnails',
     'django.contrib.redirects',
+    'ckeditor',
     #'django.contrib.admindocs',
 
     'cmcf',
     'scheduler',
-    'glossary',
     'blog',
-    'tagging',
     'slider',
     'photologue',
     'contact_form',
@@ -145,106 +187,13 @@ INSTALLED_APPS = (
     'captcha',
 )
 
-COVERAGE_MODULES = ['feincms',
-                    'feincms._internal',
-                    'feincms.admin',
-                    'feincms.admin.editor',
-                    'feincms.admin.filterspecs',
-                    'feincms.admin.item_editor',
-                    'feincms.admin.splitpane_editor',
-                    'feincms.admin.tree_editor',
-                    'feincms.compat',
-                    'feincms.content',
-                    'feincms.content.application',
-                    'feincms.content.application.models',
-                    'feincms.content.comments',
-                    'feincms.content.comments.models',
-                    'feincms.content.contactform',
-                    'feincms.content.contactform.models',
-                    'feincms.content.file',
-                    'feincms.content.file.models',
-                    'feincms.content.image',
-                    'feincms.content.image.models',
-                    'feincms.content.medialibrary',
-                    'feincms.content.medialibrary.models',
-                    'feincms.content.raw',
-                    'feincms.content.raw.models',
-                    'feincms.content.richtext',
-                    'feincms.content.richtext.models',
-                    'feincms.content.rss',
-                    'feincms.content.rss.models',
-                    'feincms.content.section',
-                    'feincms.content.section.models',
-                    'feincms.content.table',
-                    'feincms.content.table.models',
-                    'feincms.content.video',
-                    'feincms.content.video.models',
-                    'feincms.context_processors',
-                    'feincms.contrib',
-                    'feincms.contrib.fields',
-                    'feincms.contrib.tagging',
-                    'feincms.default_settings',
-                    'feincms.logging',
-                    'feincms.management',
-                    'feincms.management.checker',
-                    'feincms.management.commands',
-                    'feincms.management.commands.rebuild_mptt',
-                    'feincms.management.commands.rebuild_mptt_direct',
-                    'feincms.management.commands.update_rsscontent',
-                    'feincms.models',
-                    'feincms.module',
-                    'feincms.module.blog',
-                    'feincms.module.blog.admin',
-                    'feincms.module.blog.extensions',
-                    'feincms.module.blog.extensions.tags',
-                    'feincms.module.blog.extensions.translations',
-                    'feincms.module.blog.models',
-                    'feincms.module.extensions',
-                    'feincms.module.extensions.changedate',
-                    'feincms.module.extensions.seo',
-                    'feincms.module.medialibrary',
-                    'feincms.module.medialibrary.admin',
-                    'feincms.module.medialibrary.models',
-                    'feincms.module.page',
-                    'feincms.module.page.admin',
-                    'feincms.module.page.extensions',
-                    'feincms.module.page.extensions.ct_tracker',
-                    'feincms.module.page.extensions.datepublisher',
-                    'feincms.module.page.extensions.navigation',
-                    'feincms.module.page.extensions.symlinks',
-                    'feincms.module.page.extensions.titles',
-                    'feincms.module.page.extensions.translations',
-                    'feincms.module.page.models',
-                    'feincms.module.page.templatetags',
-                    'feincms.module.page.templatetags.feincms_page_tags',
-                    'feincms.shortcuts',
-                    'feincms.templatetags',
-                    'feincms.templatetags.applicationcontent_tags',
-                    'feincms.templatetags.feincms_compat_tags',
-                    'feincms.templatetags.feincms_tags',
-                    'feincms.templatetags.feincms_thumbnail',
-                    'feincms.templatetags.utils',
-                    'feincms.tests',
-                    'feincms.tests.applicationcontent_urls',
-                    'feincms.tests.navigation_extensions',
-                    'feincms.translations',
-                    'feincms.urls',
-                    'feincms.utils',
-                    'feincms.utils.html',
-                    'feincms.utils.html.cleanse',
-                    'feincms.utils.html.tidy',
-                    'feincms.utils.templatetags',
-                    'feincms.views',
-                    'feincms.views.applicationcontent',
-                    'feincms.views.base',
-                    'feincms.views.decorators',
-                    'feincms.views.generic',
-                    'feincms.views.generic.create_update',
-                    'feincms.views.generic.date_based',
-                    'feincms.views.generic.list_detail',
-                    'feincms.views.generic.simple',
-                    ]
-
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    #'easy_thumbnails.processors.scale_and_crop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters',
+)
 
 try:
     # see http://nedbatchelder.com/code/coverage/
@@ -261,14 +210,17 @@ LANGUAGES = (
 
 # Activate this to check out the split pane editor
 #FEINCMS_PAGE_USE_SPLIT_PANE_EDITOR = True
-
+CKEDITOR_UPLOAD_PATH = '/' + ABSOLUTE_PATH_TO_FILES
 FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
 #FEINCMS_TIDY_HTML = True
+FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_ckeditor.html'
+#FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
+FEINCMS_RICHTEXT_INIT_CONTEXT = {
+    #'TINYMCE_JS_URL': STATIC_URL + 'tinymce/jscripts/tiny_mce/tiny_mce.js',
+    'CKEDITOR_JS_URL': STATIC_URL + 'ckeditor/ckeditor/ckeditor.js'
+}
 
 LOGIN_URL = '/admin/'
-
-ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
-ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
 try:
     from settings_local import *

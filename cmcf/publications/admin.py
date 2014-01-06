@@ -4,7 +4,7 @@ from publications.forms import PosterForm
 from publications.models import *
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display  = ('get_authors', 'year', 'month','day', 'get_beamlines', 'get_title', 'journal')
+    list_display  = ('get_authors', 'year', 'month','get_beamlines', 'get_title', 'journal')
     search_fields = ('title', 'year', 'authors', 'journal')
     fieldsets = (
         (None, {
@@ -12,8 +12,9 @@ class PublicationAdmin(admin.ModelAdmin):
         }),
     )
 
-    class Media:
-        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
+#    class Media:
+#        #js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
+#        js = ['/admin_media/django-ckeditor/ckeditor/ckeditor.js']
 
 class JournalAdmin(admin.ModelAdmin):
     list_display  = ('name', 'impact_factor','description')
@@ -23,8 +24,8 @@ class PosterAdmin(admin.ModelAdmin):
     search_fields = ('title', 'author')
     form = PosterForm
 
-    class Media:
-        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
+#    class Media:
+#        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
     
 
 admin.site.register(Publication, PublicationAdmin)

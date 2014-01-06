@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 from scheduler import views
 from scheduler.models import *
@@ -6,10 +6,10 @@ from scheduler.forms import *
 
 urlpatterns = patterns('',
     # staff calendar urls
-    url(r'^admin/$', views.admin_scheduler, name='admin-scheduler.thisweek'),
-    url(r'^admin/(?P<day>\d{4}-\d{2}-\d{2})/$', views.admin_scheduler, name='admin-scheduler.anyweek'),
-    url(r'^staff/$', views.staff_calendar, name='staff-scheduler.thisweek'),
-    url(r'^staff/(?P<day>\d{4}-\d{2}-\d{2})/$', views.staff_calendar, name='staff-scheduler.anyweek'),
+    url(r'^admin/$', views.admin_scheduler, name='admin-thisweek'),
+    url(r'^admin/(?P<day>\d{4}-\d{2}-\d{2})/$', views.admin_scheduler, name='admin-anyweek'),
+    url(r'^staff/$', views.staff_calendar, name='staff-thisweek'),
+    url(r'^staff/(?P<day>\d{4}-\d{2}-\d{2})/$', views.staff_calendar, name='staff-anyweek'),
     
     # action urls                   
     url(r'^add-visit/$', 
