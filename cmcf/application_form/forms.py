@@ -260,9 +260,10 @@ class RegistrationForm(forms.Form):
     poster = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=26)), required=False)
     headline = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=27)))
     authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=28)))
-    abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=29)), required=False)
+    affiliations = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=29)))
+    abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=30)), required=False)
 
-    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 30})
+    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 31})
     
     from_email = settings.CONF_FROM_EMAIL
     

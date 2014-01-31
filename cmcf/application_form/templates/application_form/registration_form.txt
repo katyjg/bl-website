@@ -27,6 +27,7 @@ ABSTRACT SUBMISSION:
 Presentation Preference: {% if talk or poster %}{% if talk %}Oral {% endif %}{% if talk and poster %}and {% endif %}{% if poster %}Poster {% endif %}Presentation{% else %}No presentation{% endif %}
 {% if talk or poster %}Title: {% if headline %}{{headline}}{% else %}None Provided{% endif %}
 Authors: {% if authors %}{{authors}}{% else %}None Provided{% endif %}
+Affiliations: {% if affiliations %}{{affiliations}}{% else %}None Provided{% endif %}
 Abstract: {% if not abstract %}None Provided{% endif %}
 {{abstract}}{% endif %}
 

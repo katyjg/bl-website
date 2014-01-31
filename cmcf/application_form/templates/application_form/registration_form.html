@@ -1,6 +1,6 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 
-<p>The deadline for registration is May 15, 2014, but early registration is encouraged.</p>
+<p>The deadline for registration is June 1, 2014, but early registration is encouraged.</p>
 
 <b>Required fields are marked by <span class="req">*</span>.</b>
 
@@ -65,9 +65,6 @@
 	</p><p>
 	    <label class="desc" for="sup_email">Supervisor's Email</label><br>
 	    {{ form.sup_email }}
-	</p><p>
-	    <label class="desc" for="sup_phone">Supervisor's Phone Number</label><br>
-	    {{ form.sup_phone }}
 	</p>
 
 <h2>Abstract Submission</h2>
@@ -80,7 +77,12 @@
 	    {{ form.headline }}
 	</p><p>	
 	    <label class="desc" for="authors">Authors</label><br>
-	    {{ form.authors }}
+	    {{ form.authors }}<br>
+	    <label class="subdesc">eg. John Smith [1], Joanne Wilson [2]</label><br>
+	</p><p>
+	    <label class="desc" for="affiliations">Author Affiliations</label><br>
+	    {{ form.affiliations }}<br>
+	    <label class="subdesc" style="width:100%">eg. [1] University of Saskatchewan; [2] University of Manitoba</label><br>
 	</p><p>
 	    <label class="desc" for="abstract">Please include a short abstract for your presentation or poster. (Maximum 250 words)</label><br>
 	    {{ form.abstract }}

@@ -99,6 +99,7 @@ class Registration(models.Model):
     headline = models.CharField(_('Presentation Title'), max_length=500, blank=True)
     authors = models.CharField(_('Authors'), max_length=500, blank=True)
     abstract = models.TextField(_('Abstract'), blank=True)
+    affiliations = models.CharField(_('Author Affiliations'), max_length=500, blank=True)
     
     diet = models.TextField(_('Dietary Concerns'), blank=True)
     
