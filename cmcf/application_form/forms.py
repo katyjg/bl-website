@@ -17,6 +17,17 @@ attrs_dict = { 'class': 'required' }
 class ApplicationForm(forms.Form):
     choices = ( ('yes','Yes'),
                 ('no','No'),)
+    experience_choices = ( ("HKL2000",'HKL2000'),
+                    ('Mosflm','Mosflm'),
+                    ("XDS", 'XDS'),
+                    ('Phenix', 'Phenix'),
+                    ("COOT", "COOT"),
+                    ('CCP4', "CCP4"),
+                    ("Linux (ls, cd, cp, mv commands)", "Linux - ls, cd, cp, mv commands"),
+                    ("Linux (using a command shell to edit files/scripts)", "Linux - using a command shell to edit files/scripts"),
+                    ("Linux (installing software / compiling from source code)", "Linux - installing software / compiling from source code"),
+                    ("Linux (system administration)", "Linux - system administration"),
+                 )
     xtal_choices = ( ('yes','Yes, I will bring my own crystals.'),
                 ('no','No, I will use standard crystals provided at the school.'),)
     stay_choices = ( ('yes','Yes'),
@@ -64,11 +75,13 @@ class ApplicationForm(forms.Form):
     travel = forms.ChoiceField(choices=choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=22)), required=False)
     visa = forms.ChoiceField(choices=choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=23)), required=False)
     stay = forms.ChoiceField(choices=stay_choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=24)), required=False)
+    workshop = forms.ChoiceField(choices=choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=24)), required=False)
     crystals = forms.ChoiceField(choices=xtal_choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=25)))
 
     research = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=26)))
     benefit = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=27)))
-    
+    experience = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=experience_choices)
+
     captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 28})
     
     from_email = settings.FROM_EMAIL
@@ -243,12 +256,12 @@ class RegistrationForm(forms.Form):
     sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=23)), required=False)
     sup_phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=24)), required=False)
 
-    talk = forms.ChoiceField(choices=ApplicationForm.choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=25)), required=False)
-    type = forms.ChoiceField(choices=Registration.TALK_CHOICES,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=26)), required=False)
+    talk = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=25)), required=False)
+    poster = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=26)), required=False)
     headline = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=27)))
     authors = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=28)))
     abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=29)), required=False)
-    
+
     captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 30})
     
     from_email = settings.CONF_FROM_EMAIL
@@ -293,6 +306,22 @@ class RegistrationForm(forms.Form):
     def clean_title(self):
         data = self.cleaned_data['title']
         return data and Registration.TITLE_CHOICES[int(data)][1] or data
+    
+    def clean(self):
+        data = self.cleaned_data
+        if data['talk'] or data['poster']:
+            if not data['headline'] or not data['abstract']:
+                if not data['headline']:
+                    self.errors['title'] = 'Please provide a title for your presentation'
+                if not data['abstract']:
+                    self.errors['abstract'] = 'Please provide an abstract for your presentation'
+                return None
+        if data['headline'] or data['abstract']:
+            if not data['talk'] and not data['poster']:
+                self.errors['presentation'] = 'Please select the type of presentation you would like to give'
+                return None
+        
+        return data
 
     def get_message_dict(self):
         if not self.is_valid():

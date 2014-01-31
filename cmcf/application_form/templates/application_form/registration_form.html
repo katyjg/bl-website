@@ -1,6 +1,6 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 
-<p>The deadline for registration is May 15, 2013, but early registration is encouraged.</p>
+<p>The deadline for registration is May 15, 2014, but early registration is encouraged.</p>
 
 <b>Required fields are marked by <span class="req">*</span>.</b>
 
@@ -72,19 +72,17 @@
 
 <h2>Abstract Submission</h2>
 	<p>
-		<label for="talk">Would you like to present your work at the 1<sup>st</sup> Annual Protein Structure, Function and Malfunction Meeting?</label>
-		{{ form.talk }}
+		<label class="desc" for="type">If you would like to present your work at this year's meeting, please select your preferred method(s):</label><br>
+	    {{ form.talk }}<label class="choice" for="talk">Give a 15 minute oral presentation</label><br>
+	    {{ form.poster }}<label class="choice" for="poster">Participate in a poster session</label><br>
 	</p><p>
-		<label for="type">Would you prefer to give a short (10-15 minute) oral presentation, or to participate in a poster session?</label>
-		{{ form.type }}
-	</p><p>
-	    <label for="headline">Presentation Title</label><br>
+	    <label class="desc" for="headline">Presentation Title</label><br>
 	    {{ form.headline }}
 	</p><p>	
-	    <label for="authors">Authors</label><br>
+	    <label class="desc" for="authors">Authors</label><br>
 	    {{ form.authors }}
 	</p><p>
-	    <label for="abstract">Please include a short abstract for your presentation or poster. (Maximum 250 words)</label><br>
+	    <label class="desc" for="abstract">Please include a short abstract for your presentation or poster. (Maximum 250 words)</label><br>
 	    {{ form.abstract }}
 	</p>
 

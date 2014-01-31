@@ -1,6 +1,6 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 
-<p>The deadline for submitting your application is April 17, 2013, but early application is encouraged.</p>
+<p>The deadline for submitting your application is April 11, 2014, but early application is encouraged.</p>
 
 <b>Required fields are marked by <span class="req">*</span>.</b>
 
@@ -101,23 +101,28 @@
 <h2>Travel</h2>
 
 <p>
-    <label class="desc" for="travel">Support of up to $300 may be provided to Canadian students from outside of Saskatchewan.  Do you wish to be considered for this travel assistance? (For Canadian students only.)</label><br>
+    <label class="desc" for="travel">Support may be provided to students traveling from a Canadian institution outside of Saskatchewan.  Do you wish to be considered for any potential travel assistance?</label><br>
 	{{ form.travel }}
 </p>
     
 <p>
-    <label class="desc" for="visa">If you are not a Canadian citizen, would you need to obtain a VISA to attend the course? (If you are not sure, information can be found <a href="http://www.cic.gc.ca/EnGLish/visit/visas.asp" target="_blank">here</a>.)</label><br>
+    <label class="desc" for="visa">If you are traveling from outside of Canada, would you need to obtain a VISA to attend the course? (If you are not sure, information can be found <a href="http://www.cic.gc.ca/EnGLish/visit/visas.asp" target="_blank">here</a>.)</label><br>
 	{{ form.visa }}
 </p>
 
-<h2>Accommodations</h2>
+<h2>Your Time in Saskatoon</h2>
 
-<p> The organizing committee will be making arrangements for participants to stay on the University of Saskatchewan campus.  Selected participants can expect to pay a registration fee of $650, including accommodations.  The fee for registration for participants making their own accommodation arrangements is $400.  <!--More information is available <a href="/school/participant-information/#accommodations" target="_blank">here</a>.-->
+<p> The organizing committee will be making arrangements for participants to stay on the University of Saskatchewan campus.  Selected participants can expect to pay a registration fee of $650, including accommodations for up to 7 nights (up to two additional nights may be booked at a rate of $60 per night).  The registration fee for participants making their own accommodation arrangements is $425.  More details are available <a href="/school/participant-information/">here</a>.
 </p>
 
 <p>
     <label class="desc" for="stay">If selected, would you like the organizing committee to make accommodation arrangements for you on campus?</label><br>
     {{ form.stay }}
+</p>
+
+<p>
+    <label class="desc" for="workshop">If selected, would you be interested in attending an optional, day-long crystallography review on Sunday, June 8?</label>  An additional $20 will be added to the registration fee of participants attending the review.<br>
+    {{ form.workshop }}
 </p>
 
 
@@ -130,16 +135,21 @@
 
 <h2>Research Interests/Experience</h2>
 
-<p>There will be a limited number of spaces availabe at the school to ensure that the maximum amount of practical instruction can be given at the beamlines and while analyzing data.  The following questions will help us in selecting the most suitable candidates.</p>
+<p>There will be a limited number of spaces available at the school to ensure that the maximum amount of practical instruction can be given at the beamlines and while analyzing data.  The following questions will help us in selecting the most suitable candidates.</p>
 
 <p>
-    <label class="desc" for="research">Please provide a short abstract of the crystallography research you are presently conducting or plan to be involved in.  (Maximum 200 words)<span class="req"> *</span></label><br>
+    <label class="desc" for="research">Please provide a short abstract of the crystallography research you are presently conducting or plan to be involved in.</label>  (Maximum 200 words)<span class="req"> *</span><br>
     {{ form.research }}
 </p>
 
 <p>
-    <label class="desc" for="benefit">Please describe briefly your experience collecting diffraction data, processing data and/or solving structures, including any programs you are familiar with or courses you have taken.  How do you think this course would benefit you? (Maximum 200 words)<span class="req"> *</span></label><br>
+    <label class="desc" for="benefit">Please describe briefly your experience collecting diffraction data, processing data and/or solving structures, including any crystallography-related courses you have taken.  How do you think this course would benefit you?</label> (Maximum 200 words)<span class="req"> *</span><br>
     {{ form.benefit }}
+</p>
+
+<p>
+    <label class="desc" for="linux">Select all the programs/tasks that you have used or are familiar with:</label><span class="req"> *</span><br>
+    {{ form.experience }}
 </p>
 
 <h2>Submit Your Application</h2>

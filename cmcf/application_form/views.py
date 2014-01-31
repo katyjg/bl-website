@@ -84,6 +84,6 @@ def participant_list(request, template='application_form/participant_list.html')
 def abstract_list(request, template='application_form/registration_abstract_list.html'):
     regs = Registration.objects.exclude(abstract__exact='')
     return render_to_response(template,
-                              {'present': SortedDict([('Oral',regs.filter(type__exact=1)), ('Poster',regs.filter(type__exact=0))]),},)
+                              {'present': SortedDict([('Oral',regs.filter(talk=True)), ('Poster',regs.filter(poster=True))]),},)
     
     

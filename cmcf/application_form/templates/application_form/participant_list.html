@@ -11,8 +11,8 @@
         <th>Institution</th>
         <th>Supervisor</th>
         <th>Position</th>
-        <th>Present Research?</th>
-        <th>Type?</th>
+        <th>Oral</th>
+        <th>Poster</th>
         <th>Abs?</th>
         <th>Diet</th>
         <th style="min-width:300px;">Presentation Title</th>
@@ -49,7 +49,7 @@
                 {% if app.other %}Other ({{app.other_text}}){% endif %}
             </td>
             <td>{% if app.talk %}<a style="text-align: center; display:block;">&#10004;</a>{% endif %}</td>
-            <td>{% ifequal app.type 0 %}Poster{% else %}{% ifequal app.type 1 %}Oral{% endifequal %}{% endifequal %}</td>
+            <td>{% if app.poster %}<a style="text-align: center; display:block;">&#10004;</a>{% endif %}</td>
             {% if app.abstract_provided %}<td><a style="display:block; text-align: center;" href="{% url registration_abstract_list %}#{{app.first_name}}-{{app.last_name}}">View</a></td>{% else %}
             <td></td>{% endif %}
             <td>{{app.diet}}</td>

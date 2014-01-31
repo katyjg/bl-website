@@ -31,6 +31,8 @@ Require Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
 
 ACCOMMODATIONS: {% if stay == 'yes' %}Request accommodations on campus.{% else %}{% if stay == 'no' %}Will make own accommodation arrangements.{% else %}Not specified {% endif %}{% endif %}
 
+CRYSTALLOGRAPHY REVIEW: {% if workshop == 'yes' %}Interested in attending.{% else %}{% if workshop == 'no' %}Not interested.{% else %}Not specified.{% endif %}{% endif %}
+
 PLAN TO BRING CRYSTALS: {% if crystals %}{{crystals}}{% else %}Not specified{% endif %}
 
 RESEARCH INTERESTS/EXPERIENCE:
@@ -39,9 +41,13 @@ Research Abstract:
 
 {{research}}
 
-Experience/Benefit:
+Experience/How this course will benefit you:
 
 {{benefit}}
+
+Familiarity with programs/linux:
+
+{% for e in experience %}{{e}}{% if not forloop.last %}, {% endif %}{% endfor %}
 
 
 

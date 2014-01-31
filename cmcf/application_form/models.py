@@ -94,6 +94,7 @@ class Registration(models.Model):
 
     # Abstract Submission
     talk = models.BooleanField()
+    poster = models.BooleanField()
     type = models.IntegerField(choices=TALK_CHOICES, blank=True, null=True)
     headline = models.CharField(_('Presentation Title'), max_length=500, blank=True)
     authors = models.CharField(_('Authors'), max_length=500, blank=True)
