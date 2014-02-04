@@ -26,7 +26,6 @@ class ApplicationForm(forms.Form):
                     ("Linux (ls, cd, cp, mv commands)", "Linux - ls, cd, cp, mv commands"),
                     ("Linux (using a command shell to edit files/scripts)", "Linux - using a command shell to edit files/scripts"),
                     ("Linux (installing software / compiling from source code)", "Linux - installing software / compiling from source code"),
-                    ("Linux (system administration)", "Linux - system administration"),
                  )
     xtal_choices = ( ('yes','Yes, I will bring my own crystals.'),
                 ('no','No, I will use standard crystals provided at the school.'),)

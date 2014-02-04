@@ -119,5 +119,6 @@ class Registration(models.Model):
     
     
 class RegistrationAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'institution', 'state', 'country', 'talk','type','abstract_provided')
+    list_display = ('last_name', 'institution', 'state', 'country', 'talk','poster','abstract_provided')
+
 admin.site.register(Registration, RegistrationAdmin)
