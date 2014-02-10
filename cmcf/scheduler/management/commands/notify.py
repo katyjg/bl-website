@@ -44,12 +44,12 @@ class Command(BaseCommand):
         mshifts = 0
         while not self.run_start:
             for shift in shift_choices:
-                if get_shift_mode(this_day, shift) == 'Maintenance':
+                if get_shift_mode(this_day, shift) in ['Maintenance','Shutdown']:
                     mshifts += 1
                 else:
                     mshifts = 0
-            if mshifts > 3:
-                self.run_start = this_day + timedelta(days=1)
+                if mshifts > 3:
+                    self.run_start = this_day + timedelta(days=1)
             this_day = this_day - timedelta(days=1)
         self.data = {}
         printed = {}
@@ -63,7 +63,7 @@ class Command(BaseCommand):
             if prop and prop not in printed[v.beamline.name]:
                 printed[v.beamline.name].append(prop)
         for v in visits.filter(start_date__gte=this_monday).filter(start_date__lte=this_monday+timedelta(days=7)).order_by('start_date'):
-            if v.email_notify()[:7] not in printed[v.beamline.name]:
+            if v.email_notify()[:7] not in [p[:7] for p in printed[v.beamline.name]]:
                 if v.email_notify()[:7] not in [n[:7] for n in self.data[v.beamline.name][0]]:
                     self.data[v.beamline.name][0].append(v.email_notify())
             else:
