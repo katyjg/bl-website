@@ -485,7 +485,12 @@ def get_shift_lists(blname='08B1-1', first_date=datetime.now(), last_date=dateti
 def get_shift_mode(dt, shift):
     """Get all shifts for given date"""
     shifts = [None, None, None]
-    stats = Stat.objects.filter(start_date__lte=dt).filter(end_date__gte=dt).filter(first_shift__lte=shift).filter(last_shift__gte=shift)
+    stats = Stat.objects.filter(
+                models.Q(start_date__lt=dt, end_date__gt=dt) | 
+                models.Q(start_date=dt, first_shift__lte=shift,end_date__gt=dt) | 
+                models.Q(start_date__lt=dt,end_date=dt,last_shift__gte=shift) | 
+                models.Q(start_date=dt,end_date=dt,first_shift__lte=shift,last_shift__gte=shift))
+
     shift = len(stats) and stats[0].mode or None
     return shift
     
