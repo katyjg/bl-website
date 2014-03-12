@@ -16,8 +16,6 @@ def news_brief(request):
     post_list = []
     i = 0
     for post in Post.objects.all():
-        if not post.image:
-            post.image='default'
         if i <= 4:
             post_list.append(post)
             i = i+1

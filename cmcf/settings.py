@@ -1,4 +1,8 @@
-import os
+import os, sys
+
+PROJECT_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+sys.path.extend([PROJECT_DIR, BASE_DIR])
 
 DEBUG = True # Set to True to see full error messages in browser
 TEMPLATE_DEBUG = DEBUG
@@ -21,7 +25,7 @@ SITE_KEYWORDS = 'CMCF,lightsource,canadian,macromolecular,crystallography,facili
 
 ABSOLUTE_PATH_TO_FILES = 'var/website/cmcf-website/cmcf' # no leading or trailing slashes
     
-ABSOLUTE_PATH_TO_FILES = '/users/kathryn/Code/test-cmcf'
+ABSOLUTE_PATH_TO_FILES = '/users/kathryn/Code/cmcf-newdjango'
 
 CONF_FROM_EMAIL = 'kathryn.janzen@lightsource.ca'
 FROM_EMAIL = 'cmcf-support@lightsource.ca' # This should be an email that exists
@@ -51,23 +55,23 @@ CONF_MANAGERS = (
     ('Kathryn', 'kathryn.janzen@lightsource.ca'),
 )
 
-#DATABASES = {
-#    'default': {
-#        'NAME': os.path.join(os.path.dirname(__file__), 'web-tests.db'),
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        }
-#    }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'website',
-        'USER': 'cmcfweb',
-        'PASSWORD': 'cmcfweb123',
-        'HOST': '10.52.4.19',
-        'PORT': ''
+        'NAME': os.path.join(os.path.dirname(__file__), 'web-temp.db'),
+        'ENGINE': 'django.db.backends.sqlite3',
         }
     }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'db-name',
+#        'USER': 'db-user',
+#        'PASSWORD': 'db-passwd',
+#        'HOST': 'db-ipaddr',
+#        'PORT': ''
+#        }
+#    }
 
 # Specific IP addresses you want to have access to your wiki
 INTERNAL_IPS = ('70.76.64.163',) 
@@ -95,8 +99,8 @@ SUIT_CONFIG = {
         {'app': 'blog', 'label': 'News Items', 'icon': 'icon-star','models':('post','category')},
         {'app': 'publications', 'icon': 'icon-book','models': ('publication','poster','journal')},
         {'app': 'scheduler', 'label': 'Scheduling', 'icon': 'icon-time'},
-        {'app': 'application_form', 'label': 'Applications', 'icon': 'icon-file'},
-        {'app': 'photologue', 'label': 'Pictures', 'icon': 'icon-picture'},
+        {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
+        {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture'},
         {'app': 'filer', 'label': 'Uploaded Files', 'icon': 'icon-folder-open'},
         {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
         '-',

@@ -8,7 +8,7 @@
                     {% ifnotequal post.image 'default' %}
             			<div class="slider-image">
                             <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
-                                <img src="/media/uploads/news/photos/{{ post.image_filename }}" alt="" >
+                                {% if post.image %}<img src="{{ post.image.url }}" alt="" >{% endif %}
                             </a>
                         </div>
                     {% endifnotequal %}

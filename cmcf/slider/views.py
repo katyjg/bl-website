@@ -10,8 +10,6 @@ def news_slider(request):
     post_list = []
     i = 0
     for post in Post.objects.all():
-        if not post.image:
-            post.image='default'
         if i <= -1:
             post_list.append(post)
             i = i+1
