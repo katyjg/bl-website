@@ -482,6 +482,7 @@ def get_shift_lists(blname='08B1-1', first_date=datetime.now(), last_date=dateti
             day = day + timedelta(days=1)
     return data
 
+
 def get_shift_mode(dt, shift):
     """Get all shifts for given date"""
     shifts = [None, None, None]
@@ -491,6 +492,49 @@ def get_shift_mode(dt, shift):
                 models.Q(start_date__lt=dt,end_date=dt,last_shift__gte=shift) | 
                 models.Q(start_date=dt,end_date=dt,first_shift__lte=shift,last_shift__gte=shift))
 
-    shift = len(stats) and stats[0].mode or None
-    return shift
+    sh = len(stats) and stats[0].mode or None
+    if sh == None:
+        ws = WebStatus.objects.filter(date=datetime.strftime(dt, "%b/%d/%Y"))
+        if ws.exists():
+            if shift == 0: sh = ws[0].status1
+            if shift == 1: sh = ws[0].status2
+            if shift == 2: sh = ws[0].status3
+    return sh
     
+def get_visit(dt, shift, bl=1):
+    visits = Visit.objects.filter(beamline=Beamline.objects.get(pk=bl)).filter(
+                models.Q(start_date__lt=dt, end_date__gt=dt) | 
+                models.Q(start_date=dt, first_shift__lte=shift,end_date__gt=dt) | 
+                models.Q(start_date__lt=dt,end_date=dt,last_shift__gte=shift) | 
+                models.Q(start_date=dt,end_date=dt,first_shift__lte=shift,last_shift__gte=shift))
+    if len(visits) > 1:
+        print dt, visits[0]
+    return visits
+
+"""
+from scheduler.models import *
+import datetime
+
+this_date = datetime.date(2012,1,1)
+x = 0
+info = {'purchase':0,'academic':0,'maintenance':0,'unallocated':0}
+while this_date <= datetime.datetime.now().date():
+    if this_date.month in [7,8]:
+        print this_date
+        for shift in [0,1,2]:
+            if get_shift_mode(this_date, shift) in  ['NormalMode','N']:
+                x += 1
+                vis = get_visit(this_date, shift, bl=2)
+                if vis:
+                    v = vis[0]
+                    if v.purchased or "Purchas" in v.description: 
+                        info['purchase'] += 1
+                    elif v.maintenance or 'Maintenance' in v.description:
+                        info['maintenance'] += 1
+                    else: 
+                        info['academic'] += 1
+                else:
+                    info['unallocated'] += 1
+    this_date += timedelta(days=1)
+
+"""
