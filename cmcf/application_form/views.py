@@ -82,7 +82,7 @@ def participant_list(request, template='application_form/participant_list.html')
                                'participant_list': Registration.objects.all().order_by('last_name'),},)
 
 def abstract_list(request, template='application_form/registration_abstract_list.html'):
-    regs = Registration.objects.exclude(abstract__exact='')
+    regs = Registration.objects.exclude(abstract__exact='').order_by('first_name','last_name')
     return render_to_response(template,
                               {'present': SortedDict([('Oral',regs.filter(talk=True)), ('Poster',regs.filter(poster=True))]),},)
     
