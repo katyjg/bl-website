@@ -24,7 +24,7 @@ from django.db import connection, transaction
 
 @staff_login_required
 def admin_publication_stats(request, template='publications/publications_stats.html'):
-    pubs = Publication.objects.all().annotate(num_bls=Count('beamline')).order_by('-journal__impact_factor','-publish')
+    pubs = Publication.objects.all().annotate(num_bls=Count('beamline')).order_by('-journal__impact_factor','-year','-month')
     stats = {'pubs': {}, 'pdbs': {},}
     bls = Beamline.objects.all()
     for key, val in stats.items():
@@ -52,7 +52,7 @@ def admin_publication_stats(request, template='publications/publications_stats.h
 
     return render_to_response(template, { 'title': 'Publication Statistics',
                                           'admin': True,
-                                          'publications': pubs.order_by('-publish'),
+                                          'publications': pubs,
                                           'stats': stats,
                                           'categories': {'pubs': 'Publications', 'pdbs': 'PDB Releases'},
                                           'beamlines': [bl.name for bl in bls],

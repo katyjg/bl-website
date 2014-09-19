@@ -9,6 +9,6 @@
 		    </td>
 		    <td style="text-align: center !important;">{{ pub.get_beamlines }}</td>
 		    <td style="text-align: center !important;">{{pub.journal.impact_factor}}</td>
-		    <td>{{ pub.publish|date:"N Y" }}</td>
+		    <td>{{ pub.get_month_display|slice:":3"|default_if_none:"" }} {{ pub.year }}</td>
 		</tr>
 	{% endfor %}
