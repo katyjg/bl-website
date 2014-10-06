@@ -63,7 +63,7 @@ def admin_publication_stats(request, template='publications/publications_stats.h
 
 @staff_login_required
 def admin_pub_table(request, field, template='publications/publication_table.html'):
-    pubs = Publication.objects.all().annotate(num_bls=Count('beamline')).order_by('-'+field,'-publish')
+    pubs = Publication.objects.all().annotate(num_bls=Count('beamline')).order_by('-'+field,'-year','-month')
     return render_to_response(template, {  'admin': True,
                                            'publications': pubs,
                                          }, context_instance=None)
