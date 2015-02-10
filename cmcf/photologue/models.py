@@ -140,9 +140,6 @@ class Gallery(models.Model):
     def __str__(self):
         return self.__unicode__()
 
-    def get_absolute_url(self):
-        return reverse('pl-gallery', args=[self.title_slug])
-
     def latest(self, limit=0, public=True):
         if limit == 0:
             limit = self.photo_count()
@@ -169,81 +166,6 @@ class Gallery(models.Model):
 
     def public(self):
         return self.photos.filter(is_public=True)
-
-
-class GalleryUpload(models.Model):
-    zip_file = models.FileField(_('images file (.zip)'), upload_to=PHOTOLOGUE_DIR+"/temp",
-                                help_text=_('Select a .zip file of images to upload into a new Gallery.'))
-    gallery = models.ForeignKey(Gallery, null=True, blank=True, help_text=_('Select a gallery to add these images to. leave this empty to create a new gallery from the supplied title.'))
-    title = models.CharField(_('title'), max_length=75, help_text=_('All photos in the gallery will be given a title made up of the gallery title + a sequential number.'))
-    caption = models.TextField(_('caption'), blank=True, help_text=_('Caption will be added to all photos.'))
-    description = models.TextField(_('description'), blank=True, help_text=_('A description of this Gallery.'))
-    is_public = models.BooleanField(_('is public'), default=True, help_text=_('Uncheck this to make the uploaded gallery and included photographs private.'))
-    tags = models.CharField(max_length=255, blank=True, help_text=tagfield_help_text, verbose_name=_('tags'))
-
-    class Meta:
-        verbose_name = _('gallery upload')
-        verbose_name_plural = _('gallery uploads')
-
-    def save(self, *args, **kwargs):
-        super(GalleryUpload, self).save(*args, **kwargs)
-        gallery = self.process_zipfile()
-        super(GalleryUpload, self).delete()
-        return gallery
-
-    def process_zipfile(self):
-        if os.path.isfile(self.zip_file.path):
-            # TODO: implement try-except here
-            zip = zipfile.ZipFile(self.zip_file.path)
-            bad_file = zip.testzip()
-            if bad_file:
-                raise Exception('"%s" in the .zip archive is corrupt.' % bad_file)
-            count = 1
-            if self.gallery:
-                gallery = self.gallery
-            else:
-                gallery = Gallery.objects.create(title=self.title,
-                                                 title_slug=slugify(self.title),
-                                                 description=self.description,
-                                                 is_public=self.is_public,
-                                                 tags=self.tags)
-            from cStringIO import StringIO
-            for filename in zip.namelist():
-                if filename.startswith('__'): # do not process meta files
-                    continue
-                data = zip.read(filename)
-                if len(data):
-                    try:
-                        # the following is taken from django.newforms.fields.ImageField:
-                        #  load() is the only method that can spot a truncated JPEG,
-                        #  but it cannot be called sanely after verify()
-                        trial_image = Image.open(StringIO(data))
-                        trial_image.load()
-                        # verify() is the only method that can spot a corrupt PNG,
-                        #  but it must be called immediately after the constructor
-                        trial_image = Image.open(StringIO(data))
-                        trial_image.verify()
-                    except Exception:
-                        # if a "bad" file is found we just skip it.
-                        continue
-                    while 1:
-                        title = ' '.join([self.title, str(count)])
-                        slug = slugify(title)
-                        try:
-                            p = Photo.objects.get(title_slug=slug)
-                        except Photo.DoesNotExist:
-                            photo = Photo(title=title,
-                                          title_slug=slug,
-                                          caption=self.caption,
-                                          is_public=self.is_public,
-                                          tags=self.tags)
-                            photo.image.save(filename, ContentFile(data))
-                            gallery.photos.add(photo)
-                            count = count + 1
-                            break
-                        count = count + 1
-            zip.close()
-            return gallery
 
 
 class ImageModel(models.Model):
@@ -500,9 +422,6 @@ class Photo(ImageModel):
         if self.title_slug is None:
             self.title_slug = slugify(self.title)
         super(Photo, self).save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse('pl-photo', args=[self.title_slug])
 
     def public_galleries(self):
         """Return the public galleries to which this photo belongs."""

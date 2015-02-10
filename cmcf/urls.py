@@ -1,6 +1,6 @@
 import os
 
-from django.conf.urls import *
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
 #from sitemap import PageSitemap 
 from blog.feeds import LatestEntries
@@ -27,7 +27,6 @@ feeds = {
 urlpatterns = patterns('',
     # Example:
     (r'^favicon\.ico$', RedirectView.as_view(url='/media/img/clslogo.ico')),
-    (r'^photologue/', include('photologue.urls')),
     (r'^wiki/', include('simplewiki.urls')),
     (r'^apply/', include('application_form.urls')),
     (r'^beamtime/', include('scheduler.admin_urls')),
@@ -35,6 +34,8 @@ urlpatterns = patterns('',
 
     # This avoids breaking Django admin's localization JavaScript when using
     # the FeinCMS frontend editing:
+    url(r'^admin/filebrowser/', include('filebrowser.urls')),
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'admin/page/page/jsi18n/',     RedirectView.as_view(url='/admin/jsi18n/')),
 
     (r'^admin/', include(admin.site.urls)),
@@ -87,5 +88,4 @@ if settings.DEBUG:
 
 urlpatterns += patterns('',
     url(r'', include('feincms.urls')),
-    url(r'', include('ckeditor.urls')),
 )

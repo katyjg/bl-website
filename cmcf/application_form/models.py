@@ -94,12 +94,15 @@ class Registration(models.Model):
 
     # Abstract Submission
     talk = models.BooleanField()
+    poster = models.BooleanField()
     type = models.IntegerField(choices=TALK_CHOICES, blank=True, null=True)
     headline = models.CharField(_('Presentation Title'), max_length=500, blank=True)
     authors = models.CharField(_('Authors'), max_length=500, blank=True)
     abstract = models.TextField(_('Abstract'), blank=True)
+    affiliations = models.CharField(_('Author Affiliations'), max_length=500, blank=True)
     
     diet = models.TextField(_('Dietary Concerns'), blank=True)
+    mixer = models.BooleanField(_('Attending Mixer'), blank=False, default=False)
     
     created = models.DateTimeField(_('created'), auto_now_add=True)
 

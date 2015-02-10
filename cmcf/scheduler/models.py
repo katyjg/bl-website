@@ -6,7 +6,6 @@ import os
 from django.conf import settings
 
 #import django.dispatch
-from filer.fields.image import FilerImageField
 
 from django.db.models.signals import post_save
 
@@ -139,8 +138,8 @@ class SupportPerson(models.Model):
     position = models.CharField(max_length=100)
     email = models.EmailField()
     phone_number = models.CharField(max_length=20, help_text="Ten digit number", blank=True)
-    #image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
-    image = FilerImageField(blank=True, null=True)
+    image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
+    #image = FilerImageField(blank=True, null=True)
     office = models.CharField(blank=True, max_length=50)
     category = models.IntegerField(blank=False, choices=STAFF_CHOICES)
     

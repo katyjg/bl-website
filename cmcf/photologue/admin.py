@@ -33,9 +33,6 @@ class PhotoAdmin(BatchModelAdmin):
     list_per_page = 10
     prepopulated_fields = {'title_slug': ('title',)}
 
-    class Media:
-        js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
-
 class PhotoEffectAdmin(BatchModelAdmin):
     batch_actions = ['delete_selected']
     list_display = ('name', 'description', 'color', 'brightness', 'contrast', 'sharpness', 'filters', 'admin_sample')
@@ -78,7 +75,6 @@ class WatermarkAdmin(BatchModelAdmin):
 
 
 admin.site.register(Gallery, GalleryAdmin)
-admin.site.register(GalleryUpload)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(PhotoEffect, PhotoEffectAdmin)
 admin.site.register(PhotoSize, PhotoSizeAdmin)

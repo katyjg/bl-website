@@ -197,21 +197,20 @@ Page.create_content_type(VideoContent, POSITION_CHOICES=(
     ))
 
 Page.create_content_type(ApplicationContent, APPLICATIONS=(
-    ('scheduler.urls', 'Schedule'),
-    ('scheduler.contacts_urls', 'Contact List'),
-    ('scheduler.oncall_urls', 'Oncall Legend'),
-    ('slider.urls', 'Slider'),
-    ('galleriffic.urls', 'Galleriffic'),
-    ('blog.urls', 'News Full'),
-    ('blog.brief_urls', 'News Brief'),
-    ('publications.urls', 'Publications All'),
-    ('publications.poster_urls', 'Posters'),
-    ('publications.brief_urls', 'Publications Brief'),
-    ('contact_form.urls', 'Contact Form'),
-    ('simplewiki.urls', 'Simple Wiki'),
-    ('application_form.urls', 'Application Form'),
+    ('scheduler.urls',                     'Beamline Schedule'),
+    ('scheduler.contacts_urls',            'Personnel List'),
+    ('scheduler.oncall_urls',              'Local Contact Legend'),
+    ('galleriffic.urls',                   'Photo Galleries'),
+    ('blog.urls',                          'News Items (Full)'),
+    ('blog.brief_urls',                    'News Items (Teaser)'),
+    ('blog.slider_urls',                   'News Items (Slider)'),
+    ('publications.urls',                  'Publications (List)'),
+    ('publications.brief_urls',            'Publications (Teaser)'),
+    ('publications.poster_urls',           'Posters List'),
+    ('contact_form.urls',                  'Feedback Form'),
+    ('application_form.urls',              'Application Form'),
     ('application_form.registration_urls', 'Registration Form'),
-    ('application_form.abstract_urls', 'Abstracts'),
+    ('application_form.abstract_urls',     'Registrant Abstracts'),
     ))    
 
 '''Entry.register_regions(

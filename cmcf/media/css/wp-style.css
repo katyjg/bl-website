@@ -1498,3 +1498,6 @@ span.alert {
 	list-style: none !important;
 	margin-top: -15px !important;
 }
+.pull-left {
+	float: left;
+}

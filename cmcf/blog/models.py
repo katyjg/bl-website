@@ -1,6 +1,4 @@
 from django.db import models
-from ckeditor.fields import RichTextField
-from filer.fields.image import FilerImageField
 
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
@@ -8,6 +6,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.sites.models import Site
 
+from django.core.urlresolvers import reverse_lazy
 
 import os
 import datetime
@@ -29,10 +28,6 @@ class Category(models.Model):
     def __unicode__(self):
         return u'%s' % self.title
 
-    @permalink
-    def get_absolute_url(self):
-        return ('blog_category_detail', None, {'slug': self.slug})
-
 
 class Post(models.Model):
     """Post model."""
@@ -43,12 +38,12 @@ class Post(models.Model):
     title = models.CharField(_('title'), max_length=200)
     slug = models.SlugField(_('slug'), unique_for_date='publish')
     author = models.ForeignKey(User, blank=True, null=True, editable=False)
-    #image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
-    image = FilerImageField(blank=True, null=True)
+    image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
+    #image = FilerImageField(blank=True, null=True)
     link = models.CharField(_('link'), blank=True, max_length=300, help_text='Link to original publication')
     citation = models.CharField(_('citation'), blank=True, max_length=300)
-    body = RichTextField(_('body'), )
-    tease = RichTextField(_('tease'), blank=True, help_text=_('This appears on the homepage content slider if the post is highlighted.'))
+    body = models.TextField(_('body'), )
+    tease = models.TextField(_('tease'), blank=True, help_text=_('This appears on the homepage content slider if the post is highlighted.'))
     highlight = models.BooleanField(_('highlight'), default=False, help_text=_('Should this item be featured in the content slider on the home page?'))
     status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=2)
     publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
@@ -68,15 +63,6 @@ class Post(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.title
-
-    @permalink
-    def get_absolute_url(self):
-        return ('blog_detail', None, {
-            'year': self.publish.year,
-            'month': self.publish.strftime('%b').lower(),
-            'day': self.publish.day,
-            'slug': self.slug
-        })
 
     def get_previous_post(self):
         return self.get_previous_by_publish(status__gte=2)

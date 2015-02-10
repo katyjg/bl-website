@@ -4,30 +4,17 @@ import re
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404
-#from django.views.generic import date_based, list_detail
 from django.views.generic.list import ListView
 
 from django.db.models import Q
 from django.conf import settings
-from blog.models import *
-#from tagging.models import Tag, TaggedItem
-
-def news_brief(request):
-    post_list = []
-    i = 0
-    for post in Post.objects.all():
-        if i <= 4:
-            post_list.append(post)
-            i = i+1
-    return render_to_response(
-        'blog/news_brief.html', 
-        {'post_list': post_list},
-        )
+from blog import models
+from photologue.models import Photo
 
 def post_list(request):
     category = []
     # This can be fixed up with Django >= 1.3 (.values(<ManytoManyField>) won't give an error then)
-    for post in Post.objects.all():
+    for post in models.Post.objects.all():
         for cat in post.categories.all():
             if cat not in category:
                 category.append(cat)
@@ -35,87 +22,40 @@ def post_list(request):
     return render_to_response(
         'blog/post_list.html', 
         {
-            'object_list': Post.objects.all(),
+            'object_list': models.Post.objects.all(),
             'categories': category,
         },
         )
 
-#def post_archive_year(request, year, **kwargs):
-#    return date_based.archive_year(
-#        request,
-#        year=year,
-#        date_field='publish',
-#        queryset=Post.objects.published(),
-#        make_object_list=True,
-#        **kwargs
-#    )
-#post_archive_year.__doc__ = date_based.archive_year.__doc__
-#
-#
-#def post_archive_month(request, year, month, **kwargs):
-#    return date_based.archive_month(
-#        request,
-#        year=year,
-#        month=month,
-#        date_field='publish',
-#        queryset=Post.objects.published(),
-#        **kwargs
-#    )
-#post_archive_month.__doc__ = date_based.archive_month.__doc__
-#
-#
-#def post_archive_day(request, year, month, day, **kwargs):
-#    return date_based.archive_day(
-#        request,
-#        year=year,
-#        month=month,
-#        day=day,
-#        date_field='publish',
-#        queryset=Post.objects.published(),
-#        **kwargs
-#    )
-#post_archive_day.__doc__ = date_based.archive_day.__doc__
-#
-#
-#def post_detail(request, slug, year, month, day, **kwargs):
-#    """
-#    Displays post detail. If user is superuser, view will display 
-#    unpublished post detail for previewing purposes.
-#    """
-#    posts = None
-#    if request.user.is_superuser:
-#        posts = Post.objects.all()
-#    else:
-#        posts = Post.objects.published()
-#    return date_based.object_detail(
-#        request,
-#        year=year,
-#        month=month,
-#        day=day,
-#        date_field='publish',
-#        slug=slug,
-#        queryset=posts,
-#        **kwargs
-#    )
-#post_detail.__doc__ = date_based.object_detail.__doc__
+def news_slider(request):
+    post_list = []
+    i = 0
+    for post in models.Post.objects.all():
+        if i <= -1:
+            post_list.append(post)
+            i = i+1
+        elif post.highlight:
+            post_list.append(post)
+    for photo in Photo.objects.all():
+        if photo.photo_highlight:
+            post_list.append(photo)
 
-#def category_list(request, template_name = 'blog/category_list.html', **kwargs):
-#    """
-#    Category list
-#
-#    Template: ``blog/category_list.html``
-#    Context:
-#        object_list
-#            List of categories.
-#    """
-#    return list_detail.object_list(
-#        request,
-#        queryset=Category.objects.all(),
-#        template_name=template_name,
-#        **kwargs
-#    )
-#
-#
+    return render_to_response(
+        'blog/highlights.html', 
+        {'news_list': post_list},
+        )
+
+def news_brief(request):
+    post_list = []
+    i = 0
+    for post in models.Post.objects.all():
+        if i <= 4:
+            post_list.append(post)
+            i = i+1
+    return render_to_response(
+        'blog/news_brief.html', 
+        {'post_list': post_list},
+        )
 
 def category_detail(request, slug, template_name = 'blog/category_detail.html', **kwargs):
     """
@@ -130,12 +70,12 @@ def category_detail(request, slug, template_name = 'blog/category_detail.html', 
     """
     category_list = []
     # This can be fixed up with Django >= 1.3 (.values(<ManytoManyField>) won't give an error then)
-    for post in Post.objects.all():
+    for post in models.Post.objects.all():
         for cat in post.categories.all():
             if cat not in category_list:
                 category_list.append(cat)
                 
-    category = get_object_or_404(Category, slug__iexact=slug)
+    category = get_object_or_404(models.Category, slug__iexact=slug)
 
     return render_to_response(
         template_name, 
@@ -190,7 +130,7 @@ def search(request, template_name='blog/post_search.html'):
         cleaned_search_term = stop_word_list.sub('', search_term)
         cleaned_search_term = cleaned_search_term.strip()
         if len(cleaned_search_term) != 0:
-            post_list = Post.objects.published().filter(Q(title__icontains=cleaned_search_term) | Q(body__icontains=cleaned_search_term) | Q(tags__icontains=cleaned_search_term) | Q(categories__title__icontains=cleaned_search_term))
+            post_list = models.Post.objects.published().filter(Q(title__icontains=cleaned_search_term) | Q(body__icontains=cleaned_search_term) | Q(tags__icontains=cleaned_search_term) | Q(categories__title__icontains=cleaned_search_term))
             context = {'object_list': post_list, 'search_term':search_term}
         else:
             message = 'Search term was too vague. Please try again.'

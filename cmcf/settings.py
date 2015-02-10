@@ -3,6 +3,7 @@ import os, sys
 PROJECT_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 sys.path.extend([PROJECT_DIR, BASE_DIR])
+sys.path.extend([PROJECT_DIR, BASE_DIR, os.path.join(BASE_DIR, 'libs')])
 
 DEBUG = True # Set to True to see full error messages in browser
 TEMPLATE_DEBUG = DEBUG
@@ -17,13 +18,13 @@ else:
 
 SITE_ID = 1
 URL_ROOT = 'http://cmcf.lightsource.ca'
-URL_ROOT = 'http://10.52.7.200:8000'
+URL_ROOT = 'http://10.52.7.240:8000'
 SITE_NAME_SHORT = 'CMCF'
 SITE_NAME_LONG = 'Canadian Macromolecular Crystallography Facility'
 SITE_DESCRIPTION = 'CMCF is an umbrella facility which operates two beamlines, 08ID-1 and 08B1-1, at the Canadian Light Source. Together, both beamlines enable high-resolution structural studies of proteins, nucleic acids and other macromolecules, satisfying the requirements of the most challenging and diverse crystallographic experiments.'
 SITE_KEYWORDS = 'CMCF,lightsource,canadian,macromolecular,crystallography,facility,cls,protein'
 
-ABSOLUTE_PATH_TO_FILES = 'var/website/cmcf-website/cmcf' # no leading or trailing slashes
+ABSOLUTE_PATH_TO_FILES = '/users/kathryn/Code/cmcf-newdjango' # no leading or trailing slashes
     
 CONF_FROM_EMAIL = 'kathryn.janzen@lightsource.ca'
 FROM_EMAIL = 'cmcf-support@lightsource.ca' # This should be an email that exists
@@ -98,9 +99,9 @@ SUIT_CONFIG = {
         {'app': 'publications', 'icon': 'icon-book','models': ('publication','poster','journal')},
         {'app': 'scheduler', 'label': 'Scheduling', 'icon': 'icon-time'},
         {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
-        {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture'},
-        {'app': 'filer', 'label': 'Uploaded Files', 'icon': 'icon-folder-open'},
+        {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
         {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
+        {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'icon-folder-open'},  
         '-',
         {'label': 'Settings', 'icon': 'icon-cog', 'models': ('sites.site','redirects.redirect')},
         {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
@@ -123,6 +124,7 @@ STATIC_ROOT = 'static/'
 ADMIN_MEDIA_PREFIX = URL_ROOT + '/admin_media/'
 STATIC_URL = ADMIN_MEDIA_PREFIX
 FEINCMS_ADMIN_MEDIA = '/feincms_media/'
+FILEBROWSER_SUIT_TEMPLATE = True
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -155,6 +157,8 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'suit', 
+    'grappelli',
+    'filebrowser',    
     'django.contrib.admin', 
     'feincms',
     'feincms.module.page', 
@@ -167,16 +171,12 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
 
-    'filer',
-    'easy_thumbnails',
     'django.contrib.redirects',
-    'ckeditor',
     #'django.contrib.admindocs',
 
     'cmcf',
     'scheduler',
     'blog',
-    'slider',
     'photologue',
     'contact_form',
     'application_form',
@@ -187,14 +187,6 @@ INSTALLED_APPS = (
     'mptt',
     'south',
     'captcha',
-)
-
-THUMBNAIL_PROCESSORS = (
-    'easy_thumbnails.processors.colorspace',
-    'easy_thumbnails.processors.autocrop',
-    #'easy_thumbnails.processors.scale_and_crop',
-    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
-    'easy_thumbnails.processors.filters',
 )
 
 try:
@@ -215,11 +207,11 @@ LANGUAGES = (
 CKEDITOR_UPLOAD_PATH = '/' + ABSOLUTE_PATH_TO_FILES
 FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
 #FEINCMS_TIDY_HTML = True
-FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_ckeditor.html'
-#FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
+
+FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
+
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
-    #'TINYMCE_JS_URL': STATIC_URL + 'tinymce/jscripts/tiny_mce/tiny_mce.js',
-    'CKEDITOR_JS_URL': STATIC_URL + 'ckeditor/ckeditor/ckeditor.js'
+    'TINYMCE_JS_URL': STATIC_URL + 'grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
 }
 
 LOGIN_URL = '/admin/'

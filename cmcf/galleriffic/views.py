@@ -43,14 +43,15 @@ def gallery_display(request, slug=None):
     for photo in Photo.objects.all():
         if gallery:
             if gallery == photo.gallery:
-                photo.galleryname = gallery.title
+                #photo.galleryname = gallery.title
                 photo_list.append(photo)
-        else: 
-            photo.galleryname = 'All Images'
-            photo_list.append(photo)
+        #else: 
+            #photo.galleryname = 'All Images'
+            #photo_list = []
 
     return render_to_response(
         'galleriffic/gallery_display.html', 
-        {'gallery_list': photo_list}
+        {'gallery_list': photo_list,
+         'galleries': Gallery.objects.filter(is_public=True)}
         )
 

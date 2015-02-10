@@ -1,6 +1,6 @@
 # Create your models here.
 from django.db import models
-from ckeditor.fields import RichTextField
+#from ckeditor.fields import RichTextField
 
 from django.db.models import permalink, CharField
 from django.db.models.signals import post_save
@@ -137,7 +137,7 @@ class Publication(models.Model):
     MONTH_CHOICES=((1,"January"),(2,"February"),(3,"March"),(4,"April"),
                    (5,"May"),(6,"June"),(7,"July"),(8,"August"),
                    (9,"September"),(10,"October"),(11,"November"),(12,"December"))
-    title = RichTextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
+    title = models.TextField(_('title'), max_length=200, blank=False, help_text="Enter title into a paragraph")
     slug = models.SlugField(_('slug'), max_length=100, unique_for_date='publish')
     authors = models.CharField(_('authors'), help_text="Comma-separated list of authors in format: J. Doe, M.N. Smith", max_length=500, blank=True)
     beamline = models.ManyToManyField(Beamline, blank=True)
@@ -164,15 +164,6 @@ class Publication(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.title
-
-    @permalink
-    def get_absolute_url(self):
-        return ('blog_detail', None, {
-            'year': self.publish.year,
-            'month': self.publish.strftime('%b').lower(),
-            'day': self.publish.day,
-            'slug': self.slug
-        })
 
     def display_citation(self):
         return '%s.(%s).%s.<em>%s</em> %s' % (self.authors, self.year, self.title, self.journal, self.citation)

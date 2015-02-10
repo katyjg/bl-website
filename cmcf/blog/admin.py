@@ -23,13 +23,10 @@ class PostAdmin(admin.ModelAdmin):
             'fields': ('title','slug','image','link','citation','body','tease','highlight','status','publish','categories'),
         }),
     )
+    
+    class Media:
+        js = [getattr(settings, 'FEINCMS_RICHTEXT_INIT_CONTEXT', {}).get('TINYMCE_JS_URL',''), 
+              '/admin_media/grappelli/tinymce_setup/tinymce_setup.js',]    
 #    prepopulated_fields = {'slug': ('title',)}
-#    class Media:
-#       js = ['/admin_media/tinymce/jscripts/tiny_mce/tiny_mce.js', '/admin_media/tinymce_setup/tinymce_setup.js',]
+
 admin.site.register(Post, PostAdmin)
-
-
-class BlogRollAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url', 'sort_order',)
-    list_editable = ('sort_order',)
-#admin.site.register(BlogRoll)

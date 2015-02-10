@@ -232,7 +232,6 @@ class ContactForm(forms.Form):
         Build and send the email message.
         
         """
-        print self.get_message_dict()
         send_mail(fail_silently=fail_silently, **self.get_message_dict())
         
 class AkismetContactForm(ContactForm):

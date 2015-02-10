@@ -1,5 +1,4 @@
 from django.conf.urls import *
-from photologue.models import *
 
 urlpatterns = patterns('galleriffic.views',
     url(r'^$',
@@ -11,6 +10,3 @@ urlpatterns = patterns('galleriffic.views',
         name='gallery_list'
     ),
 )
-
-
-

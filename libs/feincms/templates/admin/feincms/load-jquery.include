@@ -1,0 +1,18 @@
+{% load staticfiles %}
+{% comment %}
+Include jquery, override this template if you want to use a cdn version
+or load more plugins or whatnot
+{% endcomment %}
+
+<script type="text/javascript" src="{% static 'feincms/jquery-1.11.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'feincms/jquery-ui-1.10.3.custom.min.js' %}"></script>
+
+<script type="text/javascript">
+    var feincms = {
+        {% if FEINCMS_JQUERY_NO_CONFLICT %}
+        "jQuery": jQuery.noConflict(true)
+        {% else %}
+        "jQuery": jQuery
+        {% endif %}
+    };
+</script>
