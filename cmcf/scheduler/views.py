@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.utils.encoding import smart_str
 from django.core.management import call_command
+from django.contrib import messages
 
 from datetime import datetime, date, timedelta, time
 
@@ -66,7 +67,7 @@ def edit_visit(request, pk, model, form, template='wp-root.html'):
                 mod_msg = firstdate != visit.start_date and 'This change affects %s and %s' % (firstdate.strftime('%a, %b %d'), visit.start_date.strftime('%a, %b %d')) or 'Changed %s' % mod_msg
                 call_command('notify', visit.pk, 'MODIFIED: ', mod_msg) 
             message =  '%(name)s modified' % {'name': smart_str(model._meta.verbose_name)}
-            request.user.message_set.create(message = message)
+            messages.add_message(request, messages.INFO, message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
         else:
             return render_to_response(template, {
@@ -104,7 +105,7 @@ def delete_object(request, pk, model, form, template='wp-root.html'):
             #    if obj.start_date <= next_monday and obj.start_date >= today and obj.modified > etime:
             #        call_command('notify', obj.pk, 'DELETED: ')
             obj.delete()
-            request.user.message_set.create(message = message)
+            messages.add_message(request, messages.INFO, message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
         else:
             return render_to_response(template, {
@@ -112,6 +113,7 @@ def delete_object(request, pk, model, form, template='wp-root.html'):
             'form' : frm, 
             }, context_instance=RequestContext(request))
     else:
+        print obj, type(obj), obj.pk,  dict(request.GET.items())
         frm = form(instance=obj, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
         #if model == Visit:
         #    form.warning_message = (obj.start_date <= next_monday and obj.start_date >= today and datetime.now() > etime  and WARNING) or None
@@ -159,7 +161,7 @@ def add_object(request, model, form, template='wp-root.html'):
                         dates = '%s%s' % (new_obj.start_date.strftime('%A, %b %d'), new_obj.start_date != new_obj.end_date and (' - %s' % new_obj.end_date.strftime('%A, %b %d')) or '')  
                         call_command('notify', new_obj.pk, 'ADDED: ', 'This change affects %s' % dates)
             message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
-            request.user.message_set.create(message = message)
+            messages.add_message(request, messages.INFO, message)
             return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
         else:
             return render_to_response(template, {

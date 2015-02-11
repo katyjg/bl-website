@@ -53,6 +53,12 @@ class BasicForm(forms.ModelForm):
     
     class Meta:
         fields = ('id',)
+        model = Visit
+        
+class BasicOnCallForm(BasicForm):
+    class Meta:
+        fields = ('id',)
+        model = OnCall       
         
 class AdminEditForm(forms.ModelForm):
     id = forms.IntegerField(widget=forms.HiddenInput)

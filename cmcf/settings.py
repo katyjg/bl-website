@@ -132,6 +132,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages'
 )
 
 TEMPLATE_LOADERS = (
@@ -169,6 +170,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
+    'django.contrib.messages',
 
     'django.contrib.redirects',
     #'django.contrib.admindocs',
