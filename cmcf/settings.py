@@ -157,7 +157,6 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'suit', 
-    'grappelli',
     'filebrowser',    
     'django.contrib.admin', 
     'feincms',

@@ -34,8 +34,10 @@ urlpatterns = patterns('',
 
     # This avoids breaking Django admin's localization JavaScript when using
     # the FeinCMS frontend editing:
+    
+    #url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
-    url(r'^grappelli/', include('grappelli.urls')),
+    #url(r'^grappelli/', include('grappelli.urls')),
     url(r'admin/page/page/jsi18n/',     RedirectView.as_view(url='/admin/jsi18n/')),
 
     (r'^admin/', include(admin.site.urls)),
