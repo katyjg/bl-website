@@ -10,8 +10,8 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 import os
 import sys
 
-sys.path.append('/users/kathryn/Code/cmcf-newdjango')
-sys.path.append('/users/kathryn/Code/cmcf-newdjango/website')
+sys.path.append('/var/website/bl-website')
+sys.path.append('/var/website/bl-website/website')
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "website.settings")
 
