@@ -1,0 +1,27 @@
+{% extends "wp-root.html" %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+
+{% block "page-content" %}
+
+<div id="headline">
+	<div class="wrapper">
+		<h2>{{ feincms_page.title }}</h2>
+	</div>
+</div>
+
+<div id="pagebody">
+	<div class="wrapper">
+        <div id="bodyContent" class="col-10">
+        {% feincms_render_region feincms_page "col1" request %}
+        </div>
+    
+        <div id="bodySidebar" class="col-2">
+        {% feincms_render_region feincms_page "col2" request %}
+	    </div>
+
+    </div>
+</div>
+
+<br class="clear">
+
+{% endblock %}

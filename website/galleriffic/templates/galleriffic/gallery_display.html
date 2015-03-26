@@ -1,0 +1,67 @@
+{% load i18n %}
+{% load gallery_filter %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+
+<!-- We only want the thumbnails to display when javascript is disabled -->
+<script type="text/javascript">
+    document.write('<style>.noscript { display: none; }<\/style>');
+</script>
+
+<!-- Start Advanced Gallery Html Containers -->
+{% if gallery_list %}
+
+	{% for photo in gallery_list %}{% if forloop.first %}
+		<h2>{{ photo.gallery.title }}</h2>
+	{% endif %}{% endfor %}
+	
+	<div id="thumbs" class="navigation">
+	    <ul id="thumb-gallery" class="thumbs noscript">
+	        {% for photo in gallery_list %}
+	            <li>
+	                <a class="thumb" name="{{ photo.title }}" title="{{ photo.title }}" href="{{ photo.get_display_url }}">
+	                    <img src="{{ photo.get_thumbnail_url }}" alt="{{ photo.title }}">
+	                </a>
+	                <div class="caption">
+	        	        <div class="download">
+	                        <a href="{{ photo.get_large_url }}">Download Original</a>
+	                    </div>
+	                    <div class="image-title">{{ photo.title }}</div>
+	                    <div class="image-desc">
+	                        <p>{{ photo.caption|removetags:"p"|safe }}</p>
+	                    </div>
+	                </div>
+	            </li>
+	        {% endfor %}
+	    </ul>
+	</div>
+	
+	<div id="gallery" class="content">
+	    <div id="controls" class="controls"></div>
+	    <div class="slideshow-container">
+	        <div id="loading" class="loader"></div>
+	        <div id="slideshow" class="slideshow"></div>
+	    </div>
+	    <div id="caption" class="caption-container"></div>
+	</div>
+
+{% else %}
+
+	{% for gallery in galleries %}
+		<h2>{{ gallery.title }} Gallery</h2>
+		<div class="col-12">
+		  <a title="Go to {{gallery.title}} photo gallery" href="{{gallery.title_slug}}">
+		    {% with gallery.photos.all.0 as photo %}
+			  <div class="col-2"><img class="pull-left" src="{{photo.get_thumbnail_url}}" alt="{{photo.title}}"></div>
+		    {% endwith %}
+		    <div class="col-9">{{ gallery.description }}</div>
+		  </a>
+  	    </div>
+	  <div style="clear: both;"></div>
+	{% endfor %}
+
+{% endif %}
+
+
+
+<!--<div style="clear: both;"></div>-->
+

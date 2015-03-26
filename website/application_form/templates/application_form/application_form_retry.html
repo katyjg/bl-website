@@ -1,0 +1,6 @@
+<span class="req">It looks like some information is missing or incorrect.  Review the information here and make sure you have filled out all of the required fields.</span>
+<br>
+<pre class="application">
+{% for key, val in form.errors.items %}{{key|capfirst}}: {{ val|striptags}}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+</pre>
+{% include 'application_form/application_form.html' %}

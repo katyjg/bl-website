@@ -20,9 +20,7 @@ below.
 * django-recaptcha: https://pypi.python.org/pypi/django-recaptcha
 	- BSD License
 * django-filebrowser-no-grappelli: https://github.com/smacker/django-filebrowser-no-grappelli
-	
-
-https://github.com/smacker/django-filebrowser-no-grappelli
+	- https://github.com/smacker/django-filebrowser-no-grappelli
 
 In addition, system versions of the following modules are installed:
 

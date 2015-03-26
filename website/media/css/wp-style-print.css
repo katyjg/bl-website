@@ -1,0 +1,17 @@
+@import "/media/css/wp-style.css";
+
+div#header {
+    display: none;
+}
+#header-print {
+	display: block !important;
+}
+#toTop, #toTop a { 
+    display: none !important;
+}
+#toTop.wiki, #toTop a.wiki {
+    display: none !important;
+}
+#footer {
+    display: none;
+}

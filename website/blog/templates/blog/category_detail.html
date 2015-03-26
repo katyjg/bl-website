@@ -1,0 +1,58 @@
+{% extends "blog/base_blog.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Posts for" %} {{ category.title }}{% endblock %}
+{% block body_class %}{{ block.super }} category_detail{% endblock %}
+{% block body_id %}category_{{ category.id }}{% endblock %}
+
+
+{% block content_title %}
+  <h2>{% trans "Posts for" %} {{ category.title }}</h2>
+{% endblock %}
+
+
+{% block content %}
+	{% for category in categories %}
+		<a href="/research-highlights/categories/{{ category.slug }}"> {{ category }}{% ifnotequal category|make_list|last 's' %}s{% endifnotequal %}  </a>
+		{% if forloop.last %}{% else %}-{% endif %}
+	{% endfor %} 
+	<a class="right-subtitle" href="/research-highlights/">Back to all News and Updates</a>
+
+{% for post in object_list %}{% if forloop.first %}
+	<h2>{{ category }}{% ifnotequal category|make_list|last 's' %}s{% endifnotequal %}</h2>
+{% endif %}{% endfor %}
+
+<ul class="hr-list">
+    {% for post in object_list %}
+        <li>
+            <div class="news-post">
+                {% if post.image %}
+                    <div class="{% cycle 'image' 'image-odd' %}">
+                        <img src="/media/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
+                    </div>
+                {% endif %}
+  	            <div>
+   	                <h3 class="subtitle">
+                        <a name="{{ post.slug }}"></a>
+                        <text class="category" title="View all {{post.categories.all.0}}" href="/research-highlights/categories/{{post.categories.all.0.slug}}">{{ post.categories.all.0 }}</text>: 
+                        {% if post.link %}
+                            <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a>
+                        {% else %}
+                            <b class="title-style">{{ post.title }}</b>
+                        {% endif %}
+                    </h3>
+	                Posted on {{ post.publish|date:"F d, Y" }} <br>			
+                    {{ post.body|removetags:"p"|safe }}
+	                <p class="link">
+                        <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">
+                            {{ post.citation|removetags:"p"|safe }}
+                        </a>
+                    </p>
+                </div>	      
+            </div>
+            <br class="clear">
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

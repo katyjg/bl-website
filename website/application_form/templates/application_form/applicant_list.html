@@ -1,0 +1,55 @@
+<h2>Applications Received:</h2>
+<div id="schedule">
+<table>
+    <thead>
+    <tr>
+    	<th></th>
+        <th>Name</th>
+        <th>Institution</th>
+        <th width="15%">Supervisor</th>
+        <th>Position</th>
+        <th>Travel</th>
+        <th>Xtals</th>
+        <th>Dorm</th>
+    </tr>
+    </thead>
+    {% for app in applicant_list %}
+        <tr>
+        	<td>{{ forloop.counter }}</td>
+            <td><a href="/admin/application_form/application/{{app.pk}}">{{app.name}}</a></td>
+            <td>{{app.institution}}</td>
+            <!-- td>{% if app.addr1 %}{{app.addr1}}<br>{% endif %}
+            	{% if app.addr2 %}{{app.addr2}}<br>{% endif %}
+            	{% if app.city %}{{app.city}}, {{app.state}}<br>{% endif %}
+            	{% if app.country %}{{app.country}}    {{app.code}}{% endif %}</td-->
+            <td>{{app.sup_name}}</td>
+            <td>
+                {% if app.undergrad %}Undergrad
+                    {% if app.masters or app.phd or app.postdoc or app.faculty or app.staff or app.other %}/{% endif %}
+                {% endif %}
+                {% if app.masters %}MSc
+                    {% if app.phd or app.postdoc or app.faculty or app.staff or app.other %}/{% endif %}
+                {% endif %}
+                {% if app.phd %}PhD
+                    {% if app.postdoc or app.faculty or app.staff or app.other %}/{% endif %}
+                {% endif %}
+                {% if app.postdoc %}Postdoc
+                    {% if app.faculty or app.staff or app.other %}/{% endif %}
+                {% endif %}
+                {% if app.faculty %}Faculty
+                    {% if app.staff or app.other %}/{% endif %}
+                {% endif %}
+                {% if app.staff %}Staff
+                    {% if app.other %}/{% endif %}
+                {% endif %}
+                {% if app.other %}Other ({{app.other_text}}){% endif %}
+            </td>
+            <td>{% if app.travel %}&#10004;{% endif %}</td>
+            <td>{% if app.crystals %}&#10004;{% endif %}</td>
+            <td>{% if app.stay %}&#10004;{% endif %}</td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+    
+    
