@@ -7,13 +7,14 @@ import requests
 def categories_list():
     r = requests.get('%scategories/%s/' % (settings.USO_API, settings.USO_BEAMLINE))
     if r.status_code == requests.codes.ok:
-        return sorted([c['kind'] for c in r.json()])
+        return r.json()
     else:
         return False
 
 def publication_list(request, **kwargs):
-    category = kwargs.get('category','article')
-    r = requests.get('%spublications/%s/%s/' % (settings.USO_API, category, settings.USO_BEAMLINE))
+    categories = categories_list()
+    category = [c for c in categories if c['kind'] == kwargs.get('category','article')][0]
+    r = requests.get('%spublications/%s/%s/' % (settings.USO_API, category['kind'], settings.USO_BEAMLINE))
     if r.status_code == requests.codes.ok:
         yr_list = list(reversed(sorted(set([d['date'][:4] for d in r.json()]))))
         pub_list = [(yr, [d['cite'] for d in r.json() if yr in d['date']]) for yr in yr_list]
@@ -27,8 +28,8 @@ def publication_list(request, **kwargs):
         {  
             'year_list': yr_list,
             'publication_list': pub_list, 
-            'category': category.replace('_',' '),
-            'categories': categories_list()},)
+            'category': category['display'],
+            'categories': categories},)
 
 def publications_brief(request):
     r = requests.get('%spublications/%s/latest/' % (settings.USO_API, settings.USO_BEAMLINE))

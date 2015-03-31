@@ -20,6 +20,19 @@ SITE_KEYWORDS = 'lightsource,canadian,cls,some-keywords-for-your-beamline'
 # This should be the name assigned to your beamline in the User Office Software
 USO_BEAMLINE = "some-bl"
 
+# Recaptcha keys can be obtained at http://www.google.com/recaptcha
+RECAPTCHA_PUBLIC_KEY = '6LegXtwSAAAAAN3Xy2oy3hQhSiMuqC8FS4HbXIC_' 
+RECAPTCHA_PRIVATE_KEY = '6LegXtwSAAAAAAHw-BviXORo-QXZvU7e7jMtZNba'
+
+# Google custom search engines can be created at https://cse.google.ca/cse/.
+# If you want a custom search engine, add a line: GCSE_ID = "your Search engine ID"
+#GCSE_ID = "010203040506070809010:abcde123fgh"
+
+# Google analytics can be set up at https://www.google.com/analytics
+# If you want to track your site using google analytics, add a line:
+# GA_ID = "the site ID listed after your site"
+#GA_ID = "UA-12345678-9"
+
 # Django house-keeping stuff specific to your site
 ########################################################################################################
 
@@ -87,7 +100,3 @@ CONF_MANAGERS = (
 # Sender email for PSFaM Registrations
 CONF_FROM_EMAIL = 'test.user@lightsource.ca'
  
-# Recaptcha keys can be obtained at http://www.google.com/recaptcha
-RECAPTCHA_PUBLIC_KEY = '6LegXtwSAAAAAN3Xy2oy3hQhSiMuqC8FS4HbXIC_' 
-RECAPTCHA_PRIVATE_KEY = '6LegXtwSAAAAAAHw-BviXORo-QXZvU7e7jMtZNba'
-

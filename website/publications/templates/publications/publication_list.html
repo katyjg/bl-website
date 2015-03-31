@@ -3,7 +3,7 @@
 {% load get_version %}
 
 <span class="pull-left">
-	<h4>{{ 'SITE_NAME_SHORT'|get_from_settings }} {{ category|title }} Publications</h4>
+	<h4>{{ 'SITE_NAME_SHORT'|get_from_settings }} {{ category }} Entries</h4>
 </span>
 <span class="pull-right">
 <ul id="drop-nav" class="pull-right">
@@ -14,11 +14,10 @@
     {% endfor %}
     </ul>
   </li>
-
   <li><a href="#">Select category </a>
     <ul>
     {% for cat in categories %}
-		<li><a class="load-link" rel="{% url 'publication_category' cat %}">{{cat|title}}</a></li>
+		<li><a class="load-link" rel="{% url 'publication_category' cat.kind %}">{{cat.display}}</a></li>
 	{% endfor %}
     </ul>
   </li>
