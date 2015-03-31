@@ -26,7 +26,6 @@ feeds = {
 
 urlpatterns = patterns('',
     # Example:
-    (r'^favicon\.ico$', RedirectView.as_view(url='/media/img/clslogo.ico')),
     (r'^wiki/', include('simplewiki.urls')),
     (r'^apply/', include('application_form.urls')),
     (r'^beamtime/', include('scheduler.admin_urls')),
@@ -38,7 +37,7 @@ urlpatterns = patterns('',
     #url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
     #url(r'^grappelli/', include('grappelli.urls')),
-    url(r'admin/page/page/jsi18n/',     RedirectView.as_view(url='/admin/jsi18n/')),
+    url(r'^admin/page/page/jsi18n/',     RedirectView.as_view(url='/admin/jsi18n/')),
 
     (r'^admin/', include(admin.site.urls)),
 

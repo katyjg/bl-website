@@ -28,6 +28,7 @@ SITE_ID = 1
 INTERNAL_IPS = ()
 # IP networks that you want to have access to your wiki (eg. CLS network)
 ALLOWED_NETWORKS = ('10.52.28.0/255.255.252.0', '10.52.4.0/255.255.252.0', '10.45.2.0/255.255.252.0','10.63.240.0/255.255.252.0',)
+ALLOWED_HOSTS = ['*']
 
 ROOT_URLCONF = 'website.urls'
 
