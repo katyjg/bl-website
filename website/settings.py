@@ -2,6 +2,8 @@ URL_ROOT = 'http://cmcf.lightsource.ca'
 URL_ROOT = 'http://10.52.7.240'
 SITE_NAME_SHORT = 'CMCF'
 
+USO_API = "http://opi2051-001:9000/api/v1/"
+
 ########## The rest of this file shouldn't need any configuration ##############
 
 import os, sys
@@ -51,7 +53,6 @@ SUIT_CONFIG = {
         {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
         '-',
         {'label': 'Beamtime', 'icon':'icon-calendar', 'url': '/beamtime/admin'},
-        {'label': 'Statistics', 'icon':'icon-signal', 'url': '/statistics/admin'},        
     ),
     'LIST_PER_PAGE': 25
 }

@@ -1281,6 +1281,18 @@ ul.hr-list li+li{
 ul.hr-list h3{
     border-bottom: none !important;
 }
+ul.pub-list {
+	margin-left: 0px !important;
+}
+ul.pub-list li {
+	padding-left: 5px !important;
+}
+ul.pub-list li:hover {
+	background-color: #eee;
+}
+.load-link {
+	cursor: pointer;
+}
 div.news-entry {
     line-height: 1.2em;
 }
@@ -1501,3 +1513,14 @@ span.alert {
 .pull-left {
 	float: left;
 }
+.pull-right {
+	float: right;
+}
+ul#drop-nav li {display: block;position: relative;float: right;border:1px solid #ddd;background: #f7f7f7; }
+li ul {display: none;}
+ul#drop-nav li a {display: block;background: #f7f7f7; padding: 5px 10px 5px 10px;text-decoration: none;
+         white-space: nowrap;color: #000;}
+ul#drop-nav li a:hover {background: #eee;}
+ul#drop-nav li:hover ul {display: block; position: absolute; right: 0; border-bottom: 1px solid #ddd;}
+ul#drop-nav li:hover li {float: none;}
+#drop-nav li ul li {border-bottom: 0px;}

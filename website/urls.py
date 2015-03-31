@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     (r'^wiki/', include('simplewiki.urls')),
     (r'^apply/', include('application_form.urls')),
     (r'^beamtime/', include('scheduler.admin_urls')),
-    (r'^statistics/', include('publications.urls')),
+    (r'^pubs/', include('publications.urls')),
 
     # This avoids breaking Django admin's localization JavaScript when using
     # the FeinCMS frontend editing:

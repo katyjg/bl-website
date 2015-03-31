@@ -2,3 +2,10 @@
 .grappelliSkin span.mce_sup { background-image: url('/media/img/buttons/superscript.png'); }
 .grappelliSkin span.mce_anchor { background-image: url('/media/img/buttons/anchor.png'); }
 .grappelliSkin span.mce_indent { background-image: url('/media/img/buttons/indent.png'); }
+
+#content .panel {
+	pointer-events: none;
+}
+#content .panel div {
+	pointer-events: auto;
+}

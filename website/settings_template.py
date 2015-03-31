@@ -17,6 +17,9 @@ SITE_NAME_LONG = 'Some Beamline'
 SITE_DESCRIPTION = 'A tagline about some beamline'
 SITE_KEYWORDS = 'lightsource,canadian,cls,some-keywords-for-your-beamline'
 
+# This should be the name assigned to your beamline in the User Office Software
+USO_BEAMLINE = "some-bl"
+
 # Django house-keeping stuff specific to your site
 ########################################################################################################
 

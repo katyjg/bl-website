@@ -206,7 +206,6 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('blog.slider_urls',                   'News Items (Slider)'),
     ('publications.urls',                  'Publications (List)'),
     ('publications.brief_urls',            'Publications (Teaser)'),
-    ('publications.poster_urls',           'Posters List'),
     ('contact_form.urls',                  'Feedback Form'),
     ('application_form.urls',              'Application Form'),
     ('application_form.registration_urls', 'Registration Form'),

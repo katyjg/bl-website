@@ -1,12 +1,11 @@
 from django.conf.urls import *
+from django.views.decorators.cache import cache_page
 
 from publications import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.publication_list, {"paginate_by": 20, "template_name": 'publications/publication_list.html'}, name ="publication_index"),
-    url(r'^(?P<year>\d{4})/$', views.publication_archive_year, name='publication_archive_year'),
-    url(r'^admin/$', views.admin_publication_stats, name='admin-pub-stats'),
-    url(r'^admin/extra/(?P<field>[-\w]+)$', views.admin_pub_table, name='admin-pub-table'),                        
+    url(r'^$', cache_page(60*60)(views.publication_list), {}, name ="publication_index"),
+    url(r'^category/(?P<category>[-\w]+)$', cache_page(60*60)(views.publication_list), {}, name ="publication_category"),
 )
 
 
