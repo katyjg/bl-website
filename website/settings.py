@@ -44,7 +44,6 @@ SUIT_CONFIG = {
     'MENU': (
         {'app': 'page', 'label': 'Web Pages', 'icon': 'icon-share'},
         {'app': 'blog', 'label': 'News Items', 'icon': 'icon-star','models':('post','category')},
-        {'app': 'publications', 'icon': 'icon-book','models': ('publication','poster','journal')},
         {'app': 'scheduler', 'label': 'Scheduling', 'icon': 'icon-time'},
         {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
         {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
