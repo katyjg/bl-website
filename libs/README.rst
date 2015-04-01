@@ -9,18 +9,20 @@ For each dependency, the full-name, documentation url and license-type is listed
 below.
 
 
-* django-south: http://south.aeracode.org/
-    - Apache Software License
-* django-mptt: https://pypi.python.org/pypi/django-mptt
-	- MIT License
-* feincms: https://pypi.python.org/pypi/FeinCMS/1.10.1
-	- BSD License
-* django-suit: https://pypi.python.org/pypi/django-suit
-	- Creative Commons Attribution-NonCommercial 3.0
 * django-recaptcha: https://pypi.python.org/pypi/django-recaptcha
+	- BSD License
+* feincms: https://pypi.python.org/pypi/FeinCMS/1.10.1
 	- BSD License
 * django-filebrowser-no-grappelli: https://github.com/smacker/django-filebrowser-no-grappelli
 	- https://github.com/smacker/django-filebrowser-no-grappelli
+* django-mptt: https://pypi.python.org/pypi/django-mptt
+	- MIT License
+* python-requests: http://docs.python-requests.org/en/latest/
+	- Apache2 License
+* django-south: http://south.aeracode.org/
+    - Apache Software License
+* django-suit: https://pypi.python.org/pypi/django-suit
+	- Creative Commons Attribution-NonCommercial 3.0
 
 In addition, system versions of the following modules are installed:
 
