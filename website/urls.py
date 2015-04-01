@@ -81,10 +81,10 @@ if settings.DEBUG:
             }),                               
                             
         (r'^media/(?P<path>.*)/$', 'django.views.static.serve', {
-            'document_root': '%s/cmcf/media' % settings.ABSOLUTE_PATH_TO_FILES 
+            'document_root': '%s/website/media' % settings.ABSOLUTE_PATH_TO_FILES 
             }),
         (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': '%s/cmcf/media/uploads' % settings.ABSOLUTE_PATH_TO_FILES}),                            
+            {'document_root': '%s/website/media/uploads' % settings.ABSOLUTE_PATH_TO_FILES}),                            
     )
 
 urlpatterns += patterns('',
