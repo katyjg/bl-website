@@ -1,4 +1,8 @@
-Thank you for applying for the 3rd Annual CLS Mx Data Collection School!  Here is a copy of the information you provided on our online application form:
+Thank you for applying for the CLS Mx Data Collection School!  Your application will be reviewed by the selection committee, and you will be notified of the results following the application deadline.
+
+For the latest information about the Mx Data Collection School, visit our website at http://cmcf.lightsource.ca/school/.
+
+Here is a copy of the information you provided on our online application form:
 
 PERSONAL INFORMATION:
 
@@ -31,6 +35,8 @@ Require Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
 
 ACCOMMODATIONS: {% if stay == 'yes' %}Request accommodations on campus.{% else %}{% if stay == 'no' %}Will make own accommodation arrangements.{% else %}Not specified {% endif %}{% endif %}
 
+CRYSTALLOGRAPHY REVIEW: {% if workshop == 'yes' %}Interested in attending.{% else %}{% if workshop == 'no' %}Not interested.{% else %}Not specified.{% endif %}{% endif %}
+
 PLAN TO BRING CRYSTALS: {% if crystals %}{{crystals}}{% else %}Not specified{% endif %}
 
 RESEARCH INTERESTS/EXPERIENCE:
@@ -39,9 +45,13 @@ Research Abstract:
 
 {{research}}
 
-Experience/Benefit:
+Experience/How this course will benefit you:
 
 {{benefit}}
+
+Familiarity with programs/linux:
+
+{% for e in experience %}{{e}}{% if not forloop.last %}, {% endif %}{% endfor %}
 
 
 

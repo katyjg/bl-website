@@ -5,10 +5,10 @@
     {% for app in apps %}
       <li style="border-bottom: 1px solid #dddddd;"><a name="{{app.first_name}}-{{app.last_name}}"></a>
         <h4>{% ifequal title 'Poster' %}P{{forloop.counter}}. {% endifequal %}{% if app.headline %}{{app.headline}}{% else %}{{app.authors}}{% endif %}</h4>
-        {% if app.headline %}<p><strong>{{app.authors}}</strong></p>{% endif %}
+        {% if app.headline %}<p><strong>{{app.authors}}</strong></p><p style="font-size:90%">{{app.affiliations}}</p>{% endif %}
         <p><em>Presented by {{app.get_title_display}} {{app.first_name}} {{app.last_name}}, {{app.institution}}</em></p>
         <p>{{app.abstract}}</p>
-        <a style="float:right; clear: both;" href='/psfam/schedule/'>View full schedule</a><br>
+        <!-- a style="float:right; clear: both;" href='/psfam/schedule/'>View full schedule</a--><br>
       </li>
     {% endfor %}
   </ul>

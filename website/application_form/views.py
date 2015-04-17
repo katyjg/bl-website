@@ -30,7 +30,7 @@ def application_form(request, form_class=ApplicationForm, model=Application,
                 else: form_dict[key] = 0
             applicant = Application()
         elif form_class == RegistrationForm:
-            bools = ['talk']
+            bools = ['mixer']
             applicant = Registration()
             if not request.POST.has_key('type'): form_dict['type'] = None
         

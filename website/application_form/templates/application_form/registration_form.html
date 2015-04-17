@@ -1,6 +1,6 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 
-<p>The deadline for registration is May 15, 2013, but early registration is encouraged.</p>
+<p>The deadline for registration is May 1, 2015, but early registration is encouraged.</p>
 
 <b>Required fields are marked by <span class="req">*</span>.</b>
 
@@ -57,6 +57,10 @@
 	    <label class="desc" for="diet">Please outline any special dietary needs or concerns you may have:</label><br>
 	    {{ form.diet }}
 	</p>
+	<p>
+	    <label class="desc" for="mixer">Do you plan to attend the mixer on the evening of May 6?</label><br>
+	    {{ form.mixer }}
+	</p>
 
 <h2>If you are a student, provide contact information for your supervisor:</h2>
 	<p>
@@ -65,32 +69,32 @@
 	</p><p>
 	    <label class="desc" for="sup_email">Supervisor's Email</label><br>
 	    {{ form.sup_email }}
-	</p><p>
-	    <label class="desc" for="sup_phone">Supervisor's Phone Number</label><br>
-	    {{ form.sup_phone }}
 	</p>
 
 <h2>Abstract Submission</h2>
 	<p>
-		<label for="talk">Would you like to present your work at the 1<sup>st</sup> Annual Protein Structure, Function and Malfunction Meeting?</label>
-		{{ form.talk }}
+		<label class="desc" for="type">If you would like to present your work at this year's meeting, please select your preferred method(s):</label><br>
+	    {{ form.talk }}<label class="choice" for="talk">Give a 15 minute oral presentation</label><br>
+	    {{ form.poster }}<label class="choice" for="poster">Participate in a poster session</label><br>
 	</p><p>
-		<label for="type">Would you prefer to give a short (10-15 minute) oral presentation, or to participate in a poster session?</label>
-		{{ form.type }}
-	</p><p>
-	    <label for="headline">Presentation Title</label><br>
+	    <label class="desc" for="headline">Presentation Title</label><br>
 	    {{ form.headline }}
 	</p><p>	
-	    <label for="authors">Authors</label><br>
-	    {{ form.authors }}
+	    <label class="desc" for="authors">Authors</label><br>
+	    {{ form.authors }}<br>
+	    <label class="subdesc">eg. John Smith [1], Joanne Wilson [2]</label><br>
 	</p><p>
-	    <label for="abstract">Please include a short abstract for your presentation or poster. (Maximum 250 words)</label><br>
+	    <label class="desc" for="affiliations">Author Affiliations</label><br>
+	    {{ form.affiliations }}<br>
+	    <label class="subdesc" style="width:100%">eg. [1] University of Saskatchewan; [2] University of Manitoba</label><br>
+	</p><p>
+	    <label class="desc" for="abstract">Please include a short abstract for your presentation or poster. (Maximum 250 words)</label><br>
 	    {{ form.abstract }}
 	</p>
 
 <h2>Complete Registration</h2>
 	<p>
-		Before completing your registration, please type the two words you see in the box.<br>
+		Before completing your registration, please type the characters you see in the box.<br>
 		{{ form.captcha }}
 	</p><p>
 		<input type='submit' value='Register' tabindex="30" />

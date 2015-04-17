@@ -27,7 +27,6 @@ feeds = {
 urlpatterns = patterns('',
     # Example:
     (r'^wiki/', include('simplewiki.urls')),
-    #(r'^apply/', include('application_form.urls')),
     (r'^beamtime/', include('scheduler.admin_urls')),
     (r'^pubs/', include('publications.urls')),
 

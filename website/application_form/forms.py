@@ -238,6 +238,7 @@ class RegistrationForm(forms.Form):
     other_text = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':20, 'style': 'float:none;'}), required=False)
 
     diet = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=21)))
+    mixer = forms.ChoiceField(choices=ApplicationForm.choices,widget=forms.RadioSelect(attrs=dict(attrs_dict, tabindex=22)), required=False)
 
     sup_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=22)), required=False)
     sup_email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=23)), required=False)
