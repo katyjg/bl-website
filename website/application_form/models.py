@@ -102,8 +102,8 @@ class Registration(models.Model):
     affiliations = models.CharField(_('Author Affiliations'), max_length=500, blank=True)
     
     diet = models.TextField(_('Dietary Concerns'), blank=True)
-    mixer = models.BooleanField(_('Attending Mixer'), blank=False, default=False)
-    
+    mixer = models.BooleanField(_('Attending Mixer'), blank=False)    
+
     created = models.DateTimeField(_('created'), auto_now_add=True)
 
     class Meta:
@@ -120,5 +120,6 @@ class Registration(models.Model):
     
     
 class RegistrationAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'institution', 'state', 'country', 'talk','type','abstract_provided')
+    list_display = ('last_name', 'institution', 'state', 'country', 'talk','poster','abstract_provided')
 admin.site.register(Registration, RegistrationAdmin)
+
