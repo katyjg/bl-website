@@ -12,10 +12,10 @@ from application_form.models import Application, Registration
 def application_form(request, form_class=ApplicationForm, model=Application,
                  template_name='application_form/application_form.html',
                  template_retry='application_form/application_form_retry.html',
-                 success_url=None, extra_context=None,
+                 success_url='sent', extra_context=None,
                  fail_silently=False):
 
-    success_url = ( success_url is None and reverse('application_form_sent') or reverse(success_url) )
+    success_url = ( success_url or reverse('application_form_sent'))
     if request.method == 'POST':
         form = form_class(data=request.POST, files=request.FILES, request=request)
         form_dict = {}
