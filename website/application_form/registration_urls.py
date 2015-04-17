@@ -1,5 +1,4 @@
 from django.conf.urls import *
-from django.views.generic.simple import direct_to_template
 from django.views.generic import TemplateView
 
 from application_form.views import application_form, applicant_list, participant_list

@@ -50,7 +50,7 @@
             </td>
             <td>{% if app.talk %}<a style="text-align: center; display:block;">&#10004;</a>{% endif %}</td>
             <td>{% ifequal app.type 0 %}Poster{% else %}{% ifequal app.type 1 %}Oral{% endifequal %}{% endifequal %}</td>
-            {% if app.abstract_provided %}<td><a style="display:block; text-align: center;" href="{% url registration_abstract_list %}#{{app.first_name}}-{{app.last_name}}">View</a></td>{% else %}
+            {% if app.abstract_provided %}<td><a style="display:block; text-align: center;" href="{% url 'registration_abstract_list' %}#{{app.first_name}}-{{app.last_name}}">View</a></td>{% else %}
             <td></td>{% endif %}
             <td>{{app.diet}}</td>
             <td>{{app.headline}}</td>
