@@ -6,7 +6,7 @@ from application_form.forms import RegistrationForm
 from application_form.models import Registration
 
 urlpatterns = patterns('',
-   url(r'^$', application_form, {'model': Registration, 'form_class': RegistrationForm, 'template_name': 'application_form/registration_form.html', 'template_retry': 'application_form/registration_form_retry.html', 'success_url': 'registration_form_sent' }, name='registration_form'),
+   url(r'^$', application_form, {'model': Registration, 'form_class': RegistrationForm, 'template_name': 'application_form/registration_form.html', 'template_retry': 'application_form/registration_form_retry.html', 'success_url': 'sent' }, name='registration_form'),
    url(r'^sent/$', TemplateView.as_view(template_name='application_form/registration_form_sent.html'), name='registration_form_sent'),
    url(r'^oops/$', TemplateView.as_view(template_name='application_form/registration_form_retry.html'), name='registration_form_retry'),
    url(r'^706d24997absdjckw325812f81a58e369/$', participant_list, {'template': 'application_form/participant_list.html' }, name='participant_list'),
