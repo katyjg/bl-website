@@ -1,3 +1,5 @@
+{% load applicationcontent_tags %}
+
 <h2>Registrations Received:</h2>
 <div style="margin-left:-48px; margin-right: -37px;" id="schedule">
 <table>
@@ -51,7 +53,7 @@
             </td>
             <td>{% if app.talk %}<a style="text-align: center; display:block;">&#10004;</a>{% endif %}</td>
             <td>{% if app.poster %}<a style="text-align: center; display:block;">&#10004;</a>{% endif %}</td>
-            {% if app.abstract_provided %}<td><a style="display:block; text-align: center;" href="{% url 'registration_abstract_list' %}#{{app.first_name}}-{{app.last_name}}">View</a></td>{% else %}
+            {% if app.abstract_provided %}<td><a style="display:block; text-align: center;" href="{% app_reverse 'registration_abstract_list' 'application_form.registration_urls' %}#{{app.first_name}}-{{app.last_name}}">View</a></td>{% else %}
             <td></td>{% endif %}
 	    <td>{% if app.mixer %}<a style="text-align: center; display: block;">&#10004;</a>{% endif %}</td>
             <td>{{app.diet}}</td>

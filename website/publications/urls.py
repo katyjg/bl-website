@@ -5,7 +5,5 @@ from publications import views
 
 urlpatterns = patterns('',
     url(r'^$', cache_page(60*60)(views.publication_list), {}, name ="publication_index"),
-    url(r'^category/(?P<category>[-\w]+)$', cache_page(60*60)(views.publication_list), {}, name ="publication_category"),
+    url(r'^cat/(?P<category>[-\w]+)$', cache_page(60*60)(views.publication_list), {}, name ="publication_category"),
 )
-
-

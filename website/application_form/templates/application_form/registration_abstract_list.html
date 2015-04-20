@@ -1,3 +1,5 @@
+{% load applicationcontent_tags %}
+
 {% for title, apps in present.items %}
 <h2>{{title}} Presentations:</h2>
 <div id="schedule">
@@ -8,7 +10,7 @@
         {% if app.headline %}<p><strong>{{app.authors}}</strong></p>{% endif %}
         <p><em>Presented by {{app.get_title_display}} {{app.first_name}} {{app.last_name}}, {{app.institution}}</em></p>
         <p>{{app.abstract}}</p>
-        <a style="float:right; clear: both;" href="{% url 'participant_list' %}">Back to list of registrants</a><br>
+        <a style="float:right; clear: both;" href="{% app_reverse 'participant_list' 'application_form.registration_urls' %}">Back to list of registrants</a><br>
       </li>
     {% endfor %}
   </ul>

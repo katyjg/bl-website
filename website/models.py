@@ -201,14 +201,14 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('scheduler.contacts_urls',            'Personnel List'),
     ('scheduler.oncall_urls',              'Local Contact Legend'),
     ('galleriffic.urls',                   'Photo Galleries'),
+    ('publications.urls',                  'Publications (List)'),
+    ('publications.brief_urls',            'Publications (Teaser)'),
     ('blog.urls',                          'News Items (Full)'),
     ('blog.brief_urls',                    'News Items (Teaser)'),
     ('blog.slider_urls',                   'News Items (Slider)'),
-    ('publications.urls',                  'Publications (List)'),
-    ('publications.brief_urls',            'Publications (Teaser)'),
     ('contact_form.urls',                  'Feedback Form'),
     ('application_form.urls',              'Application Form'),
-    ('application_form.registration_urls', 'Registration Form'),
+    ('application_form.registration_urls', 'PSFaM Registration'),
     ('application_form.abstract_urls',     'Registrant Abstracts'),
     ))    
 
@@ -218,7 +218,7 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
 Entry.create_content_type(RawContent)
 Entry.create_content_type(ImageContent, POSITION_CHOICES=(
     ('default', 'Default position'),
-    ))'''
+))'''
     
 from django.db import models as django_models
     
