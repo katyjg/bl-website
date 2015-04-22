@@ -11,7 +11,7 @@
 
 {% for ml in midlevel %}
     {% if ml|is_equal_or_parent_of:feincms_page %}
-        {% feincms_nav ml as level=4 submidlevel %}
+        {% feincms_nav ml level=4 as submidlevel %}
 
 {% if submidlevel %}
 
