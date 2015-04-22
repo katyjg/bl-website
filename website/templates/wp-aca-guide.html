@@ -5,7 +5,7 @@
 
 {% block "page-content" %}
 
-{% feincms_nav of feincms_page level=4 as subsubsublevel %}
+{% feincms_nav feincms_page level=4 as subsubsublevel %}
 {% feincms_nav feincms_page level=3 as subsublevel %}
 {% feincms_nav feincms_page level=2 as midlevel %}
 
@@ -166,7 +166,7 @@
 	    </div>
 
      	<div class="col-3">
-    	    {% feincms_nav of feincms_page as sublevel level=2 %}
+    	    {% feincms_nav feincms_page level=2 as sublevel %}
             <ul class="submenu" >
     	    {% for sp in sublevel %}
 	        	{% feincms_nav sp level=4 as subsubsublevel %}
