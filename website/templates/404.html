@@ -49,23 +49,9 @@ function addBookmark(title,url) {
 <div id="main-wrapper">
 	<div id="header">
 	    <div class="banner">
-	    <div class="logo">
-		<div class="wrapper"> 
-	    </div>
-	    <ul>
-	    {% feincms_nav feincms_page level=1 as toplevel %}
-	    {% for p in toplevel %}
-	    <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
-	        {% feincms_nav p level=2 as sublevel %}
-	            {% if sublevel %}{% for sp in sublevel %}
-	                {% if forloop.first %}<ul class="nav-submenu">{% endif %}
-	                <li><a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a></li>
-	                {% if forloop.last %}</ul>{% endif %}
-	            {% endfor %}{% endif %}
-	        </li>
-	    {% endfor %}
-	</ul>
-	    </div>
+	      <div class="logo">
+			<div class="wrapper"></div>
+	      </div>
 	    </div>
 	</div>
 
