@@ -1,9 +1,7 @@
 URL_ROOT = 'http://cmcf.lightsource.ca'
-URL_ROOT = 'http://10.52.7.240'
 SITE_NAME_SHORT = 'CMCF'
 
 USO_API = "http://uso-test.clsi.ca/api/v1/"
-#USO_API = "http://opi2051-001:9000/api/v1/"
 
 ########## The rest of this file shouldn't need any configuration ##############
 
