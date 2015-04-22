@@ -31,16 +31,18 @@ function addBookmark(title,url) {
 <link REL="SHORTCUT ICON" HREF="/media/img/clslogo.ico">
 <meta name="google-site-verification" content="9T6_aOBqv3je6XSCFybrgP0jym91Y6L7dVLdnBAWDWo" >
 
-<!-- Put the following javascript before the closing </head> tag. -->
-<script>
-  (function() {
-    var cx = '010878230005256235308:khvtu893wew';
-    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-        '//www.google.com/cse/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
-  })();
-</script>
+	{% if "GCSE_ID"|get_from_settings %}
+	<!-- Put the following javascript before the closing </head> tag. -->
+	<script>
+	  (function() {
+	    var cx = '{{ "GCSE_ID"|get_from_settings }}';
+	    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+	    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+	        '//www.google.com/cse/cse.js?cx=' + cx;
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+	  })();
+	</script>
+	{% endif %}
 
 </head>
 <body>
@@ -51,7 +53,7 @@ function addBookmark(title,url) {
 		<div class="wrapper"> 
 	    </div>
 	    <ul>
-	    {% feincms_nav / level=1 as toplevel %}
+	    {% feincms_nav feincms_page level=1 as toplevel %}
 	    {% for p in toplevel %}
 	    <li><a {% if p|is_equal_or_parent_of:feincms_page %}class="current"{% endif %} href='{{ p.get_absolute_url }}'>{{ p.title }}</a>
 	        {% feincms_nav p level=2 as sublevel %}
@@ -101,7 +103,6 @@ function addBookmark(title,url) {
 			<a href="/sitemap/">Site Map</a> |
             <a href="/contact-us/feedback/">Feedback</a> |
             <a href="javascript:addBookmark('{{ 'SITE_NAME_LONG'|get_from_settings }}', '{{ 'URL_ROOT'|get_from_settings }}')">Add Bookmark</a> | 
-            <a href="/links/">Links</a> |
             <a href="/feeds/latest/" class="feed">RSS</a> 
 		</p>
 	</div>
