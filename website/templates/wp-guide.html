@@ -5,24 +5,14 @@
 {% block "page-content" %}
 
     {% feincms_nav feincms_page level=2 as midlevel %}
+	{% feincms_nav feincms_page level=3 as submidlevel %}
 
 	{% for ml in midlevel %}
 	    {% if ml|is_equal_or_parent_of:feincms_page %}
-	        {% feincms_nav ml level=4 as submidlevel %}
-	
-			{% if submidlevel %}
-	
-	            {% feincms_nav feincms_page level=2 as toplevel %}
-				{% feincms_nav feincms_page level=4 as sublevel %}
-			    {% feincms_nav feincms_page level=3 as subsublevel %}
-
-			{% else %}
 			
 		        {% feincms_nav feincms_page level=1 as toplevel %}	
 				{% feincms_nav feincms_page level=3 as sublevel %}
 			
-			{% endif %}
-	
             <div id="headline">
                 <div class="wrapper">
                     <h2>{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}
@@ -49,6 +39,8 @@
 			                </td></tr></table>
 			            {% endifnotequal %}
 			            {% feincms_render_region feincms_page "col2" request %}
+			            
+			            
 			            {% for sp in sublevel %}{% if sp.content.col2 %}
 			                <h2><a name={{sp.slug}}></a><span>{{ sp.title }}</span></h2>
 			                {% feincms_render_region sp "col2" request %}
@@ -62,28 +54,12 @@
                                 <gcse:searchbox-only></gcse:searchbox-only></li>
 			      	    {% for sp in sublevel %}
 			      	      {% ifnotequal sp.title "Search Results" %}
-				            {% feincms_nav sp level=4 as subsubsublevel %}
 			         	    <li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
    			                    <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
-			            	    {% if subsubsublevel %}
-			            	    	<span class="{% if sp|is_equal_or_parent_of:feincms_page %}open
-			            	    	             {% else %}closed{% endif %}"></span>
-			            	    {% endif %}
 			        	    </li>
-			        	    {% if submidlevel %}
-				                {% if sp|is_equal_or_parent_of:feincms_page %}
-				                    {% for ssp in subsublevel %}
-				                	    <li class="subsubmenu 
-				                	        {% if ssp|is_equal_or_parent_of:feincms_page %} current{% endif %}">
-				                            <a href="{{ ssp.get_absolute_url }}">{{ ssp.title }}</a>
-				                        </li>
-				                    {% endfor %}
-				        	    {% endif %}
-				        	{% endif %}
                           {% endifnotequal %}				        	
 			        	{% endfor %}
 			            </ul>
-			        	<!-- {% feincms_render_region feincms_page "col1" request %} -->
 			        </div>
 			
 			    </div>
