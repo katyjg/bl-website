@@ -1,0 +1,39 @@
+Thank you for registering for the 3rd Annual Protein Structure, Function and Malfunction Meeting!  Here is a copy of the information you provided on our online registration form:
+
+PERSONAL INFORMATION:
+
+Name: {{title}} {{first_name}} {{last_name}} 
+Email: {{email}}
+Phone: {{phone}}
+Institution: {{institution}}
+Mailing Address: 
+    {{addr1}}{% if addr2 %}
+    {{addr2}}{% endif %}
+    {{city}}, {{state}}
+    {{code}}
+    {{country}}
+Position: {% if undergrad or masters or phd or postdoc or faculty or staff or other %}{% if undergrad %}Undergraduate Student{% if masters or phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if masters %}Masters Student{% if phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if phd %}PhD Student{% if postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if postdoc %}Postdoctoral Fellow{% if faculty or staff or other %}/{% endif %}{% endif %}{% if faculty %}Faculty{% if staff or other %}/{% endif %}{% endif %}{% if staff %}Research Staff{% if other %}/{% endif %}{% endif %}{% if other %}Other ({{other_text}}){% endif %}{% else %}Not specified{% endif %}
+Dietary Concerns: {% if diet %}{{diet}}{% else %}None{% endif %}
+Planning to attend mixer on Wednesday, May 6: {{ mixer }}
+
+SUPERVISOR CONTACT INFORMATION:
+
+{% if sup_name %}Name: {{sup_name}}
+Email: {{sup_email}}
+Phone: {{sup_phone}}
+{% else %}    None provided {% endif %}
+
+ABSTRACT SUBMISSION:
+
+Presentation Preference: {% if talk or poster %}{% if talk %}Oral {% endif %}{% if talk and poster %}and {% endif %}{% if poster %}Poster {% endif %}Presentation{% else %}No presentation{% endif %}
+{% if talk or poster %}Title: {% if headline %}{{headline}}{% else %}None Provided{% endif %}
+Authors: {% if authors %}{% autoescape off %}{{authors}}{% endautoescape %}{% else %}None Provided{% endif %}
+Affiliations: {% if affiliations %}{% autoescape off %}{{affiliations}}{% endautoescape %}{% else %}None Provided{% endif %}
+Abstract: {% if not abstract %}None Provided{% endif %}
+{% autoescape off %}{{ abstract }}{% endautoescape %}{% endif %}
+
+For information on accommodations in Saskatoon, visit our website at http://cmcf.lightsource.ca/psfam/accommodations.  Please contact us if you have any questions while planning your trip, and e-mail Doreen Stumborg at doreen.stumborg@usask.ca with any additions or corrections to the information above.  We look forward to seeing you in Saskatoon in May! 
+
+Sincerely,
+
+The PSFaM Meeting Organizers

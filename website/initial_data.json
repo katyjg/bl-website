@@ -1,0 +1,479 @@
+[
+{
+  "pk": 1, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 2, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T16:58:48.191", 
+    "parent": null, 
+    "level": 0, 
+    "title": "Home", 
+    "override_url": "/", 
+    "creation_date": "2015-03-31T16:48:27.039", 
+    "lft": 1, 
+    "template_key": "wp-home", 
+    "tree_id": 1, 
+    "active": true, 
+    "in_navigation": true, 
+    "_cached_url": "/", 
+    "slug": "home"
+  }
+},
+{
+  "pk": 2, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 2, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:18:37.252", 
+    "parent": null, 
+    "level": 0, 
+    "title": "News and Updates", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T16:56:52.537", 
+    "lft": 1, 
+    "template_key": "wp-base", 
+    "tree_id": 4, 
+    "active": true, 
+    "in_navigation": false, 
+    "_cached_url": "/research-highlights/", 
+    "slug": "research-highlights"
+  }
+},
+{
+  "pk": 3, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 2, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T16:59:19.427", 
+    "parent": null, 
+    "level": 0, 
+    "title": "Publications", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T16:59:19.427", 
+    "lft": 1, 
+    "template_key": "wp-base", 
+    "tree_id": 5, 
+    "active": true, 
+    "in_navigation": false, 
+    "_cached_url": "/publications/", 
+    "slug": "publications"
+  }
+},
+{
+  "pk": 4, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 2, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:00:24.324", 
+    "parent": null, 
+    "level": 0, 
+    "title": "Photo Galleries", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:00:24.324", 
+    "lft": 1, 
+    "template_key": "wp-gallery", 
+    "tree_id": 6, 
+    "active": true, 
+    "in_navigation": false, 
+    "_cached_url": "/images/", 
+    "slug": "images"
+  }
+},
+{
+  "pk": 5, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 4, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:03:09.794", 
+    "parent": null, 
+    "level": 0, 
+    "title": "Contact Us", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:01:54.103", 
+    "lft": 1, 
+    "template_key": "wp-6_6", 
+    "tree_id": 7, 
+    "active": true, 
+    "in_navigation": true, 
+    "_cached_url": "/contact-us/", 
+    "slug": "contact-us"
+  }
+},
+{
+  "pk": 6, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 3, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:03:09.799", 
+    "parent": 5, 
+    "level": 1, 
+    "title": "Feedback", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:03:00.944", 
+    "lft": 2, 
+    "template_key": "wp-base", 
+    "tree_id": 7, 
+    "active": true, 
+    "in_navigation": false, 
+    "_cached_url": "/contact-us/feedback/", 
+    "slug": "feedback"
+  }
+},
+{
+  "pk": 7, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 2, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:04:19.498", 
+    "parent": null, 
+    "level": 0, 
+    "title": "Sitemap", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:04:19.498", 
+    "lft": 1, 
+    "template_key": "wp-sitemap", 
+    "tree_id": 8, 
+    "active": true, 
+    "in_navigation": false, 
+    "_cached_url": "/sitemap/", 
+    "slug": "sitemap"
+  }
+},
+{
+  "pk": 8, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 2, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:09:26.138", 
+    "parent": null, 
+    "level": 0, 
+    "title": "About", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:07:10.525", 
+    "lft": 1, 
+    "template_key": "wp-7_5", 
+    "tree_id": 2, 
+    "active": true, 
+    "in_navigation": true, 
+    "_cached_url": "/about/", 
+    "slug": "about"
+  }
+},
+{
+  "pk": 9, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 8, 
+    "redirect_to": "/user-guide/welcome", 
+    "modification_date": "2015-03-31T17:21:52.577", 
+    "parent": null, 
+    "level": 0, 
+    "title": "User Guide", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:09:58.320", 
+    "lft": 1, 
+    "template_key": "wp-guide", 
+    "tree_id": 3, 
+    "active": true, 
+    "in_navigation": true, 
+    "_cached_url": "/user-guide/", 
+    "slug": "user-guide"
+  }
+},
+{
+  "pk": 10, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 7, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:23:39.402", 
+    "parent": 9, 
+    "level": 1, 
+    "title": "This is another subpage", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:12:44.391", 
+    "lft": 4, 
+    "template_key": "wp-guide", 
+    "tree_id": 3, 
+    "active": true, 
+    "in_navigation": true, 
+    "_cached_url": "/user-guide/subpage/", 
+    "slug": "subpage"
+  }
+},
+{
+  "pk": 11, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 6, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:19:44.866", 
+    "parent": 10, 
+    "level": 2, 
+    "title": "This is a SUB-subpage", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:15:10.929", 
+    "lft": 5, 
+    "template_key": "wp-guide", 
+    "tree_id": 3, 
+    "active": true, 
+    "in_navigation": true, 
+    "_cached_url": "/user-guide/subpage/sub-subpage/", 
+    "slug": "sub-subpage"
+  }
+},
+{
+  "pk": 12, 
+  "model": "page.page", 
+  "fields": {
+    "rght": 3, 
+    "redirect_to": "", 
+    "modification_date": "2015-03-31T17:23:31.332", 
+    "parent": 9, 
+    "level": 1, 
+    "title": "Welcome", 
+    "override_url": "", 
+    "creation_date": "2015-03-31T17:21:19.165", 
+    "lft": 2, 
+    "template_key": "wp-guide", 
+    "tree_id": 3, 
+    "active": true, 
+    "in_navigation": true, 
+    "_cached_url": "/user-guide/welcome/", 
+    "slug": "welcome"
+  }
+},
+{
+  "pk": 1, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>This is the \"Sidebar\" section of your website's home page!</p>", 
+    "region": "sidebar", 
+    "parent": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 1, 
+    "text": "<h2>Quicklinks</h2>\r\n<ul>\r\n<li>Try adding some links in this section!</li>\r\n<li>Make a photo gallery and <a href=\"/images/\">see it here</a>!</li>\r\n</ul>", 
+    "region": "col2", 
+    "parent": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>Add some contact information for the beamline and the facility here!</p>", 
+    "region": "col2", 
+    "parent": 5
+  }
+},
+{
+  "pk": 4, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>Enter some information here about your beamline or area.</p>", 
+    "region": "col1", 
+    "parent": 8
+  }
+},
+{
+  "pk": 5, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>When creating web content, click on \"Other Options\" to try out different templates.&nbsp; Make sure each page looks the way you want.</p>", 
+    "region": "col2", 
+    "parent": 8
+  }
+},
+{
+  "pk": 7, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>This is an example of a subpage.&nbsp; Make as many as you like!</p>", 
+    "region": "main", 
+    "parent": 10
+  }
+},
+{
+  "pk": 8, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>Create multiple pages in the user guide to keep the information organized.&nbsp; Be sure to use the template \"WP Guide\" for each page in the user guide to keep the navigation links working properly.</p>", 
+    "region": "col2", 
+    "parent": 10
+  }
+},
+{
+  "pk": 9, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>Content in sub-subpages is displayed inline like this.&nbsp; If you have lots of sub-subpages, users can click on the title in the Page Contents box to jump to what they were looking for.</p>", 
+    "region": "col2", 
+    "parent": 11
+  }
+},
+{
+  "pk": 10, 
+  "model": "page.richtextcontent", 
+  "fields": {
+    "ordering": 0, 
+    "text": "<p>This is the subpage your users will land on when they go to the User Guide.&nbsp;</p>", 
+    "region": "col2", 
+    "parent": 12
+  }
+},
+{
+  "pk": 2, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "col3", 
+    "parent": 1, 
+    "parameters": "", 
+    "urlconf_path": "blog.brief_urls"
+  }
+},
+{
+  "pk": 3, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "welcome", 
+    "parent": 1, 
+    "parameters": "", 
+    "urlconf_path": "blog.slider_urls"
+  }
+},
+{
+  "pk": 4, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "col1", 
+    "parent": 1, 
+    "parameters": "", 
+    "urlconf_path": "publications.brief_urls"
+  }
+},
+{
+  "pk": 5, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "main", 
+    "parent": 2, 
+    "parameters": "", 
+    "urlconf_path": "blog.urls"
+  }
+},
+{
+  "pk": 6, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "main", 
+    "parent": 3, 
+    "parameters": "", 
+    "urlconf_path": "publications.urls"
+  }
+},
+{
+  "pk": 7, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "main", 
+    "parent": 4, 
+    "parameters": "", 
+    "urlconf_path": "galleriffic.urls"
+  }
+},
+{
+  "pk": 8, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "col1", 
+    "parent": 5, 
+    "parameters": "", 
+    "urlconf_path": "scheduler.contacts_urls"
+  }
+},
+{
+  "pk": 9, 
+  "model": "page.applicationcontent", 
+  "fields": {
+    "ordering": 0, 
+    "region": "main", 
+    "parent": 6, 
+    "parameters": "", 
+    "urlconf_path": "contact_form.urls"
+  }
+},
+{
+  "pk": 1, 
+  "model": "blog.category", 
+  "fields": {
+    "slug": "research-highlight", 
+    "title": "Research Highlight"
+  }
+},
+{
+  "pk": 2, 
+  "model": "blog.category", 
+  "fields": {
+    "slug": "beamline-update", 
+    "title": "Beamline Update"
+  }
+},
+{
+  "pk": 3, 
+  "model": "blog.category", 
+  "fields": {
+    "slug": "news", 
+    "title": "News"
+  }
+},
+{
+  "pk": 1, 
+  "model": "blog.post", 
+  "fields": {
+    "body": "<p>Add a news items to highlight exciting research, or new developments!&nbsp; When adding the item, select an image to display, and check the \"Highlight\" box to have the news item show up in the slider on your home page.</p>", 
+    "status": 2, 
+    "created": "2015-03-31T16:55:15.118", 
+    "author": null, 
+    "image": "uploads/news/photos/cls1.png", 
+    "citation": "", 
+    "modified": "2015-03-31T16:58:22.776", 
+    "publish": "2015-03-31T16:52:21", 
+    "tease": "<p>This is the first news item on the site!&nbsp;</p>", 
+    "link": "", 
+    "categories": [
+      3
+    ], 
+    "highlight": true, 
+    "title": "Welcome to your new website!", 
+    "slug": "new-website", 
+    "tags": ""
+  }
+}
+]

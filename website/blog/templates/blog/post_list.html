@@ -1,0 +1,63 @@
+{% load i18n %}
+<!--
+{% ifequal categories|length 1 %}{% else %}
+    <a href="#{{ category }}"> {{ category }} </a> 
+    {% if forloop.last %}{% else %}-{% endif %}
+{% endifequal %}
+<h2><a name="{{ category }}"></a>{{ category }}</h2>
+-->
+
+<ul class="hr-list">
+		<li>
+			{% for category in categories %}
+				<a href="/research-highlights/categories/{{ category.slug }}"> {{ category }}{% ifnotequal category|make_list|last 's' %}s{% endifnotequal %}  </a>
+				{% if forloop.last %}{% else %}-{% endif %}
+			{% endfor %} 
+			<div class="clear"><br></div>
+		</li>
+    {% for post in object_list %}
+        <li>
+            <div class="news-post">
+                {% if post.image %}
+                    <div class="{% cycle 'image' 'image-odd' %}">
+                        <img src="{{post.image.url}}" alt="{{ post.title }} Image">
+                    </div>
+                {% endif %}
+  	            <div>
+   	                <h3 class="subtitle">
+                        <a name="{{ post.slug }}"></a>
+                        <a class="category" title="View all {{post.categories.all.0}} items" href="/research-highlights/categories/{{post.categories.all.0.slug}}">{{ post.categories.all.0 }}</a>: 
+                        {% if post.link %}
+                            <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">{{ post.title }}</a>
+                        {% else %}
+                            <b class="title-style">{{ post.title }}</b>
+                        {% endif %}
+                    </h3>
+	                Posted on {{ post.publish|date:"F d, Y" }} <br>			
+                    {{ post.body|removetags:"p"|safe }}
+	                {% ifnotequal post.citation "Click for full story..." %}<p class="link">
+                        <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">
+                            {{ post.citation|removetags:"p"|safe }}
+                        </a>
+                    </p>{% endifnotequal %}
+                </div>	      
+            </div>
+            <br class="clear">
+        </li>
+    {% endfor %}
+</ul>
+
+{% if is_paginated %}
+	<p class="pagination">
+    	{% if has_next %}
+   		    <a class="older" href="?page={{ next }}" title="{% trans "View older posts" %}">{% trans "Older" %}</a>
+    	{% endif %}
+    	{% if has_next and has_previous %} | {% endif %}
+    	{% if has_previous %}
+    		<a class="newer" href="?page={{ previous }}" title="{% trans "View newer posts" %}">{% trans "Newer" %}</a>
+    	{% endif %}
+  	</p>
+{% endif %}
+
+
+

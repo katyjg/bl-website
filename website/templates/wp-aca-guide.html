@@ -1,0 +1,191 @@
+{% extends "wp-aca.html" %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+@import "http://s.wordpress.org/style/codex-wp4.css?2";
+@import "http://s.wordpress.org/style/wp4.css?10";
+
+{% block "page-content" %}
+
+{% feincms_nav feincms_page level=4 as subsubsublevel %}
+{% feincms_nav feincms_page level=3 as subsublevel %}
+{% feincms_nav feincms_page level=2 as midlevel %}
+
+{% for ml in midlevel %}
+    {% if ml|is_equal_or_parent_of:feincms_page %}
+        {% feincms_nav ml level=4 as submidlevel %}
+
+{% if submidlevel %}
+
+<div id="headline">
+    <div class="wrapper">
+	    <h2>
+            {% feincms_nav feincms_page level=2 as toplevel %}
+        	{% for p in toplevel %}
+            	{% if p|is_equal_or_parent_of:feincms_page %}
+                    {{ p.title }}
+                {% endif %}
+            {% endfor %}
+        </h2>
+    </div>
+</div>
+
+<div id="pagebody" class="aca">
+    <div class="wrapper">
+
+	    <div class="col-9" id="bodyContent">
+            <div id="guide">
+            	<h2 class="pagetitle">{{feincms_page.title}}</h2>
+        	  	{% feincms_nav feincms_page level=4 as sublevel %}
+	        	{% feincms_nav feincms_page level=2 as toplevel %}
+	        	{% for p in toplevel %}
+	        	    {% feincms_nav p level=3 as sublevel %}
+	        	    {% if sublevel %}
+	            		{% for sp in sublevel %}
+	            		    {% if sp|is_equal_or_parent_of:feincms_page %}
+	            		        {% feincms_nav sp level=4 as subsublevel %}
+	            		        {% if subsublevel %}
+	                			    {% for ssp in subsublevel %}
+                        				{% if forloop.first %}
+                    			            {% ifnotequal subsublevel.count 0 %}{% ifnotequal subsublevel.count 1 %}
+                                				<div id="toc">
+                               						<div id="toctitle"><h2>Page Contents</h2></div>
+                               						<ul>
+                                					{% for sp in subsublevel %}
+	                                   					<li{% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
+                                                            <a href="#{{ sp.slug }}">{{ sp.title }}</a>
+                                                        </li>
+	                               					{% endfor %}
+                               						</ul>
+                                                </div>
+                        				    {% endifnotequal %}{% endifnotequal %}    
+                        				    {% feincms_render_region sp "col2" request %}   				
+                        				{% endif %}
+                           
+
+                                        {% feincms_nav ssp level=5 as subsubsublevel %}
+                                        {% if subsubsublevel %}
+                                            {% for sssp in subsubsublevel %}{% if forloop.first %}
+                                                {% if ssp|is_parent_of:feincms_page %}
+                                                    {% feincms_render_region feincms_page "col2" request %}
+                                                {% else %}
+                                                    {% feincms_render_region ssp "col2" request %}
+                                                {% endif %}                        
+                                            {% endif %}{% endfor %}
+                                        {% else %}
+                        				<a name={{ssp.slug}}></a>
+                        				{% feincms_render_region ssp "col2" request %}
+                                        {% endif %}
+                  				    {% endfor %}
+                                {% else %}
+                                    {% feincms_render_region feincms_page "col2" request %}
+				                {% endif %}
+			                {% endif %}
+            			{% endfor %}
+		            {% endif %}
+	            {% endfor %}		
+	        </div>
+	    </div>
+
+        <div class="col-3">
+          	{% feincms_nav feincms_page level=2 as sublevel %}
+      	    {% feincms_nav feincms_page level=3 as subsublevel %}
+            <ul class="submenu" >
+      	    {% for sp in sublevel %}
+	            {% feincms_nav sp level=4 as subsubsublevel %}
+         	    <li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
+                    <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
+            	    {% if subsubsublevel %}
+            	    	<span class="{% if sp|is_equal_or_parent_of:feincms_page %}open{% else %}closed{% endif %}"></span>
+            	    {% endif %}
+        	    </li>
+                {% if sp|is_equal_or_parent_of:feincms_page %}
+                    {% for ssp in subsublevel %}
+                	    <li class="subsubmenu {% if ssp|is_equal_or_parent_of:feincms_page %} current{% endif %}">
+                            <a href="{{ ssp.get_absolute_url }}">{{ ssp.title }}</a>
+                        </li>
+                    {% endfor %}
+        	    {% endif %}
+        	{% endfor %}
+            </ul>
+        	{% feincms_render_region feincms_page "col1" request %}
+        </div>
+
+    </div>
+</div>
+
+{% else %}
+
+<div id="headline">
+    <div class="wrapper">
+	    <h2>{% feincms_nav feincms_page level=1 as toplevel %}{{feincms_page.title}}</h2>
+    </div>
+</div>
+
+<div id="pagebody" class="aca">
+    <div class="wrapper">
+
+       	<div class="col-9" id="bodyContent">
+      	    {% feincms_nav feincms_page level=3 as sublevel %}
+            {% ifnotequal sublevel.count 0 %}
+	        	<table id="toc" class="toc" summary="Contents"><tr><td>
+	            	<div id="toctitle"><h2>Page Contents</h2></div>
+                    <ul>
+            		{% for sp in sublevel %}
+                	    <li{% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}><a href="#{{ sp.slug }}">{{ sp.title }}</a></li>
+            		{% endfor %}
+                    </ul>
+	        	</td></tr></table>
+            {% endifnotequal %}
+ 	        {% feincms_nav feincms_page level=1 as toplevel %}
+    	    {% for p in toplevel %}
+	        	{% feincms_nav p level=2 as sublevel %}
+               	{% if sublevel %}
+	 	            {% for sp in sublevel %}
+		            	{% if sp|is_equal_or_parent_of:feincms_page %}
+		        	    {% feincms_nav sp level=3 as subsublevel %}
+		            	    {% if subsublevel %}
+		                		{% for ssp in subsublevel %}         				
+		                		    <h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span></h2>
+		                		    {% feincms_render_region ssp "col2" request %}
+		                		{% endfor %}
+		            	    {% endif %}
+		            	{% endif %}
+		            {% endfor %}
+                {% else %}
+                    {% if forloop.first %}
+                    {% feincms_nav feincms_page level=3 as subsublevel %}
+            	    {% if subsublevel %}
+                		{% for ssp in subsublevel %}         				
+                		    <h2><a name={{ssp.slug}}></a><span>{{ ssp.title }}</span></h2>
+                		    {% feincms_render_region ssp "col2" request %}
+                		{% endfor %}
+            	    {% endif %}
+                    {% endif %}
+		        {% endif %}
+   	        {% endfor %}			
+            {% feincms_render_region feincms_page "col2" request %}
+	    </div>
+
+     	<div class="col-3">
+    	    {% feincms_nav feincms_page level=2 as sublevel %}
+            <ul class="submenu" >
+    	    {% for sp in sublevel %}
+	        	{% feincms_nav sp level=4 as subsubsublevel %}
+     	    	<li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
+                    <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
+	            	{% if subsubsublevel %}
+	            	    <span class="{% if sp|is_equal_or_parent_of:feincms_page %}open{% else %}closed{% endif %}"></span>
+	            	{% endif %}
+	        	</li>
+    	    {% endfor %}
+            </ul>
+	        {% feincms_render_region feincms_page "col1" request %}
+    	</div>
+
+    </div>
+</div>
+{% endif %}
+
+    {% endif %}
+{% endfor %}
+
+{% endblock %}

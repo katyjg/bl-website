@@ -1,0 +1,80 @@
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load get_version %}
+
+<html lang="en" dir="ltr">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+<title>{{ feincms_page.title }}</title>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+<link type="text/css" href="/media/css/wp-style.css" rel="stylesheet">
+
+<script type="Text/Javascript">
+function addBookmark(title,url) {
+    if (window.sidebar) {
+        window.sidebar.addPanel(title, url,"");
+    } else if( document.all ) {
+        window.external.AddFavorite( url, title);
+    } else if( window.opera && window.print ) {
+    return true;
+}
+} 
+</script>
+
+<!--[if lt IE 8]>
+<link type="text/css" href="/media/css/ie.css" rel="stylesheet">
+<![endif]-->
+<!--[if lt IE 7]>
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
+<![endif]-->
+<link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="{{ 'SITE_NAME_LONG'|get_from_settings }}">
+<link REL="SHORTCUT ICON" HREF="/media/img/clslogo.ico">
+<meta name="google-site-verification" content="9T6_aOBqv3je6XSCFybrgP0jym91Y6L7dVLdnBAWDWo" >
+
+</head>
+<body>
+<div id="main-wrapper">
+	<div id="header">
+	    <div class="banner">
+	      <div class="logo">
+			<div class="wrapper"></div>
+	      </div>
+	    </div>
+	</div>
+	
+	
+	<div id="headline">
+		<div class="wrapper">
+			<h2>How embarrassing... </h2>
+		</div>
+	</div>
+	
+	<div id="pagebody">
+	    <div class="wrapper">
+            <div id="bodyContent" class="col-12">
+                <h2>We've encountered an Internal Server Error.</h2>
+                    <p>Sorry for the inconvenience!</p>
+                    <ul>
+                        <li>A notification has been sent, and we will try to sort out the problem as soon as possible.  If you would like to help, let us know what you were trying to do when the error occurred through our <a href="/contact-us/feedback/">feedback</a> page.</li>
+                        <li>For now, you can jump back to our <a href="/">home page</a>, or use our search tool to get back to business:</li>
+                    </ul>
+                    <div style="max-width: 400px;"><gcse:searchbox-only></gcse:searchbox-only></div>
+            </div>
+	    </div>
+	</div>
+    <div class="push"></div>
+</div>
+<div id="footer">
+	<div class="wrapper">
+		<p> 
+			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
+			<a href="/sitemap/">Site Map</a> |
+            <a href="/contact-us/feedback/">Feedback</a> |
+            <a href="javascript:addBookmark('{{ 'SITE_NAME_LONG'|get_from_settings }}', '{{ 'URL_ROOT'|get_from_settings }}')">Add Bookmark</a> | 
+            <a href="/feeds/latest/" class="feed">RSS</a> 
+		</p>
+	</div>
+</div>
+</body>
+</html>
+
