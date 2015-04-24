@@ -1,12 +1,12 @@
 .wcsb #header .banner {
-	background: url("/media/img/wcsbbanner.png") no-repeat scroll right top transparent;
+	background: url("/static/img/wcsbbanner.png") no-repeat scroll right top transparent;
 }
 .wcsb #header {
-	background: url("/media/img/header_bg_wcsb.png") repeat-x scroll left top #DCDCDC;
+	background: url("/static/img/header_bg_wcsb.png") repeat-x scroll left top #DCDCDC;
 	width: 960px;
 }
 .wcsb .logo {
-	background: url("/media/img/psfamlogo.png") no-repeat scroll left top transparent !important;
+	background: url("/static/img/psfamlogo.png") no-repeat scroll left top transparent !important;
 }
 body.wcsb {
 	font-size: 15px !important;
@@ -16,7 +16,7 @@ body.wcsb {
 	font-size: 60%;
 }
 .wcsb #main-wrapper {
-	background: url("/media/img/wcsb-bg.png") repeat-y scroll left top;
+	background: url("/static/img/wcsb-bg.png") repeat-y scroll left top;
 	width: 992px;
 	margin: 0px auto;
 	padding-left: 12px;

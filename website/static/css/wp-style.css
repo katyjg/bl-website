@@ -1,4 +1,4 @@
-@import "/media/css/docs.css";
+@import "/static/css/docs.css";
 
 /* The Reset ---------------------------------- */
 html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h7
@@ -105,38 +105,38 @@ div#header-print {
 #header {
 	height: 88px;
 	min-width: 960px;
-	background: #dcdcdc url(/media/uploads/site-images/prod/header.png) top left repeat-x;
+	background: #dcdcdc url(/media/site-images/prod/header.png) top left repeat-x;
     /*background: -moz-linear-gradient( top, #6666cc, #999999)*/
 
 }
 #header.wiki{
-	background: #dcdcdc url(/media/uploads/site-images/prod/wiki_header.png) top right repeat-x;
+	background: #dcdcdc url(/media/site-images/prod/wiki_header.png) top right repeat-x;
 }
 #header.aca{
-	background: #dcdcdc url(/media/img/header_grey.png) top right repeat-x;
+	background: #dcdcdc url(/static/img/header_grey.png) top right repeat-x;
 }
 #header .logo {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
-	background: url(/media/uploads/site-images/prod/logo.png) top left no-repeat;
+	background: url(/media/site-images/prod/logo.png) top left no-repeat;
     height: 88px;    
 }
 #header .aca-logo {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
-	background: url(/media/img/candivlogo_scale.png) top left no-repeat;
+	background: url(/static/img/candivlogo_scale.png) top left no-repeat;
 	height: 88px;
 }
 #header.wiki .logo {
-    background: url(/media/uploads/site-images/prod/wiki_logo.png) top left no-repeat;
+    background: url(/media/site-images/prod/wiki_logo.png) top left no-repeat;
 }
 #header .banner {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
-	background: url(/media/uploads/site-images/prod/overlay.png) top right no-repeat;
+	background: url(/media/site-images/prod/overlay.png) top right no-repeat;
     height: 88px;    
 }
 #header h1, #header h3 {
@@ -165,7 +165,6 @@ h1 {
 #header h2 {
    font: 16px  "Yanone Kaffeesatz", sans-serif;
    background-color: transparent;
-   font-style: italic;
    padding-left: 115px;
    text-shadow: 0 1px 0 #eee;
    line-height: 20px;
@@ -330,11 +329,11 @@ form.dates ul.form-body {
 }
 
 .submit input, .button, .button-secondary, input[type=button], input[type=submit] {
-	background: #f2f2f2 url(/media/img/white-grad.png) repeat-x scroll left top;
+	background: #f2f2f2 url(/static/img/white-grad.png) repeat-x scroll left top;
 }
 
 .submit input:active, .button:active, .button-secondary:active, input[type=button]:active, input[type=submit]:active {
-	background: #eee url(/media/img/white-grad.png) repeat-x scroll left bottom;
+	background: #eee url(/static/img/white-grad.png) repeat-x scroll left bottom;
 }
 
 .button-primary {
@@ -473,16 +472,16 @@ p.link {
     bottom:10px;
     right:10px;
     cursor:pointer;
-    background-image: url(/media/img/to_top_fade.png)
+    background-image: url(/static/img/to_top_fade.png)
 }
 #toTop.wiki, #toTop a.wiki {
-    background-image: url(/media/img/to_top_fade.png)
+    background-image: url(/static/img/to_top_fade.png)
 }
 #toTop:hover, #toTop a:hover {
-    background-image: url(/media/img/to_top.png);
+    background-image: url(/static/img/to_top.png);
 }
 #toTop.wiki:hover, #toTop a.wiki:hover {
-    background-image: url(/media/img/to_top.png)
+    background-image: url(/static/img/to_top.png)
 }
 .quicklinks {
 	background: #eaeaf7;
@@ -565,23 +564,23 @@ p.link {
 }
 
 #home-welcome .quicklinks h2 {
-	background: transparent url(/media/img/howto.png) no-repeat left center;
+	background: transparent url(/static/img/howto.png) no-repeat left center;
 	margin-bottom: 0.25em;
 	padding: 0.25em 34px;
 }
 
 #home-below .quicklinks h2 {
-	background: transparent url(/media/img/quicklink.png) no-repeat left center;
+	background: transparent url(/static/img/quicklink.png) no-repeat left center;
 	padding-left: 34px;
 }
 
 #home-below .news-list h2 {
-	background: transparent url(/media/img/news.png) no-repeat left center;
+	background: transparent url(/static/img/news.png) no-repeat left center;
 	padding-left: 34px;
 }
 
 #home-below .pub-list h2 {
-	background: transparent url(/media/img/pub-list.png) no-repeat left center;
+	background: transparent url(/static/img/pub-list.png) no-repeat left center;
 	padding-left: 32px;
 }
 
@@ -600,7 +599,7 @@ p.link {
 
 .quicklinks ul {
     list-style: disc;
-    list-style-image: url(/media/img/bullet-right.png);
+    list-style-image: url(/static/img/bullet-right.png);
     margin-bottom: 0px;
 }
 
@@ -654,17 +653,17 @@ h5 {
 
 #pagebody ul {
 	margin-left: 16px;
-    list-style-image: url(/media/img/bullet-right.png);
+    list-style-image: url(/static/img/bullet-right.png);
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
 #pagebody ul ul {
-    list-style-image: url(/media/img/bullet-sub.png);
+    list-style-image: url(/static/img/bullet-sub.png);
 }
 
 #pagebody ul ol {
-    list-style-image: url(/media/img/bullet-sub.png);
+    list-style-image: url(/static/img/bullet-sub.png);
 }
 
 #pagebody .submenu, #pagebody #submenu, #pagebody ul.submenu {
@@ -706,11 +705,11 @@ p.person {
 	font-style: italic;
 }
 #pagebody .submenu span.open {
-	background: url(/media/img/arrow_down.png) center right no-repeat;
+	background: url(/static/img/arrow_down.png) center right no-repeat;
 	padding-right: 14px;
 }	
 #pagebody .submenu span.closed {
-	background: url(/media/img/arrow.png) center right no-repeat;
+	background: url(/static/img/arrow.png) center right no-repeat;
 	padding-right: 10px;
 }
 
@@ -768,7 +767,7 @@ p.person {
 }
 
 .feed {
-	background: url(/media/img/feedicon10.png) center left no-repeat;
+	background: url(/static/img/feedicon10.png) center left no-repeat;
 	padding-left: 14px;
 }
 
@@ -1094,12 +1093,12 @@ div.object-list th.sorted
 
 div.object-list th.ascending a, div.object-list th.ascending
 {
-	background:url(/media/img/arrow-down.png) right 50% no-repeat;
+	background:url(/static/img/arrow-down.png) right 50% no-repeat;
 }
 
 div.object-list th.descending a, div.object-list th.descending
 {
-	background:url(/media/img/arrow-up.png) right 50% no-repeat;
+	background:url(/static/img/arrow-up.png) right 50% no-repeat;
 }
 .clickable-header {
 	color: #2f637a;
@@ -1124,7 +1123,7 @@ div.object-list th.descending a, div.object-list th.descending
 	}
 	
 .FacilityRepair {
-	background-image: url(/media/img/repair-pat.png) !important;
+	background-image: url(/static/img/repair-pat.png) !important;
 }
 	
 .oncall {
@@ -1133,13 +1132,13 @@ div.object-list th.descending a, div.object-list th.descending
 }
 
 .today {
-	background-image: url(/media/img/today-pat.png);
+	background-image: url(/static/img/today-pat.png);
 }
 span.now {
     margin-top: 5px; 
     margin-right: -10px;
 	padding-right: 10px;
-    background: url(/media/img/stock_right2.png) no-repeat center;
+    background: url(/static/img/stock_right2.png) no-repeat center;
 }
 .modal-form {color: black; cursor: pointer;}
 .admin {color: #666; }
@@ -1150,13 +1149,13 @@ span.now {
 .delete-tool, .update-tool {
 	width: 16px; 
 	display: none; 
-	background: url(/media/img/delete-icon-blue.png) no-repeat; 
+	background: url(/static/img/delete-icon-blue.png) no-repeat; 
 	float: right; 
 	z-index: 999;
 	margin-right: -18px;
 }
 .update-tool {
-	background: url(/media/img/update-icon.png) no-repeat;
+	background: url(/static/img/update-icon.png) no-repeat;
 	margin-right: 0px; 
 }
 td.oncall .delete-tool {margin-right: 0px;}
@@ -1182,17 +1181,17 @@ td.td-time.update {
 	margin-top:1px; 
 	margin-right: 5px; 
 }
-.delete-tool:hover {background: url(/media/img/delete-icon.png) no-repeat;}
-.remote-icon {background: url(/media/img/remote-icon.png) no-repeat;}
-.mail-icon {background: url(/media/img/mail-icon.png) no-repeat;}
-.beam-main {background-image: url(/media/img/maintenance-pat.png);}
+.delete-tool:hover {background: url(/static/img/delete-icon.png) no-repeat;}
+.remote-icon {background: url(/static/img/remote-icon.png) no-repeat;}
+.mail-icon {background: url(/static/img/mail-icon.png) no-repeat;}
+.beam-main {background-image: url(/static/img/maintenance-pat.png);}
 .notify-icon, .notify-done-icon {
 	padding: 7px 10px;
 	margin-left: -10px;
 	left: -10px;
 }
-.notify-icon {background: url(/media/img/notify.png) no-repeat scroll 0 0 transparent;}
-.notify-done-icon {background: url(/media/img/notify-done.png) no-repeat scroll 0 0 transparent;}
+.notify-icon {background: url(/static/img/notify.png) no-repeat scroll 0 0 transparent;}
+.notify-done-icon {background: url(/static/img/notify-done.png) no-repeat scroll 0 0 transparent;}
 
 .tdcenter {
     text-align: center !important;
@@ -1249,7 +1248,7 @@ div.sitemap ul li{
     list-style: none;
 }
 div.sitemap ul li ul li{
-    list-style-image: url(/media/img/bullet-sub.png);
+    list-style-image: url(/static/img/bullet-sub.png);
     border: none;
 }
 
@@ -1298,7 +1297,7 @@ div.news-entry {
 }
 div.news-entry ul.hr-list {
     padding-left: 16px;
-    list-style-image: url(/media/img/bullet-right.png) !important;
+    list-style-image: url(/static/img/bullet-right.png) !important;
 }
 div.news-entry ul.hr-list li+li{
     border-top: none;
@@ -1351,10 +1350,10 @@ a.trigger li, a.trigger li a {
 	font-size: 11px !important;
 	}
 .trigger span{
-background: url(/media/img/plus1.png) no-repeat;
+background: url(/static/img/plus1.png) no-repeat;
 }
 .trigger.active span {
-background: url(/media/img/minus1.png) no-repeat;
+background: url(/static/img/minus1.png) no-repeat;
 }
 .desc {
     color: #003D52;
@@ -1398,10 +1397,10 @@ span.req {
     color: red;
 }
 div.aca ul li ul {
-    list-style-image: url("/media/img/stock_right4.png") !important;
+    list-style-image: url("/static/img/stock_right4.png") !important;
 }
 div.aca table ul {
-    list-style-image: url("/media/img/stock_right4.png") !important;
+    list-style-image: url("/static/img/stock_right4.png") !important;
 }
 .clear {
 	clear: both !important;
@@ -1484,7 +1483,7 @@ div.bio img {
     width: 8%;
 }
 span.alert {
-    background: url("/media/img/new-icon.png") center left no-repeat;
+    background: url("/static/img/new-icon.png") center left no-repeat;
     min-width: 28px;
     min-height: 23px;
     float: right;

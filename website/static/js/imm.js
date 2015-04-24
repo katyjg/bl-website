@@ -69,8 +69,8 @@ function initForms(){
         $dst_div.attr('class', 'rightSelect');
         $src_div.after($dst_div);
         var $tool_div = jQuery('<div/>', {'class': 'selectTools'});
-        var $add_link = jQuery('<img/>', {'class': 'selectAddTool link-row', src: '/media/img/small-add-icon.png'});
-        var $del_link = jQuery('<img/>', {'class': 'selectDelTool link-row', src: '/media/img/small-remove-icon.png'});
+        var $add_link = jQuery('<img/>', {'class': 'selectAddTool link-row', src: '/static/img/small-add-icon.png'});
+        var $del_link = jQuery('<img/>', {'class': 'selectDelTool link-row', src: '/static/img/small-remove-icon.png'});
         $tool_div.append($add_link);
         $tool_div.append('<br/>');
         $tool_div.append($del_link);
@@ -250,7 +250,7 @@ function tooltips() {
             
             $('body').append( '<p id="vtip"><img id="vtipArrow" />' + this.t + '</p>' );
                         
-            $('p#vtip #vtipArrow').attr("src", '/media/img/vtip_arrow.png');
+            $('p#vtip #vtipArrow').attr("src", '/static/img/vtip_arrow.png');
             $('p#vtip').css("top", this.top+"px").css("left", this.left+"px").css("max-width", '18em').fadeIn("slow");
             
         },

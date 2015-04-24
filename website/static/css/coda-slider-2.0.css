@@ -12,7 +12,7 @@
 
 .coda-slider-wrapper { 
    width: 100%;
-   /*background: transparent url('/media/img/top-left-corner.png') no-repeat top left;*/
+   /*background: transparent url('/static/img/top-left-corner.png') no-repeat top left;*/
 }
 	/*.coda-slider { background: #ebebeb } */
 
@@ -103,7 +103,7 @@ div.slider-content {
 }
 
 .slider-content p a {
-background: url("/media/img/href-icon.png") no-repeat scroll left center transparent;
+background: url("/static/img/href-icon.png") no-repeat scroll left center transparent;
 padding-left: 15px;
 }
 }

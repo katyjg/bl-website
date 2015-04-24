@@ -26,7 +26,7 @@
     {{ object.body|safe }}
   </div>
 {% if object.image %}
-    <img class="ctr-img" src="/media/news/photos/{{object.image_filename}}" />
+    <img class="ctr-img" src="/static/news/photos/{{object.image_filename}}" />
 {% endif %}
 
   {% tags_for_object object as tag_list %}

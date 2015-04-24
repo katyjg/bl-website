@@ -33,7 +33,7 @@ div.loader {
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-image: url('/media/img/ajax-loader.gif');
+	background-image: url('/static/img/ajax-loader.gif');
 	background-repeat: no-repeat;
 	background-position: center;
 	width: 550px;
@@ -276,22 +276,22 @@ div.ss-controls, div.nav-controls {
 }
 
 div.ss-controls a.play {
-    background: url('/media/img/play-icon.png') no-repeat 8px transparent;
+    background: url('/static/img/play-icon.png') no-repeat 8px transparent;
 /*    padding-left: 14px;*/
 
 }
 div.ss-controls a.pause {
-    background: url('/media/img/pause-icon.png') no-repeat 8px transparent;
+    background: url('/static/img/pause-icon.png') no-repeat 8px transparent;
     padding-left: 14px;
 }
 
 div.nav-controls span.prev{
-    background: url('/media/img/left-arrow.png') no-repeat left transparent;
+    background: url('/static/img/left-arrow.png') no-repeat left transparent;
     padding-left: 15px;
 }
 
 div.nav-controls span.next{
-    background: url('/media/img/right-arrow.png') no-repeat right transparent;
+    background: url('/static/img/right-arrow.png') no-repeat right transparent;
     padding-right: 15px;
 }
 

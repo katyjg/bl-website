@@ -26,9 +26,9 @@
 	top:-2px;
 }
 #toTop { 
-    background-image: url(/media/img/to_top_fade_ie.png)
+    background-image: url(/static/img/to_top_fade_ie.png)
 }
 #toTop:hover {
-    background-image: url(/media/img/to_top_ie.png);
+    background-image: url(/static/img/to_top_ie.png);
 }
 

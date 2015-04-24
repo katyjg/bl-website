@@ -10,8 +10,8 @@
 .ui-datepicker { width: 100%; padding: 0px .2em 0; }
 .ui-datepicker .ui-datepicker-header { position:relative; padding:1px 0; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 40px; height: 20px; }
-.ui-datepicker .ui-datepicker-prev { left:0px; background: url("/media/img/prev.png") no-repeat transparent}
-.ui-datepicker .ui-datepicker-next { right:0px; background: url("/media/img/next.png") no-repeat transparent}
+.ui-datepicker .ui-datepicker-prev { left:0px; background: url("/static/img/prev.png") no-repeat transparent}
+.ui-datepicker .ui-datepicker-next { right:0px; background: url("/static/img/next.png") no-repeat transparent}
 .ui-datepicker .ui-datepicker-prev-hover { left:0px; cursor: pointer;}
 .ui-datepicker .ui-datepicker-next-hover { right:0px; cursor: pointer;}
 .ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 20%; margin-left: -8px; top: 50%; margin-top: -8px;  }

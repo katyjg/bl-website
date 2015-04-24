@@ -14,7 +14,7 @@ class RssFooFeedGenerator(Rss201rev2Feed):
         super(RssFooFeedGenerator, self).add_root_elements(handler)
         handler.addQuickElement(u"image", '',
             {
-                 'url': u"%s/media/img/clslogo_feed.png" % getattr(settings, 'URL_ROOT', ''),
+                 'url': u"%s/static/img/clslogo_feed.png" % getattr(settings, 'URL_ROOT', ''),
                  'title': u"Some title",
                  'link': u"%s" % getattr(settings, 'URL_ROOT', ''), 
              })     
