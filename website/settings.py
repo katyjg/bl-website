@@ -72,13 +72,6 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-#MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
-#MEDIA_URL = '/media/'
-#STATIC_ROOT = '/static/'
-#ADMIN_MEDIA_PREFIX = URL_ROOT + '/admin_media/'
-#STATIC_URL = ADMIN_MEDIA_PREFIX
-#FEINCMS_ADMIN_MEDIA = '/feincms_media/'
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (

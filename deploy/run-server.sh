@@ -5,4 +5,10 @@
 # if it thinks it is already running.
 rm -rf /run/httpd/* /tmp/httpd*
 
-exec /usr/sbin/apachectl -D FOREGROUND
+# check of database exists and initialize it if not
+if [ ! -d /website/static ]; then
+    /website/manage.py syncdb --noinput
+    /website/manage.py collectstatic --noinput
+fi
+
+exec /usr/sbin/httpd -D FOREGROUND
