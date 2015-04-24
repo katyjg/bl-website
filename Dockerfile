@@ -10,8 +10,6 @@ EXPOSE 80
 ADD . /website
 ADD deploy/run-server.sh /run-server.sh
 RUN chmod -v +x /run-server.sh
-RUN /website/manage.py syncdb --noinput
-RUN /website/manage.py collectstatic --noinput
 RUN /bin/cp /website/deploy/website.conf /etc/httpd/conf.d/
 
 VOLUME ["/website/local"]
