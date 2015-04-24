@@ -18,9 +18,6 @@ feeds = {
 }
 
 urlpatterns = patterns('',
-    (r'^wiki/', include('simplewiki.urls')),
-    (r'^beamtime/', include('scheduler.admin_urls')),
-    (r'^pubs/', include('publications.urls')),
 
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
     url(r'^admin/page/page/jsi18n/',     RedirectView.as_view(url='/admin/jsi18n/')),
@@ -30,6 +27,9 @@ urlpatterns = patterns('',
     url(r'^preview/(?P<page_id>\d+)/', preview_handler, name='feincms:preview'),
     url(r'^feeds/(?P<url>.*)/$', LatestEntries()),
 
+    (r'^wiki/', include('simplewiki.urls')),
+    (r'^beamtime/', include('scheduler.admin_urls')),
+    (r'^pubs/', include('publications.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
     # to INSTALLED_APPS to enable admin documentation:

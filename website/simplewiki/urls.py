@@ -1,4 +1,4 @@
-from django.conf.urls import *
+from django.conf.urls import url, patterns
 
 urlpatterns = patterns('',
     url(r'^$', 'simplewiki.views.root_redirect', name='wiki_root'),
