@@ -7,8 +7,8 @@ rm -rf /run/httpd/* /tmp/httpd*
 
 # check of database exists and initialize it if not
 if [ ! -d /website/static ]; then
-    /website/manage.py syncdb --noinput
-    /website/manage.py collectstatic --noinput
+    su -s /bin/bash apache -c "/website/manage.py syncdb --noinput"
+    su -s /bin/bash apache -c "/website/manage.py collectstatic --noinput"
 fi
 
 exec /usr/sbin/httpd -D FOREGROUND
