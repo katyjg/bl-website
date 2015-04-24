@@ -1,0 +1,298 @@
+div.content {
+	/* The display of content is enabled using jQuery so that the slideshow content won't display unless javascript is enabled. */
+/*	display: none;*/
+	float: right;
+	width: 550px; 
+}
+div.content a, div.navigation a {
+	text-decoration: none;
+	color: #777;
+}
+div.content a:focus, div.content a:hover, div.content a:active {
+	text-decoration: underline;
+}
+div.controls {
+	margin-top: 5px;
+	height: 23px;
+}
+div.controls a {
+	padding: 5px;
+}
+div.ss-controls {
+	float: left;
+}
+div.nav-controls {
+	float: right;
+}
+div.slideshow-container {
+	position: relative;
+	clear: both;
+	height: 452px; /* This should be set to be at least the height of the largest image in the slideshow */
+}
+div.loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-image: url('/media/img/ajax-loader.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 550px;
+	height: 472px; /* This should be set to be at least the height of the largest image in the slideshow */
+}
+div.slideshow {
+
+}
+div.slideshow span.image-wrapper {
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+div.slideshow a.advance-link {
+
+	width: 550px;
+	height: 452px; /* This should be set to be at least the height of the largest image in the slideshow */
+	line-height: 452px; /* This should be set to be at least the height of the largest image in the slideshow */
+	text-align: center !important;
+/*    position: absolute;*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+div.slideshow a.advance-link:hover, div.slideshow a.advance-link:active, div.slideshow a.advance-link:visited {
+	text-decoration: none;
+}
+div.slideshow img {
+	vertical-align: middle;
+/*	border: 1px solid #ccc;*/
+}
+div.download {
+	float: right;
+    display: none;
+}
+div.caption-container {
+	position: relative;
+	clear: left;
+	height: 125px;
+}
+span.image-caption {
+	display: block;
+	position: absolute;
+	width: 550px;
+	top: 0;
+	left: 0;
+}
+div.caption {
+	padding: 12px;
+}
+div.image-title {
+	font-weight: bold;
+	font-size: 12px;
+}
+div.image-desc {
+	line-height: 1.3em;
+	padding-top: 12px;
+}
+div.navigation {
+	/* The navigation style is set using jQuery so that the javascript specific styles won't be applied unless javascript is enabled. */
+    -moz-border-radius:6px;
+}
+ul.thumbs {
+	clear: both;
+	margin: 0;
+	padding: 0;
+}
+ul.thumbs li {
+	float: left;
+	padding: 0;
+	margin: 5px 10px 5px 0;
+	list-style: none;
+}
+a.thumb {
+	padding: 2px;
+	display: block;
+}
+ul.thumbs li.selected a.thumb {
+	background: #000;
+}
+a.thumb:focus {
+	outline: none;
+}
+ul.thumbs img {
+	border: none;
+	display: block;
+}
+div.pagination {
+	clear: both;
+}
+div.navigation div.top {
+	margin-bottom: 12px;
+	height: 11px;
+}
+div.navigation div.bottom {
+	margin-top: 12px;
+}
+div.pagination a, div.pagination span.current, div.pagination span.ellipsis {
+	display: block;
+	float: left;
+/*	margin-right: 2px;*/
+	padding: 4px 7px 2px 7px;
+	border: 1px solid #ccc;
+}
+div.pagination a:hover {
+	background-color: #eee;
+	text-decoration: none;
+}
+div.pagination span.current {
+	font-weight: bold;
+	background-color: #000;
+	border-color: #000;
+	color: #fff;
+}
+div.pagination span.ellipsis {
+	border: none;
+	padding: 5px 0 3px 2px;
+}
+
+/* Extra stuff */
+div.ss-controls {
+	float: right;
+}
+div.nav-controls {
+	float: right;
+}
+
+div.nav-controls a{
+    display: block;
+    background:-moz-linear-gradient(center top , #FBFBFB, #F4F4F4) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#F4F4F4), to(#FBFBFB)) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F4F4F4', endColorstr='#FBFBFB');
+}
+
+div.pagination a, div.pagination span.current, div.pagination span.ellipsis {
+    background: #F4F4F4;
+/*    background: -moz-linear-gradient(center top , #FBFBFB, #F4F4F4) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#F4F4F4), to(#FBFBFB)) repeat scroll 0 0 transparent;
+*/
+    border-color:#F0F0F0 #E2E2E2 #E4E4E4 #F0F0F0;
+    border-style:solid;
+    border-width:1px 0;
+	display: block;
+	float: left;
+	padding: 0 8px;
+    font-family: glaublau-web, sans-serif;
+    font-size: 14px;
+    color:#555;
+    border-right: 1px solid #E2E2E2;
+    border-left: 1px solid #FFFFFF;
+}
+	
+div.pagination a:active {
+    background: #F4F4F4;
+/*    background: -moz-linear-gradient(center top , #F4F4F4, #FBFBFB) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#F4F4F4), to(#FBFBFB)) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F4F4F4', endColorstr='#FBFBFB');*/
+	text-decoration: none;
+}
+div.pagination a:hover {
+    color:#000;
+    text-shadow: #ccc 1px 1px 1px;
+}
+
+div.pagination span.current {
+/*    background: -moz-linear-gradient(center top , #FEFEFF, #E4E4FF) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#F4F4F4), to(#FBFBFB)) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F4F4F4', endColorstr='#FBFBFB');*/
+	font-weight: bold;
+    background: #e8e8e8;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 15px;
+}
+
+div.nav-controls a, div.ss-controls a{
+    text-decoration: none !important;
+    -moz-border-radius:0 0 0 0;
+    background: -moz-linear-gradient(center top , #FBFBFB, #F4F4F4) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#F4F4F4), to(#FBFBFB)) repeat scroll 0 0 transparent;
+
+    border-color:#F0F0F0 #E2E2E2 #E4E4E4 #F0F0F0;
+    border-style:solid;
+    border-width:1px 0;
+    color:#555;
+    font-weight:normal;
+    padding: 3px;
+    overflow:hidden;
+    font-family: glaublau-web, sans-serif;
+    font-size: 14px;
+    
+}
+
+div.nav-controls a:active, div.ss-controls a:active {
+    background: #F4F4F4;
+    background: -moz-linear-gradient(center top , #F4F4F4, #FBFBFB) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#F4F4F4), to(#FBFBFB)) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F4F4F4', endColorstr='#FBFBFB');
+}
+div.nav-controls a:hover, div.ss-controls a:hover {
+    color:#000;
+    text-shadow: #ccc 1px 1px 1px;
+}
+
+div.nav-controls a.prev {
+    -moz-border-radius-bottomleft:6px;
+    -moz-border-radius-topleft:6px;
+    border-left: 1px solid #F0F0F0;
+    border-right: 1px solid #E2E2E2;
+}
+
+div.nav-controls a.next {
+    -moz-border-radius-bottomright:6px;
+    -moz-border-radius-topright:6px;
+    border-right: 1px solid #E2E2E2;
+    border-left: 1px solid #FFFFFF;
+}
+
+div.ss-controls a {
+    display: block;
+    border-left: 1px solid #FFFFFF;
+    border-right: 1px solid #E2E2E2;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+div.ss-controls a, div.nav-controls a, div.pagination a {
+    line-height: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+    
+div.ss-controls, div.nav-controls {
+    -moz-border-radius:6px;
+
+    background: #F4F4F4;
+    background: -moz-linear-gradient(center top , #F4F4F4, #FBFBFB) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, center top , center bottom , from(#F4F4F4), to(#FBFBFB)) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F4F4F4', endColorstr='#FBFBFB');
+}
+
+div.ss-controls a.play {
+    background: url('/media/img/play-icon.png') no-repeat 8px transparent;
+/*    padding-left: 14px;*/
+
+}
+div.ss-controls a.pause {
+    background: url('/media/img/pause-icon.png') no-repeat 8px transparent;
+    padding-left: 14px;
+}
+
+div.nav-controls span.prev{
+    background: url('/media/img/left-arrow.png') no-repeat left transparent;
+    padding-left: 15px;
+}
+
+div.nav-controls span.next{
+    background: url('/media/img/right-arrow.png') no-repeat right transparent;
+    padding-right: 15px;
+}
+
+
