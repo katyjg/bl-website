@@ -24,9 +24,9 @@ class PostAdmin(admin.ModelAdmin):
         }),
     )
     
-    class Media:
-        js = [getattr(settings, 'FEINCMS_RICHTEXT_INIT_CONTEXT', {}).get('TINYMCE_JS_URL',''), 
-              '/admin_media/grappelli/tinymce_setup/tinymce_setup.js',]    
+#    class Media:
+#        js = [getattr(settings, 'FEINCMS_RICHTEXT_INIT_CONTEXT', {}).get('TINYMCE_JS_URL',''), 
+#              '/admin_media/grappelli/tinymce_setup/tinymce_setup.js',]    
 #    prepopulated_fields = {'slug': ('title',)}
 
 admin.site.register(Post, PostAdmin)
