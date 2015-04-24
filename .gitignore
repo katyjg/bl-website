@@ -8,7 +8,7 @@ uploads/
 attachments/
 migrations/
 junk/
-/media/
+/local/media/
 /static/
 website.db
 settings_local.py
