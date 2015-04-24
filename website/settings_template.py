@@ -42,16 +42,7 @@ RECAPTCHA_PRIVATE_KEY = '6LegXtwSAAAAAAHw-BviXORo-QXZvU7e7jMtZNba'
 # Set the SECRET_KEY to a unique, unpredictable value
 SECRET_KEY = '^a-random-string-with-letters-numbers-and-characters!'
 
-ABSOLUTE_PATH_TO_FILES = '/path/to/your/website' # no leading or trailing slashes
-
-# The sqlite database is only there for testing.  Change the configuration once you have a mysql database set up.
-DATABASES = {
-    'default': {
-        'NAME': os.path.join(os.path.dirname(__file__), 'web-temp.db'),
-        'ENGINE': 'django.db.backends.sqlite3',
-        }
-    }
-
+# If you want a different database than the default sqlite one the configuration once you have a mysql database set up.
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql',
