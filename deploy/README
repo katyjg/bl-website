@@ -86,8 +86,13 @@ For standalone machines and VMs:
    
    if the webserver has a fully qualified domain name, edit to uncomment and modify
    the ServerName entry
-
-7. Restart the HTTP server:
+7. Initialize the database and static files
+   
+        sudo /website/manage.py collectstatic --noinput
+        su -s /bin/bash apache -c "/website/manage.py syncdb --noinput"
+        su -s /bin/bash apache -c "/website/manage.py migrate --noinput"
+        
+8. Restart the HTTP server:
 
    systemctl restart httpd.service
 

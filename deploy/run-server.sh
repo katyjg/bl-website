@@ -9,6 +9,8 @@ rm -rf /run/httpd/* /tmp/httpd*
 if [ ! -f /website/local/.dbinit ]; then
     su -s /bin/bash apache -c "/website/manage.py syncdb --noinput"
     touch /website/local/.dbinit
+else
+    su -s /bin/bash apache -c "/website/manage.py migrate --noinput"
 fi
 
 exec /usr/sbin/httpd -D FOREGROUND
