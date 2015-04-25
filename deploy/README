@@ -1,0 +1,93 @@
+Deploying instances
+===================
+1. Building a docker image with the source code:
+
+    cd /full/path/to/project/directory
+    sudo docker build --rm -t <image-name>
+    
+2. Tag and push image to local repository [optional]
+
+    sudo docker tag -f <image-id> <repository-host>:5000/<image-name>
+    sudo docker push <repository-host>:5000/<image-name>
+    
+    
+Docker Containers with pre-built images:
+--------------------------------------------
+
+1. Create the following directory structure on the docker host to contain local 
+   files the name of the directory does not matter but it should have the following 
+   sub-directory structure:
+   
+   foobar
+        ├── logs
+        └── media
+           └── uploads
+               └── site-images
+        
+
+   Say the docker host keeps local files for multiple beamlines in the directory
+   /data/beamline-websites, you could make a new directory inside called 
+   /data/beamline-websites/foobar for beamline "foobar"
+
+3. Place/replace branding images you want to override in the directory 
+   foobar/media/uploads/site-images
+
+4. copy the settings_template.py file from the local directory of the project source
+   code into foobar/settings_local.py and edit it according to the instructions specified 
+   in the file.
+
+5. Make sure the "apache" user owns the foobar directory and all its subdirectories
+   You can acheive this by running the following command:
+   
+        sudo chown -R apache.root foobar
+   
+6. Lauch the docker container
+
+        sudo docker run -d --name <container-name>   -v /full/path/to/foobar:/website/local -p 80:80 <image-name>
+
+
+For standalone machines and VMs:
+--------------------------------
+1. Copy the source code into a directory named /website on the server. Make
+   sure you have the right tree structure by verifying that you can see the files
+   
+        /website/manage.py
+        /website/website/settings.py
+    
+    You can achieve this by running the following command:
+    
+        sudo git clone git://<repository-name>/website.git /website
+
+2. Create the following additional within /website
+     
+         /website/local
+         /website/local/logs
+         /website/local/media/uploads/site-images
+ 
+    You can acheive this with the following commands:
+
+        cd /website
+        sudo mkdir -p local/media/uploads/site-images local/{logs,uploads}
+
+3. Place/replace branding images in the directory /website/local/media/uploads/site-images
+
+4. Rename the file /website/local/settings_template.py to /website/local/settings_local.py
+   and edit it according to the instructions specified in the file.
+
+5. Make sure the "apache" user owns all files in /website
+   You can acheive this by running the following command:
+   
+        sudo chown -R apache.root /website
+
+6. Copy the apache configuration file /website/deploy/website.conf into /etc/httpd/conf.d
+   You can acheive this by running the following command:
+   
+        sudo cp  /website/deploy/website.conf /etc/httpd/conf.d
+   
+   if the webserver has a fully qualified domain name, edit to uncomment and modify
+   the ServerName entry
+
+7. Restart the HTTP server:
+
+   systemctl restart httpd.service
+

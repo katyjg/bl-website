@@ -105,12 +105,12 @@ div#header-print {
 #header {
 	height: 88px;
 	min-width: 960px;
-	background: #dcdcdc url(/media/site-images/prod/header.png) top left repeat-x;
+	background: #dcdcdc url(/media/uploads/site-images/header.png) top left repeat-x;
     /*background: -moz-linear-gradient( top, #6666cc, #999999)*/
 
 }
 #header.wiki{
-	background: #dcdcdc url(/media/site-images/prod/wiki_header.png) top right repeat-x;
+	background: #dcdcdc url(/media/uploads/site-images/wiki_header.png) top right repeat-x;
 }
 #header.aca{
 	background: #dcdcdc url(/static/img/header_grey.png) top right repeat-x;
@@ -119,7 +119,7 @@ div#header-print {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
-	background: url(/media/site-images/prod/logo.png) top left no-repeat;
+	background: url(/media/uploads/site-images/logo.png) top left no-repeat;
     height: 88px;    
 }
 #header .aca-logo {
@@ -130,13 +130,13 @@ div#header-print {
 	height: 88px;
 }
 #header.wiki .logo {
-    background: url(/media/site-images/prod/wiki_logo.png) top left no-repeat;
+    background: url(/media/uploads/site-images/wiki_logo.png) top left no-repeat;
 }
 #header .banner {
 	width: 960px;
 	margin: 0 auto;
 	clear: both;
-	background: url(/media/site-images/prod/overlay.png) top right no-repeat;
+	background: url(/media/uploads/site-images/overlay.png) top right no-repeat;
     height: 88px;    
 }
 #header h1, #header h3 {
