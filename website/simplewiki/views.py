@@ -15,9 +15,7 @@ from django.conf import settings
 from models import *
 from settings import *
 
-from decorators import protectview
 
-@protectview
 def view(request, wiki_url):
     
     (article, path, err) = fetch_from_url(request, wiki_url)
@@ -34,7 +32,6 @@ def view(request, wiki_url):
                                  } ) 
     return render_to_response('simplewiki_view.html', c)
 
-@protectview
 def root_redirect(request):
     """
     Reason for redirecting:
@@ -55,7 +52,6 @@ def root_redirect(request):
     return HttpResponseRedirect(reverse('wiki_view', args=('mainpage/',)))
 
 
-@protectview
 def create(request, wiki_url):
     
     url_path = get_url_path(wiki_url)
@@ -124,7 +120,6 @@ def create(request, wiki_url):
 
     return render_to_response('simplewiki_create.html', c)
 
-@protectview
 def edit(request, wiki_url):
 
     (article, path, err) = fetch_from_url(request, wiki_url)
@@ -166,7 +161,6 @@ def edit(request, wiki_url):
 
     return render_to_response('simplewiki_edit.html', c)
 
-@protectview
 def history(request, wiki_url, page=1):
 
     (article, path, err) = fetch_from_url(request, wiki_url)

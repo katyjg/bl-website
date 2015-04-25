@@ -10,7 +10,7 @@ USO_API = "http://uso-test.clsi.ca/api/v1/"
 
 import os
 import sys
-from django.conf import global_settings
+from iplist import IPAddressList
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(__file__)
@@ -31,17 +31,24 @@ else:
     
 SITE_ID = 1
 
-# Specific IP addresses you want to have access to your wiki
-INTERNAL_IPS = ()
-# IP networks that you want to have access to your wiki (eg. CLS network)
-ALLOWED_NETWORKS = (
+ALLOWED_HOSTS = ['*']
+
+# Specific IP addresses you want to have access to your internal pages
+# such as wiki/admin etc (eg. CLS network)
+INTERNAL_IPS = IPAddressList(
     '127.0.0.1/32',
 	'10.52.28.0/22', 
 	'10.52.4.0/22', 
 	'10.45.2.0/22',
 	'10.63.240.0/22',
 )
-ALLOWED_HOSTS = ['*']
+
+# sets the number of proxies being used locally for the site
+INTERNAL_PROXIES = 1
+
+# Specific urls which should only be accessed from one of the internal IP addresses
+# or networks above
+INTERNAL_URLS = ('^/wiki', '^/admin', '^/beamtime')
 
 ROOT_URLCONF = 'website.urls'
 WSGI_APPLICATION = 'website.wsgi.application'
@@ -100,6 +107,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',
     #'django.middleware.csrf.CsrfResponseMiddleware',
+    'middleware.InternalAccessMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
