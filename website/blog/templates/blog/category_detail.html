@@ -29,7 +29,7 @@
             <div class="news-post">
                 {% if post.image %}
                     <div class="{% cycle 'image' 'image-odd' %}">
-                        <img src="/static/uploads/news/photos/{{post.image_filename}}" alt="{{ post.title }} Image">
+                        <img src="{{post.image.url}}" alt="{{ post.title }} Image">
                     </div>
                 {% endif %}
   	            <div>
