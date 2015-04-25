@@ -3,10 +3,9 @@ SITE_NAME_LONG = 'Canadian Macromolecular Crystallography Facility'
 SITE_DESCRIPTION = 'The CMCF operates macromolecular crystallography beamlines at the CLS'
 SITE_KEYWORDS = 'lightsource,canadian,cls,macromolecular crystallography,protein crystallography,mxdc,autoprocess'
 SITE_NAME_SHORT = 'CMCF'
-USO_BEAMLINE = 'CMCF'
-USO_API = "http://uso-test.clsi.ca/api/v1/"
+BEAMLINE_ACRONYM = 'CMCF'
 
-########## The rest of this file shouldn't need any configuration ##############
+USO_API = "http://uso-test.clsi.ca/api/v1/"
 
 import os
 import sys

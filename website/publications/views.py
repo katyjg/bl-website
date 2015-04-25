@@ -5,7 +5,7 @@ from django.conf import settings
 import requests
 
 def categories_list():
-    r = requests.get('%scategories/%s/' % (settings.USO_API, settings.USO_BEAMLINE))
+    r = requests.get('%scategories/%s/' % (settings.USO_API, settings.BEAMLINE_ACRONYM))
     if r.status_code == requests.codes.ok:
         return r.json()
     else:
@@ -14,7 +14,7 @@ def categories_list():
 def publication_list(request, **kwargs):
     categories = categories_list()
     category = [c for c in categories if c['kind'] == kwargs.get('category','article')][0]
-    r = requests.get('%spublications/%s/%s/' % (settings.USO_API, category['kind'], settings.USO_BEAMLINE))
+    r = requests.get('%spublications/%s/%s/' % (settings.USO_API, category['kind'], settings.BEAMLINE_ACRONYM))
     if r.status_code == requests.codes.ok:
         yr_list = list(reversed(sorted(set([d['date'][:4] for d in r.json()]))))
         pub_list = [(yr, [d['cite'] for d in r.json() if yr in d['date']]) for yr in yr_list]
@@ -32,7 +32,7 @@ def publication_list(request, **kwargs):
             'categories': categories},)
 
 def publications_brief(request):
-    r = requests.get('%spublications/%s/latest/' % (settings.USO_API, settings.USO_BEAMLINE))
+    r = requests.get('%spublications/%s/latest/' % (settings.USO_API, settings.BEAMLINE_ACRONYM))
     if r.status_code == requests.codes.ok:
         pub_list = [d['cite'] for d in r.json()['results']]
     else:
