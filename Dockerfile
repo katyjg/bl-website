@@ -11,6 +11,7 @@ ADD . /website
 ADD deploy/run-server.sh /run-server.sh
 RUN chmod -v +x /run-server.sh
 RUN /bin/cp /website/deploy/website.conf /etc/httpd/conf.d/
+RUN /website/manage.py collectstatic --noinput
 
 VOLUME ["/website/local"]
 

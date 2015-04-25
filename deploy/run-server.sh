@@ -6,9 +6,9 @@
 rm -rf /run/httpd/* /tmp/httpd*
 
 # check of database exists and initialize it if not
-if [ ! -d /website/static ]; then
+if [ ! -f /website/local/.dbinit ]; then
     su -s /bin/bash apache -c "/website/manage.py syncdb --noinput"
-    su -s /bin/bash apache -c "/website/manage.py collectstatic --noinput"
+    touch /website/local/.dbinit
 fi
 
 exec /usr/sbin/httpd -D FOREGROUND
