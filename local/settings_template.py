@@ -1,7 +1,8 @@
 """ Customizing your site:
     1. Save this file as settings_local.py
     2. Update settings_local.py with your information
-    3. With the admin file manager, go to the site-images/prod folder and upload images for:
+    3. With the admin file manager, go to the site-images folder and replace the 
+       images for:
         - header.png (the header background)
         - overlay.png (the header overlay, if you want one)
         - logo.png (your logo)
@@ -12,13 +13,15 @@
 import os
 
 # Some meta-data about your site
+URL_ROOT = 'http://cmcf.lightsource.ca'
+SITE_NAME_LONG = 'Some Beamline Name in Full'
 SITE_NAME_SHORT = 'SOME-BL'
-SITE_NAME_LONG = 'Some Beamline'
 SITE_DESCRIPTION = 'A tagline about some beamline'
 SITE_KEYWORDS = 'lightsource,canadian,cls,some-keywords-for-your-beamline'
 
-# This should be the name assigned to your beamline in the User Office Software
-USO_BEAMLINE = "some-bl"
+# This should be the acronym assigned to your beamline in the User Office Software
+BEAMLINE_ACRONYM = "some-bl"
+DEBUG = False
 
 # Recaptcha keys can be obtained at http://www.google.com/recaptcha
 RECAPTCHA_PUBLIC_KEY = '6LegXtwSAAAAAN3Xy2oy3hQhSiMuqC8FS4HbXIC_' 

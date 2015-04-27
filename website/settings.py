@@ -3,14 +3,13 @@ SITE_NAME_LONG = 'Canadian Macromolecular Crystallography Facility'
 SITE_DESCRIPTION = 'The CMCF operates macromolecular crystallography beamlines at the CLS'
 SITE_KEYWORDS = 'lightsource,canadian,cls,macromolecular crystallography,protein crystallography,mxdc,autoprocess'
 SITE_NAME_SHORT = 'CMCF'
-USO_BEAMLINE = 'CMCF'
-USO_API = "http://uso-test.clsi.ca/api/v1/"
+BEAMLINE_ACRONYM = 'CMCF'
 
-########## The rest of this file shouldn't need any configuration ##############
+USO_API = "http://uso-test.clsi.ca/api/v1/"
 
 import os
 import sys
-from django.conf import global_settings
+from iplist import IPAddressList
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(__file__)
@@ -31,17 +30,24 @@ else:
     
 SITE_ID = 1
 
-# Specific IP addresses you want to have access to your wiki
-INTERNAL_IPS = ()
-# IP networks that you want to have access to your wiki (eg. CLS network)
-ALLOWED_NETWORKS = (
+ALLOWED_HOSTS = ['*']
+
+# Specific IP addresses you want to have access to your internal pages
+# such as wiki/admin etc (eg. CLS network)
+INTERNAL_IPS = IPAddressList(
     '127.0.0.1/32',
 	'10.52.28.0/22', 
 	'10.52.4.0/22', 
 	'10.45.2.0/22',
 	'10.63.240.0/22',
 )
-ALLOWED_HOSTS = ['*']
+
+# sets the number of proxies being used locally for the site
+INTERNAL_PROXIES = 1
+
+# Specific urls which should only be accessed from one of the internal IP addresses
+# or networks above
+INTERNAL_URLS = ('^/wiki', '^/admin', '^/beamtime')
 
 ROOT_URLCONF = 'website.urls'
 WSGI_APPLICATION = 'website.wsgi.application'
@@ -52,7 +58,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'website.db'),
+        'NAME': os.path.join(BASE_DIR, 'local', 'website.db'),
     }
 }
 CACHES = {
@@ -71,13 +77,6 @@ USE_L10N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-#MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
-#MEDIA_URL = '/media/'
-#STATIC_ROOT = '/static/'
-#ADMIN_MEDIA_PREFIX = URL_ROOT + '/admin_media/'
-#STATIC_URL = ADMIN_MEDIA_PREFIX
-#FEINCMS_ADMIN_MEDIA = '/feincms_media/'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -107,6 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',
     #'django.middleware.csrf.CsrfResponseMiddleware',
+    'middleware.InternalAccessMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
