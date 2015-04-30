@@ -9,6 +9,7 @@ EXPOSE 80
 
 # Simple startup script to avoid some issues observed with container restart 
 ADD . /website
+ADD ./local /website/local
 ADD deploy/run-server.sh /run-server.sh
 RUN chmod -v +x /run-server.sh
 RUN /bin/cp /website/deploy/website.conf /etc/httpd/conf.d/
