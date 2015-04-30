@@ -31,31 +31,6 @@ ALLOWED_HOSTS = ['*']
 
 ROOT_URLCONF = 'website.urls'
 
-SUIT_CONFIG = {
-    'ADMIN_NAME': '%s Public Website' % SITE_NAME_SHORT,
-    'CONFIRM_UNSAVED_CHANGES': False,
-    'MENU_ICONS': {
-        'sites': 'icon-leaf',
-        'auth': 'icon-lock',
-        'publications': 'icon-leaf'
-    },
-    'MENU': (
-        {'app': 'page', 'label': 'Web Pages', 'icon': 'icon-share'},
-        {'app': 'blog', 'label': 'News Items', 'icon': 'icon-star','models':('post','category')},
-        {'app': 'scheduler', 'label': 'Scheduling', 'icon': 'icon-time'},
-        {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
-        {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
-        {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
-        {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'icon-folder-open'},  
-        '-',
-        {'label': 'Settings', 'icon': 'icon-cog', 'models': ('sites.site','redirects.redirect')},
-        {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
-        '-',
-        {'label': 'Beamtime', 'icon':'icon-calendar', 'url': '/beamtime/admin'},
-    ),
-    'LIST_PER_PAGE': 25
-}
-
 TIME_ZONE = 'America/Regina'
 
 LANGUAGE_CODE = 'en-us'
@@ -163,4 +138,27 @@ try:
 except ImportError:
     pass
 
-
+SUIT_CONFIG = {
+    'ADMIN_NAME': '%s Public Website' % SITE_NAME_SHORT,
+    'CONFIRM_UNSAVED_CHANGES': False,
+    'MENU_ICONS': {
+        'sites': 'icon-leaf',
+        'auth': 'icon-lock',
+        'publications': 'icon-leaf'
+    },
+    'MENU': (
+        {'app': 'page', 'label': 'Web Pages', 'icon': 'icon-share'},
+        {'app': 'blog', 'label': 'News Items', 'icon': 'icon-star','models':('post','category')},
+        {'app': 'scheduler', 'label': 'Scheduling', 'icon': 'icon-time'},
+        {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
+        {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
+        {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
+        {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'icon-folder-open'},  
+        '-',
+        {'label': 'Settings', 'icon': 'icon-cog', 'models': ('sites.site','redirects.redirect')},
+        {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
+        '-',
+        {'label': 'Beamtime', 'icon':'icon-calendar', 'url': '/beamtime/admin'},
+    ),
+    'LIST_PER_PAGE': 25
+}

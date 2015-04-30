@@ -1,4 +1,4 @@
-To view the most up-to-date schedule, visit {{ site.0 }}{% url staff-scheduler.thisweek %}.
+To view the most up-to-date schedule, visit {{ site.0 }}{% url "staff-thisweek" %}.
 -------------------------------------------------------------------------------
 {% if mod %}{{ mod.0 }}{{ mod.1 }}{% if mod.2 %}
     - {{ mod.2 }}{% if print %}
