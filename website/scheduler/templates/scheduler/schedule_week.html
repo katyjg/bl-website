@@ -143,6 +143,7 @@
                                   		{% endif %}
                                   
                                		{% if not vis.maintenance %}
+                               		      {% comment "" %}
                                 			{% if vis.purchased %}Purchased 
                                     			{% if not staff %}
                                     				Access
@@ -170,7 +171,22 @@
                                     				{% endif %}
                                     			{% endif %}
                                 			{% endif %}
-                               		{% else %}
+                                		{% endcomment %}
+                                            {% if vis.purchased %} 
+                                    			{% if staff %}Purchased Access{% endif %}
+                                    		{% endif %}
+                                   			{% if vis.proposal %}
+                                   				{% if staff %}<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">{% endif %}
+                                   				{{ vis.proposal.last_name }}{% if staff %}, 
+                                   					{{ vis.proposal.first_name }} #{{ vis.proposal.proposal_id }} {% if vis.description %}({{vis.description}}){% endif %}</text>
+                                   				{% else %}
+                                   					#{{ vis.proposal.proposal_id }}
+                                   				{% endif %}
+                                   				
+                                   			{% else %}
+                                   				{{vis.description }}
+                                   			{% endif %}
+                                   	{% else %}
                                			Beamline Maintenance
                                    		{% if staff %}
                                    			<text class="admin {% if not vis.proposal.expiration %}inactive{% endif %}">
