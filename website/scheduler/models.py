@@ -42,7 +42,12 @@ class Proposal(models.Model):
         if not self.expiration:
             return '%s, %s (%s) - SUBMITTED' % (self.last_name, self.first_name[0], self.proposal_id)
         detail = ''
-        if Proposal.objects.filter(last_name__exact=self.last_name).values('description').distinct().count() > 1:
+        #if Proposal.objects.filter(last_name__exact=self.last_name).values('description').distinct().count() > 1:
+        if 'IS' in self.last_name:
+            length = 30 - len(self.last_name)
+            detail = '- %s%s' % ((self.first_name + ', ' + self.description)[:length], (length < len(self.first_name + ', ' + self.description) and '...' or ' '))
+            return '%s (%s)%s' % (self.last_name, self.proposal_id, detail)
+        elif Proposal.objects.filter(last_name__exact=self.last_name).values('description').distinct().count() > 1:
             length = 30 - len(self.last_name)
             detail = '- %s%s' % (self.description[:length],(length < len(self.description) and '...' or ' '))
         return '%s, %s (%s)%s' % (self.last_name, self.first_name[0], self.proposal_id, detail)

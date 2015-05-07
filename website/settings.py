@@ -32,7 +32,7 @@ SITE_ID = 1
 
 ALLOWED_HOSTS = ['*']
 
-# Specific IP addresses you want to have access to your internal pages
+# Specific IP addresses or networks you want to have access to your internal pages
 # such as wiki/admin etc (eg. CLS network)
 INTERNAL_IPS = IPAddressList(
     '127.0.0.1/32',
