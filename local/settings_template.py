@@ -45,6 +45,9 @@ INTERNAL_IPS = IPAddressList(
 	'10.45.2.0/22',
 	'10.63.240.0/22',
 )
+# Specific urls which should only be accessed from one of the internal IP addresses
+# or networks above
+INTERNAL_URLS = ('^/wiki', '^/admin', '^/beamtime')
 
 # Django house-keeping stuff specific to your site
 ########################################################################################################
