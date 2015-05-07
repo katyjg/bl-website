@@ -151,8 +151,26 @@ FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
 FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
     'TINYMCE_JS_URL': STATIC_URL + 'tinymce/jscripts/tiny_mce/tiny_mce.js',
+
 }
 
+# The following is only necessary if you have included 'application_form' in the list of INSTALLED_APPS.
+########################################################################################################
+ 
+# MANAGERS will receive online application forms
+MANAGERS = (
+    ('TestUser', 'test.user@lightsource.ca'),
+)
+# Sender for application_form emails
+FROM_EMAIL = 'test.user@lightsource.ca' # This should be an email that exists
+
+# CONF_MANAGERS will receive PSFaM registration forms
+CONF_MANAGERS = (
+    ('TestUser', 'test.user@lightsource.ca'),
+) 
+# Sender email for PSFaM Registrations
+CONF_FROM_EMAIL = 'test.user@lightsource.ca'
+ 
 LOGIN_URL = '/admin/'
 
 try:

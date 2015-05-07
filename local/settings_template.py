@@ -11,6 +11,7 @@
 """
 
 import os
+from iplist import IPAddressList
 
 # Some meta-data about your site
 URL_ROOT = 'http://cmcf.lightsource.ca'
@@ -21,7 +22,6 @@ SITE_KEYWORDS = 'lightsource,canadian,cls,some-keywords-for-your-beamline'
 
 # This should be the acronym assigned to your beamline in the User Office Software
 BEAMLINE_ACRONYM = "some-bl"
-DEBUG = False
 
 # Recaptcha keys can be obtained at http://www.google.com/recaptcha
 RECAPTCHA_PUBLIC_KEY = '6LegXtwSAAAAAN3Xy2oy3hQhSiMuqC8FS4HbXIC_' 
@@ -36,11 +36,21 @@ RECAPTCHA_PRIVATE_KEY = '6LegXtwSAAAAAAHw-BviXORo-QXZvU7e7jMtZNba'
 # GA_ID = "the site ID listed after your site"
 #GA_ID = "UA-12345678-9"
 
+# Specific IP addresses or networks you want to have access to your internal pages
+# such as wiki/admin etc (eg. CLS network) Everyone else will be blocked
+INTERNAL_IPS = IPAddressList(
+    '127.0.0.1/32',
+	'10.52.28.0/22', 
+	'10.52.4.0/22', 
+	'10.45.2.0/22',
+	'10.63.240.0/22',
+)
+
 # Django house-keeping stuff specific to your site
 ########################################################################################################
 
 # Set DEBUG to False when your website is ready for the public
-#DEBUG = False
+DEBUG = False
 
 # Set the SECRET_KEY to a unique, unpredictable value
 SECRET_KEY = '^a-random-string-with-letters-numbers-and-characters!'
@@ -74,23 +84,7 @@ SCHEDULERS = (
 AUTO_SCHEDULERS = (
     ('TestUser', 'test.user@lightsource.ca'),
 )
-CC_AUTO_SCHEDULERS = ()
+CC_AUTO_SCHEDULERS = []
 
 
-# The following is only necessary if you have included 'application_form' in the list of INSTALLED_APPS.
-########################################################################################################
- 
-# MANAGERS will receive online application forms
-MANAGERS = (
-    ('TestUser', 'test.user@lightsource.ca'),
-)
-# Sender for application_form emails
-FROM_EMAIL = 'test.user@lightsource.ca' # This should be an email that exists
 
-# CONF_MANAGERS will receive PSFaM registration forms
-CONF_MANAGERS = (
-    ('TestUser', 'test.user@lightsource.ca'),
-) 
-# Sender email for PSFaM Registrations
-CONF_FROM_EMAIL = 'test.user@lightsource.ca'
- 
