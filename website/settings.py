@@ -172,10 +172,11 @@ SUIT_CONFIG = {
     'MENU': (
         {'app': 'page', 'label': 'Web Pages', 'icon': 'icon-share'},
         {'app': 'blog', 'label': 'News Items', 'icon': 'icon-star','models':('post','category')},
-        {'app': 'scheduler', 'label': 'Scheduling', 'icon': 'icon-time'},
+        {'app': 'scheduler', 'label': 'Scheduler', 'icon': 'icon-time',},
         {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
         {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
         {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
+        {'label': 'Beamline Staff', 'icon': 'icon-user', 'url':'/admin/scheduler/supportperson/'},
         {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'icon-folder-open'},  
         '-',
         {'label': 'Settings', 'icon': 'icon-cog', 'models': ('sites.site','redirects.redirect')},

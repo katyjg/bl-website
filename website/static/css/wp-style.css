@@ -115,10 +115,21 @@ div#header-print {
 #header.aca{
 	background: #dcdcdc url(/static/img/header_grey.png) top right repeat-x;
 }
-#header .logo {
-	width: 960px;
+#header .facility-logo {
+	display: inline-block;
+	width: 88px;
 	margin: 0 auto;
-	clear: both;
+	clear: left;
+	float: left;
+	background: url(/media/uploads/site-images/cls-logo.png) top left no-repeat;
+    height: 88px;    
+}
+
+#header .logo {
+	width: 872px;
+	margin: 0 auto;
+	clear: right;
+	float: right;
 	background: url(/media/uploads/site-images/logo.png) top left no-repeat;
     height: 88px;    
 }
