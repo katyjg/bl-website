@@ -1,6 +1,4 @@
-""" 
-Testing
-Customizing your site:
+"""Customizing your site:
     1. Save this file as settings_local.py
     2. Update settings_local.py with your information
     3. With the admin file manager, go to the site-images/prod folder and upload images for:
