@@ -1,5 +1,5 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
-<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+{% csrf_token %}
 
 <p>The deadline for registration is May 1, 2015, but early registration is encouraged.</p>
 
