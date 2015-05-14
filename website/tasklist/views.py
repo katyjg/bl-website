@@ -22,9 +22,10 @@ class ProjectDetail(FilteredListView):
     paginate_by = 15
     detail_url = 'issue-detail'
     list_filter = ['kind','status', 'priority', 'created', 'modified']
-    list_display = ['id', 'title', 'status', 'modified']
-    list_styles = {'title': 'col-xs-7', 'id': 'col-xs-1'}
+    list_display = ['id', 'describe', 'status', 'modified']
+    list_styles = {'describe': 'col-xs-7', 'id': 'col-xs-1'}
     search_fields = ['title', 'description']
+    ordering_proxies = {'describe': 'title'}
     order_by = ['-created', 'priority']
 
     def get_queryset(self):

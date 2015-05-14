@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
+from django.utils.safestring import mark_safe
 import hashlib
 import os
 
@@ -102,6 +103,12 @@ class Issue(TimeStampedModel):
     frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='In months')
     objects = IssueManager()
     
+    def describe(self):
+        txt =  u"<span>{0}</span><br/><span class='tiny-labels'>{1}, {2}</span>.".format(self.title, self.get_kind_display(), self.get_priority_display())
+        return mark_safe(txt)
+    describe.short_description = 'Title'
+    describe.allow_tags = True
+        
     def __unicode__(self):
         return u'%s' % self.title
 
