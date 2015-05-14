@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
 from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse_lazy
 import hashlib
 import os
 
@@ -19,7 +20,8 @@ def _image_filename(instance, filename):
 
 class Project(TimeStampedModel):
     name = models.CharField(verbose_name=_('Name'), max_length=50)
-    description = models.CharField(verbose_name=_('Description'), max_length=250, blank=True)
+    short_description = models.CharField(verbose_name=_('Description'), max_length=255, blank=True)
+    description = models.TextField(blank=True, null=True)
     is_private = models.BooleanField(verbose_name=_('Private'), default=False)
     icon = models.ImageField(upload_to=_image_filename, blank=True, null=True)
             
@@ -93,7 +95,7 @@ class Issue(TimeStampedModel):
     project = models.ForeignKey(Project, related_name='issues')
     milestone = models.ForeignKey(Milestone, null=True, blank=True, related_name='issues')
     title = models.CharField(verbose_name=_('Title'), max_length=250)
-    description = models.TextField(verbose_name=_('Description'), blank=True)
+    description = models.TextField(verbose_name=_('Description'))
     submitter = models.ForeignKey(User, verbose_name=_('Submitter'), related_name='submitted_issues')
     owner = models.ForeignKey(User, verbose_name=_('Assigned to'), null=True, blank=True, related_name='assigned_tasks')
     status = models.CharField(max_length=20, verbose_name=_('Status'), default=STATES.new, choices=STATES)
@@ -103,8 +105,11 @@ class Issue(TimeStampedModel):
     frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='In months')
     objects = IssueManager()
     
+    def get_absolute_url(self):
+        return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
+    
     def describe(self):
-        txt =  u"<span>{0}</span><br/><span class='tiny-labels'>{1}, {2}</span>.".format(self.title, self.get_kind_display(), self.get_priority_display())
+        txt =  u"<span>{0}</span><br/><small class='text-muted'>{1}, Priority:{2}</small>".format(self.title, self.get_kind_display(), self.get_priority_display())
         return mark_safe(txt)
     describe.short_description = 'Title'
     describe.allow_tags = True
@@ -144,5 +149,9 @@ class Comment(TimeStampedModel):
     )
     issue = models.ForeignKey(Issue, related_name='comments')
     author = models.ForeignKey(User, verbose_name=_('Author'), related_name='comments')
-    description = models.TextField(verbose_name=_('Description'), blank=True)
+    description = models.TextField(verbose_name=_('Comment'), blank=True)
     kind = models.CharField(max_length=20, verbose_name=_('Type'), default=TYPES.comment, choices=TYPES)
+
+    def get_absolute_url(self):
+        return reverse_lazy('issue-detail', kwargs={'pk': self.issue.pk})
+

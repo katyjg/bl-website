@@ -4,11 +4,11 @@ body {
     padding: 0;
     height:100%;
 	background-color: #f6f6f6;
-    /*max-width:1200px;*/
+    margin-bottom: 60px;
 }
 html {
-	height: 100%;
-	/*overflow-y: scroll;*/
+    position: relative;
+	min-height: 100%;
 }
 @-ms-viewport {
   width: auto !important; /* Fix IE problems */
@@ -34,7 +34,6 @@ h1, h2, h3, h4, h5 {
 	/*background-color: #f6f6f6;*/
 	width: 100%;
 	margin: 0 !improtant;
-	padding: 15px 0;
     float: none;
     overflow: visible !important;
     position: relative;
@@ -51,16 +50,14 @@ div.fixed-banner {
 	background-color: #f3f3f3;
     box-shadow: 4px 0px 6px -1px rgba(0,0,0, 0.25);
 }
-div.fixed-footer {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	width: 100%;
-	overflow: hidden;
-	z-index: 1039;	
-	padding: 4px 15px;
-    box-shadow: 0 -1px 4px -1px rgba(0, 0, 0, 0.2);
-    border-top: 1px solid #d6d6d6;
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  padding-top: 1em;
+  border-top: 1px solid #d6d6d6; 
+  background-color: #f5f5f5;
 }
 .fixed-banner > .banner-heading {
 	font-family: "Raleway", sans-serif;
@@ -74,12 +71,32 @@ div.fixed-footer {
 div.fixed-banner .nav > li > a:hover {
 	background-color: rgba(0,0,0, 0.05);
 }
-
+.section-title {
+	background-color: #dedede;
+}
 .fixed-banner .nav > li > a {
 	height: 36px;
 	line-height: 1;
 }
+ul.issue-summary li {
+	padding: 0.75em 0;
+}
 
+ul.issue-summary li + li{
+	border-top: 1px solid #ccc;
+}
+li.issue-comment + li.issue-comment > div.row {
+	border-top: 1px solid #ccc;
+}
+li.issue-comment div.comment-header {
+	padding-bottom: 0.5em;
+	padding-top: 0.5em;
+	background-color: #fafafa;
+}
+div.issue-instructions ul {
+    margin-left: 1em;
+    padding-left: 1em;
+}
 #left-content .main-profile {
     border: none;
     padding-right: 15px;
@@ -2011,7 +2028,7 @@ a.tb-active {
 	padding: 0.5em;
 }
 .media.grid-cell {
-	margin-top: 15px !important;
+	margin-top: 0px !important;
 }
 .grid-cell img.thumbnail {
 	height: 70px;

@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.messages',
     'django.contrib.redirects',
-    #'django.contrib.admindocs',
+    'django.contrib.humanize',
     'website',
     'scheduler',
     'blog',
@@ -145,6 +145,7 @@ INSTALLED_APPS = (
     'south',
     'captcha',    
     #'application_form',
+    'crispy_forms',
     'objlist',
     'tasklist',
 )
@@ -155,6 +156,7 @@ FEINCMS_RICHTEXT_INIT_CONTEXT = {
     'TINYMCE_JS_URL': STATIC_URL + 'tinymce/jscripts/tiny_mce/tiny_mce.js',
 
 }
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # The following is only necessary if you have included 'application_form' in the list of INSTALLED_APPS.
 ########################################################################################################

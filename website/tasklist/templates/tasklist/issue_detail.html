@@ -1,0 +1,70 @@
+{% extends 'tasklist/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+{% load markup %}
+
+{% block extra_css %}
+	<link rel="stylesheet" href="{% static 'tasklist/css/chosen.css' %}" type="text/css" media="screen" />
+{% endblock %}
+{% block extra_js %}
+	<script src="{% static 'tasklist/jquery/chosen.jquery.min.js' %}"></script>
+	<script type="text/javascript">	
+	$(document).ready(function(){
+		$(".chosen").chosen({
+			placeholder_text_single: "Select an option",
+			search_contains: true,
+			allow_single_deselect: true
+		});
+	});
+	</script>
+{% endblock %}
+{% block full %}
+<div class="row section-title">
+	<div class="col-xs-12" style="padding-top: 1.5em; padding-bottom: 1.5em;">
+		<h4 class="no-margin">Issue <strong>{{issue.id}}</strong>: {{issue}}</h4>
+	</div>
+</div>
+<div class="row" style="padding-top: 1em;">
+	<div class="col-xs-12 col-sm-3">
+	{% if issue %}
+	<ul class="list-unstyled issue-summary">
+	  <li><strong>Project: </strong><a href="{% url 'project-detail' pk=issue.project.pk %}">{{issue.project}}</a></li>
+	  <li><strong>Created: </strong>{{issue.created|timesince}} ago by {{issue.submitter}}</li>
+	  <li><strong>Updated: </strong>{{issue.modified|timesince}} ago</li>
+	  {% if issue.owner %}
+	  	  <li><strong>Assigned to: </strong>{{issue.owner}}</li>
+	  {% endif %}
+	  <li>
+	  	<span class="label label-job">{{issue.get_status_display}}</span>
+	  	<span class="label label-info">{{issue.get_kind_display}}</span>
+	  	<span class="label label-role">Priority: {{issue.get_priority_display}}</span>
+	  </li>
+	</ul>
+	{% endif %}
+	</div>
+	<div class="col-xs-12 col-sm-9">
+		<div class="pagelet">
+			<div class="pagelet-header"></div>
+			<div class="pagelet-body" id="sample-form">
+				<ul class="list-unstyled">
+					<li class="issue-comment">
+					<div class="row">
+						<div class="col-xs-12 comment-header"><strong>Reported by {{issue.submitter}}</strong> <span class="text-muted">on {{issue.created}}</span></div>
+						<div class="col-xs-12">{{issue.description|markdown}}</div>
+					</div>
+					</li> 
+				{% for comment in issue.comments.all %}
+					{% include "tasklist/issue_comment.html" %}
+				{% endfor %}
+				</ul>
+			</div>
+			<hr/>
+			<div class="pagelet-body" id="sample-form">
+				{% crispy form form.helper %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

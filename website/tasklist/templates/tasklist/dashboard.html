@@ -1,8 +1,10 @@
 {% extends "tasklist/base.html" %}
 {% load static %}
+{% load markup %}
+
 
 {% block full %}
-<div class="row" style="padding-top: 3em;">
+<div class="row" style="padding-top: 1em;">
 	<div class="col-xs-12 col-sm-3">
 		<div class="row">	
 			<div class="col-xs-6 col-sm-12"><!-- tile -->
@@ -30,14 +32,15 @@
 	    	<div class="pagelet-header"><span class="pagelet-title">Projects</span></div>
 	    	<div class="pagelet-body">
 	    	{% for project in projects %}
-				<div class="media grid-cell col-xs-6">
-				  <a class="pull-left" href='{% url "project-detail" project.pk %}'>
-				    <img class="thumbnail media-object" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
-				  </a>
+	    	
+				<div class="media grid-cell col-xs-12">				  
+				    <img class=" pull-left thumbnail media-object" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
 				  <div class="media-body person-cell">
+				  	<a href='{% url "project-detail" project.pk %}'>
 				    <span class="media-heading"><h4><strong>{{project.name}}</strong></h4></span>
+					</a>		    	
 				    <span class="person-summary">
-				    {{project.description}}
+				    {{project.description|markdown}}
 				    </span>
 				  </div>
 				</div>	    	

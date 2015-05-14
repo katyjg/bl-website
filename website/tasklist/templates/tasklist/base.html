@@ -27,14 +27,7 @@
   </head>
   <body  class="{% block body_class %}{% endblock %}">
   	{% block body %}    
-    <div class="modal fade" id="modal-container" tabindex="-1" role="dialog">
-    	<div class="modal-dialog">
-    		<div class="modal-content"></div>	
-    	</div>
-    </div>
-
-    <div id="modal-form"></div>
- 
+    <div id="modal-form"></div> 
     <div class="content main-content">
         <div class="pad-wrapper">
 
@@ -64,7 +57,16 @@
         {% block full %}{% endblock %}
     	</div>
     </div>
-    <div id="help-content" class="main-content removed"></div>
+    
+    <footer class="footer">
+      <div class="container">
+       	<p class="text-muted text-center"> 
+			<a href="http://www.lightsource.ca">CLS Home</a>&emsp;|&emsp; 
+			<a href="/">{% site_name %} Home</a>&emsp;|&emsp; 
+			<a href="/wiki">{% site_name %} Wiki</a> 
+		</p>
+      </div>
+    </footer>
     <script src="{% static 'tasklist/bootstrap/js/bootstrap.min.js' %}"></script>
     {% block post_js %}{% endblock %}
     {% block extra_js %}{% endblock %}

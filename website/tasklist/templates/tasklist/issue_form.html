@@ -1,0 +1,35 @@
+{% extends 'tasklist/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block extra_css %}
+	<link rel="stylesheet" href="{% static 'tasklist/css/chosen.css' %}" type="text/css" media="screen" />
+{% endblock %}
+{% block extra_js %}
+	<script src="{% static 'tasklist/jquery/chosen.jquery.min.js' %}"></script>
+	<script type="text/javascript">	
+	$(document).ready(function(){
+		$(".chosen").chosen({
+			placeholder_text_single: "Select an option",
+			search_contains: true,
+			allow_single_deselect: true
+		});
+	});
+	</script>
+{% endblock %}
+{% block full %}
+<div class="row" style="padding-top: 1em;">
+	<div class="col-xs-12 col-sm-4">
+	{% include "tasklist/issue_instructions.html" %}
+	</div>
+	<div class="col-xs-12 col-sm-8">
+		<div class="pagelet">
+			<div class="pagelet-header"><h4>{{project}} Issue</h4></div>
+			<div class="pagelet-body" id="sample-form">
+				{% crispy form form.helper %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

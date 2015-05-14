@@ -3,44 +3,90 @@
     "pk": 1, 
     "model": "tasklist.project", 
     "fields": {
-        "description": "CMCF 08B1-1 Beamline", 
+        "description": "The scope of this project includes:  Beamline Optics, Endstation hardware (SAM automounter, HC1, Vortex, MD2, etc.) , EPICS and EDM related issues, any other miscellaneous hardware issues related to the CMCF-BM beamline specifically.", 
+        "created": "2015-05-13T16:03:10.257", 
+        "modified": "2015-05-14T07:49:41.711", 
+        "short_description": "CMCF 08B1-1 Beamline", 
+        "icon": "", 
         "is_private": false, 
-        "modified": "2015-05-13T16:03:10.258", 
-        "name": "CMCF-BM", 
-        "created": "2015-05-13T16:03:10.257"
+        "name": "CMCF-BM"
     }
 },
 {
     "pk": 2, 
     "model": "tasklist.project", 
     "fields": {
-        "description": "CMCF 08ID-1 Beamline", 
+        "description": "The scope of this project includes:  Endstation hardware (Exposure Box, goniometer, cryojet, etc.), POE hardware , EDM Screens ;  any other miscellaneous issue related to the CMCF-ID beamline specifically.", 
+        "created": "2015-05-13T16:03:22.505", 
+        "modified": "2015-05-14T07:49:04.480", 
+        "short_description": "CMCF 08ID-1 Beamline", 
+        "icon": "", 
         "is_private": false, 
-        "modified": "2015-05-13T16:03:22.506", 
-        "name": "CMCF-ID", 
-        "created": "2015-05-13T16:03:22.505"
+        "name": "CMCF-ID"
     }
 },
 {
     "pk": 3, 
     "model": "tasklist.project", 
     "fields": {
-        "description": "CMCF Software Projects", 
+        "description": "The scope of this project includes all user software: MxDC, AutoProcess, third-party software for users such s HKL2000, XDS, CCP4 etc.", 
+        "created": "2015-05-13T16:04:01.326", 
+        "modified": "2015-05-14T07:48:31.953", 
+        "short_description": "CMCF User Software", 
+        "icon": "", 
         "is_private": false, 
-        "modified": "2015-05-13T16:04:01.327", 
-        "name": "CMCF Software", 
-        "created": "2015-05-13T16:04:01.326"
+        "name": "CMCF User Software"
     }
 },
 {
     "pk": 4, 
     "model": "tasklist.project", 
     "fields": {
-        "description": "CMCF Preventative Maintenance", 
+        "description": "Preventative maintenance items related to the CMCF Facility as a whole, affecting both CMCF-BM and CMCF-ID beamlines.", 
+        "created": "2015-05-13T16:05:06.619", 
+        "modified": "2015-05-14T07:35:39.517", 
+        "short_description": "CMCF Preventative Maintenance", 
+        "icon": "", 
         "is_private": true, 
-        "modified": "2015-05-13T16:05:06.620", 
-        "name": "CMCF Maintenance", 
-        "created": "2015-05-13T16:05:06.619"
+        "name": "CMCF Maintenance"
+    }
+},
+{
+    "pk": 1, 
+    "model": "tasklist.issue", 
+    "fields": {
+        "status": "new", 
+        "priority": 2, 
+        "kind": "task", 
+        "description": "The BPMs currently produce total counts or current as the readout \r\nvalue. We should prepare a calibration curve and convert these \r\nvalues to flux units so that users have a more useful and \r\nrecognizable value.", 
+        "due_date": null, 
+        "title": "Convert BPM I0 into flux units", 
+        "created": "2015-05-14T10:51:47.271", 
+        "modified": "2015-05-14T10:51:47.276", 
+        "project": 1, 
+        "owner": null, 
+        "frequency": null, 
+        "milestone": null, 
+        "submitter": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "tasklist.issue", 
+    "fields": {
+        "status": "new", 
+        "priority": 0, 
+        "kind": "task", 
+        "description": "Rayonix advises that the PCC Compact Coolers only have a service \r\nlife of 5-6 years and the coolers have been in service for this \r\nlength of time. Replacement is advises by Rayonix.\r\n\r\nAdditionally, the temperature logs indicate that Cryo1 is slowly \r\nlosing cooling power and has increased in temperature from -138C to \r\n-107C. Condenstate (oil) is likely contaminating the cold head.", 
+        "due_date": null, 
+        "title": "Detector PCC Compact Cooler contamination/relacement", 
+        "created": "2015-05-14T10:56:21.294", 
+        "modified": "2015-05-14T10:56:21.298", 
+        "project": 1, 
+        "owner": null, 
+        "frequency": null, 
+        "milestone": null, 
+        "submitter": 1
     }
 }
 ]
