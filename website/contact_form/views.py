@@ -11,8 +11,9 @@ from django.template import RequestContext
 from contact_form.forms import ContactForm
 
 from feincms.content.application.models import app_reverse
+from django.views.decorators.csrf import csrf_protect
 
-
+@csrf_protect
 def contact_form(request, form_class=ContactForm,
                  template_name='contact_form/contact_form.html',
                  success_url=None, extra_context=None,
