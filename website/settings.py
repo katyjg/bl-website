@@ -95,12 +95,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages'
 )
 
-TEMPLATE_LOADERS = (
-    ('django.template.loaders.cached.Loader', (
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-    )),
-)
+#TEMPLATE_LOADERS = (
+#    ('django.template.loaders.cached.Loader', (
+#        'django.template.loaders.filesystem.Loader',
+#        'django.template.loaders.app_directories.Loader',
+#    )),
+#)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -144,7 +144,9 @@ INSTALLED_APPS = (
     'mptt',
     'south',
     'captcha',    
-    'application_form'
+    #'application_form',
+    'objlist',
+    'tasklist',
 )
 
 FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
@@ -193,7 +195,6 @@ SUIT_CONFIG = {
         {'app': 'scheduler', 'label': 'Scheduler', 'icon': 'icon-time',},
         {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
         {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
-        {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
         {'label': 'Beamline Staff', 'icon': 'icon-user', 'url':'/admin/scheduler/supportperson/'},
         {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'icon-folder-open'},  
         '-',
@@ -201,6 +202,8 @@ SUIT_CONFIG = {
         {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
         '-',
         {'label': 'Beamtime', 'icon':'icon-calendar', 'url': '/beamtime/admin'},
+        {'app': 'tasklist', 'label': 'Beamline Tasks', 'icon': 'icon-tasks', 'models': ('project','milestone')},
+        {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
     ),
     'LIST_PER_PAGE': 25
 }

@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     (r'^wiki/', include('simplewiki.urls')),
     (r'^beamtime/', include('scheduler.admin_urls')),
     (r'^pubs/', include('publications.urls')),
-
+    (r'^issues/', include('tasklist.urls')),
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
     # to INSTALLED_APPS to enable admin documentation:
     #(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -1,0 +1,85 @@
+{% load static %}
+{% load tasklist_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block page_title %}Task List{% endblock %}</title>
+    <link href="{% static 'tasklist/img/logo.ico' %}" rel="SHORTCUT ICON">
+    <link href="{% static 'tasklist/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'tasklist/fontawesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'tasklist/css/font-awesome-animation.min.css' %}" rel="stylesheet">
+    <link href="{% static 'tasklist/css/animate.css' %}" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Raleway:300,500,600,700|Exo+2:700,400,400italic' rel='stylesheet' type='text/css'>
+    {% block site_css %}
+	<link rel="stylesheet" href="{% static 'tasklist/css/style.css' %}" type="text/css" media="screen" />
+    {% endblock %}
+    {% block extra_css %}{% endblock %}
+    <script src="{% static 'tasklist/jquery/jquery.min.js' %}"></script>    
+    {% block pre_js %}{% endblock %}
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body  class="{% block body_class %}{% endblock %}">
+  	{% block body %}    
+    <div class="modal fade" id="modal-container" tabindex="-1" role="dialog">
+    	<div class="modal-dialog">
+    		<div class="modal-content"></div>	
+    	</div>
+    </div>
+
+    <div id="modal-form"></div>
+ 
+    <div class="content main-content">
+        <div class="pad-wrapper">
+
+			<div class="fixed-banner">
+				<div class="banner-heading pull-left"><i class="fa fa-cubes"></i> 
+					<strong>{% site_name %} Tracker</strong>
+					&nbsp;
+					|&emsp;<a title="Dashboard" href="{% url 'tasklist-dashboard'%}"><i class="fa fa-home fa-fw"></i></a>
+					&emsp;<a title="Work Planning" href="{% url 'tasklist-dashboard'%}"><i class="fa fa-calendar fa-fw"></i></a>
+					&emsp;<a title="All Issues" href="{% url 'tasklist-dashboard'%}"><i class="fa fa-tasks fa-fw"></i></a>
+				</div>
+				<ul class="nav navbar-nav pull-right" style="margin-right: 0px;">
+					{% if user.is_authenticated %}
+					{% block project_tools %}
+					<!-- li>
+					  <a title="Add Issue" class="btn btn-sm btn-default" href="#"><i class="fa fa-plus fa-fw"></i></a>
+					</li-->
+					{% endblock %}
+					<li>&nbsp;</li>
+					<li><a title="Logout" class="" href="/admin/logout/?next={{request.get_full_path}}"><i class="fa fa-lock fa-fw"></i><span class="hidden-xs">Logout <strong>{{user}}</strong></span></a></li>
+					{% else %}
+					<li><a title="Login" class="" href="/admin/login/"><i class="fa fa-unlock-alt fa-fw"></i>Login</a></li>
+					{% endif %}
+			    </ul>	
+			</div>
+
+        {% block full %}{% endblock %}
+    	</div>
+    </div>
+    <div id="help-content" class="main-content removed"></div>
+    <script src="{% static 'tasklist/bootstrap/js/bootstrap.min.js' %}"></script>
+    {% block post_js %}{% endblock %}
+    {% block extra_js %}{% endblock %}
+    {% include "tasklist/messages.html" %}
+  	{% endblock %}
+  	<script type="text/javascript">
+  		$("[title]").not("[data-toggle='popover']").tooltip({ // enable tooltips
+  	    		container: 'body',
+  	    		viewport: {selector: 'body', padding: 10},
+  	    		placement: 'bottom'
+  	    });	
+  		$("[data-toggle='popover']").popover({ // enable popovers
+  			container: 'body'
+	    	//placement: 'bottom'
+		});
+   	</script>
+  </body>
+</html>
