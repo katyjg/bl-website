@@ -104,14 +104,17 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
-    #'django.middleware.csrf.CsrfResponseMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'middleware.InternalAccessMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_HTTPONLY = True
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, 'templates')
@@ -157,6 +160,10 @@ FEINCMS_RICHTEXT_INIT_CONTEXT = {
 
 }
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+EMAIL_HOST_USER = "clsweb@mail.blweb"
+EMAIL_HOST_PASSWORD = "clsweb123"
+EMAIL_PORT = 587
 
 # The following is only necessary if you have included 'application_form' in the list of INSTALLED_APPS.
 ########################################################################################################
