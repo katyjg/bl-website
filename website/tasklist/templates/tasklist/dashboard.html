@@ -1,0 +1,50 @@
+{% extends "tasklist/base.html" %}
+{% load static %}
+
+{% block full %}
+<div class="row" style="padding-top: 3em;">
+	<div class="col-xs-12 col-sm-3">
+		<div class="row">	
+			<div class="col-xs-6 col-sm-12"><!-- tile -->
+			  <div class="tile detail clean tile-lemon">
+			    <div class="tile-content"><h1 class="text-left">{{projects.count}}</h1><p>Projects</p></div>
+			    <div class="icon"><i class="fa fa-calendar"></i></div>
+			    <a href="" class="details">Work Planning <span><i class="fa fa-arrow-circle-right pull-right"></i></span></a>
+			    
+			  </div>
+			</div>	    
+			<div class="col-xs-6 col-sm-12"><!-- tile -->
+			  <div class="tile detail clean tile-blue">
+			    <div class="tile-content"><h1 class="text-left">{{issues.count}}</h1><p>Issues</p></div>
+			    <div class="icon"><i class="fa fa-ticket"></i></div>
+			    <a href="#" class="details">All Issues<span><i class="fa fa-arrow-circle-right pull-right"></i></span></a>
+			    
+			  </div>
+			</div>	
+		</div>
+	</div>
+		
+{% if projects.count %}
+	<div class="col-xs-12 col-sm-9"><!-- project list -->
+		<div class="pagelet">
+	    	<div class="pagelet-header"><span class="pagelet-title">Projects</span></div>
+	    	<div class="pagelet-body">
+	    	{% for project in projects %}
+				<div class="media grid-cell col-xs-6">
+				  <a class="pull-left" href='{% url "project-detail" project.pk %}'>
+				    <img class="thumbnail media-object" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
+				  </a>
+				  <div class="media-body person-cell">
+				    <span class="media-heading"><h4><strong>{{project.name}}</strong></h4></span>
+				    <span class="person-summary">
+				    {{project.description}}
+				    </span>
+				  </div>
+				</div>	    	
+	    	{% endfor %}
+	    	</div>
+		</div>
+	</div><!--  end of task list -->
+{% endif %}
+</div>
+{% endblock %}

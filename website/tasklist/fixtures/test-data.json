@@ -1,0 +1,46 @@
+[
+{
+    "pk": 1, 
+    "model": "tasklist.project", 
+    "fields": {
+        "description": "CMCF 08B1-1 Beamline", 
+        "is_private": false, 
+        "modified": "2015-05-13T16:03:10.258", 
+        "name": "CMCF-BM", 
+        "created": "2015-05-13T16:03:10.257"
+    }
+},
+{
+    "pk": 2, 
+    "model": "tasklist.project", 
+    "fields": {
+        "description": "CMCF 08ID-1 Beamline", 
+        "is_private": false, 
+        "modified": "2015-05-13T16:03:22.506", 
+        "name": "CMCF-ID", 
+        "created": "2015-05-13T16:03:22.505"
+    }
+},
+{
+    "pk": 3, 
+    "model": "tasklist.project", 
+    "fields": {
+        "description": "CMCF Software Projects", 
+        "is_private": false, 
+        "modified": "2015-05-13T16:04:01.327", 
+        "name": "CMCF Software", 
+        "created": "2015-05-13T16:04:01.326"
+    }
+},
+{
+    "pk": 4, 
+    "model": "tasklist.project", 
+    "fields": {
+        "description": "CMCF Preventative Maintenance", 
+        "is_private": true, 
+        "modified": "2015-05-13T16:05:06.620", 
+        "name": "CMCF Maintenance", 
+        "created": "2015-05-13T16:05:06.619"
+    }
+}
+]

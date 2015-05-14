@@ -1,0 +1,28 @@
+{% load static %}
+{% load tasklist_tags %}
+<script type="text/javascript" src="{% static 'tasklist/js/jquery.noty.packaged.min.js' %}"></script>
+<script type="text/javascript">
+function generate(type, text) {
+    var n = noty({
+        text        : text,
+        type        : type,
+        dismissQueue: true,
+        layout      : 'bottomRight',
+		timeout		: '6000',
+        theme       : 'relax',
+        maxVisible  : 10,
+        animation   : {
+            open  : 'animated bounceInRight',
+            close : 'animated bounceOutRight',
+            easing: 'swing',
+            speed : 500
+        }
+    });
+    console.log('html: ' + n.options.id);
+}
+$(function() {
+	{% for message in messages %}
+		generate("{{message.tags|msg_type}}", '{{message|msg_compose}}');
+	{% endfor %}
+});
+</script>
