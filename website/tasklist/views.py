@@ -10,6 +10,7 @@ import forms
 import json
 import models
 from datetime import datetime, timedelta
+from templatetags import tasklist_tags
 
 # Create your views here.
 class LoginRequiredMixin(object):
@@ -162,16 +163,6 @@ class IssueDetail(CreateView):
             data['issue'].related.add(*data['issue_related'])            
         return super(IssueDetail, self).form_valid(form)
     
-def due_date_alarm(d):
-    if d:
-        if d <= datetime.today().date():
-            return "<span class='Critical' title='{0}'><i class='fa fa-exclamation-circle fa-3'></i></span>".format(humanize.naturalday(d))
-        elif d <= (datetime.today() + timedelta(days=7)).date():
-            return "<span class='High' title='{0}'><i class='fa fa-exclamation-triangle fa-3'></i></span>".format(humanize.naturalday(d))
-        else:
-            return humanize.naturalday(d)
-    return d
-    
 class IssueList(FilteredListView):
     model = models.Issue
     queryset = models.Issue.objects.active()
@@ -182,7 +173,7 @@ class IssueList(FilteredListView):
     list_filter = ['kind', 'priority', 'created', 'modified']
     list_title = 'Active Issues'
     list_display = ['project', 'id', 'describe', 'status', 'modified', 'due_date']
-    list_transforms = {'due_date': due_date_alarm}
+    list_transforms = {'due_date': tasklist_tags.alarm}
     list_styles = {'describe': 'col-xs-7', 'id': 'col-xs-1'}
     search_fields = ['title', 'description']
     ordering_proxies = {'describe': 'title'}

@@ -41,7 +41,7 @@ class Milestone(TimeStampedModel):
 
 class IssueQuerySet(QuerySet):
     def active(self):
-        return self.filter(status__in=[Issue.STATES.new, Issue.STATES.started]).exclude(kind=Issue.TYPES.maintenance)
+        return self.filter(status__in=[Issue.STATES.new, Issue.STATES.started, Issue.STATES.pending]).exclude(kind=Issue.TYPES.maintenance)
 
     def maintenance(self):
         return self.filter(kind__in=[Issue.TYPES.maintenance])
@@ -150,6 +150,23 @@ class Attachment(TimeStampedModel):
     def __unicode__(self):
         return u"{0}".format(self.description)
 
+class CommentQuerySet(QuerySet):
+    def comments(self):
+        return self.filter(kind__exact=Comment.TYPES.comment)
+
+    def update(self):
+        return self.filter(kind__exact=Comment.TYPES.update)
+
+class CommentManager(models.Manager):
+    use_for_related_fields = True
+    
+    def get_queryset(self):
+        return CommentQuerySet(self.model, using=self.db)
+    
+    def comments(self):
+        qset = self.get_queryset()
+        return qset.comments()
+
 class Comment(TimeStampedModel):
     TYPES = Choices(
         ('comment', _('Comment')),
@@ -160,7 +177,12 @@ class Comment(TimeStampedModel):
     author = models.ForeignKey(User, verbose_name=_('Author'), related_name='comments')
     description = models.TextField(verbose_name=_('Comment'), blank=True)
     kind = models.CharField(max_length=20, verbose_name=_('Type'), default=TYPES.comment, choices=TYPES)
+    objects = CommentManager()
 
     def get_absolute_url(self):
         return reverse_lazy('issue-detail', kwargs={'pk': self.issue.pk})
+
+    class Meta:
+        get_latest_by = "created"
+
 

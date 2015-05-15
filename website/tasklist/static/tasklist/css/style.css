@@ -2356,14 +2356,20 @@ div.narrow-gutter {
   padding: 4px;
 }
 
-.claim-grid {
+.grid-cell a {
+	color: #333 !important;
+}
+.plan-grid {
+	background-color: #f6f6f6;
+}
+.claim-grid, .plan-grid {
 	border: 1px solid #eee; 
 	padding: 0.75em;	
 }
 .claim-grid a.btn{
 	display: none;	
 }
-.claim-grid:hover {
+.claim-grid:hover, .plan-grid:hover {
 	background-color: #ffffcc;	
 }
 .claim-grid:hover a.btn {

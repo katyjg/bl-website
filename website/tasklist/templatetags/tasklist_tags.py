@@ -6,6 +6,8 @@ from django.utils.safestring import mark_safe
 from django.conf import settings
 import re
 import mimetypes
+from datetime import datetime, timedelta
+from django.contrib.humanize.templatetags import humanize
 
 register = template.Library()
 
@@ -24,6 +26,19 @@ def issue_icon(issue, autoescape=None):
     }
     icon = ICONS.get(issue.kind, '')
     print icon
+    return mark_safe(icon)
+
+@register.filter(name="state_icon", needs_autoescape=True)
+def state_icon(issue, autoescape=None):
+    ICONS = {
+        'new': '<i class="fa fa-start fa-fw fa-3"></i>',
+        'pending': '<i class="fa fa-wrench fa-fw fa-3"></i>',
+        'started':'<i class="fa fa-cogs fa-fw fa-3"></i>',
+        'fixed':'<i class="fa fa-check fa-fw fa-3"></i>',
+        'wontfix':'<i class="fa fa-times fa-fw fa-3"></i>',
+        'permanent':'<i class="fa fa-thumb-tack fa-fw fa-3"></i>',
+    }
+    icon = ICONS.get(issue.status, '')
     return mark_safe(icon)
 
 @register.filter(name="file_icon", needs_autoescape=True)
@@ -54,6 +69,14 @@ def msg_type(tag, autoescape=None):
 def msg_compose(msg, autoescape=None):
     text = '<div class="activity-item">{0}<div class="activity">{1}</div></div>'.format(msg_icon(msg.tags), msg)  
     return mark_safe(text)
+
+@register.filter(name="alarm", needs_autoescape=True)
+def alarm(d, autoescape=None):
+    if d:
+        urgent = (d <= datetime.today().date() and 'Critical') or d <= (datetime.today() + timedelta(days=7)).date() and 'High' or "" 
+        return mark_safe("<span class='{0}' title='Due {1}'><i class='fa fa-{2} fa-3'></i></span>".format(urgent, humanize.naturalday(d), 
+                                                                                                   urgent and (urgent == 'Critical' and 'exclamation-circle' or 'warning') or 'clock-o' ))
+    return d
 
 CONSONANT_SOUND = re.compile(r'''
 one(![ir])
