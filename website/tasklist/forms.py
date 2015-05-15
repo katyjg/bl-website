@@ -28,7 +28,7 @@ class IssueForm(forms.ModelForm):
                 Div(Field('kind', css_class="chosen"),  css_class='col-sm-6'),
                 Div(Field('priority', css_class="chosen"), css_class='col-sm-6'),                                       
                 Div(Field('due_date', css_class="dateinput"), css_class='col-sm-6'),
-                Div(Field('related', css_class="chosen"), css_class='col-sm-6'),
+                Div(Field('related', css_class="chosen-value"), css_class='col-sm-6'),
                 css_class="row narrow-gutter"
             ),                         
             Div(Div(

@@ -1,0 +1,18 @@
+{% extends "tasklist/base.html" %}
+{% load static %}
+{% load active from navigation %}
+{% block full %}
+<div class="row" style="padding-top: 2em; ">
+	<div class="hidden-xs col-sm-2 text-center">
+	<hr/>
+	<table class="table">
+	<tr class="{% active 'issue-list' %}"><td><a href="{% url 'issue-list' %}">Active:</a></td><td>{{issues.active.count}}</td></tr>
+	<tr class="{% active 'closed-issues' %}"><td><a href="{% url 'closed-issues' %}">Closed:</a></td><td>{{issues.closed.count}}</td></tr>
+	<tr class="{% active 'maintenance-issues' %}"><td><a href="{% url 'maintenance-issues' %}">Maintenance:</a></td><td>{{issues.maintenance.count}}</td></tr>
+	</table>
+	</div>
+	<div class="col-xs-12 col-sm-10">
+		{% include "objlist/object_list.html" %}
+	</div>
+</div>
+{% endblock %}

@@ -35,6 +35,14 @@ class DashboardView(TemplateView):
         context['issues'] = models.Issue.objects.all()
         return context
 
+class WorkPlanningView(TemplateView):
+    template_name = 'tasklist/work_planning.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(WorkPlanningView, self).get_context_data(**kwargs)
+        context['permanent'] = models.Issue.objects.filter(status='permanent')
+        context['projects'] = models.Project.objects.exclude(is_private=True)
+        return context
 
 class ProjectDetail(FilteredListView):
     model = models.Issue
@@ -172,6 +180,7 @@ class IssueList(FilteredListView):
     paginate_by = 15
     detail_url = 'issue-detail'
     list_filter = ['kind', 'priority', 'created', 'modified']
+    list_title = 'Active Issues'
     list_display = ['project', 'id', 'describe', 'status', 'modified', 'due_date']
     list_transforms = {'due_date': due_date_alarm}
     list_styles = {'describe': 'col-xs-7', 'id': 'col-xs-1'}
@@ -187,9 +196,11 @@ class IssueList(FilteredListView):
     
 class ClosedIssues(IssueList):
     queryset = models.Issue.objects.closed()    
+    list_title = 'Closed Issues'
     
 class MaintenanceIssues(IssueList):
-    queryset = models.Issue.objects.maintenance()    
+    queryset = models.Issue.objects.maintenance()
+    list_title = 'Maintenance Issues'    
     
 class ManageAttachments(CreateView):
     template_name = "tasklist/attachments.html"

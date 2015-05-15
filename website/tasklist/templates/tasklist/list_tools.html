@@ -1,0 +1,12 @@
+{% if user.is_authenticated %}
+<div class="btn-group pull-right">
+   <li class="dropdown">
+     <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle btn btn-sm btn-white" href="#"><span class="hidden-xs"> New Issue </span> <span class="caret"></span></a>
+     <ul role="menu" class="dropdown-menu">
+       {% for project in projects %}
+         <li><a href="{% url 'create-issue' pk=project.pk %}" data-toggle="tooltip" title="Create New Issue in {{project.name}}"><i class="fa fa-plus fa-1"></i> {{ project.name }}</a></li>
+       {% endfor %}
+     </ul>
+   </li>
+</div>
+{% endif %}

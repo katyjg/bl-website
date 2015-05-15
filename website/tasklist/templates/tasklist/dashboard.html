@@ -11,7 +11,7 @@
 			  <div class="tile detail clean tile-lemon">
 			    <div class="tile-content"><h1 class="text-left">{{projects.count}}</h1><p>Projects</p></div>
 			    <div class="icon"><i class="fa fa-calendar"></i></div>
-			    <a href="" class="details">Work Planning <span><i class="fa fa-arrow-circle-right pull-right"></i></span></a>
+			    <a href="{% url 'work-planning'%}" class="details">Work Planning <span><i class="fa fa-arrow-circle-right pull-right"></i></span></a>
 			    
 			  </div>
 			</div>	    
@@ -19,7 +19,7 @@
 			  <div class="tile detail clean tile-blue">
 			    <div class="tile-content"><h1 class="text-left">{{issues.count}}</h1><p>Issues</p></div>
 			    <div class="icon"><i class="fa fa-ticket"></i></div>
-			    <a href="#" class="details">All Issues<span><i class="fa fa-arrow-circle-right pull-right"></i></span></a>
+			    <a href="{% url 'issue-list'%}" class="details">All Issues<span><i class="fa fa-arrow-circle-right pull-right"></i></span></a>
 			    
 			  </div>
 			</div>	

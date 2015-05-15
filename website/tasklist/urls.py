@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^i/maint$', views.MaintenanceIssues.as_view(), name='maintenance-issues'),
     url(r'^i/(?P<pk>\d+)/$', views.IssueDetail.as_view(), name='issue-detail'),
     url(r'^i/(?P<pk>\d+)/a/$', views.ManageAttachments.as_view(), name='add-issue-attachment'),
+    url(r'^w/$', views.WorkPlanningView.as_view(), name='work-planning'),
     url(r'^login/$',  login, {'template_name': 'tasklist/login.html'}, name='tasklist-login'),
     url(r'^logout/$', logout, name='tasklist-logout'),
 )
