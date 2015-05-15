@@ -6,7 +6,6 @@
 *.cache
 uploads/
 attachments/
-migrations/
 junk/
 /local/media/
 /static/
