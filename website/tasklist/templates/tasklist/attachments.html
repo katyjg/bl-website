@@ -14,7 +14,7 @@
 	<tbody>
 	{% for att in object_list %}
 	<tr>
-		<td>{{att.file|file_icon}}&ensp;<a href="{{att.file.url}}">{{att.description}}</a><span class="hidden-xs"> - <small class="text-muted">({{att.file.size|filesizeformat}})</small>
+		<td>{{att.file|file_icon}}&ensp;<a href="{{att.file.url}}">{{att.description|truncatechars:15}}</a><span class="hidden-xs"> - <small class="text-muted">({{att.file.size|filesizeformat}})</small>
 		<br/><small>Added by {{att.user}}, {{att.created|timesince}} ago</small></span></td>
 	</tr>
 	{% empty %}

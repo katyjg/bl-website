@@ -137,6 +137,12 @@ class FilteredListView(CSVResponseMixin, ListView):
         choices = list(spec.choices(self))
         selected = [choice['display'] for choice in choices if choice['selected']][0]
         return title, choices, selected
+    
+    def get_list_title(self):
+        if self.list_title:
+            return self.list_title
+        else:
+            return self.model._meta.verbose_name_plural
         
     def get_paginate_by(self, queryset):
         if self.request.GET.get(ALL_VAR):
@@ -157,7 +163,7 @@ class FilteredListView(CSVResponseMixin, ListView):
         # Add in a FilterSpecs 
         context['filters'] = [self._get_spec_data(spec) for spec in self.filter_specs]
         context['query_string'] = self.get_query_string(remove=[PAGE_VAR, ERROR_FLAG,CSV_FLAG])
-        context['objects_title'] = self.list_title or self.model._meta.verbose_name_plural
+        context['objects_title'] = self.get_list_title() or self.model._meta.verbose_name_plural
         context['object_title'] = self.model._meta.verbose_name
         context['total_objects'] = self._total_items
         if self.grid_template is not None:

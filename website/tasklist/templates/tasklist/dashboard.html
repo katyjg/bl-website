@@ -31,8 +31,7 @@
 		<div class="pagelet">
 	    	<div class="pagelet-header"><span class="pagelet-title">Projects</span></div>
 	    	<div class="pagelet-body">
-	    	{% for project in projects %}
-	    	
+	    	{% for project in projects %}    	
 				<div class="media grid-cell col-xs-12">				  
 				    <img class=" pull-left thumbnail media-object" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
 				  <div class="media-body person-cell">
@@ -41,6 +40,8 @@
 					</a>		    	
 				    <span class="person-summary">
 				    {{project.description|markdown}}
+				    <a href="{% url 'create-issue' pk=project.pk %}">Report Issue</a>
+				    &emsp;|&emsp;<a href="{% url 'project-maintenance' pk=project.pk %}">Maintenance</a>				    
 				    </span>
 				  </div>
 				</div>	    	

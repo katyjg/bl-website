@@ -1,5 +1,5 @@
 {% if user.is_authenticated %}
 <div class="btn-group pull-right">
-	<a href='{% url "create-maintenance" pk=project.pk %}' data-toggle="tooltip" title="Create Maintenance Task" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i> New Maintenance Task</a>
+	<a href='{% url "create-maintenance" pk=project.pk %}' data-toggle="tooltip" title="Add Maintenance Task" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i> New Task</a>
 </div>
 {% endif %}

@@ -1,17 +1,22 @@
 {% extends "tasklist/base.html" %}
 {% load static %}
 {% block full %}
+<div class="row section-title">
+	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;">
+		<h5 class="no-margin"><strong>{{project.name}}</strong>:&nbsp; {{project.description}}</h5>
+	</div>
+</div>
 <div class="row" style="padding-top: 2em; ">
-	<div class="hidden-xs col-sm-2 text-center">
+	<div class="hidden-xs col-sm-2">
+	<div class="text-center">
 	<img width="60" height="60" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
-	<h4 class="no-margin text-center"><strong>{{project.name}}</strong></h4>
-	<hr/>
 	<p>{{project.short_description}}</p>
+	</div>
 	<hr/>
 	<table class="table">
-	<tr><td>Active:</td><td>{{project.issues.active.count}}</td></tr>
-	<tr><td>Closed:</td><td>{{project.issues.closed.count}}</td></tr>
-	<tr><td>Maintenance:</td><td>{{project.issues.maintenance.count}}</td></tr>
+	<tr><th><a href="{% url 'project-detail' pk=project.pk %}">Active:</a></th><td>{{project.issues.active.count}}</td></tr>
+	<tr><th><a href="{% url 'project-closed' pk=project.pk %}">Closed:</a></th><td>{{project.issues.closed.count}}</td></tr>
+	<tr><th><a href="{% url 'project-maintenance' pk=project.pk %}">Maintenance:</a></th><td>{{project.issues.maintenance.count}}</td></tr>
 	</table>
 	</div>
 	<div class="col-xs-12 col-sm-10">
