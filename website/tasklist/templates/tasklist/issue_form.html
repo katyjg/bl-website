@@ -26,11 +26,15 @@
 {% block full %}
 <div class="row" style="padding-top: 1em;">
 	<div class="col-xs-12 col-sm-4">
+	<ul class="list-unstyled issue-summary">
+	  <li><strong>Project: </strong><a href="{% url 'project-detail' pk=form.initial.project.pk %}">{{form.initial.project}}</a></li>
+	  <li>&nbsp;</li>
+	</ul>
 	{% include "tasklist/issue_instructions.html" %}
 	</div>
 	<div class="col-xs-12 col-sm-8">
 		<div class="pagelet">
-			<div class="pagelet-header"><h4>{{project}} Issue</h4></div>
+			<div class="pagelet-header"><h4>Create {{form.initial.project}} Issue</h4></div>
 			<div class="pagelet-body" id="sample-form">
 				{% crispy form form.helper %}
 			</div>

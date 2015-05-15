@@ -77,7 +77,7 @@
 				{% endfor %}
 				</ul>
 			</div>
-			{% if user.is_authenticated %}
+			{% if user.is_authenticated and not issue.is_closed %}
 			<div class="pagelet-body" id="sample-form">
 				{% crispy form form.helper %}
 			</div>

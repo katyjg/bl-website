@@ -3,7 +3,7 @@
 {% load active from navigation %}
 {% block full %}
 <div class="row" style="padding-top: 2em; ">
-	<div class="hidden-xs col-sm-2 text-center">
+	<div class="hidden-xs col-sm-2">
 	<hr/>
 	<table class="table">
 	<tr class="{% active 'issue-list' %}"><td><a href="{% url 'issue-list' %}">Active:</a></td><td>{{issues.active.count}}</td></tr>

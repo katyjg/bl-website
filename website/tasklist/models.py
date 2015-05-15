@@ -102,7 +102,7 @@ class Issue(TimeStampedModel):
     owner = models.ForeignKey(User, verbose_name=_('Assigned to'), null=True, blank=True, related_name='assigned_tasks')
     status = models.CharField(max_length=20, verbose_name=_('Status'), default=STATES.new, choices=STATES)
     priority = models.IntegerField(verbose_name=_('Priority'), default=PRIORITY.medium, choices=PRIORITY)
-    kind = models.CharField(max_length=20, verbose_name=_('Ticket type'), default=TYPES.task, choices=TYPES)
+    kind = models.CharField(max_length=20, verbose_name=_('Type'), default=TYPES.task, choices=TYPES)
     due_date = models.DateField(_('Due Date'), null=True, blank=True)
     frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='Number of months')
     related = models.ManyToManyField('Issue', null=True, blank=True, verbose_name="Related to", related_name="see_also")
@@ -110,6 +110,9 @@ class Issue(TimeStampedModel):
     
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
+    
+    def is_closed(self):
+        return self.status in [self.STATES.fixed, self.STATES.wontfix]
     
     def get_related(self):
         if getattr(self, 'see_also'):

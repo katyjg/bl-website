@@ -26,6 +26,16 @@ class JSONResponseMixin(object):
     def json_response(self, data, **kwargs):   
         return http.HttpResponse(json.dumps(data),  
                                  content_type='application/json', **kwargs)  
+def due_date_alarm(d):
+    if d:
+        if d <= datetime.today().date():
+            return "<span class='Critical' style='vertical-align: middle;' title='{0}'><i class='fa fa-exclamation-circle fa-3'></i></span>".format(humanize.naturalday(d))
+        elif d <= (datetime.today() + timedelta(days=7)).date():
+            return "<span class='High' title='{0}'><i class='fa fa-exclamation-triangle fa-3'></i></span>".format(humanize.naturalday(d))
+        else:
+            return humanize.naturalday(d)
+    return d
+
 
 class DashboardView(TemplateView):
     template_name = 'tasklist/dashboard.html'
@@ -36,7 +46,7 @@ class DashboardView(TemplateView):
         context['issues'] = models.Issue.objects.all()
         return context
 
-class WorkPlanningView(TemplateView):
+class WorkPlanningView(LoginRequiredMixin, TemplateView):
     template_name = 'tasklist/work_planning.html'
     
     def get_context_data(self, **kwargs):
@@ -51,53 +61,57 @@ class ProjectDetail(FilteredListView):
     tools_template = 'tasklist/project_tools.html'
     paginate_by = 15
     detail_url = 'issue-detail'
-    list_filter = ['kind','status', 'priority', 'created', 'modified']
+    list_filter = ['kind', 'priority', 'created', 'modified']
     list_display = ['id', 'describe', 'status', 'modified']
-    list_styles = {'describe': 'col-xs-7', 'id': 'col-xs-1'}
+    list_styles = {'describe': 'col-xs-5', 'id': 'col-xs-1', 'due_date': 'text-center'}
     search_fields = ['title', 'description']
     ordering_proxies = {'describe': 'title'}
     order_by = ['-created', 'priority']
 
+    def get_list_title(self):
+        return u'{0} Active Issues'.format(self.project.name)
+    
     def get_queryset(self):
         try:
             self.project = models.Project.objects.get(pk=self.kwargs.get('pk'))
         except models.Project.DoesNotExist:
             raise http.Http404("Project does not exist")
-        self.list_title = u'{0} Issues'.format(self.project.name)
         self.queryset = self.project.issues.active()
         return super(ProjectDetail, self).get_queryset()
-
+    
     def get_context_data(self, **kwargs):
         context = super(ProjectDetail, self).get_context_data(**kwargs)
         context['project'] = self.project
         return context
 
-class ProjectMaintenance(FilteredListView):
-    model = models.Issue
-    template_name = 'tasklist/project_detail.html'
-    paginate_by = 15
-    detail_url = 'issue-detail'
-    search_fields = ['title', 'description']
-    ordering_proxies = {'describe': 'title'}
-    order_by = ['-created', 'priority']
-    tools_template = 'tasklist/maint_tools.html'
-    list_filter = ['status', 'created', 'modified', 'due_date']
-    list_display = ['id', 'describe', 'frequency', 'modified', 'due_date']
-    list_styles = {'describe': 'col-xs-5', 'id': 'col-xs-1'}
+class ProjectClosed(ProjectDetail):
 
+    def get_list_title(self):
+        return u'{0} Closed Issues'.format(self.project.name)
+    
     def get_queryset(self):
         try:
             self.project = models.Project.objects.get(pk=self.kwargs.get('pk'))
         except models.Project.DoesNotExist:
             raise http.Http404("Project does not exist")
-        self.list_title = u'{0} Maintenance Tasks'.format(self.project.name)
-        self.queryset = self.project.issues.maintenance()
-        return super(ProjectMaintenance, self).get_queryset()
+        self.queryset = self.project.issues.closed()
+        return super(ProjectDetail, self).get_queryset()
 
-    def get_context_data(self, **kwargs):
-        context = super(ProjectMaintenance, self).get_context_data(**kwargs)
-        context['project'] = self.project
-        return context
+class ProjectMaintenance(ProjectDetail):
+    tools_template = 'tasklist/maint_tools.html'
+    list_display = ['id', 'describe', 'frequency', 'modified', 'due_date']
+    list_transforms = {'modified': humanize.naturalday, 'due_date': due_date_alarm }
+
+    def get_list_title(self):
+        return u'{0} Maintenance Tasks'.format(self.project.name)
+    
+    def get_queryset(self):
+        try:
+            self.project = models.Project.objects.get(pk=self.kwargs.get('pk'))
+        except models.Project.DoesNotExist:
+            raise http.Http404("Project does not exist")
+        self.queryset = self.project.issues.maintenance()
+        return super(ProjectDetail, self).get_queryset()
     
 class CreateIssue(LoginRequiredMixin, CreateView):
     form_class = forms.IssueForm
@@ -157,12 +171,12 @@ class IssueDetail(CreateView):
                 issue_data[k] = data[ext_k]
         if issue_data:
             if issue_data.get('status') == models.Issue.STATES.fixed and self.issue.kind == models.Issue.TYPES.maintenance:
-                issue_data['due_date'] = datetime.date() + timedelta(weeks=(self.issue.frequency * 4))
+                issue_data['due_date'] = datetime.today() + timedelta(weeks=(self.issue.frequency * 4))
                 issue_data['status'] = models.Issue.STATES.pending
             models.Issue.objects.filter(pk=self.issue.pk).update(**issue_data)
             data['issue'].related.add(*data['issue_related'])            
         return super(IssueDetail, self).form_valid(form)
-    
+        
 class IssueList(FilteredListView):
     model = models.Issue
     queryset = models.Issue.objects.active()
@@ -174,7 +188,7 @@ class IssueList(FilteredListView):
     list_title = 'Active Issues'
     list_display = ['project', 'id', 'describe', 'status', 'modified', 'due_date']
     list_transforms = {'due_date': tasklist_tags.alarm}
-    list_styles = {'describe': 'col-xs-7', 'id': 'col-xs-1'}
+    list_styles = {'describe': 'col-xs-4', 'id': 'col-xs-1', 'due_date': 'text-center'}
     search_fields = ['title', 'description']
     ordering_proxies = {'describe': 'title'}
     order_by = ['-created', 'priority']
@@ -214,6 +228,7 @@ class ManageAttachments(CreateView):
     def get_context_data(self, **kwargs):
         context = super(ManageAttachments, self).get_context_data(**kwargs)
         context['object_list'] = self.issue.attachment_set.all()
+        context['issue'] = self.issue
         return context
     
     def form_valid(self, form):
