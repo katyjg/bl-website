@@ -78,6 +78,13 @@ def alarm(d, autoescape=None):
                                                                                                    urgent and (urgent == 'Critical' and 'exclamation-circle' or 'warning') or 'clock-o' ))
     return d
 
+@register.filter(name="kind_stat")
+def kind_stat(issues, kind):
+    if issues.exclude(kind__exact="maintenance").count():
+        return 100 * (issues.filter(kind__exact=kind).count() / float(issues.exclude(kind__exact='maintenance').count()))
+    return 0
+    
+
 CONSONANT_SOUND = re.compile(r'''
 one(![ir])
 ''', re.IGNORECASE|re.VERBOSE)

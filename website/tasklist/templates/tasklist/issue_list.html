@@ -1,9 +1,29 @@
 {% extends "tasklist/base.html" %}
 {% load static %}
 {% load active from navigation %}
+{% load tasklist_tags %}
 {% block full %}
+<div class="row section-title">
+	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;">
+		<h5 class="no-margin"><strong>{% site_name %} Issues</strong>&nbsp; </h5>
+	</div>
+</div>
 <div class="row" style="padding-top: 2em; ">
 	<div class="hidden-xs col-sm-2">
+   	<table class="table">
+	<tr><td width="25%" title="Bugs"><i class="fa fa-bug fa-fw"></i></td><td><div title="{{issues|kind_stat:'bug'}}% of issues are bug reports" class="progress">
+		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'bug'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'bug'}}%">
+		  </div>
+	</div> </td></tr>
+	<tr><td title="Tasks"><i class="fa fa-tasks fa-fw"></i></td><td><div title="{{issues|kind_stat:'task'}}% of issues are tasks" class="progress">
+		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'task'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'task'}}%">
+		  </div>
+	</div> </td></tr>
+	<tr><td title="Enhancements"><i class="fa fa-fire fa-fw"></i></td><td><div title="{{issues|kind_stat:'enhancement'}}% of issues are feature requests" class="progress">
+		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'enhancement'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'enhancement'}}%">
+		  </div>
+	</div></td></tr>
+	</table>
 	<hr/>
 	<table class="table">
 	<tr class="{% active 'issue-list' %}"><td><a href="{% url 'issue-list' %}">Active:</a></td><td>{{issues.active.count}}</td></tr>

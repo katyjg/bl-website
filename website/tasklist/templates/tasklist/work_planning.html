@@ -3,6 +3,11 @@
 {% load humanize %}
 {% load tasklist_tags %}
 {% block full %}
+<div class="row section-title">
+	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;">
+		<h5 class="no-margin"><strong>{% site_name %} Work Planning</strong>:&nbsp; This page contains the active issues in all of your projects.  Review the list regularly as a team.</h5>
+	</div>
+</div>
 <div class="row col-xs-12" style="padding-top: 2em; ">
 	<div class="pagelet col-xs-12">
 	{% if permanent %}
