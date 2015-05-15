@@ -2513,3 +2513,11 @@ a:hover {
 	color: #D65C4F;
 	text-decoration: none;
 }
+
+.Critical {	color: #CC0000; }
+.High { color: #F8A317; }
+.Medium { color: #86EC5B; }
+.Low { color: #4188F1; }
+
+
+

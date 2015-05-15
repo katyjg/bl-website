@@ -109,9 +109,9 @@ class Issue(TimeStampedModel):
     
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
-    
+
     def describe(self):
-        txt =  u"<span>{0}</span><br/><small class='text-muted'>{1}, Priority:{2}</small>".format(self.title, self.get_kind_display(), self.get_priority_display())
+        txt =  u"<span>{0}</span><br/><small class='text-muted'>{1}, Priority:<span class='{2}'>{2}</span></small>".format(self.title, self.get_kind_display(), self.get_priority_display())
         return mark_safe(txt)
     describe.short_description = 'Title'
     describe.allow_tags = True

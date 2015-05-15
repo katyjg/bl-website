@@ -152,6 +152,43 @@ class IssueDetail(CreateView):
             models.Issue.objects.filter(pk=self.issue.pk).update(**issue_data)
         return super(IssueDetail, self).form_valid(form)
     
+def due_date_alarm(d):
+    if d:
+        if d <= datetime.today().date():
+            return "<span class='Critical' title='{0}'><i class='fa fa-exclamation-circle fa-3'></i></span>".format(humanize.naturalday(d))
+        elif d <= (datetime.today() + timedelta(days=7)).date():
+            return "<span class='High' title='{0}'><i class='fa fa-exclamation-triangle fa-3'></i></span>".format(humanize.naturalday(d))
+        else:
+            return humanize.naturalday(d)
+    return d
+    
+class IssueList(FilteredListView):
+    model = models.Issue
+    queryset = models.Issue.objects.active()
+    template_name = 'tasklist/issue_list.html'
+    tools_template = 'tasklist/list_tools.html'
+    paginate_by = 15
+    detail_url = 'issue-detail'
+    list_filter = ['kind', 'priority', 'created', 'modified']
+    list_display = ['project', 'id', 'describe', 'status', 'modified', 'due_date']
+    list_transforms = {'due_date': due_date_alarm}
+    list_styles = {'describe': 'col-xs-7', 'id': 'col-xs-1'}
+    search_fields = ['title', 'description']
+    ordering_proxies = {'describe': 'title'}
+    order_by = ['-created', 'priority']
+
+    def get_context_data(self, **kwargs):
+        context = super(IssueList, self).get_context_data(**kwargs)
+        context['projects'] = models.Project.objects.all()
+        context['issues'] = models.Issue.objects.all()
+        return context    
+    
+class ClosedIssues(IssueList):
+    queryset = models.Issue.objects.closed()    
+    
+class MaintenanceIssues(IssueList):
+    queryset = models.Issue.objects.maintenance()    
+    
 class ManageAttachments(CreateView):
     template_name = "tasklist/attachments.html"
     model = models.Attachment
