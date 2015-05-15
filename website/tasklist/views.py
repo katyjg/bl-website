@@ -170,7 +170,7 @@ class IssueDetail(CreateView):
                 issue_data[k] = data[ext_k]
         if issue_data:
             if issue_data.get('status') == models.Issue.STATES.fixed and self.issue.kind == models.Issue.TYPES.maintenance:
-                issue_data['due_date'] = datetime.date() + timedelta(weeks=(self.issue.frequency * 4))
+                issue_data['due_date'] = datetime.today() + timedelta(weeks=(self.issue.frequency * 4))
                 issue_data['status'] = models.Issue.STATES.pending
             models.Issue.objects.filter(pk=self.issue.pk).update(**issue_data)
             data['issue'].related.add(*data['issue_related'])            

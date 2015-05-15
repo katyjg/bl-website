@@ -73,7 +73,8 @@ class MaintenanceForm(forms.ModelForm):
     def clean(self):
         data = super(MaintenanceForm, self).clean()
         data['kind'] = models.Issue.TYPES.maintenance
-        if not data['due_date'] and data['frequency']:
+        data['status'] = models.Issue.STATES.pending
+        if not data['due_date']:
             data['due_date'] = datetime.today() + timedelta(days=data['frequency']*30)
         return data
     
@@ -137,6 +138,7 @@ class CommentForm(forms.ModelForm):
         if issue.kind == models.Issue.TYPES.maintenance:
             del data['issue_kind']
             del data['issue_due_date']
+            
         elif data['issue_kind'] == models.Issue.TYPES.maintenance:
             del data['issue_kind']
         
@@ -159,6 +161,8 @@ class CommentForm(forms.ModelForm):
             if cur_val != new_val and new_val:
                 if k == 'priority':
                     val = models.Issue.PRIORITY[int(new_val)]
+                if k == 'status':
+                    val = models.Issue.STATES[new_val]
                 elif k == 'related':
                     val = ", ".join(["<a href='{0}'>&nbsp;{1}&nbsp;</a>".format(reverse_lazy('issue-detail', kwargs={'pk':pk}),pk) for pk in new_val])
                 else:
