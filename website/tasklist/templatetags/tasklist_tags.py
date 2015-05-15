@@ -14,23 +14,17 @@ register = template.Library()
 def site_name(context, *args, **kwargs):
     return getattr(settings, "SITE_NAME_SHORT", "Simple")
 
-@register.filter(name="msg_icon", needs_autoescape=True)
-def msg_icon(tag, autoescape=None):
+@register.filter(name="issue_icon", needs_autoescape=True)
+def issue_icon(issue, autoescape=None):
     ICONS = {
-        'debug': '<i class="fa fa-bug text-primary"></i>',
-        'info': '<i class="fa fa-info-circle text-info"></i>',
-        'success':'<i class="fa fa-check-circle  text-success"></i>',
-        'warning':'<i class="fa fa-exclamation-circle text-warning"></i>',
-        'error': '<i class="fa fa-exclamation-circle text-danger"></i>',
+        'bug': '<i class="fa fa-bug fa-fw"></i>',
+        'task': '<i class="fa fa-tasks fa-fw"></i>',
+        'enhancement':'<i class="fa fa-fire fa-fw"></i>',
+        'maintenance':'<i class="fa fa-heartbeat fa-fw"></i>',
     }
-    icon = ''
-    if autoescape:
-        tag = conditional_escape(tag)
-    if tag:
-        tag = tag.split()[0] 
-        icon = ICONS.get(tag, '')
+    icon = ICONS.get(issue.kind, '')
+    print icon
     return mark_safe(icon)
-
 
 @register.filter(name="file_icon", needs_autoescape=True)
 def file_icon(fileobj, autoescape=None):

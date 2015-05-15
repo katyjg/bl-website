@@ -131,7 +131,8 @@ class IssueDetail(CreateView):
         initial['issue_owner'] = self.issue.owner
         initial['issue_due_date'] = self.issue.due_date
         initial['issue_status'] = self.issue.status
-        initial['issue_priority'] = self.issue.priority       
+        initial['issue_priority'] = self.issue.priority
+        initial['issue_related'] = self.issue.related.all()     
         return initial
     
     def form_valid(self, form):
@@ -150,6 +151,7 @@ class IssueDetail(CreateView):
                 issue_data['due_date'] = datetime.date() + timedelta(weeks=(self.issue.frequency * 4))
                 issue_data['status'] = models.Issue.STATES.pending
             models.Issue.objects.filter(pk=self.issue.pk).update(**issue_data)
+            data['issue'].related.add(*data['issue_related'])            
         return super(IssueDetail, self).form_valid(form)
     
 def due_date_alarm(d):

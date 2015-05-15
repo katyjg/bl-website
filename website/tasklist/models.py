@@ -41,7 +41,7 @@ class Milestone(TimeStampedModel):
 
 class IssueQuerySet(QuerySet):
     def active(self):
-        return self.filter(status__in=[Issue.STATES.new, Issue.STATES.started])
+        return self.filter(status__in=[Issue.STATES.new, Issue.STATES.started]).exclude(kind=Issue.TYPES.maintenance)
 
     def maintenance(self):
         return self.filter(kind__in=[Issue.TYPES.maintenance])
@@ -50,7 +50,7 @@ class IssueQuerySet(QuerySet):
         return self.filter(status__in=[Issue.STATES.fixed, Issue.STATES.wontfix])
 
     def overdue(self):
-        return self.filter(Q(due_date__isnull=False)&Q(due_date__lt=timezone.now()))
+        return self.filter(Q(due_date__isnull=False)&Q(due_date__lt=timezone.now())).exclude(status__in=[Issue.STATES.fixed, Issue.STATES.permanent])
         
 class IssueManager(models.Manager):
     use_for_related_fields = True
@@ -86,7 +86,7 @@ class Issue(TimeStampedModel):
         ('started', _('In progress')),
         ('fixed', _('Complete')),
         ('wontfix', _('Cancelled')),
-        ('permanent', _('Permanent')),       
+        ('permanent', _('Persistent')),       
     )
     PRIORITY = Choices(
         (0, 'critical', 'Critical'),                
@@ -105,10 +105,17 @@ class Issue(TimeStampedModel):
     kind = models.CharField(max_length=20, verbose_name=_('Ticket type'), default=TYPES.task, choices=TYPES)
     due_date = models.DateField(_('Due Date'), null=True, blank=True)
     frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='Number of months')
+    related = models.ManyToManyField('Issue', null=True, blank=True, verbose_name="Related to", related_name="see_also")
     objects = IssueManager()
     
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
+    
+    def get_related(self):
+        if getattr(self, 'see_also'):
+            return self.related.all() | self.see_also.all()
+        else:
+            return self.related.all()
 
     def describe(self):
         txt =  u"<span>{0}</span><br/><small class='text-muted'>{1}, Priority:<span class='{2}'>{2}</span></small>".format(self.title, self.get_kind_display(), self.get_priority_display())

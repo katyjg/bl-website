@@ -3,6 +3,7 @@
 {% load static %}
 {% load humanize %}
 {% load markup %}
+{% load tasklist_tags %}
 
 {% block extra_css %}
 	<link rel="stylesheet" href="{% static 'tasklist/css/chosen.css' %}" type="text/css" media="screen" />
@@ -16,6 +17,12 @@
 			search_contains: true,
 			allow_single_deselect: true
 		});
+		$(".chosen-value").chosen({
+			placeholder_text_single: "Select an option",
+			search_contains: true,
+			show_value_as_label: true,
+			allow_single_deselect: true
+		});
 		console.log("{% url 'add-issue-attachment' pk=issue.pk %}");
 		$("#issue-attatchments").load("{% url 'add-issue-attachment' pk=issue.pk %}");
 	});
@@ -24,7 +31,7 @@
 {% block full %}
 <div class="row section-title">
 	<div class="col-xs-12" style="padding-top: 1.5em; padding-bottom: 1.5em;">
-		<h4 class="no-margin">Issue <strong>{{issue.id}}</strong>: {{issue}}</h4>
+		<h4 class="no-margin">Issue <strong>{{issue.id}}</strong>: {{issue}} <span class="pull-right text-muted">{{issue|issue_icon}}&nbsp;</span></h4>
 	</div>
 </div>
 <div class="row" style="padding-top: 1em;">
@@ -42,15 +49,21 @@
 	  	<span class="label label-info">{{issue.get_kind_display}}</span>
 	  	<span class="label label-role">Priority: {{issue.get_priority_display}}</span>
 	  </li>
+	  <li><strong>Related Issues:&emsp;</strong>
+	  {% for ri in issue.get_related %}
+	  	<a href="{% url 'issue-detail' pk=ri.pk %}">{{ri.pk}}</a>
+	  	{% if not forloop.last %},{% endif %}
+	  {% endfor %}
+	  </li>
+	<li><strong>Attachments: </strong></li>
 	<li id="issue-attatchments">
-		No Attachments
+	No Attachments		
 	</li>
 	</ul>
 	{% endif %}
 	</div>
 	<div class="col-xs-12 col-sm-9">
 		<div class="pagelet">
-			<div class="pagelet-header"></div>
 			<div class="pagelet-body" id="sample-form">
 				<ul class="list-unstyled issue-comments">
 					<li>

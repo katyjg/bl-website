@@ -13,8 +13,9 @@ import models
 class IssueForm(forms.ModelForm):
     class Meta:
         model = models.Issue
-        fields = ('project', 'submitter', 'title','description','kind', 'priority', 'due_date')
-        widgets = {'project': forms.HiddenInput, 'description': forms.Textarea(attrs={'rows': 5,}),}
+        fields = ('project', 'submitter', 'title','description','kind', 'priority', 'due_date', 'related')
+        widgets = {'project': forms.HiddenInput, 'description': forms.Textarea(attrs={'rows': 5,}),
+                   }
     
     def __init__(self, *args, **kwargs):
         super(IssueForm, self).__init__(*args, **kwargs)
@@ -24,9 +25,10 @@ class IssueForm(forms.ModelForm):
             Div(
                 Div(Field('title', required=True),  css_class='col-sm-12'),
                 Div(Field('description', required=True), css_class='col-sm-12'),
-                Div(Field('kind', css_class="chosen"),  css_class='col-sm-4'),
-                Div(Field('priority', css_class="chosen"), css_class='col-sm-4'),                                       
-                Div(Field('due_date', css_class="dateinput"), css_class='col-sm-4'),
+                Div(Field('kind', css_class="chosen"),  css_class='col-sm-6'),
+                Div(Field('priority', css_class="chosen"), css_class='col-sm-6'),                                       
+                Div(Field('due_date', css_class="dateinput"), css_class='col-sm-6'),
+                Div(Field('related', css_class="chosen"), css_class='col-sm-6'),
                 css_class="row narrow-gutter"
             ),                         
             Div(Div(
@@ -80,7 +82,8 @@ class CommentForm(forms.ModelForm):
     issue_status = forms.ChoiceField(label="Status", required=False, choices=models.Issue.STATES)
     issue_priority = forms.ChoiceField(label="Priority", required=False, choices=models.Issue.PRIORITY)
     issue_owner = forms.ModelChoiceField(models.User.objects, label="Assign to", required=False)
-    issue_due_date = forms.CharField(label="Due Date", required=False)
+    issue_due_date = forms.DateField(label="Due Date", required=False)
+    issue_related = forms.ModelMultipleChoiceField(models.Issue.objects, label="Related to", required=False)
     class Meta:
         model = models.Comment
         fields = ('issue', 'author', 'description')
@@ -88,16 +91,24 @@ class CommentForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['issue_related'].queryset = models.Issue.objects.exclude(pk=self.initial['issue'].pk)
         self.helper = FormHelper()
         self.helper.form_class = "issue-form"
+        if self.initial['issue'].kind == models.Issue.TYPES.maintenance:
+            due_date_layout = Field('issue_due_date', css_class="dateinput", disabled=True)
+            type_layout = Field('issue_kind', css_class="chosen", disabled=True)
+        else:
+            due_date_layout = Field('issue_due_date', css_class="dateinput")
+            type_layout = Field('issue_kind', css_class="chosen")
         self.helper.layout = Layout(
             Div(
                 Div(Field('description'), css_class='col-sm-12'),
                 Div(Field('issue_owner', css_class="chosen"), css_class='col-sm-4'),                                       
-                Div(Field('issue_kind', css_class="chosen"),  css_class='col-sm-4'),
-                Div(Field('issue_due_date', css_class="dateinput"), css_class='col-sm-4'),
-                Div(Field('issue_status', css_class="chosen"),  css_class='col-sm-6'),
-                Div(Field('issue_priority', css_class="chosen"), css_class='col-sm-6'),                                       
+                Div(type_layout,  css_class='col-sm-4'),
+                Div(due_date_layout, css_class='col-sm-4'),
+                Div(Field('issue_status', css_class="chosen"),  css_class='col-sm-4'),
+                Div(Field('issue_priority', css_class="chosen"), css_class='col-sm-4'),                                       
+                Div(Field('issue_related', css_class="chosen-value"), css_class='col-sm-4'),                                       
                 css_class="row narrow-gutter"
             ),                         
             Div(Div(
@@ -118,7 +129,8 @@ class CommentForm(forms.ModelForm):
             'owner': 'Assigned to',
             'due_date': 'Due',
             'status': 'Status',
-            'priority': 'Priority'
+            'priority': 'Priority',
+            'related': 'Related Issues'
         }
         extra_txt = ''
         if issue.kind == models.Issue.TYPES.maintenance:
@@ -127,20 +139,26 @@ class CommentForm(forms.ModelForm):
         elif data['issue_kind'] == models.Issue.TYPES.maintenance:
             del data['issue_kind']
             
-        for k in ['kind', 'owner', 'due_date', 'status', 'priority']:
+        for k in ['kind', 'owner', 'due_date', 'status', 'priority', 'related']:
             ext_k = 'issue_{0}'.format(k)
             if not ext_k in data: continue
             cur_val = getattr(issue, k)
+            new_val =  data[ext_k]
             if k == 'priority':
                 cur_val = str(cur_val)
-            if cur_val != data[ext_k] and data[ext_k]:
+            elif k == 'related':
+                cur_val = [o.pk for o in cur_val.all()]
+                new_val = [o.pk for o in new_val]
+            if cur_val != new_val and new_val:
                 if k == 'priority':
-                    val = int(data[ext_k])
+                    val = models.Issue.PRIORITY[int(new_val)]
+                elif k == 'related':
+                    val = ", ".join(["<a href='{0}'>&nbsp;{1}&nbsp;</a>".format(reverse_lazy('issue-detail', kwargs={'pk':pk}),pk) for pk in new_val])
                 else:
-                    val = data[ext_k]
+                    val = new_val
                 extra_txt += u'<span class="label label-default">{0}: {1}</span>&nbsp;'.format(descr[k], val)
         if not data['description'] and not extra_txt:
-            raise ValidationError('No changes provided')
+            raise ValidationError('Nothing Changed')
         data['description'] = u"{0}<p>{1}</p>".format(data['description'] , extra_txt)
         return data
 
