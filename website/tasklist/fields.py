@@ -18,7 +18,7 @@ class RestrictedFileField(FileField):
             500MB - 429916160
     """
     def __init__(self, *args, **kwargs):
-        self.file_types = kwargs.pop("file_types", ['application/pdf', 'image/jpeg', 'image/png'])
+        self.file_types = kwargs.pop("file_types", ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'text/plain'])
         self.max_size = kwargs.pop("max_size", 2621440)
         kwargs['help_text'] = u'Maximum size {0}, Formats: {1}.'.format(
                                             filesizeformat(self.max_size), 

@@ -9,7 +9,6 @@ from django.utils.translation import ugettext as _
 import models
 
 
-
 class IssueForm(forms.ModelForm):
     class Meta:
         model = models.Issue
@@ -100,3 +99,22 @@ class CommentForm(forms.ModelForm):
                 extra_txt += u'<span class="label label-default">{0}: {1}</span>&nbsp;'.format(descr[k], val)
         data['description'] = u"{0}<p>{1}</p>".format(data['description'] , extra_txt)
         return data
+
+class AttachmentForm(forms.ModelForm):
+    class Meta:
+        model = models.Attachment
+        fields = ('user', 'issue', 'file')
+        widgets = {'issue': forms.HiddenInput, 'user': forms.HiddenInput}
+
+    def __init__(self, *args, **kwargs):
+        super(AttachmentForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_action = reverse_lazy('add-issue-attachment', kwargs={'pk': self.initial['issue'].pk})
+        self.helper.layout = Layout(
+            Div(Div(Field('file', template="tasklist/file_input.html"), css_class="col-xs-12"),
+                css_class="row no-space"
+                ),
+                Field('issue', type="hidden"),
+                Field('user', type="hidden"),
+            )
+

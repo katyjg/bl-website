@@ -5,6 +5,7 @@ from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.conf import settings
 import re
+import mimetypes
 
 register = template.Library()
 
@@ -28,6 +29,21 @@ def msg_icon(tag, autoescape=None):
     if tag:
         tag = tag.split()[0] 
         icon = ICONS.get(tag, '')
+    return mark_safe(icon)
+
+
+@register.filter(name="file_icon", needs_autoescape=True)
+def file_icon(file, autoescape=None):
+    ICONS = {
+        'pdf': '<i class="fa fa-file-pdf-o fa-fw text-danger"></i>',
+        'png': '<i class="fa fa-file-photo-o  fa-fw text-success"></i>',
+        'jpeg': '<i class="fa fa-file-photo-o  fa-fw text-info"></i>',
+        'gif': '<i class="fa fa-file-photo-o  fa-fw text-warning"></i>',
+        'plain': '<i class="fa fa-file-text-o fa-fw"></i>'
+    }
+    file_type = mimetypes.guess_type(file.path)[0].split('/')[-1]
+    print file_type
+    icon = ICONS.get(file_type, '<i class="fa fa-file-o"></i>')
     return mark_safe(icon)
 
 @register.filter(name="msg_type", needs_autoescape=True)

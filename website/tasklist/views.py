@@ -1,11 +1,18 @@
 from django import http
-from django.views.generic import DetailView, TemplateView, View
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView, UpdateView
 from objlist.views import FilteredListView
-import models
 import forms
+import json
+import models
 
 # Create your views here.
+class JSONResponseMixin(object):  
+    def json_response(self, data, **kwargs):   
+        return http.HttpResponse(json.dumps(data),  
+                                 content_type='application/json', **kwargs)  
+
 class DashboardView(TemplateView):
     template_name = 'tasklist/dashboard.html'
     
@@ -89,21 +96,47 @@ class IssueDetail(CreateView):
 
     def form_valid(self, form):
         data = form.cleaned_data
+        if data['author'] != self.request.user:
+            raise http.HttpResponseNotAllowed("You can't comment someone else.")
         issue_data = {}
-        labels = []
+        
         for k in ['kind', 'owner', 'due_date', 'status', 'priority']:
             ext_k = 'issue_{0}'.format(k)
             if getattr(self.issue, k) != data[ext_k] and data[ext_k]:
                 issue_data[k] = data[ext_k]
         if issue_data:
             models.Issue.objects.filter(pk=self.issue.pk).update(**issue_data)
-        if data['author'] != self.request.user:
-            raise http.HttpResponseNotAllowed("You can't comment someone else.")
         return super(IssueDetail, self).form_valid(form)
     
     
 class EditIssue(UpdateView):
     pass
 
-class AddIssueAttachment(CreateView):
-    pass
+class ManageAttachments(CreateView):
+    template_name = "tasklist/attachments.html"
+    model = models.Attachment
+    form_class = forms.AttachmentForm
+    
+    def get_initial(self):
+        initial = super(ManageAttachments, self).get_initial()
+        try:
+            self.issue = models.Issue.objects.get(pk=self.kwargs.get('pk'))
+        except models.Issue.DoesNotExist:
+            raise http.Http404("Issue does not exist")
+        initial['issue'] = self.issue
+        initial['user'] = self.request.user
+        return initial
+
+    def get_success_url(self):
+        return reverse_lazy('add-issue-attachment', kwargs={'pk': self.issue.pk})        
+    
+    def get_context_data(self, **kwargs):
+        context = super(ManageAttachments, self).get_context_data(**kwargs)
+        context['object_list'] = self.issue.attachment_set.all()
+        return context
+    
+    def form_valid(self, form):
+        data = form.cleaned_data
+        if data['user'] != self.request.user:
+            raise http.HttpResponseNotAllowed("You can't add a file as someone else.")
+        return super(ManageAttachments, self).form_valid(form)

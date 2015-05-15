@@ -16,6 +16,8 @@
 			search_contains: true,
 			allow_single_deselect: true
 		});
+		console.log("{% url 'add-issue-attachment' pk=issue.pk %}");
+		$("#issue-attatchments").load("{% url 'add-issue-attachment' pk=issue.pk %}");
 	});
 	</script>
 {% endblock %}
@@ -40,6 +42,9 @@
 	  	<span class="label label-info">{{issue.get_kind_display}}</span>
 	  	<span class="label label-role">Priority: {{issue.get_priority_display}}</span>
 	  </li>
+	<li id="issue-attatchments">
+		No Attachments
+	</li>
 	</ul>
 	{% endif %}
 	</div>

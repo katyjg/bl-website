@@ -1,15 +1,16 @@
 from . import fields
 from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse_lazy
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils import timezone
+from django.utils.safestring import mark_safe
+from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
-from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse_lazy
 import hashlib
 import os
 
@@ -119,16 +120,17 @@ class Issue(TimeStampedModel):
 
 def _attachment_filename(instance, filename):
     ext = os.path.splitext(filename)[-1]
-    return os.path.join('tasklist', 'files', str(instance.issue.pk), instance.slug + ext)
+    return os.path.join('tasklist', 'issue-files', str(instance.issue.pk), instance.slug + ext)
 
 class Attachment(TimeStampedModel):
     user = models.ForeignKey(User, related_name='+')
     issue = models.ForeignKey(Issue)
     description = models.CharField(max_length=100, verbose_name="name")
-    file = fields.RestrictedFileField(upload_to=_attachment_filename, max_size=2097152, verbose_name="Attachment")
+    file = fields.RestrictedFileField(upload_to=_attachment_filename, max_size=2097152, verbose_name="<i class='fa fa-paperclip'></i>&nbsp;Attach File")
     slug = models.SlugField(max_length=50, blank=True, unique=True)
 
     def save(self, *args, **kwargs):
+        self.description = os.path.splitext(self.file.name)[0]
         hashobj = hashlib.md5(u"{0}{1}{2}{3}".format(self.file.name, self.user.pk, self.issue.pk, datetime.now().isoformat()))
         self.slug = hashobj.hexdigest()
         super(Attachment, self).save(*args, **kwargs)
@@ -138,8 +140,7 @@ class Attachment(TimeStampedModel):
         super(Attachment, self).delete(*args, **kwargs)
     
     def __unicode__(self):
-        fname = os.path.basename(self.file.name)
-        return u"{0} [{1}]".format(fname, self.get_kind_display())
+        return u"{0}".format(self.description)
 
 class Comment(TimeStampedModel):
     TYPES = Choices(
