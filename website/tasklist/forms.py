@@ -1,10 +1,11 @@
-
+from django.core.exceptions import ValidationError
 from crispy_forms.bootstrap import AppendedText, AccordionGroup, Accordion
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, Button, Div, Field, HTML, BaseInput, Reset, ButtonHolder
 from crispy_forms.bootstrap import FieldWithButtons, StrictButton, FormActions
 from django.core.urlresolvers import reverse_lazy
 from django import forms
+from datetime import datetime, timedelta
 from django.utils.translation import ugettext as _
 import models
 
@@ -38,7 +39,42 @@ class IssueForm(forms.ModelForm):
             Field('submitter', type="hidden"),                        
         ) 
 
-
+class MaintenanceForm(forms.ModelForm):
+    class Meta:
+        model = models.Issue
+        fields = ('project', 'submitter', 'title','description', 'frequency', 'due_date', 'kind', 'priority')
+        widgets = {'project': forms.HiddenInput, 'description': forms.Textarea(attrs={'rows': 5,}),
+                   'kind': forms.HiddenInput, }
+    def __init__(self, *args, **kwargs):
+        super(MaintenanceForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = "issue-form"
+        self.helper.layout = Layout(
+            Div(
+                Div(Field('title', required=True),  css_class='col-sm-12'),
+                Div(Field('description', required=True), css_class='col-sm-12'),
+                Div(Field('frequency', required=True),  css_class='col-sm-4'),
+                Div(Field('priority', css_class="chosen"), css_class='col-sm-4'),                                       
+                Div(Field('due_date', css_class="dateinput"), css_class='col-sm-4'),
+                css_class="row narrow-gutter"
+            ),                         
+            Div(Div(
+                   HTML('<hr/>'),
+                   Div(StrictButton('Revert', type='reset', value='Reset', css_class="btn btn-default"),
+                       StrictButton('Save', type='submit', value='Save', css_class='btn btn-primary'),
+                       css_class='text-right col-xs-12'),                
+                   css_class="row")),
+            Field('project', type="hidden"),
+            Field('submitter', type="hidden"),                        
+        ) 
+    
+    def clean(self):
+        data = super(MaintenanceForm, self).clean()
+        data['kind'] = models.Issue.TYPES.maintenance
+        if not data['due_date'] and data['frequency']:
+            data['due_date'] = datetime.today() + timedelta(days=data['frequency']*30)
+        return data
+    
 class CommentForm(forms.ModelForm):
     issue_kind = forms.ChoiceField(label="Type", required=False, choices=models.Issue.TYPES)
     issue_status = forms.ChoiceField(label="Status", required=False, choices=models.Issue.STATES)
@@ -56,7 +92,7 @@ class CommentForm(forms.ModelForm):
         self.helper.form_class = "issue-form"
         self.helper.layout = Layout(
             Div(
-                Div(Field('description', required=True), css_class='col-sm-12'),
+                Div(Field('description'), css_class='col-sm-12'),
                 Div(Field('issue_owner', css_class="chosen"), css_class='col-sm-4'),                                       
                 Div(Field('issue_kind', css_class="chosen"),  css_class='col-sm-4'),
                 Div(Field('issue_due_date', css_class="dateinput"), css_class='col-sm-4'),
@@ -85,18 +121,26 @@ class CommentForm(forms.ModelForm):
             'priority': 'Priority'
         }
         extra_txt = ''
+        if issue.kind == models.Issue.TYPES.maintenance:
+            del data['issue_kind']
+            del data['issue_due_date']
+        elif data['issue_kind'] == models.Issue.TYPES.maintenance:
+            del data['issue_kind']
+            
         for k in ['kind', 'owner', 'due_date', 'status', 'priority']:
             ext_k = 'issue_{0}'.format(k)
-            if getattr(issue, k) != data[ext_k] and data[ext_k]:
-                if k in ['owner', 'due_date']:
+            if not ext_k in data: continue
+            cur_val = getattr(issue, k)
+            if k == 'priority':
+                cur_val = str(cur_val)
+            if cur_val != data[ext_k] and data[ext_k]:
+                if k == 'priority':
+                    val = int(data[ext_k])
+                else:
                     val = data[ext_k]
-                elif k =='kind':
-                    val = models.Issue.TYPES[data[ext_k]]
-                elif k == 'status':
-                    val = models.Issue.STATES[data[ext_k]]
-                elif k == 'priority':
-                    val = models.Issue.PRIORITY[int(data[ext_k])]
                 extra_txt += u'<span class="label label-default">{0}: {1}</span>&nbsp;'.format(descr[k], val)
+        if not data['description'] and not extra_txt:
+            raise ValidationError('No changes provided')
         data['description'] = u"{0}<p>{1}</p>".format(data['description'] , extra_txt)
         return data
 

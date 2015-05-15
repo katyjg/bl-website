@@ -1,5 +1,5 @@
 body {
-    font-family: "Exo 2", sans-serif !important;
+    font-family: "Open Sans", sans-serif !important;
     font-size: 13px;
     padding: 0;
     height:100%;
@@ -83,15 +83,24 @@ ul.issue-summary li {
 }
 
 ul.issue-summary li + li{
-	border-top: 1px solid #ccc;
+	border-top: 1px solid #ddd;
 }
-li.issue-comment + li.issue-comment > div.row {
-	border-top: 1px solid #ccc;
+.issue-comments li + li > div.row {
+	border-top: 1px solid #ddd;
 }
-li.issue-comment div.comment-header {
+ul.issue-comments li:last-child .row {
+	border-bottom: 1px solid #ddd;
+}
+div.comment-body {
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+ul.issue-comments div.comment-header {
+	font-family: "Raleway", sans-serif;
 	padding-bottom: 0.5em;
 	padding-top: 0.5em;
-	background-color: #fafafa;
+	background-color: #f6f6f6;
+	border-bottom: 1px dotted #ddd;
 }
 div.issue-instructions ul {
     margin-left: 1em;
@@ -216,7 +225,7 @@ hr.hr-xs {
 .large-title, .small-title {
     font-family: "Raleway", sans-serif !important;
     font-size: 18px;
-	font-weight: 200;
+	font-weight: 300;
 	margin: 0 !important;
 	padding: 0 !important;
 	color: #aaa;
@@ -1505,6 +1514,9 @@ a.tb-active {
 }
 .pagelet-body:after {
   clear: both;
+}
+.pagelet-body + .pagelet-body {
+	padding-top: 0;
 }
 .pagelet-heading {
 	border-bottom: 1px solid #dadada;

@@ -1,3 +1,4 @@
+from django.conf.global_settings import LOGIN_REDIRECT_URL
 URL_ROOT = 'http://cmcf.lightsource.ca'
 SITE_NAME_LONG = 'Canadian Macromolecular Crystallography Facility'
 SITE_DESCRIPTION = 'The CMCF operates macromolecular crystallography beamlines at the CLS'
@@ -183,7 +184,8 @@ CONF_MANAGERS = (
 CONF_FROM_EMAIL = 'test.user@lightsource.ca'
  
 LOGIN_URL = '/admin/'
-
+LOGOUT_URL = '/admin/logout/'
+LOGIN_REDIRECT_URL = '/admin/'
 try:
     from settings_local import *
 except ImportError:

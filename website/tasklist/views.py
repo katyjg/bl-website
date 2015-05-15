@@ -3,11 +3,24 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from objlist.views import FilteredListView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.humanize.templatetags import humanize
 import forms
 import json
 import models
+from datetime import datetime, timedelta
 
 # Create your views here.
+class LoginRequiredMixin(object):
+    """
+    Provides the ability to require an authenticated user for a view
+    """
+    @method_decorator(login_required(login_url=reverse_lazy('tasklist-login')))
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
 class JSONResponseMixin(object):  
     def json_response(self, data, **kwargs):   
         return http.HttpResponse(json.dumps(data),  
@@ -50,7 +63,34 @@ class ProjectDetail(FilteredListView):
         context['project'] = self.project
         return context
 
-class CreateIssue(CreateView):
+class ProjectMaintenance(FilteredListView):
+    model = models.Issue
+    template_name = 'tasklist/project_detail.html'
+    paginate_by = 15
+    detail_url = 'issue-detail'
+    search_fields = ['title', 'description']
+    ordering_proxies = {'describe': 'title'}
+    order_by = ['-created', 'priority']
+    tools_template = 'tasklist/maint_tools.html'
+    list_filter = ['status', 'created', 'modified', 'due_date']
+    list_display = ['id', 'describe', 'frequency', 'modified', 'due_date']
+    list_styles = {'describe': 'col-xs-5', 'id': 'col-xs-1'}
+
+    def get_queryset(self):
+        try:
+            self.project = models.Project.objects.get(pk=self.kwargs.get('pk'))
+        except models.Project.DoesNotExist:
+            raise http.Http404("Project does not exist")
+        self.list_title = u'{0} Maintenance Tasks'.format(self.project.name)
+        self.queryset = self.project.issues.maintenance()
+        return super(ProjectMaintenance, self).get_queryset()
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectMaintenance, self).get_context_data(**kwargs)
+        context['project'] = self.project
+        return context
+    
+class CreateIssue(LoginRequiredMixin, CreateView):
     form_class = forms.IssueForm
     template_name = "tasklist/issue_form.html"
 
@@ -93,7 +133,7 @@ class IssueDetail(CreateView):
         initial['issue_status'] = self.issue.status
         initial['issue_priority'] = self.issue.priority       
         return initial
-
+    
     def form_valid(self, form):
         data = form.cleaned_data
         if data['author'] != self.request.user:
@@ -102,16 +142,16 @@ class IssueDetail(CreateView):
         
         for k in ['kind', 'owner', 'due_date', 'status', 'priority']:
             ext_k = 'issue_{0}'.format(k)
+            if not ext_k in data: continue
             if getattr(self.issue, k) != data[ext_k] and data[ext_k]:
                 issue_data[k] = data[ext_k]
         if issue_data:
+            if issue_data.get('status') == models.Issue.STATES.fixed and self.issue.kind == models.Issue.TYPES.maintenance:
+                issue_data['due_date'] = datetime.date() + timedelta(weeks=(self.issue.frequency * 4))
+                issue_data['status'] = models.Issue.STATES.pending
             models.Issue.objects.filter(pk=self.issue.pk).update(**issue_data)
         return super(IssueDetail, self).form_valid(form)
     
-    
-class EditIssue(UpdateView):
-    pass
-
 class ManageAttachments(CreateView):
     template_name = "tasklist/attachments.html"
     model = models.Attachment

@@ -1,7 +1,7 @@
 {% load markup %}
-<li class="issue-comment">
+<li>
 <div class="row">
 	<div class="col-xs-12 comment-header"><strong>{{comment.author}}</strong> <span class="text-muted">commented on {{comment.created}}</span></div>
-	<div class="col-xs-12">{{comment.description|markdown}}</div>
+	<div class="col-xs-12 comment-body">{{comment.description|markdown}}</div>
 </div>
 </li>

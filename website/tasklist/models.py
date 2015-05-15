@@ -82,6 +82,7 @@ class Issue(TimeStampedModel):
     )
     STATES = Choices(
         ('new', _('New')),
+        ('pending', _('Pending')),
         ('started', _('In progress')),
         ('fixed', _('Complete')),
         ('wontfix', _('Cancelled')),
@@ -102,8 +103,8 @@ class Issue(TimeStampedModel):
     status = models.CharField(max_length=20, verbose_name=_('Status'), default=STATES.new, choices=STATES)
     priority = models.IntegerField(verbose_name=_('Priority'), default=PRIORITY.medium, choices=PRIORITY)
     kind = models.CharField(max_length=20, verbose_name=_('Ticket type'), default=TYPES.task, choices=TYPES)
-    due_date = models.DateTimeField(_('Due Date'), null=True, blank=True)
-    frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='In months')
+    due_date = models.DateField(_('Due Date'), null=True, blank=True)
+    frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='Number of months')
     objects = IssueManager()
     
     def get_absolute_url(self):

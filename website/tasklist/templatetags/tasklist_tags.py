@@ -33,7 +33,7 @@ def msg_icon(tag, autoescape=None):
 
 
 @register.filter(name="file_icon", needs_autoescape=True)
-def file_icon(file, autoescape=None):
+def file_icon(fileobj, autoescape=None):
     ICONS = {
         'pdf': '<i class="fa fa-file-pdf-o fa-fw text-danger"></i>',
         'png': '<i class="fa fa-file-photo-o  fa-fw text-success"></i>',
@@ -41,8 +41,7 @@ def file_icon(file, autoescape=None):
         'gif': '<i class="fa fa-file-photo-o  fa-fw text-warning"></i>',
         'plain': '<i class="fa fa-file-text-o fa-fw"></i>'
     }
-    file_type = mimetypes.guess_type(file.path)[0].split('/')[-1]
-    print file_type
+    file_type = mimetypes.guess_type(fileobj.path)[0].split('/')[-1]
     icon = ICONS.get(file_type, '<i class="fa fa-file-o"></i>')
     return mark_safe(icon)
 

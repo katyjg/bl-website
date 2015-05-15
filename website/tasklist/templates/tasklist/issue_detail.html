@@ -52,11 +52,11 @@
 		<div class="pagelet">
 			<div class="pagelet-header"></div>
 			<div class="pagelet-body" id="sample-form">
-				<ul class="list-unstyled">
-					<li class="issue-comment">
+				<ul class="list-unstyled issue-comments">
+					<li>
 					<div class="row">
 						<div class="col-xs-12 comment-header"><strong>Reported by {{issue.submitter}}</strong> <span class="text-muted">on {{issue.created}}</span></div>
-						<div class="col-xs-12">{{issue.description|markdown}}</div>
+						<div class="col-xs-12 comment-body" >{{issue.description|markdown}}</div>
 					</div>
 					</li> 
 				{% for comment in issue.comments.all %}
@@ -64,10 +64,11 @@
 				{% endfor %}
 				</ul>
 			</div>
-			<hr/>
+			{% if user.is_authenticated %}
 			<div class="pagelet-body" id="sample-form">
 				{% crispy form form.helper %}
 			</div>
+			{% endif %}
 		</div>
 	</div>
 </div>

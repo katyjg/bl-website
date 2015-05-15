@@ -12,7 +12,7 @@
     <link href="{% static 'tasklist/fontawesome/css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'tasklist/css/font-awesome-animation.min.css' %}" rel="stylesheet">
     <link href="{% static 'tasklist/css/animate.css' %}" rel="stylesheet">
-	<link href='https://fonts.googleapis.com/css?family=Raleway:300,500,600,700|Exo+2:700,400,400italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Raleway:300,500,600,700|Open+Sans:700,400,400italic' rel='stylesheet' type='text/css'>
     {% block site_css %}
 	<link rel="stylesheet" href="{% static 'tasklist/css/style.css' %}" type="text/css" media="screen" />
     {% endblock %}
@@ -42,14 +42,11 @@
 				<ul class="nav navbar-nav pull-right" style="margin-right: 0px;">
 					{% if user.is_authenticated %}
 					{% block project_tools %}
-					<!-- li>
-					  <a title="Add Issue" class="btn btn-sm btn-default" href="#"><i class="fa fa-plus fa-fw"></i></a>
-					</li-->
 					{% endblock %}
 					<li>&nbsp;</li>
-					<li><a title="Logout" class="" href="/admin/logout/?next={{request.get_full_path}}"><i class="fa fa-lock fa-fw"></i><span class="hidden-xs">Logout <strong>{{user}}</strong></span></a></li>
+					<li><a title="Logout" class="" href="{% url 'tasklist-logout' %}?next={{request.get_full_path}}"><i class="fa fa-lock fa-fw"></i><span class="hidden-xs">Logout <strong>{{user}}</strong></span></a></li>
 					{% else %}
-					<li><a title="Login" class="" href="/admin/login/"><i class="fa fa-unlock-alt fa-fw"></i>Login</a></li>
+					<li><a title="Login" class="" href="{% url 'tasklist-login' %}?next={{request.get_full_path}}"><i class="fa fa-unlock-alt fa-fw"></i>Login</a></li>
 					{% endif %}
 			    </ul>	
 			</div>

@@ -23,14 +23,16 @@
 	{% empty %}
 	<tr><td class="text-center text-muted" style="padding: 2em;">No attachments</td></tr>
 	{% endfor %}
+	{% if user.is_authenticated %}
 	<tr>
 		<td style="padding-top: 2em;">{% crispy form form.helper %}</td>
 	</tr>
+	{% endif %}
 	</tbody>
 	</table>
 </div>
 
-
+{% if user.is_authenticated %}
 <script type="text/javascript">	
 function initForm() {
 	$("#attachment-manager .chosen").chosen({
@@ -62,5 +64,6 @@ function showResponse(response, statusText, xhr, $form) {
 }
 {% if not form.errors %}
 	initForm();
+{% endif %}
 {% endif %}
 </script>
