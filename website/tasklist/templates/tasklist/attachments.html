@@ -20,7 +20,7 @@
 	{% empty %}
 	<tr><td class="text-center text-muted" style="padding: 2em;">No attachments</td></tr>
 	{% endfor %}
-	{% if user.is_authenticated %}
+	{% if user.is_authenticated and not issue.is_closed %}
 	<tr>
 		<td style="padding-top: 2em;">{% crispy form form.helper %}</td>
 	</tr>

@@ -111,6 +111,9 @@ class Issue(TimeStampedModel):
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
     
+    def is_closed(self):
+        return self.status in [self.STATES.fixed, self.STATES.wontfix]
+    
     def get_related(self):
         if getattr(self, 'see_also'):
             return self.related.all() | self.see_also.all()

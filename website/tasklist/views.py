@@ -227,6 +227,7 @@ class ManageAttachments(CreateView):
     def get_context_data(self, **kwargs):
         context = super(ManageAttachments, self).get_context_data(**kwargs)
         context['object_list'] = self.issue.attachment_set.all()
+        context['issue'] = self.issue
         return context
     
     def form_valid(self, form):

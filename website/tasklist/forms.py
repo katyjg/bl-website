@@ -86,7 +86,7 @@ class CommentForm(forms.ModelForm):
     issue_related = forms.ModelMultipleChoiceField(models.Issue.objects, label="Related to", required=False)
     class Meta:
         model = models.Comment
-        fields = ('issue', 'author', 'description')
+        fields = ('issue', 'author', 'description', 'kind')
         widgets = {'description': forms.Textarea(attrs={'rows': 3,}),}
     
     def __init__(self, *args, **kwargs):
@@ -118,7 +118,8 @@ class CommentForm(forms.ModelForm):
                        css_class='text-right col-xs-12'),                
                    css_class="row")),
             Field('issue', type="hidden"),
-            Field('author', type="hidden"),                        
+            Field('author', type="hidden"),
+            Field('kind', type="hidden"),                       
         )
     
     def clean(self):
@@ -138,6 +139,12 @@ class CommentForm(forms.ModelForm):
             del data['issue_due_date']
         elif data['issue_kind'] == models.Issue.TYPES.maintenance:
             del data['issue_kind']
+        
+        # set comment kind to update if no comment text
+        if not data['description']:
+            data['kind'] = models.Comment.TYPES.update
+        else:
+            data['kind'] = models.Comment.TYPES.comment
             
         for k in ['kind', 'owner', 'due_date', 'status', 'priority', 'related']:
             ext_k = 'issue_{0}'.format(k)
