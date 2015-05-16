@@ -5,12 +5,11 @@ from django.views.generic.edit import CreateView, UpdateView
 from objlist.views import FilteredListView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.humanize.templatetags import humanize
 import forms
 import json
 import models
 from datetime import datetime, timedelta
-from templatetags import tasklist_tags
+from templatetags import tasklist_tags, timeish
 
 # Create your views here.
 class LoginRequiredMixin(object):
@@ -25,17 +24,7 @@ class LoginRequiredMixin(object):
 class JSONResponseMixin(object):  
     def json_response(self, data, **kwargs):   
         return http.HttpResponse(json.dumps(data),  
-                                 content_type='application/json', **kwargs)  
-def due_date_alarm(d):
-    if d:
-        if d <= datetime.today().date():
-            return "<span class='Critical' style='vertical-align: middle;' title='{0}'><i class='fa fa-exclamation-circle fa-3'></i></span>".format(humanize.naturalday(d))
-        elif d <= (datetime.today() + timedelta(days=7)).date():
-            return "<span class='High' title='{0}'><i class='fa fa-exclamation-triangle fa-3'></i></span>".format(humanize.naturalday(d))
-        else:
-            return humanize.naturalday(d)
-    return d
-
+                                 content_type='application/json', **kwargs)
 
 class DashboardView(TemplateView):
     template_name = 'tasklist/dashboard.html'
@@ -100,7 +89,7 @@ class ProjectClosed(ProjectDetail):
 class ProjectMaintenance(ProjectDetail):
     tools_template = 'tasklist/maint_tools.html'
     list_display = ['id', 'describe', 'frequency', 'modified', 'due_date']
-    list_transforms = {'modified': humanize.naturalday, 'due_date': due_date_alarm }
+    list_transforms = {'modified': timeish.ago, 'due_date': tasklist_tags.alarm }
 
     def get_list_title(self):
         return u'{0} Maintenance Tasks'.format(self.project.name)
@@ -187,7 +176,7 @@ class IssueList(FilteredListView):
     list_filter = ['kind', 'priority', 'created', 'modified']
     list_title = 'Active Issues'
     list_display = ['project', 'id', 'describe', 'status', 'modified', 'due_date']
-    list_transforms = {'due_date': tasklist_tags.alarm}
+    list_transforms = {'due_date': tasklist_tags.alarm, 'modified': timeish.ago, 'frequency': lambda x: u"{0} months".format(x) if x else "&emsp;&mdash;"}
     list_styles = {'describe': 'col-xs-4', 'id': 'col-xs-1', 'due_date': 'text-center'}
     search_fields = ['title', 'description']
     ordering_proxies = {'describe': 'title'}
@@ -202,10 +191,13 @@ class IssueList(FilteredListView):
 class ClosedIssues(IssueList):
     queryset = models.Issue.objects.closed()    
     list_title = 'Closed Issues'
+    list_filter = ['kind', 'priority', 'created', 'modified']
     
 class MaintenanceIssues(IssueList):
     queryset = models.Issue.objects.maintenance()
     list_title = 'Maintenance Issues'    
+    list_display = ['project', 'id', 'describe', 'frequency', 'status', 'modified', 'due_date']
+    list_filter = ['status', 'priority', 'created', 'modified']
     
 class ManageAttachments(CreateView):
     template_name = "tasklist/attachments.html"

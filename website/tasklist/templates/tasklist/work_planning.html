@@ -8,8 +8,10 @@
 		<h5 class="no-margin"><strong>{% site_name %} Work Planning</strong>:&nbsp; This page contains the active issues in all of your projects.  Review the list regularly as a team.</h5>
 	</div>
 </div>
-<div class="row col-xs-12" style="padding-top: 2em; ">
-	<div class="pagelet col-xs-12">
+<div class="row" style="padding-top: 2em; ">
+	<div class="col-xs-12">
+	<div class="pagelet">
+	<div class="pagelet-body">
 	{% if permanent %}
 		<h4>Permanent Issues</h4>
 		{% for issue in permanent %}
@@ -20,7 +22,7 @@
 	{% for project in projects %}
 	  <h4>{{ project.name }}<span class="pull-right"><a href='{% url "create-issue" pk=project.pk %}' data-toggle="tooltip" title="Create New Issue" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i> New Issue</a></span></h4>
 	  {% for object in project.issues.active %}
-	    <div class="media grid-cell col-xs-12">
+	    <div class="media grid-cell col-xs-12 issue-grid">
   	 	  <a href="{% url 'issue-detail' object.pk %}" title="Edit Issue">
   	 	  	<div class="plan-grid">
 				<div class="col-xs-1">{{ object.pk }}</div>
@@ -39,10 +41,11 @@
   	  <div class="spacer"></div>
   	  <hr/>
   	{% endfor %}
-  	
+  	</div>
   </div>
 </div>
 	
+	</div>
 	</div>
 </div>
 {% endblock %}

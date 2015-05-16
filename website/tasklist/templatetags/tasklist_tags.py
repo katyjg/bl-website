@@ -74,9 +74,10 @@ def msg_compose(msg, autoescape=None):
 def alarm(d, autoescape=None):
     if d:
         urgent = (d <= datetime.today().date() and 'Critical') or d <= (datetime.today() + timedelta(days=7)).date() and 'High' or "" 
-        return mark_safe("<span class='{0}' title='Due {1}'><i class='fa fa-{2} fa-3'></i></span>".format(urgent, humanize.naturalday(d), 
+        return mark_safe("<span class='{0}' title='Due {1}'><i class='fa fa-{2} fa-3 fa-fw'></i></span>".format(urgent, humanize.naturalday(d), 
                                                                                                    urgent and (urgent == 'Critical' and 'exclamation-circle' or 'warning') or 'clock-o' ))
-    return d
+    else:
+        return mark_safe("<span class='text-muted'>&mdash;</span>")
 
 @register.filter(name="kind_stat")
 def kind_stat(issues, kind):

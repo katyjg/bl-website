@@ -208,13 +208,13 @@ SUIT_CONFIG = {
         {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
         {'label': 'Beamline Staff', 'icon': 'icon-user', 'url':'/admin/scheduler/supportperson/'},
         {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'icon-folder-open'},  
-        '-',
+        {'app': 'tasklist', 'label': 'Projects', 'icon': 'icon-tasks', 'models': ('project','milestone')},
         {'label': 'Settings', 'icon': 'icon-cog', 'models': ('sites.site','redirects.redirect')},
         {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
         '-',
         {'label': 'Beamtime', 'icon':'icon-calendar', 'url': '/beamtime/admin'},
-        {'app': 'tasklist', 'label': 'Beamline Tasks', 'icon': 'icon-tasks', 'models': ('project','milestone')},
-        {'app': 'simplewiki', 'label': 'Wiki', 'icon': 'icon-edit'},
+        {'label': 'Issue Tracker', 'icon': 'icon-tasks', 'url': '/issues/'},
+        {'label': 'Wiki', 'icon': 'icon-edit', 'url': '/wiki/', },
     ),
     'LIST_PER_PAGE': 25
 }

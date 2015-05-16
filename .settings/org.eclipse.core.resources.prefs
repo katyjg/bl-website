@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
 encoding//libs/filebrowser/sites.py=utf-8
 encoding//libs/grappelli/urls.py=utf-8
+encoding//website/tasklist/templatetags/timeish.py=utf-8

@@ -9,6 +9,7 @@ body {
 html {
     position: relative;
 	min-height: 100%;
+    overflow-y: scroll; 
 }
 @-ms-viewport {
   width: auto !important; /* Fix IE problems */
@@ -2359,7 +2360,7 @@ div.narrow-gutter {
   padding: 4px;
 }
 
-.grid-cell a {
+.issue-grid a {
 	color: #333 !important;
 }
 .plan-grid {
@@ -2528,5 +2529,13 @@ a:hover {
 .Medium { color: #86EC5B; }
 .Low { color: #4188F1; }
 
-
-
+.project-detail.section-title:hover {
+    cursor: pointer;
+}
+.section-title:hover span.expand-icon:after {
+    font-family: 'FontAwesome'; 
+    content: "\f103";
+}
+.section-title .collapsing {
+ 	.collapsing { transition: height 0.3s; }
+}

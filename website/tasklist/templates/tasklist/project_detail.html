@@ -1,16 +1,19 @@
 {% extends "tasklist/base.html" %}
 {% load static %}
 {% block full %}
-<div class="row section-title">
-	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;">
-		<h5 class="no-margin"><strong>{{project.name}}</strong>:&nbsp; {{project.description}}</h5>
+{% load markup %}
+<div class="row section-title project-detail">
+	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;" data-toggle="collapse" aria-expanded="false" data-target="#title-description">
+		<h5 class="no-margin"><strong>{{project.name}}</strong>:&nbsp; {{project.short_description}}<span class="expand-icon pull-right text-muted"></span></h5>
+		<div class='collapse' style="font-size: 90%; padding-top: 0.5em;" id="title-description">
+			{{project.description|markdown}}
+		</div>
 	</div>
 </div>
 <div class="row" style="padding-top: 2em; ">
 	<div class="hidden-xs col-sm-2">
 	<div class="text-center">
 	<img width="60" height="60" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
-	<p>{{project.short_description}}</p>
 	</div>
 	<hr/>
 	<table class="table">
