@@ -8,6 +8,7 @@ import re
 import mimetypes
 from datetime import datetime, timedelta
 from django.contrib.humanize.templatetags import humanize
+from django.core.urlresolvers import reverse
 
 register = template.Library()
 
@@ -67,7 +68,7 @@ def msg_type(tag, autoescape=None):
 
 @register.filter(name="msg_compose", needs_autoescape=True)
 def msg_compose(msg, autoescape=None):
-    text = '<div class="activity-item">{0}<div class="activity">{1}</div></div>'.format(msg_icon(msg.tags), msg)  
+    text = '<div class="activity-item">{0}<div class="activity">{1}</div></div>'.format('', msg)  
     return mark_safe(text)
 
 @register.filter(name="alarm", needs_autoescape=True)
@@ -77,14 +78,23 @@ def alarm(d, autoescape=None):
         return mark_safe("<span class='{0}' title='Due {1}'><i class='fa fa-{2} fa-3 fa-fw'></i></span>".format(urgent, humanize.naturalday(d), 
                                                                                                    urgent and (urgent == 'Critical' and 'exclamation-circle' or 'warning') or 'clock-o' ))
     else:
-        return mark_safe("<span class='text-muted'>&mdash;</span>")
+        return ""
 
 @register.filter(name="kind_stat")
 def kind_stat(issues, kind):
     if issues.exclude(kind__exact="maintenance").count():
         return 100 * (issues.filter(kind__exact=kind).count() / float(issues.exclude(kind__exact='maintenance').count()))
     return 0
+
+
+def _get_link(num):
+    return u'<a href="{0}">{1}</a>'.format(reverse('issue-detail', kwargs={'pk': num}), num)
     
+ONE_ISSUE_LINK = re.compile(r'(issue\s)(\d+)', re.IGNORECASE)
+@register.filter(name="link_issues", needs_autoescape=True)
+def link_issues(text, autoescape=None):
+    text = re.sub(ONE_ISSUE_LINK, lambda m: "{0}{1}".format(m.group(1), _get_link(m.group(2))), text)
+    return text
 
 CONSONANT_SOUND = re.compile(r'''
 one(![ir])

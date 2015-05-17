@@ -26,7 +26,7 @@
 	</table>
 	<hr/>
 	<table class="table">
-	<tr class="{% active 'issue-list' %}"><td><a href="{% url 'issue-list' %}">Active:</a></td><td>{{issues.active.count}}</td></tr>
+	<tr class="{% active 'open-issues' %}"><td><a href="{% url 'open-issues' %}">Open:</a></td><td>{{issues.active.count}}</td></tr>
 	<tr class="{% active 'closed-issues' %}"><td><a href="{% url 'closed-issues' %}">Closed:</a></td><td>{{issues.closed.count}}</td></tr>
 	<tr class="{% active 'maintenance-issues' %}"><td><a href="{% url 'maintenance-issues' %}">Maintenance:</a></td><td>{{issues.maintenance.count}}</td></tr>
 	</table>

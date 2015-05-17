@@ -7,9 +7,11 @@
 
 {% block extra_css %}
 	<link rel="stylesheet" href="{% static 'tasklist/css/chosen.css' %}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{% static 'tasklist/bootstrap/css/datepicker3.css' %}" type="text/css" media="screen" />
 {% endblock %}
 {% block extra_js %}
 	<script src="{% static 'tasklist/jquery/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'tasklist/bootstrap/js/bootstrap-datepicker.js' %}"></script>
 	<script type="text/javascript">	
 	$(document).ready(function(){
 		$(".chosen").chosen({
@@ -23,7 +25,9 @@
 			show_value_as_label: true,
 			allow_single_deselect: true
 		});
-		console.log("{% url 'add-issue-attachment' pk=issue.pk %}");
+		$('.datepicker').datepicker({
+		    format: 'yyyy-mm-dd',
+		})
 		$("#issue-attatchments").load("{% url 'add-issue-attachment' pk=issue.pk %}");
 	});
 	</script>
@@ -69,7 +73,7 @@
 					<li>
 					<div class="row">
 						<div class="col-xs-12 comment-header"><strong>Reported by {{issue.submitter.get_full_name}}</strong> <span class="text-muted">on {{issue.created}}</span></div>
-						<div class="col-xs-12 comment-body" >{{issue.description|markdown}}</div>
+						<div class="col-xs-12 comment-body" >{{issue.description|link_issues|markdown}}</div>
 					</div>
 					</li> 
 				{% for comment in issue.comments.all %}

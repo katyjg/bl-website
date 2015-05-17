@@ -1,0 +1,19 @@
+{% load tasklist_tags %}
+{% load timeish %}
+<div class="media grid-cell col-xs-12 issue-grid">
+	<a href="{% url 'issue-detail' issue.pk %}" title="Edit Issue">
+		<div class="plan-grid">
+			<div class="col-xs-1">{{ issue.pk }}</div>
+			<div class="col-xs-4">{{ issue.describe|safe }}</div>
+			<div class="col-xs-6">				
+				<strong>{{issue.get_latest.created|ago}}:&ensp;</strong>
+				<span class="text-muted">{{issue.get_latest.description|safe }}</span>
+			</div>
+			<div class="col-xs-1 hidden-xs text-center">
+				<span title="{{object.get_status_display}}">{{issue|state_icon }}</span><br> {{ issue.due_date|alarm|default:"" }}
+			</div>
+			<div class="spacer"></div>
+		</div>
+	</a>
+</div>
+

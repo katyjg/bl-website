@@ -119,7 +119,13 @@ class Issue(TimeStampedModel):
             return self.related.all() | self.see_also.all()
         else:
             return self.related.all()
-
+        
+    def get_latest(self):
+        if getattr(self, 'comments') and self.comments.comments().count():
+            return self.comments.comments().latest()
+        else:
+            return self
+        
     def describe(self):
         txt =  u"<span>{0}</span><br/><small class='text-muted'>{1}, Priority:<span class='{2}'>{2}</span></small>".format(self.title, self.get_kind_display(), self.get_priority_display())
         return mark_safe(txt)
@@ -157,7 +163,7 @@ class CommentQuerySet(QuerySet):
     def comments(self):
         return self.filter(kind__exact=Comment.TYPES.comment)
 
-    def update(self):
+    def updates(self):
         return self.filter(kind__exact=Comment.TYPES.update)
 
 class CommentManager(models.Manager):
@@ -174,7 +180,6 @@ class Comment(TimeStampedModel):
     TYPES = Choices(
         ('comment', _('Comment')),
         ('update', _('Update')),
-        ('maintenance', _('Maintenance')),
     )
     issue = models.ForeignKey(Issue, related_name='comments')
     author = models.ForeignKey(User, verbose_name=_('Author'), related_name='comments')

@@ -2,7 +2,6 @@
 {% load static %}
 {% load markup %}
 
-
 {% block full %}
 <div class="row" style="padding-top: 1em;">
 	<div class="col-xs-12 col-sm-3">
@@ -41,7 +40,7 @@
 				    <span class="person-summary">
 				    {{project.description|markdown}}
 				    <a href="{% url 'create-issue' pk=project.pk %}">Report Issue</a>
-				    &emsp;|&emsp;<a href="{% url 'project-maintenance' pk=project.pk %}">Maintenance</a>				    
+				    &ensp;|&ensp;<a href="{% url 'project-maintenance' pk=project.pk %}">Maintenance</a>				    
 				    </span>
 				  </div>
 				</div>	    	

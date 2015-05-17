@@ -8,44 +8,34 @@
 		<h5 class="no-margin"><strong>{% site_name %} Work Planning</strong>:&nbsp; This page contains the active issues in all of your projects.  Review the list regularly as a team.</h5>
 	</div>
 </div>
-<div class="row" style="padding-top: 2em; ">
+<div class="row narrow-gutter" style="padding-top: 2em; ">
 	<div class="col-xs-12">
 	<div class="pagelet">
-	<div class="pagelet-body">
-	{% if permanent %}
-		<h4>Permanent Issues</h4>
-		{% for issue in permanent %}
-			{{ issue }}
-		{% endfor %}
+	{% if persistent %}
+		<div class="pagelet-header">
+			<h4>Persistent Issues</h4>
+		</div>
+		<div class="pagelet-body">
+			{% for issue in persistent %}
+				{% include "tasklist/planning_issue.html" %}
+			{% endfor %}
+		</div>
 		<hr/>
 	{% endif %}
 	{% for project in projects %}
-	  <h4>{{ project.name }}<span class="pull-right"><a href='{% url "create-issue" pk=project.pk %}' data-toggle="tooltip" title="Create New Issue" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i> New Issue</a></span></h4>
-	  {% for object in project.issues.active %}
-	    <div class="media grid-cell col-xs-12 issue-grid">
-  	 	  <a href="{% url 'issue-detail' object.pk %}" title="Edit Issue">
-  	 	  	<div class="plan-grid">
-				<div class="col-xs-1">{{ object.pk }}</div>
-				<div class="col-xs-4">{{ object.describe|safe }}</div>
-				<div class="col-xs-6">{% with object.comments.comments.latest as comment %}Last updated {{ comment.created|naturalday }}: 
-									  <span class="text-muted">{{ comment.description|safe }}</span>{% endwith %}</div>
-				<div class="col-xs-1"><span title="{{object.get_status_display}}">{{ object|state_icon }}</span><br>
-									  {{ object.due_date|alarm|default:"" }}</div>
-				<div class="spacer"></div>
-			</div>
-		  </a>
-  		</div>
-  	  {% empty %}
-  	    <span>No active issues to discuss</span>
-  	  {% endfor %}
-  	  <div class="spacer"></div>
-  	  <hr/>
+		<div class="pagelet-header">
+		<h4>{{ project.name }}<span class="pull-right"><a href='{% url "create-issue" pk=project.pk %}' data-toggle="tooltip" title="Create New Issue" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i> New Issue</a></span></h4>
+		</div>
+		<div class="pagelet-body">
+		{% for issue in project.issues.active %}
+			{% include "tasklist/planning_issue.html" %}
+		{% empty %}
+			 <span>No active issues to discuss</span>
+  	  	{% endfor %}
+		</div>
+  	  <hr/>	  
   	{% endfor %}
   	</div>
   </div>
-</div>
-	
-	</div>
-	</div>
 </div>
 {% endblock %}

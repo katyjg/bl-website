@@ -27,7 +27,7 @@ class IssueForm(forms.ModelForm):
                 Div(Field('description', required=True), css_class='col-sm-12'),
                 Div(Field('kind', css_class="chosen"),  css_class='col-sm-6'),
                 Div(Field('priority', css_class="chosen"), css_class='col-sm-6'),                                       
-                Div(Field('due_date', css_class="dateinput"), css_class='col-sm-6'),
+                Div(Field('due_date', css_class="datepicker"), css_class='col-sm-6'),
                 Div(Field('related', css_class="chosen-value"), css_class='col-sm-6'),
                 css_class="row narrow-gutter"
             ),                         
@@ -57,7 +57,7 @@ class MaintenanceForm(forms.ModelForm):
                 Div(Field('description', required=True), css_class='col-sm-12'),
                 Div(Field('frequency', required=True),  css_class='col-sm-4'),
                 Div(Field('priority', css_class="chosen"), css_class='col-sm-4'),                                       
-                Div(Field('due_date', css_class="dateinput"), css_class='col-sm-4'),
+                Div(Field('due_date', css_class="datepicker"), css_class='col-sm-4'),
                 css_class="row narrow-gutter"
             ),                         
             Div(Div(
@@ -96,10 +96,10 @@ class CommentForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "issue-form"
         if self.initial['issue'].kind == models.Issue.TYPES.maintenance:
-            due_date_layout = Field('issue_due_date', css_class="dateinput", disabled=True)
+            due_date_layout = Field('issue_due_date', css_class="datepicker", disabled=True)
             type_layout = Field('issue_kind', css_class="chosen", disabled=True)
         else:
-            due_date_layout = Field('issue_due_date', css_class="dateinput")
+            due_date_layout = Field('issue_due_date', css_class="datepicker")
             type_layout = Field('issue_kind', css_class="chosen")
         self.helper.layout = Layout(
             Div(

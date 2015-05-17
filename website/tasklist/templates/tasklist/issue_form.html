@@ -4,9 +4,11 @@
 
 {% block extra_css %}
 	<link rel="stylesheet" href="{% static 'tasklist/css/chosen.css' %}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{% static 'tasklist/bootstrap/css/datepicker3.css' %}" type="text/css" media="screen" />
 {% endblock %}
 {% block extra_js %}
 	<script src="{% static 'tasklist/jquery/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'tasklist/bootstrap/js/bootstrap-datepicker.js' %}"></script>
 	<script type="text/javascript">	
 	$(document).ready(function(){
 		$(".chosen").chosen({
@@ -20,6 +22,7 @@
 			show_value_as_label: true,
 			allow_single_deselect: true
 		});
+		$('.datepicker').datepicker()
 	});
 	</script>
 {% endblock %}
@@ -28,9 +31,19 @@
 	<div class="col-xs-12 col-sm-4">
 	<ul class="list-unstyled issue-summary">
 	  <li><strong>Project: </strong><a href="{% url 'project-detail' pk=form.initial.project.pk %}">{{form.initial.project}}</a></li>
-	  <li>&nbsp;</li>
+	  <li><h4 class="no-margin"><strong>New Issue</strong></h4></li>
+	</ul>	
+	<div class="issue-instructions">
+	<p>Please provide the following information:</p>
+	<ul>
+	<li>Description the problem or the steps required to reproduce it.</li>
+	<li>Hardware, location, software versions, if available</li>
+	<li>Any other information that can help in identifying or resolving the issue,
+	such as when it occured, error messages, etc.</li>
+	<li><strong>Do not include any password or confidential information!</strong></li>
 	</ul>
-	{% include "tasklist/issue_instructions.html" %}
+	</div>
+	
 	</div>
 	<div class="col-xs-12 col-sm-8">
 		<div class="pagelet">

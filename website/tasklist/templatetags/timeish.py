@@ -56,7 +56,6 @@ def timefrom(value, reverse=False, over=""):
         plul = 's'
     else:
         plul = ' '
-    print name
     result = avoid_wrapping(name.format(prefix, count, suffix, plul))
     return result
 
