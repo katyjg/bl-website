@@ -1,5 +1,5 @@
 from . import fields
-from datetime import datetime, timedelta
+from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse_lazy
 from django.db import models
@@ -7,7 +7,6 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils import timezone
 from django.utils.safestring import mark_safe
-from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
@@ -105,27 +104,29 @@ class Issue(TimeStampedModel):
     kind = models.CharField(max_length=20, verbose_name=_('Type'), default=TYPES.task, choices=TYPES)
     due_date = models.DateField(_('Due Date'), null=True, blank=True)
     frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='Number of months')
-    related = models.ManyToManyField('Issue', null=True, blank=True, verbose_name="Related to", related_name="see_also")
+    related = models.ManyToManyField('Issue', null=True, blank=True, verbose_name="Related to")
     objects = IssueManager()
-    
+    class Meta:
+        ordering = ['priority', 'created']
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
     
     def is_closed(self):
         return self.status in [self.STATES.fixed, self.STATES.wontfix]
-    
-    def get_related(self):
-        if getattr(self, 'see_also'):
-            return self.related.all() | self.see_also.all()
-        else:
-            return self.related.all()
-        
+            
     def get_latest(self):
         if getattr(self, 'comments') and self.comments.comments().count():
             return self.comments.comments().latest()
         else:
             return self
-        
+    
+    def last_updated(self):
+        if getattr(self, 'comments') and self.comments.count():
+            return self.comments.latest().created
+        else:
+            return self.modified
+    last_updated.short_description = 'Updated'
+    
     def describe(self):
         txt =  u"<span>{0}</span><br/><small class='text-muted'>{1}, Priority:<span class='{2}'>{2}</span></small>".format(self.title, self.get_kind_display(), self.get_priority_display())
         return mark_safe(txt)
@@ -175,6 +176,10 @@ class CommentManager(models.Manager):
     def comments(self):
         qset = self.get_queryset()
         return qset.comments()
+
+    def updates(self):
+        qset = self.get_queryset()
+        return qset.updates()
 
 class Comment(TimeStampedModel):
     TYPES = Choices(

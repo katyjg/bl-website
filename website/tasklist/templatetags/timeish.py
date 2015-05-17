@@ -38,7 +38,8 @@ def timefrom(value, reverse=False, over=""):
     now = timezone.now()
     # Convert datetime.date to datetime.datetime for comparison.
     if not isinstance(value, datetime):
-        value = timezone.make_aware(datetime.combine(value, datetime.min.time()), timezone.get_default_timezone())
+        value = datetime.combine(value, datetime.min.time())
+    print now, value
     delta = (value - now) if reverse else (now - value)
     prefix = 'in' if reverse else ''
     suffix = 'ago' if not reverse else '' 

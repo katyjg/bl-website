@@ -1,7 +1,7 @@
 from django import http
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView
 from objlist.views import FilteredListView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -115,11 +115,12 @@ class ProjectDetail(FilteredListView):
     tools_template = 'tasklist/project_tools.html'
     paginate_by = 15
     detail_url = 'issue-detail'
-    list_filter = ['kind', 'priority', 'created', 'modified']
-    list_display = ['id', 'describe', 'status', 'modified']
+    list_filter = ['kind', 'priority', 'created']
+    list_display = ['id', 'describe', 'status', 'last_updated']
     list_transforms = {
         'due_date': tasklist_tags.alarm, 
-        'modified': timeish.ago, 
+        'modified': timeish.ago,
+        'last_updated': timeish.ago,
         'frequency': lambda x: u"{0} months".format(x) if x else "&emsp;&mdash;"
     }
     list_styles = {
@@ -128,7 +129,7 @@ class ProjectDetail(FilteredListView):
         'project':  'hidden-xs'
     }
     search_fields = ['title', 'description', 'comments__description']
-    ordering_proxies = {'describe': 'title'}
+    ordering_proxies = {'describe': 'title', 'last_updated': 'modified'}
     order_by = ['-created', 'priority']
 
     def get_list_title(self):
@@ -183,12 +184,13 @@ class IssueList(FilteredListView):
     tools_template = 'tasklist/list_tools.html'
     paginate_by = 15
     detail_url = 'issue-detail'
-    list_filter = ['kind', 'priority', 'created', 'modified']
+    list_filter = ['kind', 'priority', 'created']
     list_title = 'All Issues'
-    list_display = ['project', 'id', 'describe', 'status', 'modified', 'due_date']
+    list_display = ['project', 'id', 'describe', 'status', 'last_updated', 'due_date']
     list_transforms = {
         'due_date': tasklist_tags.alarm, 
         'modified': timeish.ago, 
+        'last_updated': timeish.ago,
         'frequency': lambda x: u"{0} months".format(x) if x else "&emsp;&mdash;"
     }
     list_styles = {
@@ -197,7 +199,7 @@ class IssueList(FilteredListView):
         'project':  'hidden-xs'
     }
     search_fields = ['title', 'description', 'comments__description']
-    ordering_proxies = {'describe': 'title'}
+    ordering_proxies = {'describe': 'title', 'last_updated': 'modified'}
     order_by = ['-created', 'priority']
 
     def get_context_data(self, **kwargs):
@@ -209,18 +211,19 @@ class IssueList(FilteredListView):
 class OpenIssues(IssueList):
     queryset = models.Issue.objects.active()    
     list_title = 'All Open Issues'
-    list_filter = ['kind', 'priority', 'created', 'modified']
+    list_filter = ['kind', 'priority', 'created']
     
 class ClosedIssues(IssueList):
     queryset = models.Issue.objects.closed()    
     list_title = 'All Closed Issues'
-    list_filter = ['kind', 'priority', 'created', 'modified']
+    list_filter = ['kind', 'priority', 'created']
     
 class MaintenanceIssues(IssueList):
     queryset = models.Issue.objects.maintenance()
     list_title = 'All Maintenance Issues'    
-    list_display = ['project', 'id', 'describe', 'frequency', 'modified', 'due_date']
-    list_filter = ['status', 'priority', 'created', 'modified']
+    list_display = ['project', 'id', 'describe', 'frequency', 'last_updated', 'due_date']
+    list_filter = ['status', 'priority', 'created']
+    order_by = ['due_date', 'priority']
     
 class ManageAttachments(CreateView):
     template_name = "tasklist/attachments.html"

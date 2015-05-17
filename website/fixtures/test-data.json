@@ -949,8 +949,8 @@
   "model": "auth.user", 
   "fields": {
     "username": "admin", 
-    "first_name": "", 
-    "last_name": "", 
+    "first_name": "Website", 
+    "last_name": "Administrator", 
     "is_active": true, 
     "is_superuser": true, 
     "is_staff": true, 

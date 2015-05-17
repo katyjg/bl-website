@@ -1,7 +1,7 @@
 {% extends 'tasklist/base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
-{% load humanize %}
+{% load timeish %}
 {% load markup %}
 {% load tasklist_tags %}
 
@@ -42,24 +42,29 @@
 	<div class="col-xs-12 col-sm-3">
 	{% if issue %}
 	<ul class="list-unstyled issue-summary">
-	  <li><strong>Project: </strong><a href="{% url 'project-detail' pk=issue.project.pk %}">{{issue.project}}</a></li>
-	  <li><strong>Created: </strong>{{issue.created|timesince}} ago by {{issue.submitter.get_full_name}}</li>
-	  <li><strong>Updated: </strong>{{issue.modified|timesince}} ago</li>
+	  <li><strong>Project:&ensp;</strong><a href="{% url 'project-detail' pk=issue.project.pk %}">{{issue.project}}</a></li>
+	  <li><strong>Created:&ensp;</strong>{{issue.created|ago}} by {{issue.submitter.get_full_name}}</li>
+	  <li><strong>Updated:&ensp;</strong>{{issue.last_updated|ago}}</li>
 	  {% if issue.owner %}
 	  	  <li><strong>Assigned to: </strong>{{issue.owner}}</li>
+	  {% endif %}
+	  {% if issue.due_date %}
+	  	  <li><strong>Due:&ensp;</strong>{{issue.due_date|remaining}}</li>
 	  {% endif %}
 	  <li>
 	  	<span class="label label-job">{{issue.get_status_display}}</span>
 	  	<span class="label label-info">{{issue.get_kind_display}}</span>
 	  	<span class="label label-role">Priority: {{issue.get_priority_display}}</span>
 	  </li>
-	  <li><strong>Related Issues:&emsp;</strong>
-	  {% for ri in issue.get_related %}
+
+	  {% for ri in issue.related.all %}
+	  {% if forloop.first %}<li><strong>Related Issues:&emsp;</strong>{% endif %}
 	  	<a href="{% url 'issue-detail' pk=ri.pk %}">{{ri.pk}}</a>
-	  	{% if not forloop.last %},{% endif %}
+	  	{% if not forloop.last %},{% else %}
+	  	</li>
+	  	{% endif %}	  	
 	  {% endfor %}
-	  </li>
-	<li><strong>Attachments: </strong></li>
+	<li><strong>Attachments</i></strong><i class="fa fa-angle-down fa-fw"></i></li>
 	<li id="issue-attatchments">
 	No Attachments		
 	</li>
