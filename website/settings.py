@@ -48,7 +48,7 @@ INTERNAL_PROXIES = 1
 
 # Specific urls which should only be accessed from one of the internal IP addresses
 # or networks above
-INTERNAL_URLS = ('^/wiki', '^/admin', '^/beamtime')
+INTERNAL_URLS = ('^/wiki', '^/admin', '^/beamtime', '^/issues')
 
 ROOT_URLCONF = 'website.urls'
 WSGI_APPLICATION = 'website.wsgi.application'
