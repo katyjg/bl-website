@@ -83,7 +83,7 @@ def alarm(d, autoescape=None):
 @register.filter(name="kind_stat")
 def kind_stat(issues, kind):
     if issues.exclude(kind__exact="maintenance").count():
-        return 100 * (issues.filter(kind__exact=kind).count() / float(issues.exclude(kind__exact='maintenance').count()))
+        return "%i" % (100 * (issues.filter(kind__exact=kind).count() / float(issues.exclude(kind__exact='maintenance').count())))
     return 0
 
 
