@@ -91,6 +91,7 @@ def kind_stat(issues, kind):
     return 0
 
 
+
 def _get_link(num):
     return u'<a href="{0}">{1}</a>'.format(reverse('issue-detail', kwargs={'pk': num}), num)
     

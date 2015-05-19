@@ -2552,4 +2552,5 @@ td.text-middle {
 }
 .issue-sidebar .progress {
 	margin-bottom: 0 !important;
+	background-color: #ddd;
 }
