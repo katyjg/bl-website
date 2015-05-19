@@ -2529,6 +2529,11 @@ a:hover {
 .Medium { color: #86EC5B; }
 .Low { color: #4188F1; }
 
+.label-Critical {	background-color: #c55b5b; color: #fff; }
+.label-High { background-color: #e1b266; color: #fff; }
+.label-Medium { background-color: #8dca73; color: #fff; }
+.label-Low { background-color: #6690cf;  color: #fff;}
+
 .project-detail.section-title:hover {
     cursor: pointer;
 }
@@ -2544,6 +2549,10 @@ a:hover {
 	align-items: center;
   	justify-content: center;
 }
+.flex-center {
+	display: flex;
+	align-items: center;
+ }
 .due-date-cell .fa {
 	opacity: 0.75;
 }
@@ -2553,5 +2562,8 @@ td.text-middle {
 .issue-sidebar .progress {
 	margin-bottom: 0 !important;
 	background-color: #ddd;
+}
+.plan-grid {
+	font-size: 120%;
 }
 
