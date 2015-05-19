@@ -163,8 +163,9 @@ class ProjectClosed(ProjectDetail):
 
 class ProjectMaintenance(ProjectDetail):
     tools_template = 'tasklist/maint_tools.html'
-    list_display = ['id', 'describe', 'frequency', 'modified', 'due_date']
-    list_filter = ['status', 'priority', 'created', 'modified']
+    list_display = ['id', 'describe', 'frequency', 'last_updated', 'due_date']
+    list_filter = ['status', 'priority', 'created']
+    order_by = ['due_date', 'priority']
 
     def get_list_title(self):
         return u'{0} Maintenance Tasks'.format(self.project.name)
