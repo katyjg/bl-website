@@ -22,7 +22,7 @@ def issue_icon(issue, autoescape=None):
         'bug': '<i class="fa fa-bug fa-fw"></i>',
         'task': '<i class="fa fa-tasks fa-fw"></i>',
         'enhancement':'<i class="fa fa-fire fa-fw"></i>',
-        'maintenance':'<i class="fa fa-heartbeat fa-fw"></i>',
+        'maintenance':'<i class="fa fa-wrench fa-fw"></i>',
     }
     icon = ICONS.get(issue.kind, '')
     print icon

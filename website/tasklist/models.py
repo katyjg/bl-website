@@ -44,6 +44,15 @@ class IssueQuerySet(QuerySet):
 
     def maintenance(self):
         return self.filter(kind__in=[Issue.TYPES.maintenance])
+
+    def bugs(self):
+        return self.filter(kind__in=[Issue.TYPES.bug])
+
+    def enhancement(self):
+        return self.filter(kind__in=[Issue.TYPES.enhancement])
+
+    def tasks(self):
+        return self.filter(kind__in=[Issue.TYPES.task])
     
     def closed(self):
         return self.filter(status__in=[Issue.STATES.fixed, Issue.STATES.wontfix])
@@ -68,6 +77,18 @@ class IssueManager(models.Manager):
     def maintenance(self):
         qset = self.get_queryset()
         return qset.maintenance()
+    
+    def bugs(self):
+        qset = self.get_queryset()
+        return qset.bugs()
+    
+    def tasks(self):
+        qset = self.get_queryset()
+        return qset.tasks()
+    
+    def enhancement(self):
+        qset = self.get_queryset()
+        return qset.enhancement()
 
     def overdue(self): 
         return self.overdue()
