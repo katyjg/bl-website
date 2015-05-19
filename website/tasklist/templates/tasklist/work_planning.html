@@ -4,7 +4,7 @@
 {% load tasklist_tags %}
 {% block full %}
 <div class="row section-title">
-	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;">
+	<div class="col-xs-12 no-space" style="padding-top: 1em; padding-bottom: 1em;" >
 		<h5 class="no-margin"><strong>{% site_name %} Work Planning</strong>:&nbsp; This page contains the active issues in all of your projects.  Review the list regularly as a team.</h5>
 	</div>
 </div>
@@ -39,4 +39,31 @@
   	</div>
   </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+  	<script type="text/javascript">
+	  	function zeropad(val) {
+	  	    return val < 10 ? "0"+val : val
+	  	};
+	  	var datebox = $('#date-box');
+	  	var timebox = $('#time-box');
+	  	function show_date_time() {
+	  	        var date = new Date;
+	  	        var year = date.getFullYear();
+	  	        var month = date.getMonth();
+	  	        var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'Jully', 'August', 'September', 'October', 'November', 'December');
+	  	        var days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+	  	        var d = date.getDate();
+	  	        day = date.getDay();
+	  	        var h = zeropad(date.getHours());
+	  	        var m = zeropad(date.getMinutes());
+	  	        var dateresult = ''+days[day]+', '+months[month]+' '+d+' '+year;
+	  	        var timeresult = h+':'+m;
+	  	        datebox.html(dateresult);
+	  	        timebox.html(timeresult);
+	  	        console.log(datebox, dateresult);
+	  	};
+	    setTimeout('show_date_time()',1000);
+
+    </script>
 {% endblock %}
