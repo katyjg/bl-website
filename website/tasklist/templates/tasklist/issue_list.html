@@ -9,35 +9,8 @@
 	</div>
 </div>
 <div class="row" style="padding-top: 2em; ">
-	<div class="hidden-xs col-sm-2">
-   	<table class="table">
-	<tr><td width="25%" title="Bugs"><i class="fa fa-bug fa-fw"></i></td><td><div title="{{issues|kind_stat:'bug'}}% of issues are bug reports" class="progress">
-		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'bug'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'bug'}}%">
-		  </div>
-	</div> </td></tr>
-	<tr><td title="Tasks"><i class="fa fa-tasks fa-fw"></i></td><td><div title="{{issues|kind_stat:'task'}}% of issues are tasks" class="progress">
-		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'task'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'task'}}%">
-		  </div>
-	</div> </td></tr>
-	<tr><td title="Enhancements"><i class="fa fa-fire fa-fw"></i></td><td><div title="{{issues|kind_stat:'enhancement'}}% of issues are feature requests" class="progress">
-		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'enhancement'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'enhancement'}}%">
-		  </div>
-	</div></td></tr>
-	
-	<tr><td title="Active Issues"><a href="{% url 'open-issues' %}"><i class="fa fa-cogs fa-fw"></i></a></td><td><div title="{% widthratio issues.active.count issues.active.count|add:issues.closed.count 100 %}% are still active" class="progress">
-		  <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{% widthratio issues.active.count issues.active.count|add:issues.closed.count 100 %}" aria-valuemin="0" aria-valuemax="100" style="width: {% widthratio issues.active.count issues.active.count|add:issues.closed.count 100 %}%">
-		  </div>
-	</div></td></tr>
-	<tr><td title="Closed Issues"><a href="{% url 'closed-issues' %}"><i class="fa fa-check fa-fw"></i></a></td><td><div title="{% widthratio issues.closed.count issues.active.count|add:issues.closed.count 100 %}% of issues have been closed" class="progress">
-		  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{% widthratio issues.closed.count issues.active.count|add:issues.closed.count 100 %}" aria-valuemin="0" aria-valuemax="100" style="width: {% widthratio issues.closed.count issues.active.count|add:issues.closed.count 100 %}%">
-		  </div>
-	</div></td></tr>
-	<tr><td title="Maintenance Items"><a href="{% url 'maintenance-issues' %}"><i class="fa fa-wrench fa-fw"></i></a></td><td><div title="{% widthratio issues.maintenance.count issues.count 100 %}% of all issues are maintenance items" class="progress">
-		  <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{% widthratio issues.maintenance.count issues.count 100 %}" aria-valuemin="0" aria-valuemax="100" style="width: {% widthratio issues.maintenance.count issues.count 100 %}%">
-		  </div>
-	</div></td></tr>	
-		
-	</table>
+	<div class="hidden-xs col-sm-2 issue-sidebar">
+   	{% include "tasklist/issue_stats.html" %}
 	</div>
 	<div class="col-xs-12 col-sm-10">
 		{% include "objlist/object_list.html" %}

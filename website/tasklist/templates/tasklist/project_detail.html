@@ -2,6 +2,8 @@
 {% load static %}
 {% block full %}
 {% load markup %}
+{% load tasklist_tags %}
+
 <div class="row section-title project-detail">
 	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;" data-toggle="collapse" aria-expanded="false" data-target="#title-description">
 		<h5 class="no-margin"><strong>{{project.name}}</strong>:&nbsp; {{project.short_description}}<span class="expand-icon pull-right text-muted"></span></h5>
@@ -11,7 +13,7 @@
 	</div>
 </div>
 <div class="row" style="padding-top: 2em; ">
-	<div class="hidden-xs col-sm-2">
+	<div class="hidden-xs col-sm-2 issue-sidebar">
 	<div class="text-center">
 	<img width="60" height="60" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
 	</div>
@@ -21,7 +23,8 @@
 	<tr><th><a href="{% url 'project-closed' pk=project.pk %}">Closed:</a></th><td>{{project.issues.closed.count}}</td></tr>
 	<tr><th><a href="{% url 'project-maintenance' pk=project.pk %}">Maintenance:</a></th><td>{{project.issues.maintenance.count}}</td></tr>
 	</table>
-	</div>
+    {% include "tasklist/issue_stats.html" with issues=project.issues %}
+	</div>	
 	<div class="col-xs-12 col-sm-10">
 		{% include "objlist/object_list.html" %}
 	</div>
