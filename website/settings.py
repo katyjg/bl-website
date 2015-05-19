@@ -44,6 +44,7 @@ INTERNAL_IPS = IPAddressList(
 )
 
 # sets the number of proxies being used locally for the site
+USE_X_FORWARDED_HOST = True
 INTERNAL_PROXIES = 1
 
 # Specific urls which should only be accessed from one of the internal IP addresses
@@ -95,13 +96,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages'
 )
-
-#TEMPLATE_LOADERS = (
-#    ('django.template.loaders.cached.Loader', (
-#        'django.template.loaders.filesystem.Loader',
-#        'django.template.loaders.app_directories.Loader',
-#    )),
-#)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
