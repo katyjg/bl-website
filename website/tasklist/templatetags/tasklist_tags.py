@@ -31,12 +31,12 @@ def issue_icon(issue, autoescape=None):
 @register.filter(name="state_icon", needs_autoescape=True)
 def state_icon(issue, autoescape=None):
     ICONS = {
-        'new': '<i class="fa fa-star-o fa-fw fa-3"></i>',
-        'pending': '<i class="fa fa-wrench fa-fw fa-3"></i>',
-        'started':'<i class="fa fa-cogs fa-fw fa-3"></i>',
-        'fixed':'<i class="fa fa-check fa-fw fa-3"></i>',
-        'wontfix':'<i class="fa fa-times fa-fw fa-3"></i>',
-        'permanent':'<i class="fa fa-thumb-tack fa-fw fa-3"></i>',
+        'new': '<i class="fa fa-star-o fa-fw fa-2"></i>',
+        'pending': '<i class="fa fa-wrench fa-fw fa-2"></i>',
+        'started':'<i class="fa fa-cogs fa-fw fa-2"></i>',
+        'fixed':'<i class="fa fa-check fa-fw fa-2"></i>',
+        'wontfix':'<i class="fa fa-times fa-fw fa-2"></i>',
+        'permanent':'<i class="fa fa-thumb-tack fa-fw fa-2 text-muted"></i>',
     }
     icon = ICONS.get(issue.status, '')
     return mark_safe(icon)
