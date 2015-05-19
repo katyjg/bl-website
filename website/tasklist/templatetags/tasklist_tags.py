@@ -7,9 +7,8 @@ from django.conf import settings
 import re
 import mimetypes
 from datetime import datetime, timedelta
-from django.contrib.humanize.templatetags import humanize
 from django.core.urlresolvers import reverse
-
+import timeish
 register = template.Library()
 
 
@@ -23,7 +22,7 @@ def issue_icon(issue, autoescape=None):
         'bug': '<i class="fa fa-bug fa-fw"></i>',
         'task': '<i class="fa fa-tasks fa-fw"></i>',
         'enhancement':'<i class="fa fa-fire fa-fw"></i>',
-        'maintenance':'<i class="fa fa-heartbeat fa-fw"></i>',
+        'maintenance':'<i class="fa fa-wrench fa-fw"></i>',
     }
     icon = ICONS.get(issue.kind, '')
     print icon
@@ -73,10 +72,15 @@ def msg_compose(msg, autoescape=None):
 
 @register.filter(name="alarm", needs_autoescape=True)
 def alarm(d, autoescape=None):
+    tmpl = u"""<div title='Due {3}' class="due-date-cell">
+    <span><i class='fa fa-{2} fa-3 fa-fw {0}'></i></span>
+    <span>{1}</span>
+    </div>
+    """
     if d:
         urgent = (d <= datetime.today().date() and 'Critical') or d <= (datetime.today() + timedelta(days=7)).date() and 'High' or "" 
-        return mark_safe("<span class='{0}' title='Due {1}'><i class='fa fa-{2} fa-3 fa-fw'></i></span>".format(urgent, humanize.naturalday(d), 
-                                                                                                   urgent and (urgent == 'Critical' and 'exclamation-circle' or 'warning') or 'clock-o' ))
+        return mark_safe(tmpl.format(urgent, timeish.ago(d) if urgent == 'Critical' else timeish.remaining(d), 
+                                     urgent and (urgent == 'Critical' and 'exclamation-circle' or 'warning') or 'clock-o', d))
     else:
         return ""
 
@@ -89,6 +93,7 @@ def kind_stat(issues, kind):
 @register.filter(name="subtract")
 def subtract(a, b):
     return a - b
+
 
 
 def _get_link(num):

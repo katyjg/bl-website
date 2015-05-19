@@ -2539,3 +2539,18 @@ a:hover {
 .section-title .collapsing {
  	.collapsing { transition: height 0.3s; }
 }
+.due-date-cell {
+	display: flex;
+	align-items: center;
+  	justify-content: center;
+}
+.due-date-cell .fa {
+	opacity: 0.75;
+}
+td.text-middle {
+	vertical-align: middle;
+}
+.issue-sidebar .progress {
+	margin-bottom: 0 !important;
+	background-color: #ddd;
+}

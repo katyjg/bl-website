@@ -116,7 +116,7 @@ class ProjectDetail(FilteredListView):
     paginate_by = 15
     detail_url = 'issue-detail'
     list_filter = ['kind', 'priority', 'created']
-    list_display = ['id', 'describe', 'status', 'last_updated']
+    list_display = ['id', 'describe', 'status', 'last_updated', 'due_date']
     list_transforms = {
         'due_date': tasklist_tags.alarm, 
         'modified': timeish.ago,
@@ -125,7 +125,7 @@ class ProjectDetail(FilteredListView):
     }
     list_styles = {
         'describe': 'col-xs-5', 
-        'due_date': 'text-center', 
+        'due_date': 'text-center text-middle', 
         'project':  'hidden-xs'
     }
     search_fields = ['title', 'description', 'comments__description']
@@ -185,7 +185,7 @@ class IssueList(FilteredListView):
     tools_template = 'tasklist/list_tools.html'
     paginate_by = 15
     detail_url = 'issue-detail'
-    list_filter = ['kind', 'priority', 'created']
+    list_filter = ['kind', 'priority', 'status', 'created']
     list_title = 'All Issues'
     list_display = ['project', 'id', 'describe', 'status', 'last_updated', 'due_date']
     list_transforms = {
@@ -196,7 +196,7 @@ class IssueList(FilteredListView):
     }
     list_styles = {
         'describe': 'col-xs-5', 
-        'due_date': 'text-center', 
+        'due_date': 'text-center text-middle', 
         'project':  'hidden-xs'
     }
     search_fields = ['title', 'description', 'comments__description']
