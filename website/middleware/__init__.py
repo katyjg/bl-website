@@ -11,7 +11,7 @@ def get_client_address(request):
     print "PROXY", request.META.get('HTTP_X_FORWARDED_FOR','')
     print "REMOTE_ADDR", request.META.get('REMOTE_ADDR')
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR','').split(',')
-    if len(x_forwarded_for) > CLIENT_ADDRESS_INDEX:
+    if len(x_forwarded_for) >= CLIENT_ADDRESS_INDEX:
         ip = x_forwarded_for[-CLIENT_ADDRESS_INDEX]
     else:
         ip = request.META.get('REMOTE_ADDR')
