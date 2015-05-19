@@ -90,6 +90,10 @@ def kind_stat(issues, kind):
         return "%i" % (100 * (issues.filter(kind__exact=kind).count() / float(issues.exclude(kind__exact='maintenance').count())))
     return 0
 
+@register.filter(name="inverse_percent_of")
+def inverse_percent_of(a, b):
+    return b and "%i" % (100*(b-a)/float(b)) or 0
+
 
 
 def _get_link(num):
