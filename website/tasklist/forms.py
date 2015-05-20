@@ -161,7 +161,7 @@ class CommentForm(forms.ModelForm):
             if cur_val != new_val and new_val:
                 if k == 'priority':
                     val = models.Issue.PRIORITY[int(new_val)]
-                if k == 'status':
+                elif k == 'status':
                     val = models.Issue.STATES[new_val]
                 elif k == 'related':
                     val = ", ".join(["<a href='{0}'>&nbsp;{1}&nbsp;</a>".format(reverse_lazy('issue-detail', kwargs={'pk':pk}),pk) for pk in new_val])

@@ -39,7 +39,6 @@ def timefrom(value, reverse=False, over=""):
     # Convert datetime.date to datetime.datetime for comparison.
     if not isinstance(value, datetime):
         value = datetime.combine(value, datetime.min.time())
-    print now, value
     delta = (value - now) if reverse else (now - value)
     prefix = 'in' if reverse else ''
     suffix = 'ago' if not reverse else '' 

@@ -25,7 +25,6 @@ def issue_icon(issue, autoescape=None):
         'maintenance':'<i class="fa fa-wrench fa-fw"></i>',
     }
     icon = ICONS.get(issue.kind, '')
-    print icon
     return mark_safe(icon)
 
 @register.filter(name="state_icon", needs_autoescape=True)
