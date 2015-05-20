@@ -128,7 +128,7 @@ class Issue(TimeStampedModel):
     related = models.ManyToManyField('Issue', null=True, blank=True, verbose_name="Related to")
     objects = IssueManager()
     class Meta:
-        ordering = ['priority', 'created']
+        ordering = ['priority', 'modified']
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
     
