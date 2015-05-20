@@ -85,6 +85,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, "static"),
 )
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'local/media')
 
@@ -118,6 +119,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'suit', 
     'filebrowser',    
+    'grappelli',
     'django.contrib.admin', 
     'feincms',
     'feincms.module.page', 
@@ -151,8 +153,7 @@ INSTALLED_APPS = (
 FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
 FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
-    'TINYMCE_JS_URL': STATIC_URL + 'tinymce/jscripts/tiny_mce/tiny_mce.js',
-
+    'TINYMCE_JS_URL': STATIC_URL + 'grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
 }
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
