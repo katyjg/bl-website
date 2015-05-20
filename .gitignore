@@ -10,5 +10,6 @@ junk/
 /local/media/
 /static/
 website.db
+.settings
 settings_local.py
 VERSION
