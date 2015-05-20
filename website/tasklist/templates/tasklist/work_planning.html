@@ -24,13 +24,16 @@
 	{% endif %}
 	{% for project in projects %}
 		<div class="pagelet-header">
-		<h3><strong>{{ project.name }}</strong><span class="pull-right"><a href='{% url "create-issue" pk=project.pk %}' data-toggle="tooltip" title="Create New Issue" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i> New Issue</a></span></h3>
+		<h3 class="no-margin">
+			<img width="40" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
+			<strong>{{ project.name }}</strong><span class="pull-right"><a href='{% url "create-issue" pk=project.pk %}' data-toggle="tooltip" title="Create New Issue" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i> New Issue</a></span>
+		</h3>
 		</div>
 		<div class="pagelet-body">
 		{% for issue in project.issues.active %}
 			{% include "tasklist/planning_issue.html" %}
 		{% empty %}
-			 <span>No active issues to discuss</span>
+			 <div class="col-xs-12 text-center plan-grid">No open issues to discuss</div>
   	  	{% endfor %}
 		</div>
   	  <div class="spacer"></div>  	  
