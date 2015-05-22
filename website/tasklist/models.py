@@ -20,7 +20,7 @@ def _image_filename(instance, filename):
 
 class Project(TimeStampedModel):
     name = models.CharField(verbose_name=_('Name'), max_length=50)
-    short_description = models.CharField(verbose_name=_('Description'), max_length=255, blank=True)
+    short_description = models.CharField(verbose_name=_('Short Description'), max_length=255, blank=True)
     description = models.TextField(blank=True, null=True)
     is_private = models.BooleanField(verbose_name=_('Private'), default=False)
     icon = models.ImageField(upload_to=_image_filename, blank=True, null=True)
@@ -129,6 +129,7 @@ class Issue(TimeStampedModel):
     objects = IssueManager()
     class Meta:
         ordering = ['priority', 'modified']
+        
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
     
