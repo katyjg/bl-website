@@ -243,6 +243,8 @@ def search_articles(request, wiki_url):
                     result_url = results[0].get_url()[1:]
                 else:
                     result_url = results[0].get_url()
+            else:
+                result_url = None
             #return HttpResponseRedirect(reverse('wiki_view', args=(results[0].get_url(),)))
             return HttpResponseRedirect(reverse('wiki_view', args=(result_url,)))
         else:        

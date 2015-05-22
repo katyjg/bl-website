@@ -199,6 +199,7 @@ class IssueList(FilteredListView):
         'due_date': 'text-center text-middle', 
         'project':  'hidden-xs'
     }
+    
     search_fields = ['title', 'description', 'comments__description']
     ordering_proxies = {'describe': 'title', 'last_updated': 'modified'}
     order_by = ['-created', 'priority']

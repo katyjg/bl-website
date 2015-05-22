@@ -111,6 +111,7 @@ div#header-print {
 }
 #header.wiki{
 	background: #dcdcdc url(/media/uploads/site-images/wiki_header.png) top right repeat-x;
+	height: auto;
 }
 #header.aca{
 	background: #dcdcdc url(/static/img/header_grey.png) top right repeat-x;
