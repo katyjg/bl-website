@@ -166,7 +166,7 @@ class Attachment(TimeStampedModel):
     user = models.ForeignKey(User, related_name='+')
     issue = models.ForeignKey(Issue)
     description = models.CharField(max_length=100, verbose_name="name")
-    file = fields.RestrictedFileField(upload_to=_attachment_filename, max_size=2097152, verbose_name="<i class='fa fa-paperclip'></i>&nbsp;Attach File")
+    file = fields.RestrictedFileField(upload_to=_attachment_filename, max_size=50000000, verbose_name="<i class='fa fa-paperclip'></i>&nbsp;Attach File")
     slug = models.SlugField(max_length=50, blank=True, unique=True)
 
     def save(self, *args, **kwargs):
