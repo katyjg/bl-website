@@ -20,7 +20,7 @@ def _image_filename(instance, filename):
 
 class Project(TimeStampedModel):
     name = models.CharField(verbose_name=_('Name'), max_length=50)
-    short_description = models.CharField(verbose_name=_('Description'), max_length=255, blank=True)
+    short_description = models.CharField(verbose_name=_('Short Description'), max_length=255, blank=True)
     description = models.TextField(blank=True, null=True)
     is_private = models.BooleanField(verbose_name=_('Private'), default=False)
     icon = models.ImageField(upload_to=_image_filename, blank=True, null=True)
@@ -128,7 +128,8 @@ class Issue(TimeStampedModel):
     related = models.ManyToManyField('Issue', null=True, blank=True, verbose_name="Related to")
     objects = IssueManager()
     class Meta:
-        ordering = ['priority', 'created']
+        ordering = ['priority', 'modified']
+        
     def get_absolute_url(self):
         return reverse_lazy('project-detail', kwargs={'pk': self.project.pk})
     
@@ -165,7 +166,7 @@ class Attachment(TimeStampedModel):
     user = models.ForeignKey(User, related_name='+')
     issue = models.ForeignKey(Issue)
     description = models.CharField(max_length=100, verbose_name="name")
-    file = fields.RestrictedFileField(upload_to=_attachment_filename, max_size=2097152, verbose_name="<i class='fa fa-paperclip'></i>&nbsp;Attach File")
+    file = fields.RestrictedFileField(upload_to=_attachment_filename, max_size=50000000, verbose_name="<i class='fa fa-paperclip'></i>&nbsp;Attach File")
     slug = models.SlugField(max_length=50, blank=True, unique=True)
 
     def save(self, *args, **kwargs):
