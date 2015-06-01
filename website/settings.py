@@ -160,6 +160,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 EMAIL_HOST_USER = "clsweb@mail.blweb"
 EMAIL_HOST_PASSWORD = "clsweb123"
 EMAIL_PORT = 587
+EMAIL_HOST = "mail-server"
 
 # The following is only necessary if you have included 'application_form' in the list of INSTALLED_APPS.
 ########################################################################################################
