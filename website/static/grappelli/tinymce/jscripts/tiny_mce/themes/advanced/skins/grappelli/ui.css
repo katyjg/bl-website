@@ -115,7 +115,7 @@ body.rtl .grappelliSkin *, body.rtl .grappelliSkin .text {
 }
 .grappelliSkin table.mceLayout {
     height: auto !important;
-    border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+    border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px;
     background: transparent;
 }
 .predelete .grappelliSkin table.mceLayout {
@@ -174,7 +174,7 @@ body.rtl .grappelliSkin span.mceIcon, body.rtl .grappelliSkin img.mceIcon {
 .grappelliSkin a.mceButtonEnabled {
     border: 1px solid;
     border-color: #d4d4d4 #c4c4c4 #c4c4c4 #d4d4d4;
-    border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+    border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 .grappelliSkin a.mceButtonEnabled:hover {
     background: #e1f0f5;
@@ -186,7 +186,7 @@ body.rtl .grappelliSkin span.mceIcon, body.rtl .grappelliSkin img.mceIcon {
 .grappelliSkin .mceButtonDisabled {
     border: 1px solid;
     border-color: #d4d4d4 #fff #fff #d4d4d4;
-    border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+    border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;
     background: transparent;
 }
 .predelete .grappelliSkin .mceButtonDisabled {
@@ -229,8 +229,8 @@ body.rtl .grappelliSkin .mceButton {
     width: 90px; height: 21px;
     border: 1px solid;
     border-color: #c4c4c4 #d4d4d4 #d4d4d4 #c4c4c4;
-    border-top-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px;
+    border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px;
     background: #fafafa;
     color: #666 !important; font-size: 11px !important; line-height: 20px;
     overflow: hidden;
@@ -242,8 +242,8 @@ body.rtl .grappelliSkin .mceButton {
     border: 1px solid;
     border-color: #c4c4c4;
     border-left: none;
-    border-top-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px;
+    border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px;
     background: #ddd url('img/menu/icon-mceOpen.png');
 }
 .grappelliSkin table.mceListBoxEnabled:hover .mceText, 
@@ -288,9 +288,9 @@ body.rtl .grappelliSkin .mceButton {
     padding: 0;
     min-width: 109px !important;
     border: 1px solid #c4c4c4;
-    border-top-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px;
-    border-bottom-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px;
+    border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px;
     box-shadow: 0 5px 10px #999; -moz-box-shadow: 0 5px 10px #999; -webkit-box-shadow: 0 5px 10px #999;
 }
 .grappelliSkin .mceMenu table {
@@ -302,7 +302,7 @@ body.rtl .grappelliSkin .mceButton {
 }
 
 .grappelliSkin .mceMenu.mceDropDown {
-    border-radius: 5px !important; -moz-border-radius: 5px !important; -webkit-border-radius: 5px !important;
+    border-radius: 3px !important; -moz-border-radius: 3px !important; -webkit-border-radius: 3px !important;
     border: 2px solid #eee;
 }
 .grappelliSkin .mceMenu.mceDropDown table {
@@ -409,7 +409,7 @@ body.rtl .grappelliSkin .mceButton {
     position: relative;
     border: 1px solid #d4d4d4;
     box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
-    border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+    border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;
     background: #d6ebf2 url('img/icons/icon-mceResize.png') 50% 100% no-repeat;
     cursor: s-resize;
 }
@@ -475,6 +475,7 @@ body.rtl .grappelliSkin .mceButton {
 .grappelliSkin .mceToolbar span {
     /*width: 100%; */height: 100%;
     background-position: 0 0;
+    display: block;
     background-repeat: no-repeat;
 }
 
@@ -529,4 +530,15 @@ body.rtl .grappelliSkin .mceButton {
 
 .grappelliSkin span.mce_pagebreak { background-image: url('img/customized/button_pagebreak.png'); }
 
+.grappelliSkin span.mce_sub { background-image: url('/static/img/buttons/subscript.png'); }
+.grappelliSkin span.mce_sup { background-image: url('/static/img/buttons/superscript.png'); }
+.grappelliSkin span.mce_anchor { background-image: url('/static/img/buttons/anchor.png'); }
+.grappelliSkin span.mce_indent { background-image: url('/static/img/buttons/indent.png'); }
 
+#content .panel {
+	pointer-events: none;
+}
+#content .panel div {
+	pointer-events: auto;
+	padding: 2px;
+}

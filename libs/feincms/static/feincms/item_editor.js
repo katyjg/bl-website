@@ -389,8 +389,9 @@
             option_wrapper.append('<div class="navi_tab" id="'+ id_base +'_tab">' +
                                    option_title +
                                    '</div>');
-            var panel = $('<fieldset class="module aligned" style="clear: both; display: none" id="' + id_base + '_body"></fieldset>');
-            panel.html(c);
+            //CLS-MF: var panel = $('<fieldset class="module aligned" style="clear: both; display: none" id="' + id_base + '_body"></fieldset>');
+            var panel = $('<fieldset class="module aligned" style="display: none" id="' + id_base + '_body"></fieldset>');
+           panel.html(c);
             panels.push(panel);
         });
 
