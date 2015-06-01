@@ -110,7 +110,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_HTTPONLY = True
+#CSRF_COOKIE_HTTPONLY = True
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, 'templates')
@@ -119,7 +119,6 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'suit', 
     'filebrowser',    
-    'grappelli',
     'django.contrib.admin', 
     'feincms',
     'feincms.module.page', 
@@ -155,6 +154,7 @@ FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
     'TINYMCE_JS_URL': STATIC_URL + 'grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
 }
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 EMAIL_HOST_USER = "clsweb@mail.blweb"
