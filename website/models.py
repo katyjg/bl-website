@@ -49,9 +49,9 @@ Page.register_templates({
         ('welcome', 'Content Slider'),
     	('announce', 'Announcements'),
         ('sidebar', 'Sidebar'),
-        ('col1', 'Bottom Col. 1', 'inherited'),
-        ('col2', 'Bottom Col. 2', 'inherited'),
-        ('col3', 'Bottom Col. 3', 'inherited'),
+        ('col1', 'Bottom Middle', 'inherited'),
+        ('col2', 'Bottom Left', 'inherited'),
+        ('col3', 'Bottom Right', 'inherited'),
         ),
     })
 
@@ -99,8 +99,8 @@ Page.register_templates({
     'title': 'WP 2-Col. 7/5',
     'path': 'wp-7_5.html',
     'regions': (
-	('col1', 'Main'),
-	('col2', 'Sidebar', 'inherited'),
+	('col1', 'Main (Left)'),
+	('col2', 'Sidebar (Right)', 'inherited'),
 	)
     })
 
@@ -109,8 +109,8 @@ Page.register_templates({
     'title': 'WP 2-Col. 5/7',
     'path': 'wp-5_7.html',
     'regions': (
-	('col1', 'Main'),
-	('col2', 'Sidebar', 'inherited'),
+	('col1', 'Sidebar (Left)'),
+	('col2', 'Main (Right)', 'inherited'),
 	)
     })
 
@@ -119,8 +119,8 @@ Page.register_templates({
     'title': 'WP 2-Col. 8/4',
     'path': 'wp-8_4.html',
     'regions': (
-	('col1', 'Main'),
-	('col2', 'Sidebar', 'inherited'),
+	('col1', 'Main (Left)'),
+	('col2', 'Sidebar (Right)', 'inherited'),
 	)
     })
 
@@ -139,8 +139,8 @@ Page.register_templates({
     'title': 'WP 2-Col. 9/3',
     'path': 'wp-9_3.html',
     'regions': (
-        ('col1', 'Main Column'),
-        ('col2', 'Left Column', 'inherited'),
+        ('col1', 'Main (Left)'),
+        ('col2', 'Sidebar (Right)', 'inherited'),
         ),
     })
 
@@ -149,8 +149,8 @@ Page.register_templates({
     'title': 'WP 2-Col. 10/2',
     'path': 'wp-10_2.html',
     'regions': (
-        ('col1', 'Main Column'),
-        ('col2', 'Right Column', 'inherited'),
+        ('col1', 'Main (Left)'),
+        ('col2', 'Sidebar (Right)', 'inherited'),
         ),
     })
 
@@ -168,7 +168,7 @@ Page.register_templates({
     'path': 'wp-2_8.html',
     'regions': (
         ('col1', 'Left Column', 'inherited'),
-        ('col2', 'Main Column'),
+        ('col2', 'Main Column (Right)'),
         ),
     })
 
@@ -178,7 +178,7 @@ Page.register_templates({
     'path': 'wp-2_7_3.html',
     'regions': (
         ('col1', 'Left Column', 'inherited'),
-        ('col2', 'Main Column'),
+        ('col2', 'Main Column (Center)'),
         ('col3', 'Right Column', 'inherited'),
         ),
     })
