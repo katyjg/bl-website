@@ -8,8 +8,10 @@ window.onscroll = function()
 			$("#wiki_panel").css("padding-left", "15px");
 			$("#wiki_panel").addClass('col-sm-3 col-xs-4');
 		} else {
-			document.getElementById('wiki_panel').style.position = 'absolute'; 
+			document.getElementById('wiki_panel').style.position = 'relative'; 
+			document.getElementById('wiki_panel').style.right = 'auto';
 			document.getElementById('wiki_panel').style.top = 'auto';
+			$("#wiki_panel").css("padding-left", "0px");
 			$("#wiki_panel").removeClass('col-sm-3 col-xs-4');
 		}
 	}

@@ -60,6 +60,7 @@ div#wiki_article .toc a
 #as_wiki_related_input {
 	z-index:1000;
 	width: 100%;
+	position: fixed;
 }
 div#wiki_article p
 {
