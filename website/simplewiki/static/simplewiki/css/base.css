@@ -51,7 +51,7 @@ div#wiki_article .toc a
 	white-space: wrap;
 	word-wrap: break-word;
 }
-#attach-form button, #related-form button {
+#attach-form button, #related-form button, #create-form button {
 	background-color: #f6f6f6;
 }
 #header {

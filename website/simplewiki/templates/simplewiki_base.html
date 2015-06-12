@@ -220,7 +220,13 @@
 			      <div class="input-group">  
 	                <input class="form-control" type="text" placeholder="Title of new article" name="wiki_article_name" id="id_wiki_article_name"/>
 	            	<input class="form-control" type="hidden" name="wiki_article_is_child" id="id_wiki_artcile_is_child" disabled="true" checked={%if wiki_article%}"yes"{%else%}"no"{%endif%}>
-	            	<span class="input-group-btn"><a class="btn" title="{% trans 'Create new article' %}" href="javascript:{}" onclick="document.getElementById('create-form').submit();"><i class="fa fa-plus fa-2"></i></a></span>
+                    	<span class="input-group-btn">
+                    	  <a>
+                    		<button value="{% trans 'Next' %}" type="submit" class="btn" title="{% trans 'Create new article' %}">
+                    		  <i class="fa fa-plus fa-2"></i>
+                    		</button>
+                    	  </a>
+                        </span>	            	
 	            	<!-- a class="btn btn-sm btn-white" onclick="javascript:location.href='{% url 'wiki_random' wiki_article.get_url|stripslash %}'" title="{% trans "Random article" %}"><i class="fa fa-random fa-1"></i></a-->
 	              </div>
     		        </form>
