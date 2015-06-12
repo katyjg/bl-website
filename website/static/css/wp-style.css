@@ -127,12 +127,16 @@ div#header-print {
 }
 
 #header .logo {
+	display: block;
 	width: 872px;
 	margin: 0 auto;
-	clear: right;
-	float: right;
+	float: left;
 	background: url(/media/uploads/site-images/logo.png) top left no-repeat;
     height: 88px;    
+    margin-right: -800px;
+}
+#header ul {
+	clear: right;
 }
 #header .aca-logo {
 	width: 960px;

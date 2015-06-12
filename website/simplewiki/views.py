@@ -255,7 +255,6 @@ def search_articles(request, wiki_url):
     return view(request, wiki_url)
 
 def search_add_related(request, wiki_url):
-
     (article, path, err) = fetch_from_url(request, wiki_url)
     if err:
         return err
@@ -268,7 +267,7 @@ def search_add_related(request, wiki_url):
     self_pk = request.GET.get('self', None)
     if search_string:
         results = []
-        related = Article.objects.filter(title__istartswith = search_string)
+        related = Article.objects.filter(title__icontains = search_string)
         others = article.related.all()
         if self_pk:
             related = related.exclude(pk=self_pk)

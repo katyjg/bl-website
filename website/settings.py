@@ -113,7 +113,7 @@ X_FRAME_OPTIONS = 'DENY'
 #CSRF_COOKIE_HTTPONLY = True
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, 'templates')
+    os.path.join(PROJECT_DIR, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -188,6 +188,7 @@ except ImportError:
     pass
 
 FILEBROWSER_SUIT_TEMPLATE = True
+
 SUIT_CONFIG = {
     'ADMIN_NAME': '%s Public Website' % SITE_NAME_SHORT,
     'CONFIRM_UNSAVED_CHANGES': False,

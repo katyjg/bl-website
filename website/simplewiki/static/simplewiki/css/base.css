@@ -29,7 +29,38 @@ div#wiki_article .toc a
 {
 	color: #025
 }
-
+.btn {
+	box-shadow: none !important;
+}
+#header h2 {
+	padding-left: 0px;
+	line-height: 38px;
+	margin: 0;
+	font-size: 1.5em;
+	
+}
+.icon-bg i {
+	color: rgba(0,0,0,0.05);
+	font-size: 90px;
+	line-height: 65px;
+	z-index: -1;
+	float: right;
+	margin-left: -90px;
+}
+.toggle_container li a {
+	white-space: wrap;
+	word-wrap: break-word;
+}
+#attach-form button, #related-form button {
+	background-color: #f6f6f6;
+}
+#header {
+	min-width: 0;
+}
+#as_wiki_related_input {
+	z-index:1000;
+	width: 100%;
+}
 div#wiki_article p
 {
 	/* font-size: 90%; looks funny when combined with lists/tables */
