@@ -7,7 +7,7 @@ SITE_NAME_SHORT = 'CMCF'
 BEAMLINE_ACRONYM = 'CMCF'
 
 #USO_API = "http://uso-test.clsi.ca/api/v1/"
-USO_API = "http://10.37.2.1/api/v1/"
+USO_API = "http://uso.clsi.ca/api/v1/"
 
 import os
 import sys

@@ -9,12 +9,15 @@ CLIENT_ADDRESS_INDEX = getattr(settings, 'INTERNAL_PROXIES', 1)
 
 def get_client_address(request):
     x_forwarded_for = [v for v in request.META.get('HTTP_X_FORWARDED_FOR','').split(',') if v.strip()]
-    if len(x_forwarded_for) >= CLIENT_ADDRESS_INDEX:
+    if len(x_forwarded_for) >= CLIENT_ADDRESS_INDEX and CLIENT_ADDRESS_INDEX > 0:
         ip = x_forwarded_for[-CLIENT_ADDRESS_INDEX]
     else:
         ip = request.META.get('REMOTE_ADDR')
     print "REAL REMOTE IP:", ip
-    return ip
+    if re.match('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$', ip):
+        return ip
+    else:
+        return '254.254.254.254'
 
 
 class InternalAccessMiddleware(object):
