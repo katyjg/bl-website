@@ -99,7 +99,7 @@ class SupportPerson(models.Model):
         unique_together = (
             ("first_name", "last_name", "email"),
             )
-        ordering = ('display_order', )
+        #ordering = ('display_order', )
         verbose_name_plural = "Personnel"
 
 class VisitManager(models.Manager):
