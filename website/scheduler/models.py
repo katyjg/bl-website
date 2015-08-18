@@ -75,6 +75,7 @@ class SupportPerson(models.Model):
         (0, u'Beamline Staff'),
         (1, u'Students and Postdocs'),
         (2, u'CLS Technical Support'),
+        (3, u'User Support'),
     )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
