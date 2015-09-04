@@ -2,6 +2,7 @@
 {% load cache %}
 {% load get_version %}
 
+<div class="publications-content">
 <span class="pull-left">
 	<h4>{{ 'SITE_NAME_SHORT'|get_from_settings }} {{ category }} Entries</h4>
 </span>
@@ -33,7 +34,7 @@
    	{% endfor %}
    	</ul>
 {% endfor %}
-
+</div>
 <script>
 $(document).ready(function() {
 	$('.load-link').click(function() {
@@ -41,7 +42,7 @@ $(document).ready(function() {
 			url: $(this).attr('rel'),
 			context: document.body,
 			success: function(d) {
-				$("#bodyContent").html(d);
+				$(".publications-content").html(d);
 			}
 		});
 	});
