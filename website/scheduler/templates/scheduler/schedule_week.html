@@ -21,27 +21,27 @@
     <div>
     {% if admin %}
         <a class="prev" href='{% url "admin-anyweek" day=prev_week %}' title="Previous Week">
-            <img src="/media/img/prev.png" alt="Prev">
+            <img src="/static/img/prev.png" alt="Prev">
         </a>
         <a class="current" href='{% url "admin-thisweek" %}'>Back to Current Week</a>
         <a class="next" href='{% url "admin-anyweek" day=next_week %}' title="Next Week">
-            <img src="/media/img/next.png" alt="Next">
+            <img src="/static/img/next.png" alt="Next">
         </a>
     {% else %}{% if not staff %}
         <a class="prev" href='{% app_reverse "scheduler-anyweek" "scheduler.urls" day=prev_week %}' title="Previous Week">
-            <img src="/media/img/prev.png" alt="Prev">
+            <img src="/static/img/prev.png" alt="Prev">
         </a>
         <a class="current" href='{% app_reverse "scheduler-thisweek" "scheduler.urls" %}'>Back to Current Week</a>
         <a class="next" href='{% app_reverse "scheduler-anyweek" "scheduler.urls" day=next_week %}' title="Next Week">
-            <img src="/media/img/next.png" alt="Next">
+            <img src="/static/img/next.png" alt="Next">
         </a>
     {% else %}
         <a class="prev" href='{% url "staff-anyweek" day=prev_week %}' title="Previous Week">
-            <img src="/media/img/prev.png" alt="Prev">
+            <img src="/static/img/prev.png" alt="Prev">
         </a>
         <a class="current" href='{% url "staff-thisweek" %}'>Back to Current Week</a>
         <a class="next" href='{% url "staff-anyweek" day=next_week %}' title="Next Week">
-            <img src="/media/img/next.png" alt="Next">
+            <img src="/static/img/next.png" alt="Next">
         </a>
     {% endif %}{% endif %}
     </div>

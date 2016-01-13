@@ -1,4 +1,4 @@
-from django.conf.urls import *
+from django.conf.urls import url, patterns
 from scheduler.views import current_week
 
 urlpatterns = patterns('',

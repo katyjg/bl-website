@@ -1,0 +1,67 @@
+{% extends "tasklist/base.html" %}
+{% load static %}
+{% block full %}
+{% load markup %}
+{% load tasklist_tags %}
+
+<div class="row section-title project-detail">
+	<div class="col-xs-12" style="padding-top: 1em; padding-bottom: 1em;" data-toggle="collapse" aria-expanded="false" data-target="#title-description">
+		<h5 class="no-margin"><strong>{{project.name}}</strong>:&nbsp; {{project.short_description}}<span class="expand-icon pull-right text-muted"></span></h5>
+		<div class='collapse' style="font-size: 90%; padding-top: 0.5em;" id="title-description">
+			{{project.description|markdown}}
+		</div>
+	</div>
+</div>
+<div class="row" style="padding-top: 2em; ">
+	<div class="hidden-xs col-sm-2 issue-sidebar">
+	<div class="text-center">
+	<img width="60" height="60" src="{% if project.icon %}{{project.icon.url}}{% else %}{% static 'tasklist/img/project.png' %}{% endif %}">
+	</div>
+	<hr/>
+   	<table class="table">
+   	{% with project.issues as issues %}
+	<tr><td width="25%" title="Bugs"><i class="fa fa-bug fa-fw"></i></td><td><div title="{{issues|kind_stat:'bug'}}% of issues are bug reports" class="progress">
+		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'bug'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'bug'}}%">
+		     {{issues.bugs.count}}
+		  </div>
+	</div> </td></tr>
+	<tr><td title="Tasks"><i class="fa fa-tasks fa-fw"></i></td><td><div title="{{issues|kind_stat:'task'}}% of issues are tasks" class="progress">
+		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'task'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'task'}}%">
+		     {{issues.tasks.count}}
+		  </div>
+	</div> </td></tr>
+	<tr><td title="Enhancements"><i class="fa fa-fire fa-fw"></i></td><td><div title="{{issues|kind_stat:'enhancement'}}% of issues are feature requests" class="progress">
+		  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{issues|kind_stat:'enhancement'}}" aria-valuemin="0" aria-valuemax="100" style="width: {{issues|kind_stat:'enhancement'}}%">
+		  {{issues.enhancement.count}}
+		  </div>
+	</div></td></tr>
+	
+	<tr><td title="Open Issues"><a href="{% url 'project-detail' pk=project.pk %}"><i class="fa fa-cogs fa-fw"></i></a></td><td><div title="{% widthratio issues.active.count issues.active.count|add:issues.closed.count 100 %}% are still open" class="progress">
+		  <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{% widthratio issues.active.count issues.active.count|add:issues.closed.count 100 %}" aria-valuemin="0" aria-valuemax="100" style="width: {% widthratio issues.active.count issues.active.count|add:issues.closed.count 100 %}%">
+		  {{issues.active.count}}
+		  </div>
+	</div></td></tr>
+	<tr><td title="Closed Issues"><a href="{% url 'project-closed' pk=project.pk %}"><i class="fa fa-check fa-fw"></i></a></td><td><div title="{% widthratio issues.closed.count issues.active.count|add:issues.closed.count 100 %}% of issues have been closed" class="progress">
+		  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{% widthratio issues.closed.count issues.active.count|add:issues.closed.count 100 %}" aria-valuemin="0" aria-valuemax="100" style="width: {% widthratio issues.closed.count issues.active.count|add:issues.closed.count 100 %}%">
+		  {{issues.closed.count}}
+		  </div>
+	</div></td></tr>
+	<tr><td title="Maintenance Items"><a href="{% url 'maintenance-issues' %}"><i class="fa fa-wrench fa-fw"></i></a></td><td><div title="{% widthratio issues.maintenance.count|subtract:issues.maintenance.overdue.count issues.maintenance.count 100 %}% of maintenance items have been completed" class="progress">
+		  <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{% widthratio issues.maintenance.count|subtract:issues.maintenance.overdue.count issues.maintenance.count 100 %}" aria-valuemin="0" aria-valuemax="100" style="width: {% widthratio issues.maintenance.count|subtract:issues.maintenance.overdue.count issues.maintenance.count 100 %}%">
+		  {{ issues.maintenance.count|subtract:issues.maintenance.overdue.count }}
+		  </div>
+	</div></td></tr>	
+	</table>
+	{% endwith %}
+	</div>	
+	<div class="col-xs-12 col-sm-10">
+		{% include "objlist/object_list.html" %}
+	</div>
+</div>
+{% endblock %}
+
+
+
+
+
+

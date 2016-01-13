@@ -1,0 +1,98 @@
+{% extends 'tasklist/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load timeish %}
+{% load markup %}
+{% load tasklist_tags %}
+
+{% block extra_css %}
+	<link rel="stylesheet" href="{% static 'tasklist/css/chosen.css' %}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{% static 'tasklist/bootstrap/css/datepicker3.css' %}" type="text/css" media="screen" />
+{% endblock %}
+{% block extra_js %}
+	<script src="{% static 'tasklist/jquery/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'tasklist/bootstrap/js/bootstrap-datepicker.js' %}"></script>
+	<script type="text/javascript">	
+	$(document).ready(function(){
+		$(".chosen").chosen({
+			placeholder_text_single: "Select an option",
+			search_contains: true,
+			allow_single_deselect: true
+		});
+		$(".chosen-value").chosen({
+			placeholder_text_single: "Select an option",
+			search_contains: true,
+			show_value_as_label: true,
+			allow_single_deselect: true
+		});
+		$('.datepicker').datepicker({
+		    format: 'yyyy-mm-dd',
+		})
+		$("#issue-attatchments").load("{% url 'add-issue-attachment' pk=issue.pk %}");
+	});
+	</script>
+{% endblock %}
+{% block full %}
+<div class="row section-title">
+	<div class="col-xs-12" style="padding-top: 1.5em; padding-bottom: 1.5em;">
+		<h4 class="no-margin">Issue <strong>{{issue.id}}</strong>: {{issue}} <span class="pull-right text-muted">{{issue|issue_icon}}&nbsp;</span></h4>
+	</div>
+</div>
+<div class="row" style="padding-top: 1em;">
+	<div class="col-xs-12 col-sm-3">
+	{% if issue %}
+	<ul class="list-unstyled issue-summary">
+	  <li><strong>Project:&ensp;</strong><a href="{% url 'project-detail' pk=issue.project.pk %}">{{issue.project}}</a></li>
+	  <li><strong>Created:&ensp;</strong>{{issue.created|ago}} by {{issue.submitter.get_full_name}}</li>
+	  <li><strong>Updated:&ensp;</strong>{{issue.last_updated|ago}}</li>
+	  {% if issue.owner %}
+	  	  <li><strong>Assigned to: </strong>{{issue.owner}}</li>
+	  {% endif %}
+	  {% if issue.due_date %}
+	  	  <li><strong>Due:&ensp;</strong>{{issue.due_date|remaining}}</li>
+	  {% endif %}
+	  <li>
+	  	<span class="label label-job">{{issue.get_status_display}}</span>
+	  	<span class="label label-info">{{issue.get_kind_display}}</span>
+	  	<span class="label label-role">Priority: {{issue.get_priority_display}}</span>
+	  </li>
+
+	  {% for ri in issue.related.all %}
+	  {% if forloop.first %}<li><strong>Related Issues:&emsp;</strong>{% endif %}
+	  	<a href="{% url 'issue-detail' pk=ri.pk %}">{{ri.pk}}</a>
+	  	{% if not forloop.last %},{% else %}
+	  	</li>
+	  	{% endif %}	  	
+	  {% endfor %}
+	<li><strong>Attachments</i></strong><i class="fa fa-angle-down fa-fw"></i></li>
+	<li id="issue-attatchments">
+	No Attachments		
+	</li>
+	</ul>
+	{% endif %}
+	</div>
+	<div class="col-xs-12 col-sm-9">
+		<div class="pagelet">
+			<div class="pagelet-body" id="sample-form" style="padding-top: 2px !important;">
+				<ul class="list-unstyled issue-comments">
+					<li>
+					<div class="row">
+						<div class="col-xs-12 comment-header"><strong>Reported by {{issue.submitter.get_full_name}}</strong> <span class="text-muted">on {{issue.created}}</span></div>
+						<div class="col-xs-12 comment-body" >{{issue.description|link_issues|markdown}}</div>
+					</div>
+					</li> 
+				{% for comment in issue.comments.all %}
+					{% include "tasklist/issue_comment.html" %}
+				{% endfor %}
+				</ul>
+			</div>
+			{% if user.is_authenticated %}
+			<div class="pagelet-body" id="sample-form">
+				{% crispy form form.helper %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+

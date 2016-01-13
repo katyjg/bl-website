@@ -9,6 +9,9 @@ from scheduler.views import staff_login_required
 from application_form.forms import ApplicationForm, RegistrationForm
 from application_form.models import Application, Registration
 
+from django.views.decorators.csrf import csrf_protect
+
+@csrf_protect
 def application_form(request, form_class=ApplicationForm, model=Application,
                  template_name='application_form/application_form.html',
                  template_retry='application_form/application_form_retry.html',

@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /psfam/
+Disallow: /school/application-form/
+Disallow: /contact-us/feedback/

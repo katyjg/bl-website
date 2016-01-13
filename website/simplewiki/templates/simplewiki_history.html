@@ -42,10 +42,10 @@
             <tr>
                 <td colspan="4">
                     {% if wiki_prev_page %}
-                        <a href="{% url wiki_history wiki_article.get_url wiki_prev_page %}">{% trans "Previous page" %}</a>
+                        <a href="{% url 'wiki_history' wiki_article.get_url wiki_prev_page %}">{% trans "Previous page" %}</a>
                     {% endif %}
                     {% if wiki_next_page %}
-                        <a href="{% url wiki_history wiki_article.get_url wiki_next_page %}">{% trans "Next page" %}</a>
+                        <a href="{% url 'wiki_history' wiki_article.get_url wiki_next_page %}">{% trans "Next page" %}</a>
                     {% endif %}
                 </td>
             </tr>

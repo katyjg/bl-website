@@ -1,0 +1,8 @@
+{% load markup %}
+{% load tasklist_tags %}
+<li>
+<div class="row">
+	<div class="col-xs-12 comment-header"><strong>{{comment.author.get_full_name}}</strong> <span class="text-muted">commented on {{comment.created}}</span></div>
+	<div class="col-xs-12 comment-body">{{comment.description|link_issues|markdown}}</div>
+</div>
+</li>

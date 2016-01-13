@@ -6,9 +6,10 @@
 *.cache
 uploads/
 attachments/
-migrations/
 junk/
-cmcf.db
-.svn/
+/local/media/
+/static/
+website.db
+.settings
 settings_local.py
-cmcf/VERSION
+VERSION

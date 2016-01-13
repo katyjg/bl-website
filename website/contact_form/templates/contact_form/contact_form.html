@@ -1,6 +1,7 @@
 <h2><span>Leave a Comment</span></h2>
 <div class="comment">
 <form action="" method='POST'>
+{% csrf_token %}
 {{form}}
 <p><input type='submit' value='Send'></p>
 </form>

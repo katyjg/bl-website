@@ -1,0 +1,21 @@
+{% if filters  %}
+<form class="col-xs-12 col-sm-4 pull-left" role="search" method="get">
+<div class="input-group input-group-sm">
+      <input name="q" type="text" class="form-control" placeholder="Search {{objects_title}}" value="{{view.query|default:''}}">
+      <span class="input-group-btn input-group-sm">
+        <button class="btn btn-default" type="submit"><i class="fa fa-search fa-fw"></i></button>
+      </span>
+</div>
+</form>
+<ul class="filters nav nav-pills pull-left">
+    {% for title, spec, selected in filters %}<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="filter-name">{{ title|capfirst }}</span><span class="caret"></span><br/><span class="filter-selected">{{selected|truncatechars:30}}</span></a><ul class="dropdown-menu"> 
+    {% for choice in spec %}
+    <li {% if choice.selected %}class="active"{% endif %}>
+        <a class="filter" href="{{ choice.query_string }}">{{choice.display|escape}}</a>
+    </li>
+    {% endfor %}</ul></li>{% endfor %}
+</ul>
+<span class="pull-right text-primary text-condensed" style="line-height: 2;">
+	{{paginator.count}}&nbsp;{% if total_objects != paginator.count %}of&nbsp;{{total_objects}}&nbsp;{% endif %}item{{total_objects|pluralize}}
+</span>
+{% endif %}

@@ -15,9 +15,7 @@ from django.conf import settings
 from models import *
 from settings import *
 
-from decorators import protectview
 
-@protectview
 def view(request, wiki_url):
     
     (article, path, err) = fetch_from_url(request, wiki_url)
@@ -34,7 +32,6 @@ def view(request, wiki_url):
                                  } ) 
     return render_to_response('simplewiki_view.html', c)
 
-@protectview
 def root_redirect(request):
     """
     Reason for redirecting:
@@ -55,7 +52,6 @@ def root_redirect(request):
     return HttpResponseRedirect(reverse('wiki_view', args=('mainpage/',)))
 
 
-@protectview
 def create(request, wiki_url):
     
     url_path = get_url_path(wiki_url)
@@ -124,7 +120,6 @@ def create(request, wiki_url):
 
     return render_to_response('simplewiki_create.html', c)
 
-@protectview
 def edit(request, wiki_url):
 
     (article, path, err) = fetch_from_url(request, wiki_url)
@@ -166,7 +161,6 @@ def edit(request, wiki_url):
 
     return render_to_response('simplewiki_edit.html', c)
 
-@protectview
 def history(request, wiki_url, page=1):
 
     (article, path, err) = fetch_from_url(request, wiki_url)
@@ -249,6 +243,8 @@ def search_articles(request, wiki_url):
                     result_url = results[0].get_url()[1:]
                 else:
                     result_url = results[0].get_url()
+            else:
+                result_url = None
             #return HttpResponseRedirect(reverse('wiki_view', args=(results[0].get_url(),)))
             return HttpResponseRedirect(reverse('wiki_view', args=(result_url,)))
         else:        
@@ -259,7 +255,6 @@ def search_articles(request, wiki_url):
     return view(request, wiki_url)
 
 def search_add_related(request, wiki_url):
-
     (article, path, err) = fetch_from_url(request, wiki_url)
     if err:
         return err
@@ -272,7 +267,7 @@ def search_add_related(request, wiki_url):
     self_pk = request.GET.get('self', None)
     if search_string:
         results = []
-        related = Article.objects.filter(title__istartswith = search_string)
+        related = Article.objects.filter(title__icontains = search_string)
         others = article.related.all()
         if self_pk:
             related = related.exclude(pk=self_pk)

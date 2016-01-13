@@ -13,7 +13,6 @@ import string
 from django.conf import settings
 
 from scheduler.models import Visit, Stat, OnCall, SupportPerson, Beamline, Proposal
-from decorators import protectview
 
 WARNING = "This is a last-minute change. It will take a few moments to send a notification e-mail to the Users Office and to beamline staff."
 
@@ -30,7 +29,6 @@ def staff_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME)
         return actual_decorator(function)
     return actual_decorator
 
-@protectview
 def staff_calendar(request, day=None, template='scheduler/admin_schedule_week.html'):
     return current_week(request, day, template, staff=True)
 

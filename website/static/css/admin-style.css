@@ -1,0 +1,11 @@
+.grappelliSkin span.mce_sub { background-image: url('/static/img/buttons/subscript.png'); }
+.grappelliSkin span.mce_sup { background-image: url('/static/img/buttons/superscript.png'); }
+.grappelliSkin span.mce_anchor { background-image: url('/static/img/buttons/anchor.png'); }
+.grappelliSkin span.mce_indent { background-image: url('/static/img/buttons/indent.png'); }
+
+#content .panel {
+	pointer-events: none;
+}
+#content .panel div {
+	pointer-events: auto;
+}

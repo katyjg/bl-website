@@ -9,7 +9,7 @@ register = template.Library()
 @register.filter()
 def prepend_media_url(value):
     """Prepend user defined media root to url"""
-    return settings.MEDIA_URL + value
+    return settings.STATIC_URL + value
 
 @register.filter()
 def urlquote(value):
