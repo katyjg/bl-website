@@ -9,7 +9,7 @@ from django.template import loader
 
 class Command(BaseCommand):
     args = '<visit_id>'
-    help = 'Closes the specified poll for voting'
+    help = 'Notifies user of upcoming beamtime'
 
     def handle(self, *args, **options):
         """
