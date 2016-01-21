@@ -1,9 +1,9 @@
-FROM fedora:22
+FROM fedora:21
 MAINTAINER Michel Fodje <michel.fodje@lightsource.ca>
 
-RUN dnf -y update && dnf clean all
-RUN dnf -y install httpd python-django mod_wsgi python-ipaddr python-pillow  python-dateutil python-markdown && dnf clean all
-RUN dnf -y install MySQL-python && dnf clean all
+RUN yum -y update && yum clean all
+RUN yum -y install httpd python-django mod_wsgi python-ipaddr python-pillow  python-dateutil python-markdown && yum clean all
+RUN yum -y install MySQL-python && yum clean all
 
 EXPOSE 80
 
