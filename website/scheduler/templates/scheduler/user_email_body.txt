@@ -1,6 +1,6 @@
 Dear {{proposal.first_name}},
 
-This e-mail is being sent as a reminder of your {% if not visit.mail_in %}upcoming {% endif %}{% ifnotequal type 'Local' %}{{type}} {% endifnotequal %}data collection time at the Canadian Macromolecular Crystallography Facility (CMCF) {% if not visit.mail_in %}{{visit.beamline}} beamline {% endif %}at the Canadian Light Source.  {% if not visit.mail_in %}Your data collection is scheduled to begin on {{start.0}} at {{start.1|slice:":5"}}{% if visit.remote %} local time{% endif %}.  To find the local contact person for your beamtime, visit our online schedule at http://cmcf.lightsource.ca/schedule.{% else %}In order to proceed, please ensure that we receive the following before {{start.0}}:{% endif %}  {% if not visit.mail_in %}Any concerns regarding the scheduling of your shifts can be directed to Shaun Labiuk at shaun.labiuk@lightsource.ca; all other questions can be directed to your local contact.{% endif %}
+This e-mail is being sent as a reminder of your {% if not visit.mail_in %}upcoming {% endif %}{% ifnotequal type 'Local' %}{{type}} {% endifnotequal %}data collection time at the Canadian Macromolecular Crystallography Facility (CMCF) {% if not visit.mail_in %}{{visit.beamline}} beamline {% endif %}at the Canadian Light Source.  {% if not visit.mail_in %}Your data collection is scheduled to begin on {{start.0}} at {{start.1|slice:":5"}}{% if visit.remote %} local time{% endif %}.  To find the local contact person for your beamtime, visit our online schedule at http://cmcf.lightsource.ca/schedule.{% else %}In order to proceed, please ensure that we receive the following before {{start.0}}:{% endif %}  {% if not visit.mail_in %}Any concerns regarding the scheduling of your shifts or training can be directed to Shaun Labiuk at shaun.labiuk@lightsource.ca; all other questions can be directed to your local contact.{% endif %}
 {% ifequal type 'Local' %}
 Before your beamtime, please be sure to complete safety training as per the User Services Office instructions, and review information on our website regarding:
 	- shipping samples,
@@ -18,21 +18,21 @@ In preparation for your beamtime, we ask that you:
     1. Email cmcf-support@lightsource.ca with:
         - the phone number(s) where you can be reached during your beamtime,
         - a list of all personnel that will be operating the beamline remotely.
-    2. Review remote connection and training information: http://cmcf.lightsource.ca/media/uploads/medialibrary/userremoteguide.pdf
-        - if any team members have not been trained, arrange a time to complete a Remote Beamline Specific Orientation as far in advance as possible.
+            - remember that anyone collecting data must complete CMCF remote training.
+    2. Review remote connection and training information:
+        - http://cmcf.lightsource.ca/media/uploads/medialibrary/userremoteguide.pdf
     3. Submit your sample/experiment information through MxLIVE,
     4. Ship your samples to the CLS, along with a properly formatted hard drive having ample free space.{% endif %}{% if visit.mail_in %}
 	1. Your sample/experiment information, submitted through MxLIVE, and
 	2. Your samples, along with a properly formatted hard drive having ample free space.{% endif %}
 
 {% if not visit.mail_in %}Please find on our website information about sample requirements when using the automounter, using MxLIVE for shipment tracking and sample management, hard drive requirements, and shipping:
-{% else %}If it will not be possible to have your samples at the facility before this date, or if you want to inquire about sending a significantly different number of samples than indicated on your Mail-In Beamline Request, please contact Pawel Grochulski at pawel.grochulski@lightsource.ca. Please review the information on the CMCF website concerning the Mail-In program, sample requirements, hard drive requirements, using MxLIVE and shipping samples:
+{% else %}If it will not be possible to have your samples at the facility before this date, or if you want to inquire about sending a significantly different number of samples than indicated on your Mail-In Beamline Request, please contact Shaun Labiuk at shaun.labiuk@lightsource.ca. Please review the information on the CMCF website concerning the Mail-In program, sample requirements, hard drive requirements, using MxLIVE and shipping samples:
 {% endif %}
 {% if visit.mail_in %}	http://cmcf.lightsource.ca/user-guide/remote-control-mail-in/#mail-crystallography
 
 Mail-In data collections are typically completed within about one week, but may occasionally take longer.  Appropriate priorities should be assigned in MxLIVE to experiments that are urgent.  Images and reports can be accessed via MxLIVE as soon as they have been collected, and a report will be sent by e-mail once your Mail-In is complete.
 {% endif %}{% if visit.remote %}	http://cmcf.lightsource.ca/user-guide/
-
 {% endif %}{% endifnotequal %}
 If you have any questions or concerns about your {% ifnotequal type 'Local' %}{{type}} {% endifnotequal %}data collection, please {% if not visit.mail_in %}call or e-mail your local contact{% else %}contact Shaun Labiuk at shaun.labiuk@lightsource.ca or Pawel Grochulski at pawel.grochulski@lightsource.ca{% endif %}.
 
