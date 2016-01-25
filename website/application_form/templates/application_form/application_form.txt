@@ -11,13 +11,13 @@ Email: {{email}}
 Phone: {{phone}}
 Institution: {{institution}}
 
-Mailing Address: 
+Mailing Address: {% autoescape off %}
     {{addr1}}{% if addr2 %}
     {{addr2}}{% endif %}
     {{city}}
     {{state}}
     {{code}}
-    {{country}}
+    {{country}}{% endautoescape %{
 
 Status: {% if undergrad %}Undergraduate Student{% if masters or phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if masters %}Masters Student{% if phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if phd %}PhD Student{% if postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if postdoc %}Postdoctoral Fellow{% if faculty or staff or other %}/{% endif %}{% endif %}{% if faculty %}Faculty{% if staff or other %}/{% endif %}{% endif %}{% if staff %}Research Staff{% if other %}/{% endif %}{% endif %}{% if other %}Other ({{other_text}}){% endif %}
 
@@ -30,7 +30,6 @@ Phone: {{sup_phone}}
 
 TRAVEL INFORMATION:
 
-Request Travel Assistance: {% if travel %}{{travel}}{% else %}Not specified{% endif %}
 Require Visa: {% if visa %}{{visa}}{% else %}Not specified{% endif %}
 
 ACCOMMODATIONS: {% if stay == 'yes' %}Request accommodations on campus.{% else %}{% if stay == 'no' %}Will make own accommodation arrangements.{% else %}Not specified {% endif %}{% endif %}

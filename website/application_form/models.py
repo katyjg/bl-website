@@ -31,7 +31,7 @@ class Application(models.Model):
     other = models.BooleanField(blank=False)
     other_text = models.CharField(_('Other'), max_length=100, blank=False)
 
-    travel = models.BooleanField(_('Requests Travel Assistance'), blank=False)
+    travel = models.BooleanField(_('Requests Travel Assistance'), blank=False, default=False)
     visa = models.BooleanField(_('Requires VISA'), blank=False)
     stay = models.BooleanField(_('Requests Accommodations'), blank=False)
     
