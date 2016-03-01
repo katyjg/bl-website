@@ -43,7 +43,6 @@ class Command(BaseCommand):
                                             'visit': self.visit,
                                             'proposal': self.proposal,
                                             'type': self.type,
-                                            'num_shifts': self.num,
                                             'start': [self.start_date, self.start_time],
                                             'site': [self.url_root, self.site_name],
                                             })
@@ -97,15 +96,7 @@ class Command(BaseCommand):
             self.recipient_list = [mail_tuple[1] for mail_tuple in settings.AUTO_SCHEDULERS]
             self.recipient_list.append(self.proposal.email)
             
-            two_weeks = self.visit.start_date + timedelta(days=14)
-            day = self.visit.start_date
-            self.num = 0
-            while day < two_weeks:
-                for vis in Visit.objects.filter(proposal__exact=self.proposal).filter(start_date__lte=day):
-                    self.num += len([v for v in vis.get_shifts(day) if v is not None])
-                day = day + timedelta(days=1)
-    
-            self.start_date = self.visit.first_shift == 2 and self.visit.start_date + timedelta(days=1) or self.visit.start_date 
+            self.start_date = self.visit.first_shift == 2 and self.visit.start_date + timedelta(days=1) or self.visit.start_date
             self.start_time = self.visit.first_shift == 2 and "00:00" or self.visit.get_first_shift_display()
             
             message_dict = self.get_message_dict()

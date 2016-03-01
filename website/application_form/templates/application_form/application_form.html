@@ -1,8 +1,6 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 {% csrf_token %}
 
-<p>The deadline for submitting your application is April 7, 2015, but early application is encouraged.</p>
-
 <b>Required fields are marked by <span class="req">*</span>.</b>
 
 <h2>Personal Information</h2>
@@ -102,18 +100,13 @@
 <h2>Travel</h2>
 
 <p>
-    <label class="desc" for="travel">Support may be provided to students traveling from a Canadian institution outside of Saskatchewan.  Do you wish to be considered for any potential travel assistance?</label><br>
-	{{ form.travel }}
-</p>
-    
-<p>
     <label class="desc" for="visa">If you are traveling from outside of Canada, would you need to obtain a VISA to attend the course? (If you are not sure, information can be found <a href="http://www.cic.gc.ca/EnGLish/visit/visas.asp" target="_blank">here</a>.)</label><br>
 	{{ form.visa }}
 </p>
 
 <h2>Your Time in Saskatoon</h2>
 
-<p> The organizing committee will be making arrangements for participants to stay on the University of Saskatchewan campus.  Selected participants can expect to pay a registration fee of $650, including accommodations for up to 7 nights.  Participants making their own accommodation arrangements can expect to pay a registration fee of $425.  More details are available <a href="/school/participant-information/" target="_blank">here</a>.
+<p> The organizing committee will be making arrangements for participants to stay on the University of Saskatchewan campus.  Participants choosing to take advantage of these accommodations can expect to pay a higher registration fee, which includes up to 7 nights at Ogle Hall.  More details are available <a href="/school/participant-information/" target="_blank">here</a>.
 </p>
 
 <p>
@@ -122,7 +115,7 @@
 </p>
 
 <p>
-    <label class="desc" for="workshop">If selected, would you be interested in attending an optional, day-long crystallography review on Monday, June 1?</label>  An additional $20 will be added to the registration fee of participants attending the review.</label><br>
+    <label class="desc" for="workshop">If selected, would you be interested in attending an optional, day-long crystallography review the day before the CLS Mx Data Collection School begins?</label>  An additional fee will be added to the registration fee of participants attending the review. More details are available <a href="/school/participant-information/" target="_blank">here</a>.</label><br>
     {{ form.workshop }}
 </p>
 
