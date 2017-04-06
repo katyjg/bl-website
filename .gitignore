@@ -4,6 +4,7 @@
 *~
 *.bak
 *.cache
+.idea*
 uploads/
 attachments/
 junk/
