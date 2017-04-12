@@ -42,11 +42,11 @@ RESEARCH INTERESTS/EXPERIENCE:
 
 Research Abstract:
 
-{{research}}
+{{research|safe}}
 
 Experience/How this course will benefit you:
 
-{{benefit}}
+{{benefit|safe}}
 
 Familiarity with programs/linux:
 

@@ -57,7 +57,7 @@
 	    {{ form.diet }}
 	</p>
 	<p>
-	    <label class="desc" for="mixer">Do you plan to attend the mixer on the evening of May 6?</label><br>
+	    <label class="desc" for="mixer">Do you plan to attend the welcome reception on the first evening of the meeting?</label><br>
 	    {{ form.mixer }}
 	</p>
 
@@ -79,7 +79,7 @@
 	    <label class="desc" for="headline">Presentation Title</label><br>
 	    {{ form.headline }}
 	</p><p>	
-	    <label class="desc" for="authors">Authors</label><br>
+	    <label class="desc" for="authors">Authors (presenting author first)</label><br>
 	    {{ form.authors }}<br>
 	    <label class="subdesc">eg. John Smith [1], Joanne Wilson [2]</label><br>
 	</p><p>
@@ -92,7 +92,8 @@
 	</p>
 
 <h2>Complete Registration</h2>
-	<p>
+	<p>Questions? Contact <a href="javascript:contact_staff('usask.ca','doreen.stumborg');">Doreen Stumborg</a></p>
+    <p>
 		Before completing your registration, please type the characters you see in the box.<br>
 		{{ form.captcha }}
 	</p><p>

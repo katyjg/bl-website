@@ -14,7 +14,7 @@ Mailing Address:
     {{country}}
 Position: {% if undergrad or masters or phd or postdoc or faculty or staff or other %}{% if undergrad %}Undergraduate Student{% if masters or phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if masters %}Masters Student{% if phd or postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if phd %}PhD Student{% if postdoc or faculty or staff or other %}/{% endif %}{% endif %}{% if postdoc %}Postdoctoral Fellow{% if faculty or staff or other %}/{% endif %}{% endif %}{% if faculty %}Faculty{% if staff or other %}/{% endif %}{% endif %}{% if staff %}Research Staff{% if other %}/{% endif %}{% endif %}{% if other %}Other ({{other_text}}){% endif %}{% else %}Not specified{% endif %}
 Dietary Concerns: {% if diet %}{{diet}}{% else %}None{% endif %}
-Planning to attend mixer on Wednesday, May 6: {{ mixer }}
+Planning to attend welcome reception: {{ mixer }}
 
 SUPERVISOR CONTACT INFORMATION:
 
