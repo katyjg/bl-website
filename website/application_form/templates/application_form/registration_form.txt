@@ -32,7 +32,7 @@ Affiliations: {% if affiliations %}{% autoescape off %}{{affiliations}}{% endaut
 Abstract: {% if not abstract %}None Provided{% endif %}
 {% autoescape off %}{{ abstract }}{% endautoescape %}{% endif %}
 
-For information on accommodations in Saskatoon, visit our website at http://cmcf.lightsource.ca/psfam/accommodations.  Please contact us if you have any questions while planning your trip, and e-mail Doreen Stumborg at doreen.stumborg@usask.ca with any additions or corrections to the information above.  We look forward to seeing you in Saskatoon in May! 
+For information on accommodations in Saskatoon, visit our website at http://cmcf.lightsource.ca/psfam/accommodations.  Please contact us if you have any questions while planning your trip, and e-mail Doreen Stumborg at doreen.stumborg@usask.ca with any additions or corrections to the information above.  We look forward to seeing you in Saskatoon!
 
 Sincerely,
 
