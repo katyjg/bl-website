@@ -1,31 +1,38 @@
-from __future__ import with_statement
-import inspect
+from __future__ import unicode_literals
+
 import logging
 import sys
 
 from django.conf import settings
-from django.forms.forms import BoundField
 from django.template import Context
 from django.template.loader import get_template
+from django.utils.functional import SimpleLazyObject
 from django.utils.html import conditional_escape
-from django.utils.functional import memoize
+from django.utils.lru_cache import lru_cache
 
 from .base import KeepContext
-from .compatibility import text_type, PY2
-
-# Global field template, default template used for rendering a field.
-
-TEMPLATE_PACK = getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap')
+from .compatibility import PY2, text_type
 
 
-# By memoizeing we avoid loading the template every time render_field
+def get_template_pack():
+    return getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap')
+
+
+TEMPLATE_PACK = SimpleLazyObject(get_template_pack)
+
+
+# By caching we avoid loading the template every time render_field
 # is called without a template
+@lru_cache()
 def default_field_template(template_pack=TEMPLATE_PACK):
     return get_template("%s/field.html" % template_pack)
-default_field_template = memoize(default_field_template, {}, 1)
 
 
-def render_field(field, form, form_style, context, template=None, labelclass=None, layout_object=None, attrs=None, template_pack=TEMPLATE_PACK):
+def render_field(
+    field, form, form_style, context, template=None, labelclass=None,
+    layout_object=None, attrs=None, template_pack=TEMPLATE_PACK,
+    extra_context=None, **kwargs
+):
     """
     Renders a django-crispy-forms field
 
@@ -34,26 +41,26 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
         and render it using default template 'CRISPY_TEMPLATE_PACK/field.html'
         The field is added to a list that the form holds called `rendered_fields`
         to avoid double rendering fields.
-
     :param form: The form/formset to which that field belongs to.
-
     :param form_style: A way to pass style name to the CSS framework used.
-
     :template: Template used for rendering the field.
-
     :layout_object: If passed, it points to the Layout object that is being rendered.
         We use it to store its bound fields in a list called `layout_object.bound_fields`
-
     :attrs: Attributes for the field's widget
+    :template_pack: Name of the template pack to be used for rendering `field`
+    :extra_context: Dictionary to be added to context, added variables by the layout object
     """
-    with KeepContext(context):
+    added_keys = [] if extra_context is None else extra_context.keys()
+    with KeepContext(context, added_keys):
+        if field is None:
+            return ''
+
         FAIL_SILENTLY = getattr(settings, 'CRISPY_FAIL_SILENTLY', True)
 
         if hasattr(field, 'render'):
-            if 'template_pack' in inspect.getargspec(field.render)[0]:
-                return field.render(form, form_style, context, template_pack=template_pack)
-            else:
-                return field.render(form, form_style, context)
+            return field.render(
+                form, form_style, context, template_pack=template_pack,
+            )
         else:
             # In Python 2 form field names cannot contain unicode characters without ASCII mapping
             if PY2:
@@ -71,7 +78,8 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
 
         try:
             # Injecting HTML attributes into field's widget, Django handles rendering these
-            field_instance = form.fields[field]
+            bound_field = form[field]
+            field_instance = bound_field.field
             if attrs is not None:
                 widgets = getattr(field_instance.widget, 'widgets', [field_instance.widget])
 
@@ -83,16 +91,16 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
                 for index, (widget, attr) in enumerate(zip(widgets, list_attrs)):
                     if hasattr(field_instance.widget, 'widgets'):
                         if 'type' in attr and attr['type'] == "hidden":
-                            field_instance.widget.widgets[index].is_hidden = True
-                            field_instance.widget.widgets[index] = field_instance.hidden_widget()
+                            field_instance.widget.widgets[index] = field_instance.hidden_widget(attr)
 
-                        field_instance.widget.widgets[index].attrs.update(attr)
+                        else:
+                            field_instance.widget.widgets[index].attrs.update(attr)
                     else:
                         if 'type' in attr and attr['type'] == "hidden":
-                            field_instance.widget.is_hidden = True
-                            field_instance.widget = field_instance.hidden_widget()
+                            field_instance.widget = field_instance.hidden_widget(attr)
 
-                        field_instance.widget.attrs.update(attr)
+                        else:
+                            field_instance.widget.attrs.update(attr)
 
         except KeyError:
             if not FAIL_SILENTLY:
@@ -113,8 +121,6 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
         if field_instance is None:
             html = ''
         else:
-            bound_field = BoundField(form, field_instance, field)
-
             if template is None:
                 if form.crispy_field_template is None:
                     template = default_field_template(template_pack)
@@ -135,6 +141,10 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
                 'labelclass': labelclass,
                 'flat_attrs': flatatt(attrs if isinstance(attrs, dict) else {}),
             })
+            if extra_context is not None:
+                context.update(extra_context)
+
+            context = context.flatten()
             html = template.render(context)
 
         return html
@@ -148,7 +158,7 @@ def flatatt(attrs):
     XML-style pairs.  It is assumed that the keys do not need to be XML-escaped.
     If the passed dictionary is empty, then return an empty string.
     """
-    return u''.join([u' %s="%s"' % (k.replace('_', '-'), conditional_escape(v)) for k, v in attrs.items()])
+    return ''.join([' %s="%s"' % (k.replace('_', '-'), conditional_escape(v)) for k, v in attrs.items()])
 
 
 def render_crispy_form(form, helper=None, context=None):
@@ -171,3 +181,24 @@ def render_crispy_form(form, helper=None, context=None):
     })
 
     return node.render(node_context)
+
+
+def list_intersection(list1, list2):
+    """
+    Take the not-in-place intersection of two lists, similar to sets but preserving order.
+    Does not check unicity of list1.
+    """
+    return [item for item in list1 if item in list2]
+
+
+def list_difference(left, right):
+    """
+    Take the not-in-place difference of two lists (left - right), similar to sets but preserving order.
+    """
+    blocked = set(right)
+    difference = []
+    for item in left:
+        if item not in blocked:
+            blocked.add(item)
+            difference.append(item)
+    return difference

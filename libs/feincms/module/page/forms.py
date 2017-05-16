@@ -6,16 +6,13 @@ from __future__ import absolute_import, unicode_literals
 
 import re
 
+from django.apps import apps
 from django.contrib.admin.widgets import ForeignKeyRawIdWidget
-from django.contrib.sites.models import Site
-from django.db.models.loading import get_model
 from django.forms.models import model_to_dict
-from django.forms.util import ErrorList
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from feincms import ensure_completely_loaded
-from feincms._internal import get_model_name
 
 from mptt.forms import MPTTAdminForm
 
@@ -29,7 +26,7 @@ class RedirectToWidget(ForeignKeyRawIdWidget):
 
         if match:
             matches = match.groupdict()
-            model = get_model(matches['app_label'], matches['model_name'])
+            model = apps.get_model(matches['app_label'], matches['model_name'])
             try:
                 instance = model._default_manager.get(pk=int(matches['pk']))
                 return '&nbsp;<strong>%s (%s)</strong>' % (
@@ -162,7 +159,8 @@ class PageAdminForm(MPTTAdminForm):
             current_id = self.instance.id
             active_pages = active_pages.exclude(id=current_id)
 
-        if hasattr(Site, 'page_set') and 'site' in cleaned_data:
+        sites_is_installed = apps.is_installed('django.contrib.sites')
+        if sites_is_installed and 'site' in cleaned_data:
             active_pages = active_pages.filter(site=cleaned_data['site'])
 
         # Convert PK in redirect_to field to something nicer for the future
@@ -170,7 +168,7 @@ class PageAdminForm(MPTTAdminForm):
         if redirect_to and re.match(r'^\d+$', redirect_to):
             opts = self.page_model._meta
             cleaned_data['redirect_to'] = '%s.%s:%s' % (
-                opts.app_label, get_model_name(opts), redirect_to)
+                opts.app_label, opts.model_name, redirect_to)
 
         if 'active' in cleaned_data and not cleaned_data['active']:
             # If the current item is inactive, we do not need to conduct
@@ -183,7 +181,7 @@ class PageAdminForm(MPTTAdminForm):
         if 'override_url' in cleaned_data and cleaned_data['override_url']:
             if active_pages.filter(
                     _cached_url=cleaned_data['override_url']).count():
-                self._errors['override_url'] = ErrorList([
+                self._errors['override_url'] = self.error_class([
                     _('This URL is already taken by an active page.')])
                 del cleaned_data['override_url']
 
@@ -202,12 +200,12 @@ class PageAdminForm(MPTTAdminForm):
             new_url = '/%s/' % cleaned_data['slug']
 
         if active_pages.filter(_cached_url=new_url).count():
-            self._errors['active'] = ErrorList([
+            self._errors['active'] = self.error_class([
                 _('This URL is already taken by another active page.')])
             del cleaned_data['active']
 
         if parent and parent.template.enforce_leaf:
-            self._errors['parent'] = ErrorList(
+            self._errors['parent'] = self.error_class(
                 [_('This page does not allow attachment of child pages')])
             del cleaned_data['parent']
 

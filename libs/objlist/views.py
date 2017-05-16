@@ -1,21 +1,24 @@
+from django.contrib import admin
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.options import IncorrectLookupParameters, IS_POPUP_VAR
-from django.contrib.admin.util import  get_fields_from_path, lookup_needs_distinct, prepare_lookup_value
+from django.contrib.admin.utils import  get_fields_from_path, lookup_needs_distinct, prepare_lookup_value
 from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
 from django.http import HttpResponse
-from django.utils import six
-from django.utils.datastructures import SortedDict
-from django.utils.encoding import force_str
+from django.utils import six, timezone
+from collections import OrderedDict
+from django.utils.encoding import force_str, smart_str
 from django.utils.http import urlencode
-from django.utils.text import slugify
+from django.utils.text import slugify, mark_safe
 from django.views.generic import ListView
+from django.core.urlresolvers import reverse_lazy
 import re
 import operator
 import sys
-import csv
-
+import unicodecsv as csv
+from HTMLParser import HTMLParser
+from django.core.exceptions import FieldDoesNotExist
 ALL_VAR = 'all'
 ORDER_VAR = 'o'
 ORDER_TYPE_VAR = 'ot'
@@ -28,18 +31,41 @@ GRID_FLAG = 'grid'
 IGNORED_PARAMS = (ALL_VAR, PAGE_VAR, ALL_VAR, ORDER_VAR, ORDER_TYPE_VAR, 
                   SEARCH_VAR, TO_FIELD_VAR,IS_POPUP_VAR,CSV_FLAG, GRID_FLAG)
 
+
+class HTMLStripper(HTMLParser):
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self.reset()
+        self.fed = []
+
+    def handle_data(self, d):
+        self.fed.append(d)
+
+    def get_data(self):
+        return ''.join(self.fed)
+
+
 def to_utf8(v):
-    return v.encode('utf-8') if isinstance(v, basestring) else v
+    if isinstance(v, basestring):
+        s = HTMLStripper()
+        s.feed(v)
+        return '{}'.format(s.get_data())
+    else:
+        return v
+
 
 def _get_field_name(model, name):
     if not '__' in name:
-        return model._meta.get_field_by_name(name)[0].verbose_name.title()
+        try:
+            return model._meta.get_field_by_name(name)[0].verbose_name.title()
+        except FieldDoesNotExist:
+            return name.title()
     else:
         this, rest = name.split('__', 1)
         rmodel = model._meta.get_field_by_name(this)[0]
         return rmodel.verbose_name.title() + ':' + _get_field_name(rmodel.rel.to, rest)
-        
-            
+
+
 class CSVResponseMixin(object):
     """
     A generic mixin that constructs a CSV response from the context data if
@@ -47,7 +73,80 @@ class CSVResponseMixin(object):
     """
     csv_fields = []
 
-    
+    def get_row_values(self, obj):
+        row = []
+
+        for field_name in self.csv_fields:
+            try:
+                f = obj._meta.get_field(field_name)
+            except models.FieldDoesNotExist:
+                # For non-field list_display values, the value is either a method
+                # or a property.
+                try:
+                    field_lookups = field_name.split('__')
+                    attr = obj
+                    for name in field_lookups:
+                        attr = getattr(attr, name, '')
+
+                    allow_tags = getattr(attr, 'allow_tags', True)
+                    if callable(attr):
+                        attr = attr()
+                    if field_name in self.list_transforms:
+                        result_repr = mark_safe(self.list_transforms[field_name](attr, obj))
+                    else:
+                        result_repr = smart_str(attr)
+                except AttributeError:
+                    result_repr = ''
+                else:
+                    # Strip HTML tags in the resulting text, except if the
+                    # function has an "allow_tags" attribute set to True.
+                    if not allow_tags:
+                        result_repr = result_repr
+            else:
+                field_val = getattr(obj, f.attname)
+                if field_name in self.list_transforms:
+                    result_repr = mark_safe(self.list_transforms[field_name](field_val, obj))
+                elif isinstance(f.rel, models.ManyToOneRel):
+                    if field_val is not None:
+                        try:
+                            result_repr = getattr(obj, f.name)
+                        except AttributeError:
+                            result_repr = ''
+                    else:
+                        result_repr = ''
+
+                # Dates and times are special: They're formatted in a certain way.
+                elif isinstance(f, models.DateField) or isinstance(f, models.TimeField):
+                    if field_val:
+                        if isinstance(f, models.DateTimeField):
+                            result_repr = timezone.localtime(field_val).strftime('%c')
+                        elif isinstance(f, models.TimeField):
+                            result_repr = field_val.strftime('%X')
+                        elif isinstance(f, models.DateField):
+                            result_repr = field_val.strftime('%Y-%m-%d')
+                        else:
+                            result_repr = ""
+                    else:
+                        result_repr = ''
+                # Booleans are special: We use images.
+                elif isinstance(f, models.BooleanField) or isinstance(f, models.NullBooleanField):
+                    result_repr = field_val
+                # DecimalFields are special: Zero-pad the decimals.
+                elif isinstance(f, models.DecimalField):
+                    if field_val is not None:
+                        result_repr = ('%%.%sf' % f.decimal_places) % field_val
+                    else:
+                        result_repr = ''
+                # Fields with choices are special: Use the representation
+                # of the choice.
+                elif f.choices:
+                    m_name = 'get_{0}_display'.format(field_name)
+                    result_repr = getattr(obj, m_name)()
+                else:
+                    result_repr = smart_str(field_val)
+            row.append(result_repr)
+        return map(to_utf8, row)
+
     def render_to_response(self, context, **response_kwargs):
         """
         Creates a CSV response when requested containing the list of fields in `csv_fields`.
@@ -59,15 +158,14 @@ class CSVResponseMixin(object):
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename="%s.csv"' % slugify(context['objects_title'])
 
-            writer = csv.writer(response)
+            writer = csv.writer(response, encoding='utf-8')
             # Write the data
-            qs = self.get_queryset()
-            data = qs.values_list(*self.csv_fields )
+            qs = self.get_queryset().distinct()
             headers = [_get_field_name(qs.model, n) for n in self.csv_fields]
-            for i, instance in enumerate(data):
+            for i, instance in enumerate(qs.all()):
                 if i == 0:
-                    writer.writerow(map(to_utf8, headers))
-                writer.writerow(map(to_utf8, instance))
+                    writer.writerow(headers)
+                writer.writerow(self.get_row_values(instance))
 
             return response
         else:
@@ -86,10 +184,13 @@ class FilteredListView(CSVResponseMixin, ListView):
         list_styles: a dictionary mapping field names in list_display to strings
             representing the styles to apply to the corresponding field cell
         list_transforms: a dictionary mapping field names to functions which transform the data
-            during display, functions should take a single argument and return safe text for display
+            during display, functions should take two arguments. The first is the value being transformed,
+             and the second is record object. It should return safe text for display
         ordering_proxies: a dictionary mapping a method name to a database field. Used to provide sorting behaviour 
             for model methods, anchored on a field
         add_url:  a url name for creating the Add link. Leave as None to leave out the link
+        add_ajax: boolean, if true, load add url using ajax 
+        add_target: an id of a dom element, add url will be loaded using ajax into the dom element identified
         detail_url: a url name for linking to detail pages. The url must take a single 
             kwarg of 'pk' or the key provided by `detail_url_kwarg`
         search_fields: list of fields within which to search for records
@@ -104,7 +205,8 @@ class FilteredListView(CSVResponseMixin, ListView):
         detail_url_kwarg: the keyworded argument to use for detail views
         detail_target: HTML container into which detail should be loaded using Ajax rather than 
            through a redirect.
-        detail_modal: True or False. If true, adds a data-toggle="modal" attribute to the row
+        show_header: True or False. If true, Title and tools are shown. True by default
+        detail_ajax: True or False. if true, load detail url using ajax 
         grid_template: if provided, this template will be used to display each grid cell in the 
             grid view of an object list template. The template should generate HTML from the "object" 
             context variable.
@@ -119,13 +221,18 @@ class FilteredListView(CSVResponseMixin, ListView):
     
     grid_template = None
     tools_template = None
-    paginate_by = 10
+    paginate_by = 20
     
     add_url = None
+    add_target = ""
+    add_ajax = False
+    
+    order_flag = None
     detail_url = None
     detail_url_kwarg = 'pk'
     detail_target = None
-    detail_modal = False
+    detail_ajax = False
+    show_header = True
     
     search_fields = []
     order_by = []
@@ -137,33 +244,47 @@ class FilteredListView(CSVResponseMixin, ListView):
         choices = list(spec.choices(self))
         selected = [choice['display'] for choice in choices if choice['selected']][0]
         return title, choices, selected
-    
-    def get_list_title(self):
-        if self.list_title:
-            return self.list_title
+
+    def get_detail_url(self, obj):
+        if self.detail_url:
+            return reverse_lazy(self.detail_url, kwargs={self.detail_url_kwarg: getattr(obj, self.detail_url_kwarg)})
         else:
-            return self.model._meta.verbose_name_plural
-        
+            return None
+
     def get_paginate_by(self, queryset):
         if self.request.GET.get(ALL_VAR):
             return None
         else:
             return self.paginate_by
 
-    def get_grid_template(self):
+    def get_grid_template(self, obj=None):
         """Return the name of the template to use for rendering grid cells"""
         if self.grid_template:
             return self.grid_template
         else:
             return '{0}_grid.html'.format(self.model.__name__.lower())
-        
+
+    def get_list_title(self):
+        return self.list_title or self.model._meta.verbose_name_plural.title()
+
+
+    def get_row_styles(self, obj):
+        return ''
+
+    def get_row_attrs(self, obj):
+        attrs = {
+            'class': self.get_row_styles(obj),
+            'data-detail-url': self.get_detail_url(obj)
+        }
+        return attrs
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(FilteredListView, self).get_context_data(**kwargs)
         # Add in a FilterSpecs 
         context['filters'] = [self._get_spec_data(spec) for spec in self.filter_specs]
         context['query_string'] = self.get_query_string(remove=[PAGE_VAR, ERROR_FLAG,CSV_FLAG])
-        context['objects_title'] = self.get_list_title() or self.model._meta.verbose_name_plural
+        context['objects_title'] = self.get_list_title()
         context['object_title'] = self.model._meta.verbose_name
         context['total_objects'] = self._total_items
         if self.grid_template is not None:
@@ -190,6 +311,7 @@ class FilteredListView(CSVResponseMixin, ListView):
         self.query = self._params.get(SEARCH_VAR, '')
         self.order_flag = self._params.get(ORDER_VAR, '')
         self.grid_flag = GRID_FLAG in self._params
+
         # remove IGNORED_PARAMS
         for flag in IGNORED_PARAMS:
             if flag in self._params:
@@ -218,18 +340,15 @@ class FilteredListView(CSVResponseMixin, ListView):
             qs = self.apply_select_related(qs)
 
         # Set ordering.
-        ordering = self.get_ordering(self.request, qs)
+        ordering = self.get_ordering()
         qs = qs.order_by(*ordering)
 
         # Apply search results
-        qs, search_use_distinct = self.get_search_results(
-            self.request, qs, self.query)
-
-        # Remove duplicates from results, if necessary
-        if filters_use_distinct | search_use_distinct:
-            return qs.distinct()
-        else:
-            return qs
+        qs, search_use_distinct = self.get_search_results(self.request, qs, self.query)
+                
+        # Remove duplicates from results, if necessary   
+        return qs.distinct()
+        
 
     def apply_select_related(self, qs):
         if self.list_select_related is True:
@@ -290,8 +409,9 @@ class FilteredListView(CSVResponseMixin, ListView):
                     if not isinstance(field, models.Field):
                         field_path = field
                         field = get_fields_from_path(self.model, field_path)[-1]
+                    model_admin = admin.ModelAdmin(self.model, admin.site)
                     spec = field_list_filter_class(field, request, lookup_params,
-                        self.model, None, field_path=field_path)
+                        self.model, model_admin, field_path=field_path)
                     # Check if we need to use distinct()
                     use_distinct = (use_distinct or
                                     lookup_needs_distinct(lookup_opts,
@@ -351,7 +471,7 @@ class FilteredListView(CSVResponseMixin, ListView):
         except models.FieldDoesNotExist:
             return None
 
-    def get_ordering(self, request, queryset):
+    def get_ordering(self):
         """
         Returns the list of ordering fields for the object list.
         First we check the object's default ordering. Then, any manually-specified ordering
@@ -359,8 +479,6 @@ class FilteredListView(CSVResponseMixin, ListView):
         order is guaranteed by ensuring the primary key is used as the last
         ordering field.
         """
-        #params = self._params
-        lookup_opts = self.model._meta
         ordering = list(self._get_default_ordering())
         if self.order_flag:
             # Clear ordering and used params
@@ -378,14 +496,14 @@ class FilteredListView(CSVResponseMixin, ListView):
                 except (IndexError, ValueError):
                     continue # Invalid ordering specified, skip it.
 
-        # Add the given query's ordering fields, if any.
-        ordering.extend(queryset.query.order_by)
+#         # Add the given query's ordering fields, if any.
+#         ordering.extend(queryset.query.order_by)
 
         # Ensure that the primary key is systematically present in the list of
         # ordering fields so we can guarantee a deterministic order across all
         # database backends.
-        pk_name = lookup_opts.pk.name
-        if not (set(ordering) & set(['pk', '-pk', pk_name, '-' + pk_name])):
+
+        if not (set(ordering) & set(['pk', '-pk'])):
             # The two sets do not intersect, meaning the pk isn't present. So
             # we add it.
             ordering.append('-pk')
@@ -393,12 +511,12 @@ class FilteredListView(CSVResponseMixin, ListView):
 
     def get_ordering_field_columns(self):
         """
-        Returns a SortedDict of ordering field column numbers and asc/desc
+        Returns a OrderedDict of ordering field column numbers and asc/desc
         """
         # We must cope with more than one column having the same underlying sort
         # field, so we base things on column numbers.
         ordering = self._get_default_ordering()
-        ordering_fields = SortedDict()
+        ordering_fields = OrderedDict()
         if ORDER_VAR not in self._params:
             # for ordering specified on model Meta, we don't know
             # the right column numbers absolutely, because there might be more
@@ -438,6 +556,7 @@ class FilteredListView(CSVResponseMixin, ListView):
 
         use_distinct = False
         if self.search_fields and search_term:
+
             orm_lookups = [construct_search(str(search_field))
                            for search_field in self.search_fields]
             for bit in search_term.split():
@@ -463,7 +582,7 @@ class FilteredListView(CSVResponseMixin, ListView):
         column from multi-sort specification.
         """  
         
-        order_specs = SortedDict([(int(re.sub(r"\D","",c)), '-' if c[0] == '-' else '') for c in self.order_flag.split('.') if c])
+        order_specs = OrderedDict([(int(re.sub(r"\D","",c)), '-' if c[0] == '-' else '') for c in self.order_flag.split('.') if c])
         
         if not self.list_display:
             yield {'text': self.model._meta.verbose_name.title()}
@@ -476,7 +595,7 @@ class FilteredListView(CSVResponseMixin, ListView):
             _rest_tags = [(v,k) for k,v in order_specs.items() if k != i]
             _sort_val = '.'.join(['{0}{1}'.format(d,c) for d,c in [_field_tag] + _rest_tags if d != '*'])
             _header_url = self.get_query_string(new_params={ORDER_VAR:_sort_val}, remove=[ERROR_FLAG])
-            
+                
             try:
                 f = self.model._meta.get_field(field_name)
             except models.FieldDoesNotExist:
@@ -484,7 +603,11 @@ class FilteredListView(CSVResponseMixin, ListView):
                 # attribute "short_description". If that doesn't exist, fall back
                 # to the method name. 
 
-                attr = getattr(self.model, field_name) # Let AttributeErrors propagate.
+                field_lookups = field_name.split('__')
+                attr = self.model
+                for name in field_lookups:
+                    attr = getattr(attr, name, '')
+                #attr = getattr(self.model, field_name) # Let AttributeErrors propagate.
                 try:
                     header = attr.short_description.title()
                 except AttributeError:

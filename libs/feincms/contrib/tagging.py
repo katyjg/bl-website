@@ -16,10 +16,13 @@ from django.db.models.signals import pre_save
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
-from tagging import AlreadyRegistered
 from tagging.fields import TagField
 from tagging.models import Tag
 from tagging.utils import parse_tag_input
+try:
+    from tagging.registry import AlreadyRegistered
+except ImportError:
+    from tagging import AlreadyRegistered
 
 
 # ------------------------------------------------------------------------
@@ -33,6 +36,7 @@ def taglist_to_string(taglist):
 # ------------------------------------------------------------------------
 # The following is lifted from:
 # http://code.google.com/p/django-tagging/issues/detail?id=189
+
 
 """
 TagSelectField
@@ -109,7 +113,10 @@ def tag_model(cls, admin_cls=None, field_name='tags', sort_tags=False,
     auto_add_admin_field If True, attempts to add the tag field to the admin
                 class.
     """
-    from tagging import register as tagging_register
+    try:
+        from tagging.registry import register as tagging_register
+    except ImportError:
+        from tagging import register as tagging_register
 
     cls.add_to_class(field_name, (
         TagSelectField if select_field else TagField

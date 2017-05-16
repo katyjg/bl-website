@@ -5,6 +5,7 @@ Admin ui common utilities.
 """
 
 # PYTHON IMPORTS
+from __future__ import unicode_literals
 from fnmatch import fnmatch
 from importlib import import_module
 
@@ -55,7 +56,7 @@ def get_admin_site(context=None, request=None):
     if isinstance(dashboard_cls, dict):
         if context:
             request = context.get('request')
-        curr_url = request.META['PATH_INFO']
+        curr_url = request.path
         for key in dashboard_cls:
             mod, inst = key.rsplit('.', 1)
             mod = import_module(mod)
@@ -109,7 +110,7 @@ def filter_models(request, models, exclude):
                 model, perms = item
                 if fnmatch(full_name(model), pattern) and item not in included:
                     pattern_items.append(item)
-            pattern_items.sort(key=lambda x: x[0]._meta.verbose_name_plural)
+            pattern_items.sort(key=lambda x: str(x[0]._meta.verbose_name_plural.encode('utf-8')))
             included.extend(pattern_items)
 
     result = included[:]

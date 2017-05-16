@@ -40,6 +40,11 @@
         <script language="javascript" type="text/javascript" src="{{ settings_var.URL_FILEBROWSER_MEDIA }}js/FB_Redactor.js"></script>
     {% endifequal %}
 
+    {% ifequal query.pop '5' %}
+        <!-- Six Foot Chirping Malachite Sunbird -->
+        <script language="javascript" type="text/javascript" src="{{ settings_var.URL_FILEBROWSER_MEDIA }}js/FB_Sixfoot.js"></script>
+    {% endifequal %}
+
     {{ media }}
 {% endblock %}
 
@@ -121,7 +126,8 @@
                             <td class="fb_icon">
                                 {% selectable image_version.filetype query.type %}
                                 {% if selectable %}
-                                    <button class="btn btn-success" onclick="SuitSubmit('{{ image_version.url_save }}', '{{ image_version.url_thumbnail }}', '{{ image_version.filetype }}');">{% trans "Select" %}</button>
+                                    <!--<button class="btn btn-success" onclick="SuitSubmit('{{ image_version.url_save }}', '{{ image_version.url_thumbnail }}', '{{ image_version.filetype }}');">{% trans "Select" %}</button>-->
+                                    <button class="btn btn-success" name="redactor-select" data-file="{{ image_version.url_save }}" data-thumb="{{ image_version.url_thumbnail }}" data-type="{{ image_version.filetype }}">{% trans "Select" %}</button>
                                 {% else %}
                                     &nbsp;
                                 {% endif %}

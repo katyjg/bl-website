@@ -1,7 +1,7 @@
 from django import template
 from django.contrib import admin
 from django.contrib.admin import AdminSite
-from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpRequest
 from django.core.urlresolvers import reverse, resolve
 
 try:
@@ -9,6 +9,8 @@ try:
 except ImportError:
     # For Django < 1.4.2
     string_types = basestring,
+
+import re
 
 import warnings
 from suit.config import get_config
@@ -19,13 +21,23 @@ register = template.Library()
 @register.assignment_tag(takes_context=True)
 def get_menu(context, request):
     """
-    :type request: WSGIRequest
+    :type request: HttpRequest
     """
-    if not isinstance(request, WSGIRequest):
+    if not isinstance(request, HttpRequest):
         return None
 
     # Try to get app list
-    template_response = get_admin_site(context.current_app).index(request)
+    if hasattr(request, 'current_app'):
+        # Django 1.8 uses request.current_app instead of context.current_app
+        template_response = get_admin_site(request.current_app).index(request)
+    else:
+        try:
+            template_response = get_admin_site(context.current_app).index(request)
+        # Django 1.10 removed the current_app parameter for some classes and functions. 
+        # Check the release notes.
+        except AttributeError:
+            template_response = get_admin_site(context.request.resolver_match.namespace).index(request)
+
     try:
         app_list = template_response.context_data['app_list']
     except Exception:
@@ -42,7 +54,11 @@ def get_admin_site(current_app):
     """
     try:
         resolver_match = resolve(reverse('%s:index' % current_app))
-        for func_closure in resolver_match.func.func_closure:
+        # Django 1.9 exposes AdminSite instance directly on view function
+        if hasattr(resolver_match.func, 'admin_site'):
+            return resolver_match.func.admin_site
+
+        for func_closure in resolver_match.func.__closure__:
             if isinstance(func_closure.cell_contents, AdminSite):
                 return func_closure.cell_contents
     except:
@@ -52,6 +68,7 @@ def get_admin_site(current_app):
 
 class Menu(object):
     app_activated = False
+    MULTIPLE_MODELS_RE = re.compile(r'([^*]*)[*]')
 
     def __init__(self, context, request, app_list):
         self.request = request
@@ -245,11 +262,30 @@ class Menu(object):
         models = []
         models_def = app.get('models', [])
         for model_def in models_def:
-            model = self.make_model(model_def, app['name'])
-            if model:
-                models.append(model)
+            # multiple models may be returned
+            models += self.make_models(model_def, app['name'])
 
         app['models'] = models
+
+    def make_models(self, model_def, app_name):
+        if not isinstance(model_def, string_types):
+            model = self.make_model(model_def, app_name)
+            return [model] if model else []
+        match = self.MULTIPLE_MODELS_RE.match(model_def)
+        if not match:
+            model = self.make_model(model_def, app_name)
+            return [model] if model else []
+        prefix = match.group(1)
+        prefix = self.get_model_name(app_name,prefix)
+        return [
+            m
+            for m in [
+                self.convert_native_model(native_model,app_name)
+                for native_model in self.all_models
+                if self.get_native_model_name(native_model).startswith(prefix)
+            ]
+            if m
+        ]
 
     def make_model(self, model_def, app_name):
         if isinstance(model_def, dict):
@@ -277,6 +313,10 @@ class Menu(object):
         return self.conf_exclude and model_name in self.conf_exclude
 
     def get_model_name(self, app_name, model_name):
+        if app_name:
+            app_name = app_name.lower()
+        if model_name:
+            model_name = model_name.lower()
         if '.' not in model_name:
             model_name = '%s.%s' % (app_name, model_name)
         return model_name
@@ -294,7 +334,9 @@ class Menu(object):
             'label': model['name'],
             'url': self.get_native_model_url(model),
             'name': self.get_native_model_name(model),
-            'app': app_name
+            'app': app_name,
+            'perms': model.get('perms',None),
+            'add_url': model.get('add_url',None),
         }
 
     def get_native_model_url(self, model):

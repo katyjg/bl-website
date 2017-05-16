@@ -38,16 +38,11 @@
                             {% else %}
                                 <strong>{{ model.name }}</strong>
                             {% endif %}
-                            {% if model.add_url or model.admin_url %}
+                            {% if model.add_url %}
                                 <ul class="grp-actions">
                                     {% if model.add_url %}
-                                        <li class="grp-add-link">
-                                            <a href="{{ model.add_url }}">{% trans "Add" %}</a>
-                                        </li>
-                                    {% endif %}
-                                    {% if model.admin_url %}
-                                        <li class="grp-change-link">
-                                            <a href="{{ model.admin_url }}">{% trans "Change" %}</a>
+                                        <li class="grp-icon grp-add-link">
+                                            <a href="{{ model.add_url }}" title="{% trans "Add" %}">&nbsp;</a>
                                         </li>
                                     {% endif %}
                                 </ul>
@@ -58,19 +53,19 @@
             {% empty %}
                 <p>{% trans "You don´t have permission to edit anything." %}</p>
             {% endfor %}
-        </div>
-        {% block custom_views %}
-            {% if custom_list %}
-                <div class="grp-module" id="custom_views">
-                    <h2>{% trans 'Custom Views' %}</h2>
-                    <div class="grp-row">
+            {% block custom_views %}
+                {% if custom_list %}
+                    <div class="grp-module" id="custom_views">
+                        <h2>{% trans 'Custom Views' %}</h2>
                         {% for path, name in custom_list %}
-                            <a href="{{ path }}"><strong>{{ name }}</strong></a>
+                            <div class="grp-row">
+                                <a href="{{ path }}"><strong>{{ name }}</strong></a>
+                            </div>
                         {% endfor %}
                     </div>
-                </div>
-            {% endif %}
-        {% endblock %}
+                {% endif %}
+            {% endblock %}
+        </div>
         <div class="g-d-6 g-d-l">
             <div class="grp-module" id="grp-recent-actions-module">
                 <h2>{% trans 'Recent Actions' %}</h2>
@@ -98,4 +93,3 @@
         </div>
     </div>
 {% endblock %}
-

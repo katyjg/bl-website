@@ -21,11 +21,11 @@ p.grp-help {
         padding-top: 2px;
     }
 }
-.grp-cells p.grp-help, 
+.grp-cells p.grp-help,
 .grp-td p.grp-help {
     max-width: 278px;
 }
-.grp-row p.grp-help, 
+.grp-row p.grp-help,
 .grp-td p.grp-help {
     &:first-child {
         margin: -2px 0 8px;
@@ -33,6 +33,11 @@ p.grp-help {
 }
 .grp-row p.grp-help {
     margin-bottom: -2px;
+}
+.grp-related-widget-wrapper + p.grp-help {
+    position: relative;
+    clear: left;
+    margin-top: 5px;
 }
 
 
@@ -199,10 +204,3 @@ span.grp-anchor {
 .grp-nowrap {
     white-space: nowrap;
 }
-
-
-
-
-
-
-

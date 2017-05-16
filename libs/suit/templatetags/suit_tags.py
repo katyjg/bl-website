@@ -1,5 +1,5 @@
+import itertools
 from django import template
-from django.contrib.admin.util import lookup_field
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import NoReverseMatch, reverse
 from django.db.models import ForeignKey
@@ -7,6 +7,14 @@ from django.template.defaulttags import NowNode
 from django.utils.safestring import mark_safe
 from suit.config import get_config
 from suit import utils
+
+django_version = utils.django_major_version()
+
+try:
+    # Django 1.9
+    from django.contrib.admin.utils import lookup_field
+except ImportError:
+    from django.contrib.admin.util import lookup_field
 
 register = template.Library()
 
@@ -42,8 +50,8 @@ def field_contents_foreign_linked(admin_field):
 
     if not hasattr(admin_field.model_admin,
                    'linked_readonly_fields') or fieldname not in admin_field \
-        .model_admin \
-        .linked_readonly_fields:
+            .model_admin \
+            .linked_readonly_fields:
         return displayed
 
     try:
@@ -64,7 +72,7 @@ def field_contents_foreign_linked(admin_field):
 
 @register.filter
 def admin_url(obj):
-    info = (obj._meta.app_label, obj._meta.module_name)
+    info = (obj._meta.app_label, obj._meta.object_name.lower())
     return reverse("admin:%s_%s_change" % info, args=[obj.pk])
 
 
@@ -76,3 +84,57 @@ def suit_bc(*args):
 @register.assignment_tag
 def suit_bc_value(*args):
     return utils.value_by_version(args)
+
+
+@register.assignment_tag
+def admin_extra_filters(cl):
+    """ Return the dict of used filters which is not included
+    in list_filters form """
+    used_parameters = list(itertools.chain(*(s.used_parameters.keys()
+                                             for s in cl.filter_specs)))
+    return dict((k, v) for k, v in cl.params.items() if k not in used_parameters)
+
+
+@register.assignment_tag
+def suit_django_version():
+    return django_version
+
+
+@register.filter
+def django_version_lt(string):
+    return django_version < str_to_version(string)
+
+
+@register.filter
+def django_version_lte(string):
+    return django_version <= str_to_version(string)
+
+
+@register.filter
+def django_version_gt(string):
+    return django_version > str_to_version(string)
+
+
+@register.filter
+def django_version_gte(string):
+    return django_version >= str_to_version(string)
+
+
+def str_to_version(string):
+    return tuple([int(s) for s in string.split('.')])
+
+
+if django_version < (1, 9):
+    # Add empty tags to avoid Django template errors if < Django 1.9
+    @register.simple_tag
+    def add_preserved_filters(*args, **kwargs):
+        pass
+
+if django_version < (1, 5):
+    # Add admin_urlquote filter to support Django 1.4
+    from django.contrib.admin.util import quote
+
+
+    @register.filter
+    def admin_urlquote(value):
+        return quote(value)

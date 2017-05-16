@@ -8,11 +8,12 @@ import csv
 import itertools
 import sys
 
-from django.utils.six import next, text_type
+from django.utils.six import next, PY3, text_type
 from django.utils.six.moves import zip
+from django.utils.translation import ugettext as _
 
 __all__ = ('previous_current_next', 'tree_item_iterator',
-           'drilldown_tree_for_node')
+           'drilldown_tree_for_node', 'get_cached_trees',)
 
 
 def previous_current_next(items):
@@ -25,12 +26,13 @@ def previous_current_next(items):
     """
     extend = itertools.chain([None], items, [None])
     prev, cur, nex = itertools.tee(extend, 3)
-    try:
-        next(cur)
-        next(nex)
-        next(nex)
-    except StopIteration:
-        pass
+    # Advancing an iterator twice when we know there are two items (the
+    # two Nones at the start and at the end) will never fail except if
+    # `items` is some funny StopIteration-raising generator. There's no point
+    # in swallowing this exception.
+    next(cur)
+    next(nex)
+    next(nex)
     return zip(prev, cur, nex)
 
 
@@ -70,7 +72,7 @@ def tree_item_iterator(items, ancestors=False):
     structure = {}
     opts = None
     first_item_level = 0
-    for previous, current, next in previous_current_next(items):
+    for previous, current, next_ in previous_current_next(items):
         if opts is None:
             opts = current._mptt_meta
 
@@ -96,13 +98,17 @@ def tree_item_iterator(items, ancestors=False):
                 structure['ancestors'] = []
 
             first_item_level = current_level
-        if next:
-            structure['closed_levels'] = list(range(current_level,
-                                               getattr(next,
-                                                       opts.level_attr), -1))
+        if next_:
+            structure['closed_levels'] = list(range(
+                current_level,
+                getattr(next_, opts.level_attr),
+                -1))
         else:
             # All remaining levels need to be closed
-            structure['closed_levels'] = list(range(current_level, first_item_level - 1, -1))
+            structure['closed_levels'] = list(range(
+                current_level,
+                first_item_level - 1,
+                -1))
 
         # Return a deep copy of the structure dict so this function can
         # be used in situations where the iterator is consumed
@@ -145,14 +151,14 @@ def drilldown_tree_for_node(node, rel_cls=None, rel_field=None, count_attr=None,
     return itertools.chain(node.get_ancestors(), [node], children)
 
 
-def print_debug_info(qs):
+def print_debug_info(qs, file=None):
     """
     Given an mptt queryset, prints some debug information to stdout.
     Use this when things go wrong.
     Please include the output from this method when filing bug issues.
     """
     opts = qs.model._mptt_meta
-    writer = csv.writer(sys.stdout)
+    writer = csv.writer(sys.stdout if file is None else file)
     header = (
         'pk',
         opts.level_attr,
@@ -168,5 +174,106 @@ def print_debug_info(qs):
         row = []
         for field in header[:-1]:
             row.append(getattr(n, field))
-        row.append('%s%s' % ('- ' * level, text_type(n).encode('utf-8')))
+
+        row_text = '%s%s' % ('- ' * level, text_type(n))
+        # Python 3 expects CSV data to be unicode, Python 2 expects it to be
+        # encoded
+        if PY3:
+            row.append(row_text)
+        else:
+            row.append(row_text.encode('utf-8'))
         writer.writerow(row)
+
+
+def _get_tree_model(model_class):
+    # Find the model that contains the tree fields.
+    # This is a weird way of going about it, but Django doesn't let us access
+    # the fields list to detect where the tree fields actually are,
+    # because the app cache hasn't been loaded yet.
+    # So, it *should* be the *last* concrete MPTTModel subclass in the mro().
+    bases = list(model_class.mro())
+    while bases:
+        b = bases.pop()
+        # NOTE can't use `issubclass(b, MPTTModel)` here because we can't import MPTTModel yet!
+        # So hasattr(b, '_mptt_meta') will have to do.
+        if hasattr(b, '_mptt_meta') and not (b._meta.abstract or b._meta.proxy):
+            return b
+    return None
+
+
+def get_cached_trees(queryset):
+    """
+    Takes a list/queryset of model objects in MPTT left (depth-first) order and
+    caches the children and parent on each node. This allows up and down
+    traversal through the tree without the need for further queries. Use cases
+    include using a recursively included template or arbitrarily traversing
+    trees.
+
+    NOTE: nodes _must_ be passed in the correct (depth-first) order. If they aren't,
+    a ValueError will be raised.
+
+    Returns a list of top-level nodes. If a single tree was provided in its
+    entirety, the list will of course consist of just the tree's root node.
+
+    Aliases to this function are also available:
+
+    ``mptt.templatetags.mptt_tag.cache_tree_children``
+       Use for recursive rendering in templates.
+
+    ``mptt.querysets.TreeQuerySet.get_cached_trees``
+       Useful for chaining with queries; e.g.,
+       `Node.objects.filter(**kwargs).get_cached_trees()`
+    """
+
+    current_path = []
+    top_nodes = []
+
+    if queryset:
+        # Get the model's parent-attribute name
+        parent_attr = queryset[0]._mptt_meta.parent_attr
+        root_level = None
+        for obj in queryset:
+            # Get the current mptt node level
+            node_level = obj.get_level()
+
+            if root_level is None:
+                # First iteration, so set the root level to the top node level
+                root_level = node_level
+
+            if node_level < root_level:
+                # ``queryset`` was a list or other iterable (unable to order),
+                # and was provided in an order other than depth-first
+                raise ValueError(
+                    _('Node %s not in depth-first order') % (type(queryset),)
+                )
+
+            # Set up the attribute on the node that will store cached children,
+            # which is used by ``MPTTModel.get_children``
+            obj._cached_children = []
+
+            # Remove nodes not in the current branch
+            while len(current_path) > node_level - root_level:
+                current_path.pop(-1)
+
+            if node_level == root_level:
+                # Add the root to the list of top nodes, which will be returned
+                top_nodes.append(obj)
+            else:
+                # Cache the parent on the current node, and attach the current
+                # node to the parent's list of children
+                _parent = current_path[-1]
+                setattr(obj, parent_attr, _parent)
+                _parent._cached_children.append(obj)
+
+                if root_level == 0:
+                    # get_ancestors() can use .parent.parent.parent...
+                    setattr(obj, '_mptt_use_cached_ancestors', True)
+
+            # Add the current node to end of the current path - the last node
+            # in the current path is the parent for the next iteration, unless
+            # the next iteration is higher up the tree (a new branch), in which
+            # case the paths below it (e.g., this one) will be removed from the
+            # current path during the next iteration
+            current_path.append(obj)
+
+    return top_nodes

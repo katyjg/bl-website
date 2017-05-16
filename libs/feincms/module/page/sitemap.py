@@ -4,8 +4,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from django.apps import apps
 from django.db.models import Max
-from django.db.models import get_model
 from django.contrib.sitemaps import Sitemap
 
 from feincms import settings
@@ -48,7 +48,7 @@ class PageSitemap(Sitemap):
         if queryset is not None:
             self.queryset = queryset
         else:
-            Page = get_model(*page_model.split('.'))
+            Page = apps.get_model(*page_model.split('.'))
             self.queryset = Page.objects.active()
 
     def items(self):
@@ -82,11 +82,10 @@ class PageSitemap(Sitemap):
                     cnt = 0
                     for p in page.extended_navigation():
                         depth_too_deep = (
-                            self.depth_cutoff > 0
-                            and p.level > self.depth_cutoff)
+                            self.depth_cutoff > 0 and
+                            p.level > self.depth_cutoff)
                         not_in_nav = (
-                            self.navigation_only
-                            and not p.in_navigation)
+                            self.navigation_only and not p.in_navigation)
                         if depth_too_deep or not_in_nav:
                             continue
                         cnt += 1

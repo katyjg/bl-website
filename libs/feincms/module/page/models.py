@@ -4,14 +4,9 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import re
-
-from django.core.cache import cache as django_cache
 from django.core.exceptions import PermissionDenied
-from django.conf import settings as django_settings
 from django.db import models
-from django.db.models import Q, signals
-from django.db.models.loading import get_model
+from django.db.models import Q
 from django.http import Http404
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
@@ -19,17 +14,13 @@ from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel, TreeManager
 
 from feincms import settings
-from feincms.management.checker import check_database_schema
 from feincms.models import create_base_model
 from feincms.module.mixins import ContentModelMixin
 from feincms.module.page import processors
 from feincms.utils.managers import ActiveAwareContentManagerMixin
-
-from feincms.utils import path_to_cache_key, shorten_string
-
-
-REDIRECT_TO_RE = re.compile(
-    r'^(?P<app_label>\w+).(?P<model_name>\w+):(?P<pk>\d+)$')
+from feincms.utils import (
+    shorten_string, match_model_string, get_model_instance
+)
 
 
 # ------------------------------------------------------------------------
@@ -83,15 +74,6 @@ class BasePageManager(ActiveAwareContentManagerMixin, TreeManager):
         paths = ['/']
         path = path.strip('/')
 
-        # Cache path -> page resolving.
-        # We flush the cache entry on page saving, so the cache should always
-        # be up to date.
-
-        ck = Page.path_to_cache_key(path)
-        page = django_cache.get(ck)
-        if page:
-            return page
-
         if path:
             tokens = path.split('/')
             paths += [
@@ -106,7 +88,6 @@ class BasePageManager(ActiveAwareContentManagerMixin, TreeManager):
             if not page.are_ancestors_active():
                 raise IndexError('Parents are inactive.')
 
-            django_cache.set(ck, page)
             return page
 
         except IndexError:
@@ -160,6 +141,8 @@ class BasePageManager(ActiveAwareContentManagerMixin, TreeManager):
 # ------------------------------------------------------------------------
 class PageManager(BasePageManager):
     pass
+
+
 PageManager.add_to_active_filters(Q(active=True))
 
 
@@ -176,6 +159,7 @@ class BasePage(create_base_model(MPTTModel), ContentModelMixin):
         help_text=_('This is used to build the URL for this page'))
     parent = models.ForeignKey(
         'self', verbose_name=_('Parent'), blank=True,
+        on_delete=models.CASCADE,
         null=True, related_name='children')
     # Custom list_filter - see admin/filterspecs.py
     parent.parent_filter = True
@@ -211,6 +195,10 @@ class BasePage(create_base_model(MPTTModel), ContentModelMixin):
         """
 
         if not self.pk:
+            return False
+
+        # No need to hit DB if page itself is inactive
+        if not self.active:
             return False
 
         pages = self.__class__.objects.active().filter(
@@ -265,10 +253,6 @@ class BasePage(create_base_model(MPTTModel), ContentModelMixin):
         cached_page_urls[self.id] = self._cached_url
         super(BasePage, self).save(*args, **kwargs)
 
-        # Okay, we have changed the page -- remove the old stale entry from the
-        # cache
-        self.invalidate_cache()
-
         # If our cached URL changed we need to update all descendants to
         # reflect the changes. Since this is a very expensive operation
         # on large sites we'll check whether our _cached_url actually changed
@@ -299,15 +283,7 @@ class BasePage(create_base_model(MPTTModel), ContentModelMixin):
                     'FEINCMS_SINGLETON_TEMPLATE_DELETION_ALLOWED=False' % {
                         'page_class': self._meta.verbose_name}))
         super(BasePage, self).delete(*args, **kwargs)
-        self.invalidate_cache()
     delete.alters_data = True
-
-    # Remove the page from the url-to-page cache
-    def invalidate_cache(self):
-        ck = self.path_to_cache_key(self._original_cached_url)
-        django_cache.delete(ck)
-        ck = self.path_to_cache_key(self._cached_url)
-        django_cache.delete(ck)
 
     @models.permalink
     def get_absolute_url(self):
@@ -325,26 +301,9 @@ class BasePage(create_base_model(MPTTModel), ContentModelMixin):
         Return either ``redirect_to`` if it is set, or the URL of this page.
         """
 
-        # :-( maybe this could be cleaned up a bit?
-        if not self.redirect_to or REDIRECT_TO_RE.match(self.redirect_to):
-            return self._cached_url
-        return self.redirect_to
-
-    cache_key_components = [
-        lambda p: getattr(django_settings, 'SITE_ID', 0),
-        lambda p: p._django_content_type.id,
-        lambda p: p.id,
-    ]
-
-    def cache_key(self):
-        """
-        Return a string that may be used as cache key for the current page.
-        The cache_key is unique for each content type and content instance.
-
-        This function is here purely for your convenience. FeinCMS itself
-        does not use it in any way.
-        """
-        return '-'.join(str(fn(self)) for fn in self.cache_key_components)
+        if self.redirect_to:
+            return self.get_redirect_to_target()
+        return self._cached_url
 
     def etag(self, request):
         """
@@ -365,42 +324,34 @@ class BasePage(create_base_model(MPTTModel), ContentModelMixin):
         """
         return None
 
-    def get_redirect_to_target(self, request):
+    def get_redirect_to_page(self):
         """
         This might be overriden/extended by extension modules.
         """
 
         if not self.redirect_to:
-            return ''
+            return None
 
         # It might be an identifier for a different object
-        match = REDIRECT_TO_RE.match(self.redirect_to)
+        whereto = match_model_string(self.redirect_to)
+        if not whereto:
+            return None
 
-        # It's not, oh well.
-        if not match:
+        return get_model_instance(*whereto)
+
+    def get_redirect_to_target(self, request=None):
+        """
+        This might be overriden/extended by extension modules.
+        """
+
+        target_page = self.get_redirect_to_page()
+        if target_page is None:
             return self.redirect_to
 
-        matches = match.groupdict()
-        model = get_model(matches['app_label'], matches['model_name'])
-
-        if not model:
-            return self.redirect_to
-
-        try:
-            instance = model._default_manager.get(pk=int(matches['pk']))
-            return instance.get_absolute_url()
-        except models.ObjectDoesNotExist:
-            pass
-
-        return self.redirect_to
+        return target_page.get_absolute_url()
 
     @classmethod
-    def path_to_cache_key(cls, path):
-        prefix = "%s-FOR-URL" % cls.__name__.upper()
-        return path_to_cache_key(path.strip('/'), prefix=prefix)
-
-    @classmethod
-    def register_default_processors(cls, frontend_editing=False):
+    def register_default_processors(cls):
         """
         Register our default request processors for the out-of-the-box
         Page experience.
@@ -410,14 +361,6 @@ class BasePage(create_base_model(MPTTModel), ContentModelMixin):
         cls.register_request_processor(
             processors.extra_context_request_processor, key='extra_context')
 
-        if frontend_editing:
-            cls.register_request_processor(
-                processors.frontendediting_request_processor,
-                key='frontend_editing')
-            cls.register_response_processor(
-                processors.frontendediting_response_processor,
-                key='frontend_editing')
-
 
 # ------------------------------------------------------------------------
 class Page(BasePage):
@@ -425,15 +368,10 @@ class Page(BasePage):
         ordering = ['tree_id', 'lft']
         verbose_name = _('page')
         verbose_name_plural = _('pages')
+        app_label = 'page'
         # not yet # permissions = (("edit_page", _("Can edit page metadata")),)
 
-Page.register_default_processors(
-    frontend_editing=settings.FEINCMS_FRONTEND_EDITING)
 
-if settings.FEINCMS_CHECK_DATABASE_SCHEMA:
-    signals.post_syncdb.connect(
-        check_database_schema(Page, __name__),
-        weak=False)
+Page.register_default_processors()
 
-# ------------------------------------------------------------------------
 # ------------------------------------------------------------------------

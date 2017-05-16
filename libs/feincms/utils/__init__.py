@@ -4,18 +4,14 @@
 
 from __future__ import absolute_import, division, unicode_literals
 
-try:
-    from hashlib import md5
-except ImportError:
-    import md5
+import re
 
-from django.conf import settings as django_settings
+from importlib import import_module
+
+from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import AutoField
-from django.db.models import get_model
 from django.utils import six
-from django.utils.encoding import iri_to_uri
-from django.utils.importlib import import_module
 
 from feincms import settings
 
@@ -41,11 +37,47 @@ def get_object(path, fail_silently=False):
 
 
 # ------------------------------------------------------------------------
-def collect_dict_values(data):
-    dic = {}
-    for key, value in data:
-        dic.setdefault(key, []).append(value)
-    return dic
+def get_model_instance(app_label, model_name, pk):
+    """
+    Find an object instance given an app_label, a model name and the
+    object's pk.
+
+    This is used for page's get_link_target but can be used for other
+    content types that accept e.g. either an internal or external link.
+    """
+
+    model = apps.get_model(app_label, model_name)
+    if not model:
+        return None
+
+    try:
+        instance = model._default_manager.get(pk=pk)
+        return instance
+    except model.DoesNotExist:
+        pass
+
+    return None
+
+
+# ------------------------------------------------------------------------
+REDIRECT_TO_RE = re.compile(
+    r'^(?P<app_label>\w+).(?P<model_name>\w+):(?P<pk>\d+)$')
+
+
+def match_model_string(s):
+    """
+    Try to parse a string in format "app_label.model_name:pk", as is used
+    Page.get_link_target()
+
+    Returns a tuple app_label, model_name, pk or None if the string
+    does not match the expected format.
+    """
+
+    match = REDIRECT_TO_RE.match(s)
+    if not match:
+        return None
+    matches = match.groupdict()
+    return (matches['app_label'], matches['model_name'], int(matches['pk']))
 
 
 # ------------------------------------------------------------------------
@@ -58,8 +90,8 @@ def copy_model_instance(obj, exclude=None):
     exclude = exclude or ()
     initial = dict(
         (f.name, getattr(obj, f.name)) for f in obj._meta.fields
-        if not isinstance(f, AutoField) and f.name not in exclude
-        and f not in obj._meta.parents.values())
+        if not isinstance(f, AutoField) and f.name not in exclude and
+        f not in obj._meta.parents.values())
     return obj.__class__(**initial)
 
 
@@ -74,47 +106,21 @@ def shorten_string(str, max_length=50, ellipsis=' … '):
     if len(str) >= max_length:
         first_part = int(max_length * 0.6)
         next_space = str[first_part:(max_length // 2 - first_part)].find(' ')
-        if (next_space >= 0
-                and first_part + next_space + len(ellipsis) < max_length):
+        if (next_space >= 0 and
+                first_part + next_space + len(ellipsis) < max_length):
             first_part += next_space
         return (
-            str[:first_part]
-            + ellipsis
-            + str[-(max_length - first_part - len(ellipsis)):])
+            str[:first_part] +
+            ellipsis +
+            str[-(max_length - first_part - len(ellipsis)):])
     return str
-
-
-# ------------------------------------------------------------------------
-def path_to_cache_key(path, max_length=200, prefix=""):
-    """
-    Convert a string (path) into something that can be fed to django's
-    cache mechanism as cache key. Ensure the string stays below the
-    max key size, so if too long, hash it and use that instead.
-    """
-
-    path = iri_to_uri(path)
-
-    # logic below borrowed from
-    # http://richwklein.com/2009/08/04/improving-django-cache-part-ii/
-    # via acdha's django-sugar
-    if len(path) > max_length:
-        m = md5()
-        m.update(path)
-        path = m.hexdigest() + '-' + path[:max_length - 20]
-
-    cache_key = 'FEINCMS:%d:%s:%s' % (
-        getattr(django_settings, 'SITE_ID', 0),
-        prefix,
-        path,
-    )
-    return cache_key
 
 
 # ------------------------------------------------------------------------
 def get_singleton(template_key, cls=None, raise_exception=True):
     cls = cls or settings.FEINCMS_DEFAULT_PAGE_MODEL
     try:
-        model = get_model(*cls.split('.'))
+        model = apps.get_model(*cls.split('.'))
         if not model:
             raise ImproperlyConfigured('Cannot load model "%s"' % cls)
         try:

@@ -1,12 +1,12 @@
 from copy import copy
 from inspect import getargspec
 from django import template
-from django.template import Context
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 from django.contrib.admin.templatetags.admin_list import result_list
 from django.contrib.admin.views.main import ALL_VAR, PAGE_VAR
 from django.utils.html import escape
+from suit.compat import tpl_context_class
 
 try:
     # Python 3.
@@ -33,8 +33,9 @@ def paginator_number(cl, i):
     Generates an individual page index link in a paginated list.
     """
     if i == DOT:
-        return '<li class="disabled"><a href="#" onclick="return false;">..' \
-               '.</a></li>'
+        return mark_safe(
+                '<li class="disabled"><a href="#" onclick="return false;">..'
+                '.</a></li>')
     elif i == cl.page_num:
         return mark_safe(
             '<li class="active"><a href="">%d</a></li> ' % (i + 1))
@@ -48,11 +49,18 @@ def paginator_number(cl, i):
 @register.simple_tag
 def paginator_info(cl):
     paginator = cl.paginator
-    entries_from = (
-        (paginator.per_page * cl.page_num) + 1) if paginator.count > 0 else 0
-    entries_to = entries_from - 1 + paginator.per_page
-    if paginator.count < entries_to:
+
+    # If we show all rows of list (without pagination)
+    if cl.show_all and cl.can_show_all:
+        entries_from = 1 if paginator.count > 0 else 0
         entries_to = paginator.count
+    else:
+        entries_from = (
+            (paginator.per_page * cl.page_num) + 1) if paginator.count > 0 else 0
+        entries_to = entries_from - 1 + paginator.per_page
+        if paginator.count < entries_to:
+            entries_to = paginator.count
+
     return '%s - %s' % (entries_from, entries_to)
 
 
@@ -142,7 +150,7 @@ def suit_list_filter_select(cl, spec):
                 choice['additional'] = '%s=%s' % (key, value)
             i += 1
 
-    return tpl.render(Context({
+    return tpl.render(tpl_context_class({
         'field_name': field_key,
         'title': spec.title,
         'choices': choices,

@@ -1,4 +1,4 @@
-<tr {% if forloop.first %} class="first" {% endif %}{% if detail_url %}data-detail-url='{{ detail_url }}'{% endif %}>
+<tr {% for attr, value in row_attrs.items %}{{ attr }}="{{ value }}"{% endfor %}>
 {% for field in fields %}
     <td {% if field.style %}class="{{field.style}}"{% endif %}>{{ field.data }}</td>
 {% endfor %}

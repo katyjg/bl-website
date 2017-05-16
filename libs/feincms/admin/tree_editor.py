@@ -10,6 +10,7 @@ import logging
 
 from django.contrib.admin.views import main
 from django.contrib.admin.actions import delete_selected
+from django.contrib.auth import get_permission_codename
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db.models import Q
 from django.http import (
@@ -24,7 +25,6 @@ from mptt.exceptions import InvalidMove
 from mptt.forms import MPTTAdminForm
 
 from feincms import settings
-from feincms._internal import get_permission_codename
 from feincms.extensions import ExtensionModelAdmin
 
 
@@ -66,27 +66,16 @@ def _build_tree_structure(queryset):
     mptt_opts = queryset.model._mptt_meta
     items = queryset.order_by(
         mptt_opts.tree_id_attr,
-        mptt_opts.left_attr)
-    values_list = items.values_list(
+        mptt_opts.left_attr,
+    ).values_list(
         "pk",
-        "%s_id" % mptt_opts.parent_attr)
-    for p_id, parent_id in values_list:
-        all_nodes[p_id] = []
-
-        if parent_id:
-            if parent_id not in all_nodes:
-                # This happens very rarely, but protect against parents that
-                # we have yet to iteratove over. Happens with broken MPTT
-                # hierarchy.
-                all_nodes[parent_id] = []
-                logger.warn(
-                    "Incorrect MPTT hierarchy for %s, node %d has left_attr"
-                    " < than one of its parents. Try rebuilding mptt data (use"
-                    " '%s._default_manager.rebuild()').",
-                    queryset.model.__name__, p_id, queryset.model.__name__)
-
-            all_nodes[parent_id].append(p_id)
-
+        "%s_id" % mptt_opts.parent_attr,
+    )
+    for p_id, parent_id in items:
+        all_nodes.setdefault(
+            str(parent_id) if parent_id else 0,
+            [],
+        ).append(p_id)
     return all_nodes
 
 
@@ -122,7 +111,7 @@ def ajax_editable_boolean_cell(item, attr, text='', override=None):
 
     a.insert(0, '<div id="wrap_%s_%d">' % (attr, item.pk))
     a.append('</div>')
-    return ''.join(a)
+    return mark_safe(''.join(a))
 
 
 # ------------------------------------------------------------------------
@@ -140,7 +129,6 @@ def ajax_editable_boolean(attr, short_description):
     """
     def _fn(self, item):
         return ajax_editable_boolean_cell(item, attr)
-    _fn.allow_tags = True
     _fn.short_description = short_description
     _fn.editable_boolean_field = attr
     return _fn
@@ -157,9 +145,9 @@ class ChangeList(main.ChangeList):
         self.user = request.user
         super(ChangeList, self).__init__(request, *args, **kwargs)
 
-    def get_query_set(self, *args, **kwargs):
+    def get_queryset(self, *args, **kwargs):
         mptt_opts = self.model._mptt_meta
-        qs = super(ChangeList, self).get_query_set(*args, **kwargs).\
+        qs = super(ChangeList, self).get_queryset(*args, **kwargs).\
             order_by(mptt_opts.tree_id_attr, mptt_opts.left_attr)
         # Force has_filters, so that the expand/collapse in sidebar is visible
         self.has_filters = True
@@ -173,7 +161,7 @@ class ChangeList(main.ChangeList):
                     mptt_opts.tree_id_attr: tree_id,
                     mptt_opts.left_attr + '__lte': lft,
                     mptt_opts.right_attr + '__gte': rght,
-                }) for lft, rght, tree_id in self.query_set.values_list(
+                }) for lft, rght, tree_id in self.queryset.values_list(
                     mptt_opts.left_attr,
                     mptt_opts.right_attr,
                     mptt_opts.tree_id_attr,
@@ -188,14 +176,9 @@ class ChangeList(main.ChangeList):
                 # Note: Django ORM is smart enough to drop additional
                 # clauses if the initial query set is unfiltered. This
                 # is good.
-                queryset = self.query_set | self.model._default_manager.filter(
-                    reduce(lambda p, q: p | q, clauses))
-
-                if hasattr(self, 'queryset'):
-                    self.queryset = queryset
-                else:
-                    # Django 1.5 and older
-                    self.query_set = queryset
+                self.queryset |= self.model._default_manager.filter(
+                    reduce(lambda p, q: p | q, clauses),
+                )
 
         super(ChangeList, self).get_results(request)
 
@@ -206,8 +189,8 @@ class ChangeList(main.ChangeList):
                 request, item)
 
             item.feincms_addable = (
-                item.feincms_changeable
-                and self.model_admin.has_add_permission(request, item))
+                item.feincms_changeable and
+                self.model_admin.has_add_permission(request, item))
 
 
 # ------------------------------------------------------------------------
@@ -276,12 +259,16 @@ class TreeEditor(ExtensionModelAdmin):
         changeable_class = ''
         if not self.changeable(item):
             changeable_class = ' tree-item-not-editable'
+        tree_root_class = ''
+        if not item.parent:
+            tree_root_class = ' tree-root'
 
         r += (
-            '<span id="page_marker-%d" class="page_marker%s"'
+            '<span id="page_marker-%d" class="page_marker%s%s"'
             ' style="width: %dpx;">&nbsp;</span>&nbsp;') % (
             item.pk,
             changeable_class,
+            tree_root_class,
             14 + getattr(item, mptt_opts.level_attr) * 18)
 
 #        r += '<span tabindex="0">'
@@ -292,7 +279,6 @@ class TreeEditor(ExtensionModelAdmin):
 #        r += '</span>'
         return mark_safe(r)
     indented_short_title.short_description = _('title')
-    indented_short_title.allow_tags = True
 
     def _collect_editable_booleans(self):
         """
@@ -323,17 +309,6 @@ class TreeEditor(ExtensionModelAdmin):
                             ajax_editable_boolean_cell(instance, attr)]
                     result_func = _fn(attr)
                 self._ajax_editable_booleans[attr] = result_func
-
-    def _refresh_changelist_caches(self):
-        """
-        Refresh information used to show the changelist tree structure such as
-        inherited active/inactive states etc.
-
-        XXX: This is somewhat hacky, but since it's an internal method, so be
-        it.
-        """
-
-        pass
 
     def _toggle_boolean(self, request):
         """
@@ -380,9 +355,6 @@ class TreeEditor(ExtensionModelAdmin):
             setattr(obj, attr, new_state)
             obj.save()
 
-            # ???: Perhaps better a post_save signal?
-            self._refresh_changelist_caches()
-
             # Construct html snippets to send back to client for status update
             data = self._ajax_editable_booleans[attr](self, obj)
 
@@ -421,14 +393,14 @@ class TreeEditor(ExtensionModelAdmin):
 
             return HttpResponseBadRequest('Oops. AJAX request not understood.')
 
-        self._refresh_changelist_caches()
-
         extra_context = extra_context or {}
-        queryset = (
-            self.get_queryset(request) if hasattr(self, 'get_queryset')
-            else self.queryset(request))
         extra_context['tree_structure'] = mark_safe(
-            json.dumps(_build_tree_structure(queryset)))
+            json.dumps(_build_tree_structure(self.get_queryset(request))))
+        extra_context['node_levels'] = mark_safe(json.dumps(
+            dict(self.get_queryset(request).order_by().values_list(
+                'pk', self.model._mptt_meta.level_attr
+            ))
+        ))
 
         return super(TreeEditor, self).changelist_view(
             request, extra_context, *args, **kwargs)
@@ -480,9 +452,7 @@ class TreeEditor(ExtensionModelAdmin):
         else:
             tree_manager = self.model._tree_manager
 
-        queryset = (
-            self.get_queryset(request) if hasattr(self, 'get_queryset')
-            else self.queryset(request))
+        queryset = self.get_queryset(request)
         cut_item = queryset.get(pk=request.POST.get('cut_item'))
         pasted_on = queryset.get(pk=request.POST.get('pasted_on'))
         position = request.POST.get('position')
@@ -518,8 +488,7 @@ class TreeEditor(ExtensionModelAdmin):
         return []
 
     def actions_column(self, instance):
-        return ' '.join(self._actions_column(instance))
-    actions_column.allow_tags = True
+        return mark_safe(' '.join(self._actions_column(instance)))
     actions_column.short_description = _('actions')
 
     def delete_selected_tree(self, modeladmin, request, queryset):

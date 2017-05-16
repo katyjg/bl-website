@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 import re
 
-from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.safestring import mark_safe
 
 from crispy_forms.compatibility import string_types
+from crispy_forms.exceptions import FormHelpersException
 from crispy_forms.layout import Layout
 from crispy_forms.layout_slice import LayoutSlice
-from crispy_forms.utils import render_field, flatatt, TEMPLATE_PACK
-from crispy_forms.exceptions import FormHelpersException
+from crispy_forms.utils import (
+    TEMPLATE_PACK, flatatt, list_difference, list_intersection, render_field,
+)
+
+try:
+    from django.urls import reverse, NoReverseMatch
+except ImportError:
+    # Django < 1.10
+    from django.core.urlresolvers import reverse, NoReverseMatch
 
 
 class DynamicLayoutHandler(object):
@@ -131,9 +138,12 @@ class FormHelper(DynamicLayoutHandler):
         **form_id**: Generates a form id for dom identification.
             If no id provided then no id attribute is created on the form.
 
-        **form_class**: String containing separated CSS clases to be applied
+        **form_class**: String containing separated CSS classes to be applied
             to form class attribute. The form will always have by default
             'uniForm' class.
+
+        **form_group_wrapper_class**: String containing separated CSS classes to be applied
+            to each row of inputs.
 
         **form_tag**: It specifies if <form></form> tags should be rendered when using a Layout.
             If set to False it renders the form without the <form></form> tags. Defaults to True.
@@ -147,6 +157,9 @@ class FormHelper(DynamicLayoutHandler):
 
         **form_style**: Uni-form has two built in different form styles. You can choose
             your favorite. This can be set to "default" or "inline". Defaults to "default".
+
+        **include_media**: Whether to automatically include form media. Set to False if
+            you want to manually include form media outside the form. Defaults to True.
 
     Public Methods:
 
@@ -186,6 +199,7 @@ class FormHelper(DynamicLayoutHandler):
     form = None
     form_id = ''
     form_class = ''
+    form_group_wrapper_class = ''
     layout = None
     form_tag = True
     form_error_title = None
@@ -202,8 +216,8 @@ class FormHelper(DynamicLayoutHandler):
     field_template = None
     disable_csrf = False
     label_class = ''
-    label_size = ''
     field_class = ''
+    include_media = True
 
     def __init__(self, form=None):
         self.attrs = {}
@@ -216,64 +230,62 @@ class FormHelper(DynamicLayoutHandler):
     def build_default_layout(self, form):
         return Layout(*form.fields.keys())
 
-    def get_form_method(self):
+    @property
+    def form_method(self):
         return self._form_method
 
-    def set_form_method(self, method):
+    @form_method.setter
+    def form_method(self, method):
         if method.lower() not in ('get', 'post'):
             raise FormHelpersException('Only GET and POST are valid in the \
                     form_method helper attribute')
 
         self._form_method = method.lower()
 
-    # we set properties the old way because we want to support pre-2.6 python
-    form_method = property(get_form_method, set_form_method)
-
-    def get_form_action(self):
+    @property
+    def form_action(self):
         try:
             return reverse(self._form_action)
         except NoReverseMatch:
             return self._form_action
 
-    def set_form_action(self, action):
+    @form_action.setter
+    def form_action(self, action):
         self._form_action = action
 
-    # we set properties the old way because we want to support pre-2.6 python
-    form_action = property(get_form_action, set_form_action)
-
-    def get_form_style(self):
+    @property
+    def form_style(self):
         if self._form_style == "default":
             return ''
 
         if self._form_style == "inline":
             return 'inlineLabels'
 
-    def set_form_style(self, style):
+    @form_style.setter
+    def form_style(self, style):
         if style.lower() not in ('default', 'inline'):
             raise FormHelpersException('Only default and inline are valid in the \
                     form_style helper attribute')
 
         self._form_style = style.lower()
 
-    form_style = property(get_form_style, set_form_style)
-
-    def get_help_text_inline(self):
+    @property
+    def help_text_inline(self):
         return self._help_text_inline
 
-    def set_help_text_inline(self, flag):
+    @help_text_inline.setter
+    def help_text_inline(self, flag):
         self._help_text_inline = flag
         self._error_text_inline = not flag
 
-    help_text_inline = property(get_help_text_inline, set_help_text_inline)
-
-    def get_error_text_inline(self):
+    @property
+    def error_text_inline(self):
         return self._error_text_inline
 
-    def set_error_text_inline(self, flag):
+    @error_text_inline.setter
+    def error_text_inline(self, flag):
         self._error_text_inline = flag
         self._help_text_inline = not flag
-
-    error_text_inline = property(get_error_text_inline, set_error_text_inline)
 
     def add_input(self, input_object):
         self.inputs.append(input_object)
@@ -288,7 +300,7 @@ class FormHelper(DynamicLayoutHandler):
         form.rendered_fields = set()
         form.crispy_field_template = self.field_template
 
-        # This renders the specifed Layout strictly
+        # This renders the specified Layout strictly
         html = self.layout.render(
             form,
             self.form_style,
@@ -318,14 +330,23 @@ class FormHelper(DynamicLayoutHandler):
         # we suppose they need to be rendered
         if hasattr(form, 'Meta'):
             if hasattr(form.Meta, 'fields'):
-                current_fields = set(getattr(form, 'fields', []))
-                meta_fields = set(getattr(form.Meta, 'fields'))
+                current_fields = tuple(getattr(form, 'fields', {}).keys())
+                meta_fields = getattr(form.Meta, 'fields')
 
-                fields_to_render = current_fields & meta_fields
-                left_fields_to_render = fields_to_render - form.rendered_fields
+                fields_to_render = list_intersection(current_fields, meta_fields)
+                left_fields_to_render = list_difference(fields_to_render, form.rendered_fields)
 
                 for field in left_fields_to_render:
-                    html += render_field(field, form, self.form_style, context)
+                    # We still respect the configuration of the helper
+                    # regarding which fields to render
+                    if (
+                        self.render_unmentioned_fields or
+                        (self.render_hidden_fields and
+                         form.fields[field].widget.is_hidden) or
+                        (self.render_required_fields and
+                         form.fields[field].widget.is_required)
+                    ):
+                        html += render_field(field, form, self.form_style, context)
 
         return mark_safe(html)
 
@@ -333,24 +354,23 @@ class FormHelper(DynamicLayoutHandler):
         """
         Used by crispy_forms_tags to get helper attributes
         """
-        items = {}
-        items['form_method'] = self.form_method.strip()
-        items['form_tag'] = self.form_tag
-        items['form_style'] = self.form_style.strip()
-        items['form_show_errors'] = self.form_show_errors
-        items['help_text_inline'] = self.help_text_inline
-        items['error_text_inline'] = self.error_text_inline
-        items['html5_required'] = self.html5_required
-        items['form_show_labels'] = self.form_show_labels
-        items['disable_csrf'] = self.disable_csrf
-        items['label_class'] = self.label_class
-        items['field_class'] = self.field_class
-        label_size_match = re.match('col-lg-(\d+)', self.label_class)
-        if label_size_match:
-            try:
-                items['label_size'] = int(label_size_match.groups()[0])
-            except:
-                pass
+        items = {
+            'form_method': self.form_method.strip(),
+            'form_tag': self.form_tag,
+            'form_style': self.form_style.strip(),
+            'form_show_errors': self.form_show_errors,
+            'help_text_inline': self.help_text_inline,
+            'error_text_inline': self.error_text_inline,
+            'html5_required': self.html5_required,
+            'form_show_labels': self.form_show_labels,
+            'disable_csrf': self.disable_csrf,
+            'label_class': self.label_class,
+            'field_class': self.field_class,
+            'include_media': self.include_media
+        }
+        bootstrap_size_match = re.findall('col-(lg|md|sm|xs)-(\d+)', self.label_class)
+        if bootstrap_size_match:
+            items['bootstrap_checkbox_offsets'] = ['col-%s-offset-%s' % m for m in bootstrap_size_match]
 
         items['attrs'] = {}
         if self.attrs:
@@ -368,6 +388,8 @@ class FormHelper(DynamicLayoutHandler):
         else:
             if template_pack == 'uni_form':
                 items['attrs']['class'] = self.attrs.get('class', '') + " uniForm"
+        if self.form_group_wrapper_class:
+            items['attrs']['form_group_wrapper_class'] = self.form_group_wrapper_class
 
         items['flat_attrs'] = flatatt(items['attrs'])
 

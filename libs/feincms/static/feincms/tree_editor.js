@@ -7,25 +7,23 @@ feincms.jQuery.ajaxSetup({
     crossDomain: false,  // obviates need for sameOrigin test
     beforeSend: function(xhr, settings) {
         if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))) {
-            xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
         }
     }
 });
 
+// IE<9 lacks Array.prototype.indexOf
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(needle) {
+        for (i=0, l=this.length; i<l; ++i) {
+            if (this[i] === needle) return i;
+        }
+        return -1;
+    }
+}
+
+
 feincms.jQuery(function($){
-    // recolor tree after expand/collapse
-    $.extend($.fn.recolorRows = function() {
-        $('tr:visible:even', this).removeClass('row1').addClass('row2');
-        $('tr:visible:odd', this).removeClass('row2').addClass('row1');
-
-        /* Mark inactive rows */
-        $('tr.item_inactive').removeClass('item_inactive');
-        var in_wrap_active = $('div[id^=wrap_active_]');
-        var in_wrap_input = $('input', in_wrap_active);
-        $(':checkbox:not(:checked)', in_wrap_input).parents('tr').addClass('item_inactive');
-        $('img', in_wrap_active).parents('tr').addClass('item_inactive');
-    });
-
     $(document.body).on('click', '[data-inplace]', function() {
         var elem = $(this),
             id = elem.data('inplace-id'),
@@ -45,7 +43,6 @@ feincms.jQuery(function($){
                     var r_id = $(html).attr('id');
                     $('#' + r_id).replaceWith(html);
                 });
-                $('#result_list tbody').recolorRows();
             },
 
             error: function(xhr, status, err) {
@@ -86,17 +83,17 @@ feincms.jQuery(function($){
 
     // toggle children
     function doToggle(id, show) {
-        var children = feincms.tree_structure[id];
+        var children = feincms.tree_structure[id] || [];
         for (var i=0; i<children.length; ++i) {
             var childId = children[i];
             if(show) {
-                $('#item-' + childId).show();
+                $('#page_marker-' + childId).closest('tr').show();
                 // only reveal children if current node is not collapsed
                 if(isExpandedNode(childId)) {
                     doToggle(childId, show);
                 }
             } else {
-                $('#item-' + childId).hide();
+                $('#page_marker-' + childId).closest('tr').hide();
                 // always recursively hide children
                 doToggle(childId, show);
             }
@@ -104,7 +101,8 @@ feincms.jQuery(function($){
     }
 
     function rowLevel($row) {
-        return parseInt($row.attr('rel').replace(/[^\d]/ig, ''));
+        var level = feincms.node_levels[extractItemId($row.find('.page_marker').attr('id'))];
+        return (level || 0) + 1;
     }
 
     /*
@@ -116,18 +114,8 @@ feincms.jQuery(function($){
      *
      */
     $.extend($.fn.feinTree = function() {
-        $('tr', this).each(function(i, el) {
-            // adds 'children' class to all parents
-            var pageId = extractItemId($('.page_marker', el).attr('id'));
-            $(el).attr('id', 'item-' + pageId);
-            if (feincms.tree_structure[pageId].length) {
-                    $('.page_marker', el).addClass('children');
-            }
-
-            // set 'level' on rel attribute
-            var pixels = $('.page_marker', el).css('width').replace(/[^\d]/ig,"");
-            var rel = Math.round(pixels/18);
-            $(el).attr('rel', rel);
+        $.each(feincms.tree_structure, function(key, value) {
+          $('#page_marker-' + key).addClass('children');
         });
 
         $('div.drag_handle').bind('mousedown', function(event) {
@@ -198,7 +186,7 @@ feincms.jQuery(function($){
                         }
 
                         if(targetRow) {
-                            var padding = 37 + element.attr('rel') * CHILD_PAD + (targetLoc == CHILD ? CHILD_PAD : 0 );
+                            var padding = 37 + rowLevel(element) * CHILD_PAD + (targetLoc == CHILD ? CHILD_PAD : 0 );
 
                             $("#drag_line").css({
                                 'width': targetRow.width() - padding,
@@ -232,7 +220,10 @@ feincms.jQuery(function($){
                     var pastedOn = extractItemId(moveTo.relativeTo.find('.page_marker').attr('id'));
                     // get out early if items are the same
                     if(cutItem != pastedOn) {
-                        var isParent = (moveTo.relativeTo.next().attr('rel') > moveTo.relativeTo.attr('rel'));
+                        var isParent = (
+                           rowLevel(moveTo.relativeTo.next()) >
+                           rowLevel(moveTo.relativeTo));
+
                         var position = '';
 
                         // determine position
@@ -270,19 +261,14 @@ feincms.jQuery(function($){
        the current state of the tree so we can restore it on a reload.
        Note: We might use html5's session storage? */
     function storeCollapsedNodes(nodes) {
-        $.cookie('feincms_collapsed_nodes', "[" + nodes.join(",") + "]", { expires: 7 });
+        Cookies.set(
+            'feincms_collapsed_nodes',
+            nodes,
+            {expires: 7});
     }
 
     function retrieveCollapsedNodes() {
-        var n = $.cookie('feincms_collapsed_nodes');
-        if(n != null) {
-            try {
-                n = $.parseJSON(n);
-            } catch(e) {
-                n = null;
-            }
-        }
-        return n;
+        return Cookies.getJSON('feincms_collapsed_nodes');
     }
 
     function expandOrCollapseNode(item) {
@@ -323,7 +309,6 @@ feincms.jQuery(function($){
             });
             storeCollapsedNodes(feincms.collapsed_nodes);
             rlist.show();
-            $('tbody', rlist).recolorRows();
         });
         return this;
     });
@@ -344,7 +329,6 @@ feincms.jQuery(function($){
             });
             storeCollapsedNodes([]);
             rlist.show();
-            $('tbody', rlist).recolorRows();
         });
         return this;
     });
@@ -372,7 +356,6 @@ feincms.jQuery(function($){
             case 37: // left
             case 39: // right
                 expandOrCollapseNode($(this).find('.page_marker'));
-                $('#result_list tbody').recolorRows();
                 break;
             case 13: // return
                 where_to = extractItemId($('span', this).attr('id'));
@@ -391,13 +374,11 @@ feincms.jQuery(function($){
         rlist.hide();
         rlist_tbody.feinTree();
 
-        rlist.on('click', 'span.page_marker', function(event) {
+        rlist.find('.page_marker').on('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
 
             expandOrCollapseNode($(this));
-
-            rlist_tbody.recolorRows();
         });
 
         $('#collapse_entire_tree').bindCollapseTreeEvent();
@@ -427,5 +408,4 @@ feincms.jQuery(function($){
     }
 
     rlist.show();
-    $('tbody', rlist).recolorRows();
 });

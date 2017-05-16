@@ -1,14 +1,15 @@
 from __future__ import absolute_import, unicode_literals
 
+from collections import OrderedDict
+
 from django.http import Http404
 from django.template import Template
-from django.utils.datastructures import SortedDict
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic.base import TemplateResponseMixin
 
 from feincms import settings
-from feincms.views.decorators import standalone
+from feincms.apps import standalone
 
 
 class ContentModelMixin(object):
@@ -30,7 +31,7 @@ class ContentModelMixin(object):
         always receives two arguments, the current object and the request.
         """
         if cls.request_processors is None:
-            cls.request_processors = SortedDict()
+            cls.request_processors = OrderedDict()
         cls.request_processors[fn if key is None else key] = fn
 
     @classmethod
@@ -41,7 +42,7 @@ class ContentModelMixin(object):
         request and the response.
         """
         if cls.response_processors is None:
-            cls.response_processors = SortedDict()
+            cls.response_processors = OrderedDict()
         cls.response_processors[fn if key is None else key] = fn
 
     # TODO Implement admin_urlname templatetag protocol
@@ -57,11 +58,6 @@ class ContentModelMixin(object):
 
     @property
     def model_name(self):
-        "See app_label"
-        return self.__class__.__name__.lower()
-
-    @property
-    def module_name(self):
         "See app_label"
         return self.__class__.__name__.lower()
 
@@ -195,11 +191,11 @@ class ContentObjectMixin(TemplateResponseMixin):
 
             extra_context = self.request._feincms_extra_context
 
-            if (not settings.FEINCMS_ALLOW_EXTRA_PATH
-                    and extra_context.get('extra_path', '/') != '/'
+            if (not settings.FEINCMS_ALLOW_EXTRA_PATH and
+                    extra_context.get('extra_path', '/') != '/' and
                     # XXX Already inside application content.  I'm not sure
                     # whether this fix is really correct...
-                    and not extra_context.get('app_config')):
+                    not extra_context.get('app_config')):
                 raise Http404(str('Not found (extra_path %r on %r)') % (
                     extra_context.get('extra_path', '/'),
                     self.object,

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+from crispy_forms.bootstrap import Container
 from crispy_forms.compatibility import integer_types, string_types
 from crispy_forms.exceptions import DynamicError
 from crispy_forms.layout import Fieldset, MultiField
-from crispy_forms.bootstrap import Container
 
 
 class LayoutSlice(object):
@@ -12,7 +12,7 @@ class LayoutSlice(object):
     def __init__(self, layout, key):
         self.layout = layout
         if isinstance(key, integer_types):
-            self.slice = slice(key, key+1, 1)
+            self.slice = slice(key, key + 1, 1)
         else:
             self.slice = key
 
@@ -23,7 +23,7 @@ class LayoutSlice(object):
         """
         if args:
             if isinstance(fields, list):
-                fields= tuple(fields)
+                fields = tuple(fields)
             else:
                 fields = (fields,)
 

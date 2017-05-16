@@ -1,3 +1,13 @@
+// IE<9 lacks Array.prototype.indexOf
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(needle) {
+        for (i=0, l=this.length; i<l; ++i) {
+            if (this[i] === needle) return i;
+        }
+        return -1;
+    }
+}
+
 (function($){
     // Patch up urlify maps to generate nicer slugs in german
     if(typeof(Downcoder) != "undefined"){
@@ -28,7 +38,7 @@
         if($('.delete', form).length || !$(original_id_id, form).val()) {
             wrp.push('<img class="item-delete" src="'+IMG_DELETELINK_PATH+'" />');
         }
-        wrp.push('<span class="handle"></span> <span class="modname">'+modname+'</span> &nbsp;(<span class="collapse">'+feincms_gettext('Hide')+'</span>)</h2>');
+        wrp.push('<span class="handle"></span> <span class="modname">'+modname+'</span></h2>');
         wrp.push('<div class="item-content"></div>');
         fieldset.append(wrp.join(""));
 
@@ -49,74 +59,44 @@
 
     function update_item_controls(item, target_region_id){
         var item_controls = item.find(".item-controls");
-        item_controls.find(".item-control-units").remove(); // Remove all controls, if any.
-
-        // (Re)build controls
-        var control_units = $("<div>").addClass("item-control-units").appendTo(item_controls);
+        item_controls.empty();
 
         // Insert control unit
         var insert_control = $("<div>").addClass("item-control-unit");
         var select_content = SELECTS[REGION_MAP[target_region_id]].clone();
-        var insert_after = $("<input>").attr("type", "button").addClass("button").attr("value", feincms_gettext('After')).click(function(){
-            var modvar = select_content.val();
-            var modname = select_content.find("option:selected").html();
-            var new_fieldset = create_new_fieldset_from_module(modvar, modname);
-            add_fieldset(target_region_id, new_fieldset, {where:'insertAfter', relative_to:item, animate:true});
-            update_item_controls(new_fieldset, target_region_id);
-        });
-        var insert_before = $("<input>").attr("type", "button").addClass("button").attr("value", feincms_gettext('Before')).click(function(){
+
+        select_content.change(function() {
             var modvar = select_content.val();
             var modname = select_content.find("option:selected").html();
             var new_fieldset = create_new_fieldset_from_module(modvar, modname);
             add_fieldset(target_region_id, new_fieldset, {where:'insertBefore', relative_to:item, animate:true});
             update_item_controls(new_fieldset, target_region_id);
+
+            select_content.val('');
         });
-        insert_control.append("<span>" + feincms_gettext('Insert new:') + "</span>").append(" ").append(select_content).append(" ").append(insert_before).append(insert_after);
-        control_units.append(insert_control);
+        insert_control.append(select_content);
+        item_controls.append(insert_control);
 
         // Move control unit
         if (REGION_MAP.length > 1) {
             var wrp = [];
-            wrp.push('<div class="item-control-unit move-control"><span>'+feincms_gettext('Move to')+': </span><select name="item-move-select">');
+            wrp.push('<div class="item-control-unit move-control"><select name="item-move-select">');
+            wrp.push('<option disabled selected>' + feincms_gettext('MOVE_TO_REGION') + '</option>');
 
             for (var i=0; i < REGION_MAP.length; i++) {
                 if (i != target_region_id) { // Do not put the target region in the list
                     wrp.push('<option value="'+REGION_MAP[i]+'">'+REGION_NAMES[i]+'</option>');
                 }
             }
-            wrp.push('</select><input type="button" class="button" value="'+feincms_gettext('Move')+'" /></div>');
+            wrp.push('</select>');
 
             var move_control = $(wrp.join(""));
-            move_control.find(".button").click(function(){
-                var move_to = $(this).prev().val();
+            move_control.find("select").change(function(){
+                var move_to = $(this).val();
                 move_item(REGION_MAP.indexOf(move_to), item);
             });
-            control_units.append(move_control); // Add new one
+            item_controls.append(move_control); // Add new one
         }
-
-        // Controls animations
-        item_controls.find("*").hide();
-        var is_hidden = true;
-        var mouseenter_timeout;
-        var mouseleave_timeout;
-        function hide_controls() {
-            item_controls.find("*").fadeOut(400);
-            is_hidden = true;
-        }
-        function show_controls() {
-            item_controls.find("*").fadeIn(200);
-            is_hidden = false;
-        }
-        item_controls.unbind('mouseleave'); // Unbind in case it's already been bound.
-        item_controls.mouseleave(function() {
-            clearTimeout(mouseenter_timeout);
-            mouseleave_timeout = setTimeout(hide_controls, 200);
-        });
-        item_controls.unbind('mouseenter'); // Unbind in case it's already been bound.
-        item_controls.mouseenter(function() {
-            clearTimeout(mouseleave_timeout);
-            if (is_hidden) mouseenter_timeout = setTimeout(show_controls, 200); // To prevent the control bar to appear when mouse accidentally enters the zone.
-        });
     }
 
 
@@ -283,6 +263,21 @@
             var $select = $('select[name=order-machine-add-select]', this),
                 to_remove = [];
 
+            $select.change(function() {
+                var modvar = $select.val();
+                // bail out early if no content type selected
+                if (!modvar)
+                    return;
+
+                var modname = $select.find("option:selected").html();
+                var new_fieldset = create_new_fieldset_from_module(modvar, modname);
+                add_fieldset(ACTIVE_REGION, new_fieldset, {where:'append', animate:true});
+                update_item_controls(new_fieldset, ACTIVE_REGION);
+
+                $select.val('');
+            });
+
+
             for (var i=0; i<CONTENT_TYPE_BUTTONS.length; i++) {
                 var c = CONTENT_TYPE_BUTTONS[i],
                     $option = $select.find('option[value=' + c.type + ']');
@@ -311,7 +306,7 @@
                     };
                 })(c));
 
-                $select.before($button);
+                $select.parent().append($button);
 
                 if (!c.keep)
                     to_remove.push($option);
@@ -377,10 +372,7 @@
 
         options_fieldsets.each(function(idx, elem) {
             var option_title = $('h2', $(elem)).text();
-            var c = $(elem).children('div');
             var id_base = 'extension_option_'+ idx;
-
-            $(elem).remove();
 
             var paren = option_title.indexOf(' (');
             if(paren > 0)
@@ -389,14 +381,15 @@
             option_wrapper.append('<div class="navi_tab" id="'+ id_base +'_tab">' +
                                    option_title +
                                    '</div>');
-            //CLS-MF: var panel = $('<fieldset class="module aligned" style="clear: both; display: none" id="' + id_base + '_body"></fieldset>');
-            var panel = $('<fieldset class="module aligned" style="display: none" id="' + id_base + '_body"></fieldset>');
-           panel.html(c);
+            var panel = $('<fieldset class="module aligned" style="clear: both; display: none" id="' + id_base + '_body"></fieldset>');
+            var $elem = $(elem);
+            panel.append($elem.children('div'));
+            $elem.remove(); // Remove the rest
             panels.push(panel);
         });
 
         option_wrapper.append('<div id="extension_options" />');
-        $('#extension_options').html(panels);
+        $('#extension_options').append(panels);
 
         create_tabbed('#extension_options_wrapper', '#extension_options');
         /* Done morphing extension options into tabs */
@@ -404,23 +397,9 @@
         // save content type selects for later use
         save_content_type_selects();
 
-        $("input.order-machine-add-button").click(function(){
-            var select_content = $(this).prev();
-            var modvar = select_content.val();
-
-            // bail out early if no content type selected
-            if (!modvar)
-                return;
-
-            var modname = select_content.find("option:selected").html();
-            var new_fieldset = create_new_fieldset_from_module(modvar, modname);
-            add_fieldset(ACTIVE_REGION, new_fieldset, {where:'append', animate:true});
-            update_item_controls(new_fieldset, ACTIVE_REGION);
-        });
-
         $(document.body).on('click', 'h2 img.item-delete', function() {
             var item = $(this).parents(".order-item");
-            if (confirm(DELETE_MESSAGES[0])) {
+            if (confirm(feincms_gettext('DELETE_MESSAGE'))) {
                 var in_database = item.find(".delete-field").length;
                 if(in_database==0){ // remove on client-side only
                     var id = item.find(".item-content > div").attr('id');
@@ -452,14 +431,6 @@
             }
         });
 
-        $(document.body).on('click', 'h2 span.collapse', function() {
-            var node = this;
-            $(this.parentNode.parentNode).children('.item-content').slideToggle(function(){
-                $(node).text(feincms_gettext($(this).is(':visible') ? 'Hide' : 'Show'));
-            });
-            return false;
-        });
-
         current_template = $('input[name=template_key][checked], select[name=template_key]').val();
 
         function on_template_key_changed(){
@@ -479,10 +450,10 @@
                 if(new_regions.indexOf(current_regions[i])==-1)
                     not_in_new.push(current_regions[i]);
 
-            var msg = CHANGE_TEMPLATE_MESSAGES[1];
+            var msg = feincms_gettext('CHANGE_TEMPLATE');
 
             if(not_in_new.length) {
-                msg = interpolate(CHANGE_TEMPLATE_MESSAGES[2], {
+                msg = interpolate(feincms_gettext('CHANGE_TEMPLATE_WITH_MOVE'), {
                     'source_regions': not_in_new,
                     'target_region': new_regions[0]
                 }, true);
@@ -503,7 +474,7 @@
                 /* Simulate a click on the save button instead of form.submit(), so
                    that the submit handlers from FilteredSelectMultiple get
                    invoked. See Issue #372 */
-                form_element.find('input[type=submit][name=_save]').click();
+                form_element.find('[type=submit][name=_save]').click();
             } else {
                 // Restore original value
                 form_element.val($(input_element).data('original_value'));

@@ -3,10 +3,12 @@ Model fields for working with trees.
 """
 from __future__ import unicode_literals
 
-__all__ = ('TreeForeignKey', 'TreeOneToOneField', 'TreeManyToManyField')
-
 from django.db import models
+from django.conf import settings
 from mptt.forms import TreeNodeChoiceField, TreeNodeMultipleChoiceField
+
+
+__all__ = ('TreeForeignKey', 'TreeOneToOneField', 'TreeManyToManyField')
 
 
 class TreeForeignKey(models.ForeignKey):
@@ -37,11 +39,10 @@ class TreeManyToManyField(models.ManyToManyField):
         kwargs.setdefault('form_class', TreeNodeMultipleChoiceField)
         return super(TreeManyToManyField, self).formfield(**kwargs)
 
+
 # South integration
-try:
+if 'south' in settings.INSTALLED_APPS:  # pragma: no cover
     from south.modelsinspector import add_introspection_rules
     add_introspection_rules([], ["^mptt\.fields\.TreeForeignKey"])
     add_introspection_rules([], ["^mptt\.fields\.TreeOneToOneField"])
     add_introspection_rules([], ["^mptt\.fields\.TreeManyToManyField"])
-except ImportError:
-    pass

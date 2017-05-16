@@ -6,8 +6,7 @@ from django.template import TemplateSyntaxError
 from django.template.defaulttags import kwarg_re
 from django.utils.encoding import smart_str
 
-from feincms.content.application.models import (
-    ApplicationContent, app_reverse as do_app_reverse)
+from feincms.apps import ApplicationContent, app_reverse as do_app_reverse
 from feincms.templatetags.feincms_tags import _render_content
 # backwards compatibility import
 from feincms.templatetags.fragment_tags import (
@@ -41,6 +40,16 @@ def feincms_render_region_appcontent(page, region, request):
         if content.region == region)
 
 
+def _current_app(context):
+    try:
+        return context.request.current_app
+    except AttributeError:
+        try:
+            return context.request.resolver_match.namespace
+        except AttributeError:
+            return getattr(context, 'current_app', None)
+
+
 class AppReverseNode(template.Node):
     def __init__(self, view_name, urlconf, args, kwargs, asvar):
         self.view_name = view_name
@@ -60,7 +69,7 @@ class AppReverseNode(template.Node):
         try:
             url = do_app_reverse(
                 view_name, urlconf, args=args, kwargs=kwargs,
-                current_app=context.current_app)
+                current_app=_current_app(context))
         except NoReverseMatch:
             if self.asvar is None:
                 raise

@@ -1,37 +1,15 @@
 {% load objlist %}
 <div class="object-list row-fluid">
       <div class="pagelet col-xs-12">
-	    <div class="page-tools">
-		 	{% if view.tools_template %}
-		 		{% include view.tools_template %}
-		 	{% endif %}
-		 	<div class="btn-group pull-right">
-	 	    {% if view.add_url and admin or view.owner_field %}
-	 	    	<a data-toggle="tooltip" title="Add {{object_title}}" href="{% url view.add_url %}" class="btn btn-sm btn-white"><i class="fa fa-plus fa-1"></i></a>
-	 	  	{% endif %}
-	 	  	</div>
-	 	  	<div class="btn-group pull-right">
-			    <a href="." data-toggle="tooltip" title="Clear Filters" class="btn btn-sm btn-white"><i class="fa fa-undo fa-1"></i></a>
-			    {% if grid_url %}
-				    {% if show_grid %}
-					<a href="{{grid_url}}" data-toggle="tooltip" title="Show as list" class="btn btn-sm btn-white"><i class="fa fa-reorder fa-1"></i></a>
-					{% else %}
-					<a href="{{grid_url}}" data-toggle="tooltip" title="Show as grid" class="btn btn-sm btn-white"><i class="fa fa-th fa-1"></i></a>
-					{% endif %}
-				{% endif %}
-			    
-				{% if csv_url %}
-					<a href="{{csv_url}}" data-toggle="tooltip" title="Download data" class="btn btn-sm btn-white"><i class="fa fa-download fa-1"></i></a>
-				{% endif %}
-		 	</div>
-
-	 	</div>
-      	<div class="pagelet-heading"><h3>{{view.get_list_title|capfirst}}</h3></div>
+      	{% if view.show_header %}
+		{% objlist_tools %}
+      	<div class="pagelet-heading"><h3>{% objlist_heading %}</h3></div>
+      	{% endif %}
 	    <div class="toolbar row no-space">
 	        {% include 'objlist/filters.html' %}
 	    </div>
 	    {% if not show_grid %}
-	    <table class="table table-hover">
+	    <table class="table table-hover ">
 	        <thead><tr>
 	        {% for header in headers %}
 	        <th class='{{header.style}}'>{% if header.url %}<a href='{{header.url}}'>{{header.text}}</a>{% else %}{{header.text}}{% endif %}
@@ -41,12 +19,12 @@
 			{% for obj in object_list %}
 				{% show_row obj %}
 			{% empty %}
-				<tr><td colspan="{{headers|length}}"  class="empty">No {{objects_title}} Found</td></tr>
+				<tr><td colspan="{{headers|length}}"  class="empty">None Found</td></tr>
 			{% endfor %}
 	        </tbody>
 	    </table>
 	    {% else %}
-	    <div class="grid row no-space">
+	    <div class="grid">
 	    {% for obj in object_list %}
 	    	{% show_grid_cell obj %}
 	    {% empty %}
@@ -57,9 +35,11 @@
 	    {% include 'objlist/pagination.html' %}	    	
     </div>
 </div>
+<div id="objlist-form"></div>
+
 <script type="text/javascript">
 	$('tr[data-detail-url]').click(function(){
-		{% if view.detail_target and view.detail_modal %}
+		{% if view.detail_target and view.detail_ajax %}
 			$("{{view.detail_target}}").load($(this).attr('data-detail-url'));
 			$('{{view.detail_target}}').modal();
 		{% elif view.detail_target %}
@@ -68,4 +48,12 @@
 			window.location = $(this).attr('data-detail-url');
 		{% endif %}
 	});
+	$('[data-add-url]').click(function(e) {
+ 		if ($(this).is('[data-add-target]')) {
+ 			$($(this).attr('data-add-target')).load($(this).attr('data-add-url'));            
+ 		} else {
+ 			$('#objlist-form').load($(this).attr('data-add-url'));            
+ 		}          
+	});
+
 </script>

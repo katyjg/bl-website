@@ -6,7 +6,6 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 
-import django
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -21,8 +20,7 @@ from .fields import AdminFileWithPreviewWidget
 class MediaCategoryAdminForm(forms.ModelForm):
     class Meta:
         model = Category
-        if django.VERSION > (1, 7):
-            fields = '__all__'
+        fields = '__all__'
 
     def clean_parent(self):
         data = self.cleaned_data['parent']
@@ -43,8 +41,7 @@ class MediaFileAdminForm(forms.ModelForm):
     class Meta:
         model = MediaFile
         widgets = {'file': AdminFileWithPreviewWidget}
-        if django.VERSION > (1, 7):
-            fields = '__all__'
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(MediaFileAdminForm, self).__init__(*args, **kwargs)

@@ -4,6 +4,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from threading import local
+
 from django.conf import settings as django_settings
 from django.core.exceptions import PermissionDenied
 from django.contrib.contenttypes.models import ContentType
@@ -21,6 +23,9 @@ from feincms.admin import item_editor, tree_editor
 
 # ------------------------------------------------------------------------
 from .forms import PageAdminForm
+
+
+_local = local()
 
 
 # ------------------------------------------------------------------------
@@ -151,14 +156,14 @@ class PageAdmin(item_editor.ItemEditor, tree_editor.TreeEditor):
     def response_add(self, request, obj, *args, **kwargs):
         response = super(PageAdmin, self).response_add(
             request, obj, *args, **kwargs)
-        if ('parent' in request.GET
-                and '_addanother' in request.POST
-                and response.status_code in (301, 302)):
+        if ('parent' in request.GET and
+                '_addanother' in request.POST and
+                response.status_code in (301, 302)):
             # Preserve GET parameters if we are about to add another page
             response['Location'] += '?parent=%s' % request.GET['parent']
 
-        if ('translation_of' in request.GET
-                and '_copy_content_from_original' in request.POST):
+        if ('translation_of' in request.GET and
+                '_copy_content_from_original' in request.POST):
             # Copy all contents
             for content_type in obj._feincms_content_types:
                 if content_type.objects.filter(parent=obj).exists():
@@ -181,10 +186,6 @@ class PageAdmin(item_editor.ItemEditor, tree_editor.TreeEditor):
 
         return response
 
-    def _refresh_changelist_caches(self, *args, **kwargs):
-        self._visible_pages = list(
-            self.model.objects.active().values_list('id', flat=True))
-
     def change_view(self, request, object_id, **kwargs):
         try:
             return super(PageAdmin, self).change_view(
@@ -206,35 +207,40 @@ class PageAdmin(item_editor.ItemEditor, tree_editor.TreeEditor):
                 return False
         return super(PageAdmin, self).has_delete_permission(request, obj=obj)
 
+    def changelist_view(self, request, *args, **kwargs):
+        _local.visible_pages = list(
+            self.model.objects.active().values_list('id', flat=True))
+        return super(PageAdmin, self).changelist_view(request, *args, **kwargs)
+
     def is_visible_admin(self, page):
         """
         Instead of just showing an on/off boolean, also indicate whether this
         page is not visible because of publishing dates or inherited status.
         """
-        if not hasattr(self, "_visible_pages"):
-            # Sanity check in case this is not already defined
-            self._visible_pages = list()
-
-        if page.parent_id and page.parent_id not in self._visible_pages:
+        if page.parent_id and page.parent_id not in _local.visible_pages:
             # parent page's invisibility is inherited
-            if page.id in self._visible_pages:
-                self._visible_pages.remove(page.id)
+            if page.id in _local.visible_pages:
+                _local.visible_pages.remove(page.id)
             return tree_editor.ajax_editable_boolean_cell(
                 page, 'active', override=False, text=_('inherited'))
 
-        if page.active and page.id not in self._visible_pages:
+        if page.active and page.id not in _local.visible_pages:
             # is active but should not be shown, so visibility limited by
             # extension: show a "not active"
             return tree_editor.ajax_editable_boolean_cell(
                 page, 'active', override=False, text=_('extensions'))
 
         return tree_editor.ajax_editable_boolean_cell(page, 'active')
-    is_visible_admin.allow_tags = True
     is_visible_admin.short_description = _('is active')
     is_visible_admin.editable_boolean_field = 'active'
 
     # active toggle needs more sophisticated result function
     def is_visible_recursive(self, page):
+        # Have to refresh visible_pages here, because TreeEditor.toggle_boolean
+        # will have changed the value when inside this code path.
+        _local.visible_pages = list(
+            self.model.objects.active().values_list('id', flat=True))
+
         retval = []
         for c in page.get_descendants(include_self=True):
             retval.append(self.is_visible_admin(c))

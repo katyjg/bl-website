@@ -1,6 +1,6 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static admin_modify suit_tags admin_urls %}
-{% load url from future %}
+{% load url from suit_compat %}
 
 {% block extrahead %}{{ block.super }}
   {% url 'admin:jsi18n' as jsi18nurl %}
@@ -18,7 +18,7 @@
     <!-- Warn on leaving unsaved form -->
     <script src="{% static 'suit/js/suit-form-confirm.js' %}"></script>
     <script type="text/javascript">
-      confirmExitIfModified('{{ opts.module_name }}_form', '{% trans 'You have unsaved changes' %}.');
+      confirmExitIfModified('{% firstof opts.model_name opts.module_name %}_form', '{% trans 'You have unsaved changes' %}.');
     </script>
   {% endif %}
 
@@ -35,7 +35,7 @@
   <script>
     (function ($) {
       $(function () {
-        $("#{{ opts.module_name }}_form").suit_form_debounce();
+        $("#{% firstof opts.model_name opts.module_name %}_form").suit_form_debounce();
       });
     }(Suit.$))    
   </script>
@@ -83,7 +83,7 @@
   <div id="content-main" class="inner-two-columns">
 
     <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post"
-          id="{{ opts.module_name }}_form" class="form-horizontal">
+          id="{% firstof opts.model_name opts.module_name %}_form" class="form-horizontal" novalidate>
 
       <div class="inner-right-column">
 
@@ -98,8 +98,14 @@
             <h4 class="italic-title">{% trans 'tools'|capfirst %}</h4>
             <ul class="box menu-box">
               {% block object-tools-items %}
-                <li><a href="history/" class="historylink"><i
-                    class="icon-time icon-alpha75"></i>{% trans "History" %}</a>
+                <li>
+                  {% if '1.9'|django_version_lt %}
+                  <a href="history/" class="historylink">
+                  {% else %}
+                  {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+                  <a href="{% add_preserved_filters history_url %}" class="historylink">
+                  {% endif %}
+                  <i class="icon-time icon-alpha75"></i>{% trans "History" %}</a>
                 </li>
                 {% if has_absolute_url %}
                   <li>
@@ -109,8 +115,14 @@
 
                 {% if has_add_permission %}
                   <li>
-                    <a href="../add/"><i class="icon-plus-sign icon-alpha75"></i>{% blocktrans with opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
-                    </a></li>
+                    {% if '1.9'|django_version_lt %}
+                    <a href="../add/">
+                    {% else %}
+                    <a href="{% url opts|admin_urlname:'add' %}">
+                    {% endif %}
+                      <i class="icon-plus-sign icon-alpha75"></i>{% blocktrans with opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+                    </a>
+                  </li>
                   {# {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}</a>#}
                 {% endif %}
 
@@ -137,7 +149,7 @@
             <input type="hidden" name="_popup" value="1"/>{% endif %}
           {% if errors %}
             <div class="alert alert-error">
-              {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %} Please correct the errors below.{% endblocktrans %}
+              {% if errors|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
               {{ adminform.form.non_field_errors }}
             </div>
           {% endif %}
@@ -169,13 +181,25 @@
         {# render suit_form_includes at last position #}
         {% include 'suit/includes/change_form_includes.html' with position='bottom' %}
 
-        {% if adminform and add %}
-          <script type="text/javascript">
-            (function ($) {
-              $('form#{{ opts.module_name }}_form :input[type!=button][type!=submit]:visible:enabled:first').focus();
-            })(django.jQuery);
-          </script>
-        {% endif %}
+        {% block admin_change_form_document_ready %}
+            <script type="text/javascript">
+                (function($) {
+                    $(document).ready(function() {
+                        $('.add-another').click(function(e) {
+                            e.preventDefault();
+                            showAddAnotherPopup(this);
+                        });
+                        $('.related-lookup').click(function(e) {
+                            e.preventDefault();
+                            showRelatedObjectLookupPopup(this);
+                        });
+                    {% if adminform and add %}
+                        $('form#{% firstof opts.model_name opts.module_name %}_form :input[type!=button][type!=submit]:visible:enabled:first').focus()
+                    {% endif %}
+                    });
+                })(django.jQuery);
+            </script>
+        {% endblock %}
 
         {# JavaScript for prepopulated fields #}
         {% prepopulated_fields_js %}

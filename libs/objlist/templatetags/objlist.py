@@ -1,31 +1,52 @@
 from django import template
-from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.html import mark_safe, escape
-from django.utils import dateformat
-from django.utils.formats import get_format
-from django.utils.encoding import smart_str
 from django.core.urlresolvers import reverse
-
+from django.db import models
+from django.utils.encoding import smart_str
+from django.utils.html import mark_safe, escape
+from django.utils import timezone
 register = template.Library()
 
+
 @register.inclusion_tag('objlist/row.html', takes_context=True)
-def show_row(context, obj):    
-    data = {'fields': get_object_fields(context, obj, context['view'])}
-    if context['view'].detail_url:
-        data['detail_url'] = reverse(context['view'].detail_url, kwargs={context['view'].detail_url_kwarg: getattr(obj, context['view'].detail_url_kwarg)})
-    return data
+def show_row(context, obj):
+    context['fields'] = get_object_fields(context, obj, context['view'])
+    context['row_attrs'] = context['view'].get_row_attrs(obj)
+    return context
+
+
+@register.inclusion_tag('objlist/filters.html', takes_context=True)
+def objlist_filters(context):
+    return context
+
 
 @register.simple_tag(takes_context=True)
-def show_grid_cell(context, obj):    
-    t = template.loader.get_template(context['view'].get_grid_template())
-    return t.render(template.Context({'object': obj}))
-    
+def objlist_heading(context):
+    view = context['view']
+    return view.get_list_title()
+
+
+@register.inclusion_tag('objlist/list.html', takes_context=True)
+def objlist_list(context):
+    return context
+
+
+@register.inclusion_tag('objlist/tools.html', takes_context=True)
+def objlist_tools(context):
+    return context
+
+
+@register.simple_tag(takes_context=True)
+def show_grid_cell(context, obj):
+    context['object'] = obj
+    t = template.loader.get_template(context['view'].get_grid_template(obj))
+    return mark_safe(t.render(context))
+
 
 def get_object_fields(context, obj, view):
     if not view.list_display:
         yield {'data': obj, 'style': ''}
-          
+
     for field_name in view.list_display:
         try:
             f = obj._meta.get_field(field_name)
@@ -33,12 +54,16 @@ def get_object_fields(context, obj, view):
             # For non-field list_display values, the value is either a method
             # or a property.
             try:
-                attr = getattr(obj, field_name)
-                allow_tags = getattr(attr, 'allow_tags', False)
+                field_lookups = field_name.split('__')
+                attr = obj
+                for name in field_lookups:
+                    attr = getattr(attr, name, '')
+
+                allow_tags = getattr(attr, 'allow_tags', True)
                 if callable(attr):
                     attr = attr()
                 if field_name in view.list_transforms:
-                    result_repr = view.list_transforms[field_name](attr)
+                    result_repr = mark_safe(view.list_transforms[field_name](attr, obj))
                 else:
                     result_repr = smart_str(attr)
             except (AttributeError, ObjectDoesNotExist):
@@ -51,7 +76,7 @@ def get_object_fields(context, obj, view):
         else:
             field_val = getattr(obj, f.attname)
             if field_name in view.list_transforms:
-                result_repr = mark_safe(view.list_transforms[field_name](field_val))
+                result_repr = mark_safe(view.list_transforms[field_name](field_val, obj))
             elif isinstance(f.rel, models.ManyToOneRel):
                 if field_val is not None:
                     try:
@@ -60,19 +85,18 @@ def get_object_fields(context, obj, view):
                         result_repr = ''
                 else:
                     result_repr = ''
-                    
- 
-                
+
             # Dates and times are special: They're formatted in a certain way.
             elif isinstance(f, models.DateField) or isinstance(f, models.TimeField):
                 if field_val:
-                    (date_format, datetime_format, time_format) = get_format('DATE_FORMAT'), get_format('DATETIME_FORMAT'), get_format('TIME_FORMAT')
                     if isinstance(f, models.DateTimeField):
-                        result_repr = dateformat.format(field_val, datetime_format).title()
+                        result_repr = timezone.localtime(field_val).strftime('%c')
                     elif isinstance(f, models.TimeField):
-                        result_repr = dateformat.time_format(field_val, time_format).title()
+                        result_repr = field_val.strftime('%X')
+                    elif isinstance(f, models.DateField):
+                        result_repr = field_val.strftime('%Y-%m-%d')
                     else:
-                        result_repr = dateformat.format(field_val, date_format).title()
+                        result_repr = ""
                 else:
                     result_repr = ''
             # Booleans are special: We use images.
@@ -91,12 +115,12 @@ def get_object_fields(context, obj, view):
                 result_repr = getattr(obj, m_name)()
             else:
                 result_repr = escape(smart_str(field_val))
-                
+
         yield {'data': result_repr, 'style': view.list_styles.get(field_name, '')}
+
 
 def _boolean_icon(field_val):
     if field_val:
         return mark_safe('<i class="fa fa-check-circle"></i>')
     else:
-        return '' 
-
+        return ''

@@ -1,11 +1,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
 import re
 import sys
 
 from django.conf import settings as django_settings
 from django.http import Http404, HttpResponseRedirect
-from django.utils.cache import add_never_cache_headers
+
+
+logger = logging.getLogger(__name__)
 
 
 def redirect_request_processor(page, request):
@@ -15,8 +18,12 @@ def redirect_request_processor(page, request):
     """
     target = page.get_redirect_to_target(request)
     if target:
-        if request._feincms_extra_context.get('extra_path', '/') == '/':
+        extra_path = request._feincms_extra_context.get('extra_path', '/')
+        if extra_path == '/':
             return HttpResponseRedirect(target)
+        logger.debug(
+            "Page redirect on '%s' not taken because extra path '%s' present",
+            page.get_absolute_url(), extra_path)
         raise Http404()
 
 
@@ -40,41 +47,6 @@ def extra_context_request_processor(page, request):
                 request.path,
             ),
         })
-
-
-def frontendediting_request_processor(page, request):
-    """
-    Sets the frontend editing state in the cookie depending on the
-    ``frontend_editing`` GET parameter and the user's permissions.
-    """
-    if 'frontend_editing' not in request.GET:
-        return
-
-    response = HttpResponseRedirect(request.path)
-    if request.user.has_module_perms('page'):
-        try:
-            enable_fe = int(request.GET['frontend_editing']) > 0
-        except ValueError:
-            enable_fe = False
-
-        if enable_fe:
-            response.set_cookie(str('frontend_editing'), enable_fe)
-        else:
-            response.delete_cookie(str('frontend_editing'))
-
-    # Redirect to cleanup URLs
-    return response
-
-
-def frontendediting_response_processor(page, request, response):
-    # Add never cache headers in case frontend editing is active
-    if (hasattr(request, 'COOKIES')
-            and request.COOKIES.get('frontend_editing', False)):
-
-        if hasattr(response, 'add_post_render_callback'):
-            response.add_post_render_callback(add_never_cache_headers)
-        else:
-            add_never_cache_headers(response)
 
 
 def etag_request_processor(page, request):
@@ -151,13 +123,15 @@ def debug_sql_queries_response_processor(verbose=False, file=sys.stderr):
     def processor(page, request, response):
         from django.db import connection
 
-        print_sql = lambda x: x
         try:
             import sqlparse
-            print_sql = lambda x: sqlparse.format(
-                x, reindent=True, keyword_case='upper')
+
+            def print_sql(x):
+                return sqlparse.format(
+                    x, reindent=True, keyword_case='upper')
         except:
-            pass
+            def print_sql(x):
+                return x
 
         if verbose:
             print("-" * 60, file=file)

@@ -29,8 +29,8 @@ class CategoryManager(models.Manager):
     Simple manager which exists only to supply ``.select_related("parent")``
     on querysets since we can't even __str__ efficiently without it.
     """
-    def get_query_set(self):
-        return super(CategoryManager, self).get_query_set().select_related(
+    def get_queryset(self):
+        return super(CategoryManager, self).get_queryset().select_related(
             "parent")
 
 
@@ -45,6 +45,7 @@ class Category(models.Model):
     title = models.CharField(_('title'), max_length=200)
     parent = models.ForeignKey(
         'self', blank=True, null=True,
+        on_delete=models.CASCADE,
         related_name='children', limit_choices_to={'parent__isnull': True},
         verbose_name=_('parent'))
 
@@ -54,6 +55,7 @@ class Category(models.Model):
         ordering = ['parent__title', 'title']
         verbose_name = _('category')
         verbose_name_plural = _('categories')
+        app_label = 'medialibrary'
 
     objects = CategoryManager()
 
@@ -103,7 +105,7 @@ class MediaFileBase(models.Model, ExtensionsMixin, TranslatedObjectMixin):
         _("file size"), blank=True, null=True, editable=False)
 
     categories = models.ManyToManyField(
-        Category, verbose_name=_('categories'), blank=True, null=True)
+        Category, verbose_name=_('categories'), blank=True)
     categories.category_filter = True
 
     class Meta:
@@ -240,7 +242,8 @@ MediaFileBase.register_filetypes(
 
 # ------------------------------------------------------------------------
 class MediaFile(MediaFileBase):
-    pass
+    class Meta:
+        app_label = 'medialibrary'
 
 
 @receiver(post_delete, sender=MediaFile)
@@ -264,6 +267,7 @@ class MediaFileTranslation(Translation(MediaFile)):
         verbose_name = _('media file translation')
         verbose_name_plural = _('media file translations')
         unique_together = ('parent', 'language_code')
+        app_label = 'medialibrary'
 
     def __str__(self):
         return self.caption
