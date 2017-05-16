@@ -1,21 +1,16 @@
-html * {
-	font-variant: normal !important;
-	text-align: left;
-}
 
 #bodyContent h2 {
-	font-family: "Yanone Kaffeesatz", sans-serif;
 	font-size: 24px;
-	margin-bottom: 22px;
 	color: #333;
     line-height: 130%;
+	padding-top: 0.5em;
+	margin-bottom: 0.25em;
 }
 #bodyContent h2, #bodyContent h3, #bodyContent h4, #bodyContent h5, #bodyContent h6 {
 		border-bottom: 1px solid #ddd;
 		font-weight: normal;
 }
 #bodyContent h2.pagetitle {
-	font-family:  "Yanone Kaffeesatz", sans-serif;
 	font-size: 30px;
 	font-weight: normal;
 	color: #777;
@@ -25,20 +20,6 @@ html * {
     line-height: 130%;
 }
 
-#bodyContent .right-subtitle {
-    float: right;
-}
-
-#bodyContent h2 {
-	margin-top: 0.5em;
-	margin-bottom: 0px;
-}
-
-.editsection {
-font-size: 12px;
-font-weight: normal !important;
-font-family: "Yanone Kaffeesatz", "Open Sans Condensed", sans-serif;
-}
 #bodyContent h3 {
 	padding-bottom: 4px;
 	margin-bottom: 4px;
@@ -64,30 +45,22 @@ font-weight: bold;
     color: #000;
 }
 
-#home-below #bodyContent {
-    margin-top: 0 !important;
-}
 
-#bodyContent p {
-	clear: left;
-}
+
 #pagebody #bodyContent ul,
 #pagebody #bodyContent ol {
 	margin-bottom: 22px;
 }
 
 
-#bodyContent div {
-	font-size: 100% !important;
-}
+
 
 #bodyContent pre, #bodyContent code {
 	margin-bottom: 15px;
     margin-top: 15px;
-	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
 	font-size: 14px;
 	text-shadow: #fff 0px 1px 0px, #999 0px 0px 1px;
-	
+
 	font-weight: inherit;
 	overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
 	white-space: pre-wrap; /* css-3 */
@@ -105,10 +78,10 @@ textarea {
     border-style: solid;
     border-width: 1px;
 	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;	
+	-khtml-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-  
+
 }
 textarea:focus, input:focus {
     background-color: #f7f7f7 !important;
@@ -124,21 +97,25 @@ textarea:focus, input:focus {
 }
 #pagebody #toc ul {
 	margin-bottom: 0px;
- 
+
 }
 #toc li {
     padding: 2px 0;
 }
-    
+
 
 #toctitle h2{
 	font-size: 18px;
 	margin-top: 0;
+	padding-top: 0;
 
 }
 #toctitle td {
 	text-align: left !important;
 	border-bottom: 1px solid #dadada;
+}
+#toc td {
+	padding: 0.5em;
 }
 
 
@@ -151,7 +128,7 @@ input[type="text"], input[type="password"], input[type="email"] {
 	border: 1px solid #ccc;
     border-color: #7C7C7C #C3C3C3 #DDDDDD;
 	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;	
+	-khtml-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	color: #666;
@@ -166,9 +143,9 @@ input[type="checkbox"] {
 input.gsc-input:focus {
     background-color: #fff !important;
 }
-input.gsc-input {
-    height: 21px !important;
-}
 input.gsc-search-button {
 	padding: 6px 10px !important;
+	width: auto !important;
+	height: 24px !important;
+	margin-top: 3px !important;
 }
