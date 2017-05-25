@@ -11,7 +11,7 @@ below.
 
 * django-recaptcha: https://pypi.python.org/pypi/django-recaptcha
 	- BSD License
-* feincms: https://pypi.python.org/pypi/FeinCMS/1.10.1
+* feincms: https://pypi.python.org/pypi/FeinCMS/1.13.3
 	- BSD License
 * django-filebrowser-no-grappelli: https://github.com/smacker/django-filebrowser-no-grappelli
 	- https://github.com/smacker/django-filebrowser-no-grappelli
@@ -19,16 +19,12 @@ below.
 	- MIT License
 * python-requests: http://docs.python-requests.org/en/latest/
 	- Apache2 License
-* django-south: http://south.aeracode.org/
-    - Apache Software License
-* django-suit: https://pypi.python.org/pypi/django-suit
-	- Creative Commons Attribution-NonCommercial 3.0
 
 In addition, system versions of the following modules are installed:
 
-* python (-2.7.5)
-* python-django (-1.6.8)
-* python-dateutil (-1.5)
-* python-markdown (-2.4.1)
-* python-ipaddr (-2.1.9)
-* python-httplib2 (-0.7.7)
+* python (-2.7.13)
+* python-django (-1.11)
+* python-dateutil (-2.6.0)
+* python-markdown (-2.6.8)
+* python-ipaddr (-2.1.10)
+* python-httplib2 (-0.9.2)
