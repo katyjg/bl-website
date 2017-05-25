@@ -1331,7 +1331,7 @@ div.bio img {
 	height: 16px;
 	padding-bottom: 10px;
 	text-align: center;
-	width: 48%;
+	width: 48% !important;
 	margin: 0 8px;
 }
 .label-half {
@@ -1602,7 +1602,7 @@ font-weight: bold;
 }
 
 textarea {
-	width: 75%;
+	width: 100%;
     background: url("/static/img/textbox_bg.gif") no-repeat scroll left top #FFFFFF;
     border-color: #7C7C7C #C3C3C3 #DDDDDD;
     border-style: solid;
@@ -1662,7 +1662,7 @@ input[type="text"], input[type="password"], input[type="email"] {
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	color: #666;
-    width: 75%;
+    width: 100%;
 }
 
 input[type="checkbox"] {

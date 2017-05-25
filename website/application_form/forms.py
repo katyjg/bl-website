@@ -50,13 +50,13 @@ class ApplicationForm(forms.Form):
     addr2 = forms.CharField(max_length=100, required=False, label='Address Line 2 (if needed)',
                widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=6)))
     city = forms.CharField(max_length=100,  label='City',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':7}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':7}))
     state = forms.CharField(max_length=100,  label='Province / State / Region',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':8}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':8}))
     code = forms.CharField(max_length=100,  label='Postal Code / Zip Code',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':9}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':9}))
     country = forms.CharField(max_length=100, label='Country',
-               widget=forms.TextInput(attrs={'class': 'required half', 'tabindex':10}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':10}))
 
     undergrad = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=11)), required=False)
     masters = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=12)), required=False)
@@ -130,9 +130,8 @@ class ApplicationForm(forms.Form):
         """
         if not self.is_valid():
             raise ValueError("Cannot generate Context from invalid contact form")
-        return RequestContext(self.request,
-                              dict(self.cleaned_data,
-                                   site=Site.objects.get_current()))
+        return dict(self.cleaned_data,
+                                   site=Site.objects.get_current())
 
     def clean_recipients(self):
         data = self.cleaned_data['email']
@@ -216,11 +215,11 @@ class RegistrationForm(forms.Form):
         super(RegistrationForm, self).__init__(data=data, files=files, *args, **kwargs)
         self.request = request
     
-    title = forms.ChoiceField(choices=Registration.TITLE_CHOICES,widget=forms.Select(attrs={'class': 'required sm-title', 'tabindex':1}), required=True)
+    title = forms.ChoiceField(choices=Registration.TITLE_CHOICES,widget=forms.Select(attrs={'class': 'required', 'tabindex':1}), required=True)
     first_name = forms.CharField(max_length=100, required=True,
-               widget=forms.TextInput(attrs={'class': 'required sm-half', 'tabindex':2}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':2}))
     last_name = forms.CharField(max_length=100, required=True,
-               widget=forms.TextInput(attrs={'class': 'required sm-half', 'tabindex':3}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':3}))
     email = forms.EmailField(required=True,
                widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=200, tabindex=4)))
     phone = forms.CharField(max_length=100, required=False,
@@ -232,13 +231,13 @@ class RegistrationForm(forms.Form):
     addr2 = forms.CharField(max_length=100, required=False, label='Address Line 2 (if needed)',
                widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=8)))
     city = forms.CharField(max_length=100,  label='City',
-               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':9}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':9}))
     state = forms.CharField(max_length=100,  label='Province / State / Region',
-               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':10}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':10}))
     code = forms.CharField(max_length=100,  label='Postal Code / Zip Code',
-               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':11}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':11}))
     country = forms.CharField(max_length=100, label='Country',
-               widget=forms.TextInput(attrs={'class': 'required half reg-half', 'tabindex':12}))
+               widget=forms.TextInput(attrs={'class': 'required', 'tabindex':12}))
 
     undergrad = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=13)), required=False)
     masters = forms.BooleanField(widget=forms.CheckboxInput(attrs=dict(attrs_dict, tabindex=14)), required=False)

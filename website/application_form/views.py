@@ -22,36 +22,37 @@ def application_form(request, form_class=ApplicationForm, model=Application,
     if request.method == 'POST':
         form = form_class(data=request.POST, files=request.FILES, request=request)
         form_dict = {}
-        for field in model._meta.fields:
-            if field.name not in ['id','created']:
-                form_dict[field.name] = request.POST.get(field.name,'')
-
-        if form_class == ApplicationForm:    
-            bools = ['travel','visa','crystals','stay']
-            for key in ['travel','visa','crystals','stay']:
-                if request.POST.get(key,'') == 'yes': form_dict[key] = 1
-                else: form_dict[key] = 0
-            applicant = Application()
-        elif form_class == RegistrationForm:
-            bools = ['mixer']
-            applicant = Registration()
-            if not request.POST.has_key('type'): form_dict['type'] = None
-        
-        for key in bools:
-            if request.POST.get(key,'') == 'yes': form_dict[key] = 1
-            else: form_dict[key] = 0
-
-        for key, val in form_dict.items(): 
-            setattr(applicant, key, val)
-
         if form.is_valid():
+            data = form.cleaned_data
+            for field in model._meta.fields:
+                if field.name not in ['id','created']:
+                    form_dict[field.name] = data.get(field.name,'')
+
+            if form_class == ApplicationForm:
+                bools = ['travel','visa','crystals','stay']
+                for key in ['travel','visa','crystals','stay']:
+                    if data.get(key,'') == 'yes': form_dict[key] = 1
+                    else: form_dict[key] = 0
+                applicant = Application()
+            elif form_class == RegistrationForm:
+                bools = ['mixer']
+                applicant = Registration()
+                if not data.has_key('type'): form_dict['type'] = None
+
+            for key in bools:
+                if data.get(key,'') == 'yes': form_dict[key] = 1
+                else: form_dict[key] = 0
+
+            for key, val in form_dict.items():
+                setattr(applicant, key, val)
+
             applicant.save()
             form.save(fail_silently=fail_silently)
             return HttpResponseRedirect(success_url)
         else:
-            return render_to_response(template_retry,
+            return render(request, template_retry,
                                       {'form': form},
-                                      context_instance=RequestContext(request))
+                                      )
     else:
         form = form_class(request=request)
 
@@ -63,7 +64,7 @@ def application_form(request, form_class=ApplicationForm, model=Application,
 
     return render(request, template_name,
                               { 'form': form },
-                              context)
+                              )
 
 @staff_login_required
 def applicant_list(request):

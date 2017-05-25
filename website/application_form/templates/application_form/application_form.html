@@ -1,6 +1,7 @@
 <form class="application" action="" method='POST' accept-charset="ASCII,UTF-8,ISO-8859-1">
 {% csrf_token %}
 
+    <div class="col-xs-12">
 <b>Required fields are marked by <span class="req">*</span>.</b>
 
 <h2>Personal Information</h2>
@@ -34,24 +35,24 @@
 
     <label class="subdesc" for="addr2">Address Line 2 (if needed)</label><br>
     {{ form.addr2 }}
-		
-    <nobr>
-        <label class="subdesc" for="city">City</label>
-        <label class="subdesc" for="state">State / Province / Region</label>
-    </nobr>
-    <br><br>
-        {{ form.city }}
-        {{ form.state }}
- 	<div class="clear"></div>
-    <nobr>
-        <label class="subdesc" for="code">Postal Code / Zip Code</label>
-        <label class="subdesc" for="country">Country</label>
-    </nobr><br>
-    <nobr>
-        {{ form.code }}
-        {{ form.country }}
-    </nobr>
-<br>
+    <div class="row">
+        <div class="col-xs-6">
+            <label class="subdesc" for="city">City</label>
+            {{ form.city }}
+        </div>
+        <div class="col-xs-6">
+            <label class="subdesc" for="state"><span class="hidden-xs">State / Province / </span>Region</label>
+            {{ form.state }}
+        </div>
+        <div class="col-xs-6">
+            <label class="subdesc" for="code">Postal Code<span class="hidden-xs"> / Zip Code</span></label>
+            {{ form.code }}
+        </div>
+        <div class="col-xs-6">
+            <label class="subdesc" for="country">Country</label>
+            {{ form.country }}
+        </div>
+    </div>
 </p>
 
 
@@ -151,6 +152,6 @@
 </p>
 
 <p><input type='submit' value='Submit Application' tabindex="28" /></p>
-
+</div>
 </form>
 
