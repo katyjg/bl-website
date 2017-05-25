@@ -29,6 +29,7 @@ class ArticleAdminForm(forms.ModelForm):
         return cleaned_data
     class Meta:
         model = Article
+        fields = ('title','slug','parent')
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('created_by', 'slug', 'modified_on', 'parent')

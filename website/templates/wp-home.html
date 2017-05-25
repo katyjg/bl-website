@@ -1,22 +1,23 @@
 {% extends "wp-root.html" %}
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
 
-{% block "page-content" %}
-<div id="home-welcome">
-	<div class="wrapper">
-		<div class="col-7">
+{% block "page-title-id" %}"home-welcome"{% endblock %}
+{% block "page-title" %}
+  		<div class="col-sm-7">
             {% feincms_render_region feincms_page "welcome" request %}
 		</div>
-		<div class="col-5">				
+        <div class="vline hidden-xs"></div>
+        <hr class="visible-xs" />
+		<div class="col-sm-5">
             {% feincms_render_region feincms_page "sidebar" request %}
 		</div>
-	</div>
-	<div style="clear: both;"></div>
-</div>	
+{% endblock %}
+
+{% block "page-content" %}
 {% if feincms_page.content.announce %}
  	<div id="announcements">
     <div class="wrapper">
-    <div class="col-12">
+    <div class="col-xs-12">
     {% feincms_render_region feincms_page "announce" request %}
     </div>
 	</div>
@@ -26,42 +27,46 @@
 
 <div id="home-below">
 	<div id="bodyContent" class="wrapper">
-		<div class="col-3 quicklinks">
+		<div class="col col-sm-3 quicklinks">
         <!-- Place this tag where you want the search box to render -->
         {% feincms_render_region feincms_page "col2" request %}
         <gcse:searchbox-only></gcse:searchbox-only>
 		</div>
 
-		<div class="col-6 pub-list">
+		<div class="col col-sm-6 pub-list">
         {% feincms_render_region feincms_page "col1" request %}
 		</div>
 		
-		<div class="col-3 news-list">
+		<div class="col col-sm-3 news-list">
         {% feincms_render_region feincms_page "col3" request %}
 		</div>
 	</div>
+    <br />
 </div>
 
 {% endblock %}
 
 {% block extra-header %}
-        <link rel="stylesheet" type="text/css" href="/static/css/coda-slider-2.0.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/liquid-slider.css">
 
-	<script type="text/javascript" src="/static/js/jquery-1.3.2.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/js/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" src="/static/js/jquery.coda-slider-2.0.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.touchSwipe.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.liquid-slider.min.js"></script>
+
 	<script type="text/javascript">
 		$().ready(function() {
-			$('#coda-slider-1').codaSlider({
+		    $('#slider-id').liquidSlider({
 			    autoSlide: true,
 			    autoSlideInterval: 8000,
-			    autoSlideStopWhenClicked: true,
-			    dynamicArrows: false,
+			    pauseOnHover: true,
+			    dynamicArrows: true,
 			    autoHeight: false,
-			    panelTitleSelector: "",
+			    panelTitleSelector: ".nav",
 			    dynamicTabsAlign: "right",
 	            dynamicTabsPosition: "bottom"
 			});
+
 		});
 	 </script>
 

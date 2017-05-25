@@ -69,7 +69,7 @@ class AdminVisitForm(forms.ModelForm):
     mail_in = widgets.RightCheckBoxField(required=False)
     purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access")
     maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance")
-    notify = widgets.LeftCheckBoxField(required=False, label="Send E-mail Notification")
+    notify = widgets.LargeCheckBoxField(required=False, label="Send E-mail Notification")
     
     class Meta:
         model = Visit
@@ -162,7 +162,7 @@ class AdminEditForm(forms.ModelForm):
     mail_in = widgets.RightCheckBoxField(required=False)
     purchased = widgets.LeftCheckBoxField(required=False, label="Purchased Access")
     maintenance = widgets.RightCheckBoxField(required=False, label="Beamline Maintenance")
-    notify = widgets.LeftCheckBoxField(required=False, label="Send E-mail Notification")
+    notify = widgets.LargeCheckBoxField(required=False, label="Send E-mail Notification")
     
     class Meta:
         model = Visit

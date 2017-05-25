@@ -1,6 +1,7 @@
 from . import fields
 from datetime import datetime
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+#from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse_lazy
 from django.db import models
 from django.db.models import Q
@@ -13,7 +14,7 @@ from model_utils.models import TimeStampedModel
 import hashlib
 import os
 
-User = get_user_model()    
+#User = get_user_model()
 
 def _image_filename(instance, filename):
     return os.path.join('tasklist', 'icons', filename)
@@ -125,7 +126,7 @@ class Issue(TimeStampedModel):
     kind = models.CharField(max_length=20, verbose_name=_('Type'), default=TYPES.task, choices=TYPES)
     due_date = models.DateField(_('Due Date'), null=True, blank=True)
     frequency = models.IntegerField(_("Frequency"), null=True, blank=True, help_text='Number of months')
-    related = models.ManyToManyField('Issue', null=True, blank=True, verbose_name="Related to")
+    related = models.ManyToManyField('Issue', blank=True, verbose_name="Related to")
     objects = IssueManager()
     class Meta:
         ordering = ['priority', 'modified']

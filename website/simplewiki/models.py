@@ -39,7 +39,7 @@ class Article(models.Model):
                                             blank=True, null=True, editable=True)
     related = models.ManyToManyField('self', verbose_name=_('Related articles'), symmetrical=True,
                                      help_text=_('Sets a symmetrical relation other articles'),
-                                     blank=True, null=True)
+                                     blank=True)
 
     def attachments(self):
         return ArticleAttachment.objects.filter(article__exact = self)
@@ -299,9 +299,9 @@ class Revision(models.Model):
 
 class Permission(models.Model):
     permission_name = models.CharField(max_length = 255, verbose_name=_('Permission name'))
-    can_write = models.ManyToManyField(User, blank=True, null=True, related_name='write',
+    can_write = models.ManyToManyField(User, blank=True, related_name='write',
                                        help_text=_('Select none to grant anonymous access.'))
-    can_read = models.ManyToManyField(User, blank=True, null=True, related_name='read',
+    can_read = models.ManyToManyField(User, blank=True, related_name='read',
                                        help_text=_('Select none to grant anonymous access.'))
     def __unicode__(self):
         return self.permission_name

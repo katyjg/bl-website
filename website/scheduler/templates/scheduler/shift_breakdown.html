@@ -11,7 +11,7 @@
 	    <div id="bodyContent" class="wrapper">
 	    	{% for bl, vals in info.items %}
 	        <div id="schedule" class="col-6">
-                <h2>Beamline {{bl.name}} from {{date.0}} to {{date.1}}</h2>
+                <h2>{{bl.name}}: {{date.0}} to {{date.1}}</h2>
 	        	{% for entry in vals %}
 	        	<h4 style='margin-bottom:10px;'>{{entry.0.display}}</h4>
 	        	<p style='margin-bottom: 10px;'>{{entry.1|length}} shift(s)</p>
@@ -23,7 +23,5 @@
 	    	{% endfor %}
 	    </div>
 	</div>
-	
-	<!--<br class="clear">-->
 {% endblock %}
 	

@@ -2,32 +2,39 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
 {% load get_version %}
 
+{% block "page-title" %}
+
+    {% feincms_nav feincms_page level=2 as midlevel %}
+
+	{% for ml in midlevel %}
+	    {% if ml|is_equal_or_parent_of:feincms_page %}
+
+            {% feincms_nav feincms_page level=1 as toplevel %}
+
+            <h2>{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}
+                {{ p.title }} &ndash;
+                {% endif %}{% endfor %}
+                <span>{{feincms_page.title}}</span>
+            </h2>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}
+
 {% block "page-content" %}
 
     {% feincms_nav feincms_page level=2 as midlevel %}
-	{% feincms_nav feincms_page level=3 as submidlevel %}
 
 	{% for ml in midlevel %}
 	    {% if ml|is_equal_or_parent_of:feincms_page %}
 			
-		        {% feincms_nav feincms_page level=1 as toplevel %}	
-				{% feincms_nav feincms_page level=3 as sublevel %}
-			
-            <div id="headline">
-                <div class="wrapper">
-                    <h2>{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}
-                        {{ p.title }} &ndash;
-                        {% endif %}{% endfor %}
-                        <span>{{feincms_page.title}}</span>
-                    </h2>
-                </div>
-            </div>
-	
+            {% feincms_nav feincms_page level=3 as sublevel %}
+
 			<div id="pagebody">
 			    <div class="wrapper">
-			        <div class="col-9" id="bodyContent">
+			        <div class="col-sm-9" id="bodyContent">
 			            {% ifnotequal sublevel|length 0 %}
-			                <table id="toc" class="toc" summary="Contents"><tr><td>
+			                <table id="toc" class="toc hidden-xs" summary="Contents"><tr><td>
 			                    <div id="toctitle"><h2>Page Contents</h2></div>
 			                    <ul>
 			                    {% for sp in sublevel %}{% if sp.content.col2 %}
@@ -47,7 +54,7 @@
 			            {% endif %}{% endfor %}
 			        </div>
 			
-			        <div class="col-3">
+			        <div class="col-sm-3">
 			          	{% feincms_nav feincms_page level=2 as sublevel %}
 			            <ul class="submenu" >
                             <li><!-- Place this tag where you want the search box to render -->

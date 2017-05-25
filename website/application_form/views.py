@@ -1,8 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
-from django.utils.datastructures import SortedDict
+from django.utils.datastructures import OrderedDict
 
 import datetime
 from scheduler.views import staff_login_required
@@ -57,13 +57,13 @@ def application_form(request, form_class=ApplicationForm, model=Application,
 
     if extra_context is None:
         extra_context = {}
-    context = RequestContext(request)
+    context = {}
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
 
-    return render_to_response(template_name,
+    return render(request, template_name,
                               { 'form': form },
-                              context_instance=context)
+                              context)
 
 @staff_login_required
 def applicant_list(request):
@@ -87,6 +87,6 @@ def participant_list(request, template='application_form/participant_list.html')
 def abstract_list(request, template='application_form/registration_abstract_list.html'):
     regs = Registration.objects.exclude(abstract__exact='')
     return render_to_response(template,
-                              {'present': SortedDict([('Oral',regs.filter(talk=True)), ('Poster',regs.filter(poster=True))]),},)
+                              {'present': OrderedDict([('Oral',regs.filter(talk=True)), ('Poster',regs.filter(poster=True))]),},)
     
     

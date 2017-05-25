@@ -2,8 +2,7 @@ from django.contrib.syndication.views import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.comments.models import Comment
+#from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from blog.models import Post, Category
 from django.utils.feedgenerator import Rss201rev2Feed
@@ -84,8 +83,9 @@ class CommentsFeed(Feed):
         return reverse('blog_index')
 
     def items(self):
-        ctype = ContentType.objects.get_for_model(Post)
-        return Comment.objects.filter(content_type=ctype)[:10]
+        return []
+        #ctype = ContentType.objects.get_for_model(Post)
+        #return Comment.objects.filter(content_type=ctype)[:10]
 
     def item_pubdate(self, obj):
         return obj.submit_date

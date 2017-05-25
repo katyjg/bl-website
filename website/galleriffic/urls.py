@@ -1,12 +1,13 @@
 from django.conf.urls import *
+from galleriffic import views
 
-urlpatterns = patterns('galleriffic.views',
+urlpatterns = [
     url(r'^$',
-        view='gallery_display',
+        views.gallery_display,
         name='photo_list'
     ),
     url(r'^(?P<slug>[-\w]+)/$',
-        view='gallery_display',
+        views.gallery_display,
         name='gallery_list'
     ),
-)
+]

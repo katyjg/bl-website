@@ -3,24 +3,16 @@
 
 {% block "page-content" %}
 
-<div id="headline">
-	<div class="wrapper">
-		<h2>{{ feincms_page.title }}</h2>
-	</div>
-</div>
-
 <div id="pagebody">
 	<div class="wrapper">
-        <div id="sidebar" class="col-2">
+        <div id="sidebar" class="col-sm-2">
         {% feincms_render_region feincms_page "col1" request %}        
         </div>
     
-        <div id="main" class="col-8">
+        <div id="main" class="col-sm-8">
         {% feincms_render_region feincms_page "col2" request %}        
 	    </div>
     </div>
 </div>
-
-<br class="clear">
 
 {% endblock %}

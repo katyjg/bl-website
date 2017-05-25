@@ -1,12 +1,13 @@
 
 from blog.feeds import LatestEntries
 from django.conf import settings
-from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import RedirectView
 from feincms.contrib.preview.views import PreviewHandler
-from feincms.views.cbv.views import Handler
+from feincms.views import Handler
 
 handler = Handler.as_view()
 preview_handler = PreviewHandler.as_view()
@@ -17,32 +18,31 @@ feeds = {
     'latest': LatestEntries,
 }
 
-urlpatterns = patterns('',
+urlpatterns = [
 
     url(r'^admin/filebrowser/', include('filebrowser.urls')),
     url(r'^admin/page/page/jsi18n/',     RedirectView.as_view(url='/admin/jsi18n/')),
 
-    (r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^preview/(?P<page_id>\d+)/', preview_handler, name='feincms:preview'),
     url(r'^feeds/(?P<url>.*)/$', LatestEntries()),
 
-    (r'^wiki/', include('simplewiki.urls')),
-    (r'^beamtime/', include('scheduler.admin_urls')),
-    (r'^pubs/', include('publications.urls')),
-    (r'^issues/', include('tasklist.urls')),
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
-    # to INSTALLED_APPS to enable admin documentation:
-    #(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-)                                              
+    url(r'^wiki/', include('simplewiki.urls')),
+    url(r'^beamtime/', include('scheduler.admin_urls')),
+    url(r'^pubs/', include('publications.urls')),
+    url(r'^issues/', include('tasklist.urls')),
+]
 if settings.DEBUG:       
     urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': settings.MEDIA_ROOT, 
-            }),
-    )
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static('media/', document_root=settings.MEDIA_ROOT)
+#    [
+#        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+#            'document_root': settings.MEDIA_ROOT,
+#            }),
+#    ]
 
-urlpatterns += patterns('',
+urlpatterns += [
+    url(r'', include('feincms.contrib.preview.urls')),
     url(r'', include('feincms.urls')),
-)
+]

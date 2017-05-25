@@ -1,97 +1,27 @@
-{% load applicationcontent_tags feincms_tags feincms_page_tags %}
-{% load get_version %}
+{% extends "wp-root.html" %}
 
-<html lang="en" dir="ltr">
+{% block "page-title" %}
+    <h2>Sorry, we couldn't find {{ request_path }}</h2>
+{% endblock %}
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
-<title>{{ feincms_page.title }}</title>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
-<link type="text/css" href="/static/css/wp-style.css" rel="stylesheet">
+{% block "page-content" %}
 
-<script type="Text/Javascript">
-function addBookmark(title,url) {
-    if (window.sidebar) {
-        window.sidebar.addPanel(title, url,"");
-    } else if( document.all ) {
-        window.external.AddFavorite( url, title);
-    } else if( window.opera && window.print ) {
-    return true;
-}
-} 
-</script>
-
-<!--[if lt IE 8]>
-<link type="text/css" href="/static/css/ie.css" rel="stylesheet">
-<![endif]-->
-<!--[if lt IE 7]>
-<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
-<![endif]-->
-<link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="{{ 'SITE_NAME_LONG'|get_from_settings }}">
-<link REL="SHORTCUT ICON" HREF="/static/img/clslogo.ico">
-<meta name="google-site-verification" content="9T6_aOBqv3je6XSCFybrgP0jym91Y6L7dVLdnBAWDWo" >
-
-	{% if "GCSE_ID"|get_from_settings %}
-	<!-- Put the following javascript before the closing </head> tag. -->
-	<script>
-	  (function() {
-	    var cx = '{{ "GCSE_ID"|get_from_settings }}';
-	    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
-	    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-	        '//www.google.com/cse/cse.js?cx=' + cx;
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
-	  })();
-	</script>
-	{% endif %}
-
-</head>
-<body>
-<div id="main-wrapper">
-	<div id="header">
-	    <div class="banner">
-	      <div class="logo">
-			<div class="wrapper"></div>
-	      </div>
-	    </div>
-	</div>
-
-
-	<div id="headline">
-		<div class="wrapper">
-			<h2>Oops... </h2>
-		</div>
-	</div>
-
-	<div id="pagebody">
-	    <div class="wrapper">
-	        <div id="bodyContent" class="col-12">
-	            <h2>Sorry, we couldn't find {{ request_path }}</h2>
-	            <p>Things to try:
-	                <ul>
-	                    <li>Check that the URL you entered is correct.</li>
-	                    <li>Visit our <a href="/sitemap/">Sitemap</a> to find the topic you are interested in.</li>
-	                    <li>Return to our <a href="/">home page</a> and use the navigation menu to find what you need.</li>
-	                    <li><a href="/contact-us/">Contact us</a> and we'll see if we can point you in the right direction</li>
-	                    <li>Use this handy dandy search tool to find what you're looking for:</li>
-	                </ul>
-	                <div style="max-width: 400px;">
-	                <gcse:searchbox-only></gcse:searchbox-only></div>
-	            </p>
-	        </div>
-	    </div>
-	</div>
-    <div class="push"></div>
-</div>
-<div id="footer">
-	<div class="wrapper">
-		<p> 
-			<a href="http://www.usask.ca/disclaimer.php">Disclaimer</a> | 
-			<a href="/sitemap/">Site Map</a> |
-            <a href="/contact-us/feedback/">Feedback</a> |
-            <a href="javascript:addBookmark('{{ 'SITE_NAME_LONG'|get_from_settings }}', '{{ 'URL_ROOT'|get_from_settings }}')">Add Bookmark</a> | 
-            <a href="/feeds/latest/" class="feed">RSS</a> 
-		</p>
+<div id="pagebody">
+	<div id="bodyContent" class="wrapper">
+        <div class="col-xs-12">
+            <p>Things to try:
+                <ul>
+                    <li>Check that the URL you entered is correct.</li>
+                    <li>Visit our <a href="/sitemap/">Sitemap</a> to find the topic you are interested in.</li>
+                    <li>Return to our <a href="/">home page</a> and use the navigation menu to find what you need.</li>
+                    <li><a href="/contact-us/">Contact us</a> and we'll see if we can point you in the right direction</li>
+                    <li>Use this handy dandy search tool to find what you're looking for:</li>
+                </ul>
+                <div style="max-width: 400px;">
+                <gcse:searchbox-only></gcse:searchbox-only></div>
+            </p>
+        </div>
 	</div>
 </div>
-</body>
-</html>
+
+{% endblock %}

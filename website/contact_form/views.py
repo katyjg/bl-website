@@ -91,5 +91,4 @@ def contact_form(request, form_class=ContactForm,
         context[key] = callable(value) and value() or value
 
     return render_to_response(template_name,
-                              { 'form': form },
-                              context_instance=context)
+                              { 'form': form })

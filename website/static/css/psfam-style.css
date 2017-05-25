@@ -1,4 +1,4 @@
-.wcsb #header .banner {
+.wcsb #header .wrapper  {
 	background: url("/static/img/wcsbbanner.png") no-repeat scroll right top transparent;
 }
 .wcsb #header {
@@ -18,12 +18,9 @@ body.wcsb {
 	font-size: 60%;
 }
 .wcsb #main-wrapper {
-	background: url("/static/img/wcsb-bg.png") repeat-y scroll left top;
-	margin: 0px auto;
-	padding-left: 12px;
+	margin: 0px 12px;
 	min-height: auto;
-}
-.wcsb #headline {
+	box-shadow: 0px 0px 12px #777;
 }
 .wcsb #headline h2 {
 	padding-left: 16px;	

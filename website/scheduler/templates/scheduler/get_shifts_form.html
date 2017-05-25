@@ -25,14 +25,17 @@
 $(function() {
 	$( "#startpicker" ).datepicker({
 		defaultDate: '{{prev_week}}',
-		altField: '2012-01-01',
 		autoSize: true,
-		dateFormat: "yy-mm-dd"
-	});
+		format: "yyyy-mm-dd",
+        autoclose: true,
+        weekStart: 1,
+	}).datepicker('update','{{ prev_week }}');
 	$( "#endpicker" ).datepicker({
 		currentText: "{{next_week}}",
-		dateFormat: "yy-mm-dd"
-	});
+		format: "yyyy-mm-dd",
+        autoclose: true,
+        weekStart: 1,
+	}).datepicker('update','{{ next_week }}');
 });
 
 function submitDates() {
@@ -41,4 +44,3 @@ function submitDates() {
 	window.location['pathname'] = '{% url "bl.breakdown" %}' + start + '/' + end + '/';
 } 
 </script>
-

@@ -11,7 +11,7 @@ register = template.Library()
 
 
 @register.filter
-def ago(value):
+def ago(value, obj=None):
     return timefrom(value)
 
 @register.filter

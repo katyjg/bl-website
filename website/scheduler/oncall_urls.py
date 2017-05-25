@@ -1,15 +1,15 @@
 from django.conf.urls import *
 from scheduler.models import *
+from scheduler import views
 
-urlpatterns = patterns('scheduler.views',
+urlpatterns = [
     url(r'^$',
-        view='contact_legend',
+        views.contact_legend,
         name='contact_posts'
     ),
     url(
         r'^\d{4}-\d{2}-\d{2}/$', 
-        view='contact_legend',
+        views.contact_legend,
         name='contact_posts'
     ),
-
-)
+]

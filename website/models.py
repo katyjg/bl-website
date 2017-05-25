@@ -1,18 +1,13 @@
 from django.utils.translation import ugettext_lazy as _
-#from django import forms
 
-#from feincms.module.blog.models import Entry, EntryAdmin
 from feincms.module.page.models import Page
 
 from feincms.content.raw.models import RawContent
-#from feincms.content.image.models import ImageContent
 from feincms.content.medialibrary.models import MediaFileContent
 from feincms.content.application.models import ApplicationContent
-from feincms.content.richtext.models import RichTextContent, RichTextContentAdminForm
+from feincms.content.richtext.models import RichTextContent
 
 
-#from richtext_models import RichTextContent
-#from feincms.content.rss.models import RSSContent
 from feincms.module.page.extensions.navigation import NavigationExtension, PagePretender
 from feincms.content.application.models import reverse
 from feincms.content.video.models import VideoContent
@@ -75,8 +70,8 @@ Page.register_templates({
 
 Page.register_templates({
     'key': 'wp-wcsb-base',
-    'title': 'WCSB Base',
-    'path': 'wp-wcsb-base.html',
+    'title': 'PSFaM Base',
+    'path': 'wp-psfam.html',
     'regions': (
     ('main', 'Main Content'),
     ('tabs', 'Navigation Tabs'),
@@ -180,6 +175,16 @@ Page.register_templates({
         ('col1', 'Left Column', 'inherited'),
         ('col2', 'Main Column (Center)'),
         ('col3', 'Right Column', 'inherited'),
+        ),
+    })
+
+Page.register_templates({
+    'key': 'wp-monitor',
+    'title': 'Monitor Display',
+    'path': 'wp-monitor.html',
+    'regions': (
+        ('main', 'Main', 'inherited'),
+        ('thumbnail', 'Thumbnail'),
         ),
     })
 

@@ -1,10 +1,10 @@
 from django.conf.global_settings import LOGIN_REDIRECT_URL
-URL_ROOT = 'http://cmcf.lightsource.ca'
-SITE_NAME_LONG = 'Canadian Macromolecular Crystallography Facility'
-SITE_DESCRIPTION = 'The CMCF operates macromolecular crystallography beamlines at the CLS'
-SITE_KEYWORDS = 'lightsource,canadian,cls,macromolecular crystallography,protein crystallography,mxdc,autoprocess'
-SITE_NAME_SHORT = 'CMCF'
-BEAMLINE_ACRONYM = 'CMCF'
+URL_ROOT = ''
+SITE_NAME_LONG = ''
+SITE_DESCRIPTION = ''
+SITE_KEYWORDS = ''
+SITE_NAME_SHORT = ''
+BEAMLINE_ACRONYM = ''
 
 #USO_API = "http://uso-test.clsi.ca/api/v1/"
 USO_API = "http://uso.clsi.ca/api/v1/"
@@ -22,7 +22,6 @@ sys.path.extend([PROJECT_DIR, BASE_DIR, os.path.join(BASE_DIR, 'libs'), os.path.
 SECRET_KEY = '5ni&$-wok-8w3_my-#@08s)hcwed^2xy3-m9_0tpt-le4j-926'
 
 DEBUG = True # Set to True to see full error messages in browser
-TEMPLATE_DEBUG = DEBUG
 
 _version_file = os.path.join(BASE_DIR, 'VERSION')
 if os.path.exists(_version_file):
@@ -58,12 +57,12 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'local', 'website.db'),
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'local', 'website.db'),
+#    }
+#}
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -84,20 +83,29 @@ USE_L10N = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, "static"),
+    os.path.join(BASE_DIR, "libs", "grappelli", "static"),
 )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'local/media')
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages'
-)
+TEMPLATES =[
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(PROJECT_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.request',
+                'django.template.context_processors.debug',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.static'
+            ]
+        },
+    },
+]
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -113,17 +121,12 @@ MIDDLEWARE_CLASSES = (
 X_FRAME_OPTIONS = 'DENY'
 #CSRF_COOKIE_HTTPONLY = True
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, 'templates'),
-)
-
 INSTALLED_APPS = (
-    'suit', 
-    'filebrowser',    
+    'filebrowser',
     'django.contrib.admin', 
     'feincms',
-    'feincms.module.page', 
-    #'feincms.module.medialibrary',                               
+    'feincms.module.page',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -133,6 +136,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.redirects',
     'django.contrib.humanize',
+
     'website',
     'scheduler',
     'blog',
@@ -141,21 +145,21 @@ INSTALLED_APPS = (
     'publications',
     'galleriffic',
     'simplewiki',
+
     'mptt',
-    'south',
-    'captcha',    
+    'captcha',
     #'application_form',
     'crispy_forms',
     'objlist',
     'tasklist',
 )
 
-FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = True
-FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
+FEINCMS_TREE_EDITOR_INCLUDE_ANCESTORS = False
+FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/init_tinymce.html'
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
     'TINYMCE_JS_URL': STATIC_URL + 'grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
 }
-
+FILEBROWSER_URL_TINYMCE = STATIC_URL + 'grappelli/tinymce/jscripts/tiny_mce/'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 EMAIL_HOST_USER = "clsweb@mail.blweb"
@@ -188,32 +192,22 @@ try:
 except ImportError:
     pass
 
-FILEBROWSER_SUIT_TEMPLATE = True
+FILEBROWSER_SUIT_TEMPLATE = False
 
-SUIT_CONFIG = {
-    'ADMIN_NAME': '%s Public Website' % SITE_NAME_SHORT,
-    'CONFIRM_UNSAVED_CHANGES': False,
-    'MENU_ICONS': {
-        'sites': 'icon-leaf',
-        'auth': 'icon-lock',
-        'publications': 'icon-leaf'
-    },
-    'MENU': (
-        {'app': 'page', 'label': 'Web Pages', 'icon': 'icon-share'},
-        {'app': 'blog', 'label': 'News Items', 'icon': 'icon-star','models':('post','category')},
-        {'app': 'scheduler', 'label': 'Scheduler', 'icon': 'icon-time',},
-        {'app': 'application_form', 'label': 'Application Forms', 'icon': 'icon-file'},
-        {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'icon-picture', 'models': ('gallery','photo')},
-        {'label': 'Beamline Staff', 'icon': 'icon-user', 'url':'/admin/scheduler/supportperson/'},
-        {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'icon-folder-open'},  
-        {'app': 'tasklist', 'label': 'Projects', 'icon': 'icon-tasks', 'models': ('project','milestone')},
-        {'label': 'Settings', 'icon': 'icon-cog', 'models': ('sites.site','redirects.redirect')},
-        {'app': 'auth', 'label': 'Authorization', 'icon':'icon-user'},
-        '-',
-        {'label': 'Beamtime', 'icon':'icon-calendar', 'url': '/beamtime/admin'},
-        {'label': 'Issue Tracker', 'icon': 'icon-tasks', 'url': '/issues/'},
-        {'label': 'Wiki', 'icon': 'icon-edit', 'url': '/wiki/', },
-    ),
-    'LIST_PER_PAGE': 25
-}
+SITE_CONFIG = [
+        {'label': 'Home', 'icon': 'ti-home', 'url': '/admin/'},
+        {'app': 'page', 'label': 'Web Pages', 'icon': 'ti-share', 'url': '/admin/page/page/'},
+        {'app': 'blog', 'label': 'News Items', 'icon': 'ti-star','models':('post','category')},
+        {'app': 'scheduler', 'label': 'Scheduler', 'icon': 'ti-time',},
+        {'app': 'application_form', 'label': 'Application Forms', 'icon': 'ti-file'},
+        {'app': 'photologue', 'label': 'Photo Galleries', 'icon': 'ti-image', 'models': ('gallery','photo')},
+        {'label': 'Beamline Staff', 'icon': 'ti-user', 'url':'/admin/scheduler/supportperson/'},
+        {'label': 'File Manager', 'url': '/admin/filebrowser/browse', 'icon': 'ti-folder'},
+        {'app': 'tasklist', 'label': 'Tasklist', 'icon': 'ti-menu-alt', 'models': ('project','milestone')},
+        {'app': 'auth', 'label': 'Authorization', 'icon':'ti-user'},
+        {'separator': True},
+        {'label': 'Beamtime', 'icon':'ti-calendar', 'url': '/beamtime/admin'},
+        {'label': 'Issue Tracker', 'icon': 'ti-menu-alt', 'url': '/issues/'},
+        {'label': 'Wiki', 'icon': 'ti-pencil-alt', 'url': '/wiki/', },
+]
 

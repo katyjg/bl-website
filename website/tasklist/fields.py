@@ -49,14 +49,14 @@ class RestrictedFileField(FileField):
         ff.file_types = {k:1 for k in self.file_types}
         return ff
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([
-    (
-        [RestrictedFileField], # Class(es) these apply to
-        [],         # Positional arguments (not used)
-        {           # Keyword argument
-            "max_size": ["max_size", {"default": 2621440}],
-            "file_types": ["file_types", {"default": ['application/pdf', 'image/jpeg', 'image/png']}],
-        },
-    ),
-], ["^tasklist\.fields\.RestrictedFileField"])
+# from south.modelsinspector import add_introspection_rules
+# add_introspection_rules([
+#     (
+#         [RestrictedFileField], # Class(es) these apply to
+#         [],         # Positional arguments (not used)
+#         {           # Keyword argument
+#             "max_size": ["max_size", {"default": 2621440}],
+#             "file_types": ["file_types", {"default": ['application/pdf', 'image/jpeg', 'image/png']}],
+#         },
+#     ),
+# ], ["^tasklist\.fields\.RestrictedFileField"])

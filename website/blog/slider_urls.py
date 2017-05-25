@@ -1,9 +1,10 @@
 from django.conf.urls import *
 from blog.models import *
+from blog import views
 
-urlpatterns = patterns('blog.views',
+urlpatterns = [
     url(r'^$',
-        view='news_slider',
+        views.news_slider,
         name='blog_posts'
     ),
-)
+]

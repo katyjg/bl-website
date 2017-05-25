@@ -27,7 +27,7 @@
 	                    </div>
 	                    <div class="image-title">{{ photo.title }}</div>
 	                    <div class="image-desc">
-	                        <p>{{ photo.caption|removetags:"p"|safe }}</p>
+	                        <p>{{ photo.caption|striptags|safe }}</p>
 	                    </div>
 	                </div>
 	            </li>

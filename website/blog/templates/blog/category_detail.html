@@ -43,10 +43,10 @@
                         {% endif %}
                     </h3>
 	                Posted on {{ post.publish|date:"F d, Y" }} <br>			
-                    {{ post.body|removetags:"p"|safe }}
+                    {{ post.body|striptags|safe }}
 	                <p class="link">
                         <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">
-                            {{ post.citation|removetags:"p"|safe }}
+                            {{ post.citation|striptags|safe }}
                         </a>
                     </p>
                 </div>	      

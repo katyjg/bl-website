@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 import views, forms
 
-urlpatterns = patterns('',
+urlpatterns = [
     # field urls
     url(r'^$', views.DashboardView.as_view(), name='tasklist-dashboard'),
     url(r'^p/(?P<pk>\d+)/$', views.ProjectDetail.as_view(), name='project-detail'),
@@ -19,4 +19,4 @@ urlpatterns = patterns('',
     url(r'^w/$', views.WorkPlanningView.as_view(), name='work-planning'),
     url(r'^login/$',  login, {'template_name': 'tasklist/login.html'}, name='tasklist-login'),
     url(r'^logout/$', logout, name='tasklist-logout'),
-)
+]

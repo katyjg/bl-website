@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
@@ -65,19 +65,19 @@ def edit_visit(request, pk, model, form, template='wp-root.html'):
                 call_command('notify', visit.pk, 'MODIFIED: ', mod_msg) 
             message =  '%(name)s modified' % {'name': smart_str(model._meta.verbose_name)}
             messages.add_message(request, messages.INFO, message)
-            return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
+            return render(request, 'scheduler/refresh.html')
         else:
-            return render_to_response(template, {
+            return render(request, template, {
             'info': form_info, 
             'form' : frm, 
-            }, context_instance=RequestContext(request))
+            })
     else:
         form.warning_message = (visit.start_date <= next_monday and visit.start_date >= today and datetime.now() > etime and  WARNING) or None
         frm = form(instance=visit, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
-        return render_to_response(template, {
+        return render(request, template, {
         'info': form_info, 
         'form' : frm,
-        }, context_instance=RequestContext(request))
+        })
     
 @staff_login_required
 def delete_object(request, pk, model, form, template='wp-root.html'):
@@ -87,7 +87,7 @@ def delete_object(request, pk, model, form, template='wp-root.html'):
         'title': 'Delete %s?' % obj,
         'sub_title': 'The %s (%s) will be deleted' % ( model._meta.verbose_name, obj),
         'action':  request.path,
-        'message': 'Are you sure you want to delete this visit?',
+        'message': 'Are you sure you want to delete this?',
         'save_label': 'Delete'
         }
     if request.method == 'POST':
@@ -96,19 +96,18 @@ def delete_object(request, pk, model, form, template='wp-root.html'):
             message =  '%(name)s deleted' % {'name': smart_str(model._meta.verbose_name)}
             obj.delete()
             messages.add_message(request, messages.INFO, message)
-            return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
+            return render(request, 'scheduler/refresh.html')
         else:
-            return render_to_response(template, {
+            return render(request, template, {
             'info': form_info, 
             'form' : frm, 
-            }, context_instance=RequestContext(request))
+            })
     else:
-        print obj, type(obj), obj.pk,  dict(request.GET.items())
         frm = form(instance=obj, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
-        return render_to_response(template, {
+        return render(request, template, {
             'info': form_info, 
             'form' : frm,
-            }, context_instance=RequestContext(request))
+            })
     
 
 @staff_login_required
@@ -150,22 +149,22 @@ def add_object(request, model, form, template='wp-root.html'):
                         call_command('notify', new_obj.pk, 'ADDED: ', 'This change affects %s' % dates)
             message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
             messages.add_message(request, messages.INFO, message)
-            return render_to_response('scheduler/refresh.html', context_instance=RequestContext(request))
+            return render(request, 'scheduler/refresh.html')
         else:
-            return render_to_response(template, {
+            return render(request, template, {
                 'info': form_info,
                 'form': frm,
-                }, context_instance=RequestContext(request))
+                })
     else:
         frm = form(initial=request.GET.items())
         if model in [Visit, Stat]:
             start_date = datetime.strptime(str(request.GET.get('start_date')), '%Y-%m-%d').date()
             if model == Visit:
                 form.warning_message = (start_date <= next_monday and start_date >= today and datetime.now() > etime and WARNING) or None
-        return render_to_response(template, {
+        return render(request, template, {
             'info': form_info, 
             'form': frm, 
-            }, context_instance=RequestContext(request))
+            })
 
 
 def get_one_week(dt=None):
@@ -241,7 +240,7 @@ def current_week(request, day=None, template='scheduler/schedule_week.html', adm
 
         calendar.append((key, day_shifts, on_call, mode_shifts, mode_day, date))
 
-    return render_to_response(
+    return render(request,
         template, 
         {
             'beamlines': beamlines,
@@ -252,8 +251,7 @@ def current_week(request, day=None, template='scheduler/schedule_week.html', adm
             'staff':     staff,
             'today':    [(today).strftime('%a %b/%d'), shift],
             'title':    title,
-        },
-        context_instance=RequestContext(request),
+        }
     )
     
 def contact_legend(request):
@@ -315,7 +313,7 @@ def get_shift_breakdown(request, start, end, template=''):
                     shifts.append(s)
             info[bl].append((entry[0], shifts, entry[2]))
 
-    return render_to_response('scheduler/shift_breakdown.html',     
+    return render(request, 'scheduler/shift_breakdown.html',
             { 'info': info,
               'date': (start, end),
-            }, context_instance=RequestContext(request))
+            })

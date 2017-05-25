@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.template import loader, Context
 from django.db.models.fields.files import FieldFile
-from django.core.servers.basehttp import FileWrapper
+from wsgiref.util import FileWrapper
 from django.contrib.auth.decorators import login_required
 
 from settings import *

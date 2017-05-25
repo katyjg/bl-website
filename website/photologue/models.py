@@ -125,7 +125,7 @@ class Gallery(models.Model):
     is_public = models.BooleanField(_('is public'), default=True,
                                     help_text=_('Public galleries will be displayed in the default views.'))
     photos = models.ManyToManyField('Photo', related_name='galleries', verbose_name=_('photos'),
-                                    null=True, blank=True)
+                                    blank=True)
     tags = TagField(help_text=tagfield_help_text, verbose_name=_('tags'))
 
     class Meta:

@@ -1,5 +1,5 @@
 from django.core.serializers import serialize
-from django.db.models.query import QuerySet, ValuesQuerySet
+from django.db.models.query import QuerySet
 from django.utils.safestring import mark_safe
 import json
 from django.template import Library
@@ -9,9 +9,9 @@ register = Library()
 @register.filter(name="jsonify", needs_autoescape=True)
 def jsonify(obj, autoescape=None):
     
-    if isinstance(obj,  ValuesQuerySet):
-        out = json.dumps(list(obj))
-    elif isinstance(obj, QuerySet):
+    #if isinstance(obj,  ValuesQuerySet):
+    #    out = json.dumps(list(obj))
+    if isinstance(obj, QuerySet):
         out = serialize('json', obj)
     else:
         out = json.dumps(obj)
