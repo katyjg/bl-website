@@ -1,12 +1,12 @@
 from django.contrib.syndication.views import FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
-#from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from blog.models import Post, Category
 from django.utils.feedgenerator import Rss201rev2Feed
 from django.conf import settings
+
+SITE_NAME = getattr(settings, 'SITE_NAME_SHORT', 'Beamline')
 
 class RssFooFeedGenerator(Rss201rev2Feed):
     def add_root_elements(self, handler):
@@ -20,10 +20,8 @@ class RssFooFeedGenerator(Rss201rev2Feed):
 
 class LatestEntries(Feed):
     feed_type = RssFooFeedGenerator
-    _site = Site.objects.get_current()
     description = "Updates from %s at the Canadian Light Source." % getattr(settings, 'SITE_NAME_SHORT', 'the beamline')
-    title = '%s News' % _site.name
-#    description = '%s posts feed.' % _site.name
+    title = '%s News' % SITE_NAME
     link = '/research-highlights/'
 
     def items(self):
@@ -40,9 +38,8 @@ class LatestEntries(Feed):
 
 
 class BlogPostsFeed(Feed):
-    _site = Site.objects.get_current()
-    title = '%s feed' % _site.name
-    description = '%s posts feed.' % _site.name
+    title = '%s feed' % SITE_NAME
+    description = '%s posts feed.' % SITE_NAME
 
     def link(self):
         return reverse('blog_index')
@@ -55,8 +52,7 @@ class BlogPostsFeed(Feed):
 
 
 class BlogPostsByCategory(Feed):
-    _site = Site.objects.get_current()
-    title = '%s posts category feed' % _site.name
+    title = '%s posts category feed' % SITE_NAME
 
     def get_object(self, bits):
         if len(bits) != 1:
@@ -75,9 +71,8 @@ class BlogPostsByCategory(Feed):
         return obj.post_set.published()[:10]
 
 class CommentsFeed(Feed):
-    _site = Site.objects.get_current()
-    title = '%s comment feed' % _site.name
-    description = '%s comments feed.' % _site.name#
+    title = '%s comment feed' % SITE_NAME
+    description = '%s comments feed.' % SITE_NAME
 
     def link(self):
         return reverse('blog_index')

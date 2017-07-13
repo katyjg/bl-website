@@ -54,15 +54,6 @@ INTERNAL_URLS = ('^/wiki', '^/admin', '^/beamtime', '^/issues')
 ROOT_URLCONF = 'website.urls'
 WSGI_APPLICATION = 'website.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'local', 'website.db'),
-#    }
-#}
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -148,7 +139,6 @@ INSTALLED_APPS = (
 
     'mptt',
     'captcha',
-    #'application_form',
     'crispy_forms',
     'objlist',
     'tasklist',

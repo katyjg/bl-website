@@ -1,9 +1,11 @@
-FROM fedora:21
-MAINTAINER Michel Fodje <michel.fodje@lightsource.ca>
+FROM fedora:26
+MAINTAINER Kathryn Janzen <kathryn.janzen@lightsource.ca>
 
-RUN yum -y update && yum clean all
-RUN yum -y install httpd python-django mod_wsgi python-ipaddr python-pillow  python-dateutil python-markdown && yum clean all
-RUN yum -y install MySQL-python && yum clean all
+RUN dnf -y update
+RUN dnf -y install httpd python-django mod_wsgi python-ipaddr python-pillow  python-dateutil python-markdown python-unicodecsv && dnf clean all
+RUN dnf -y install python-psycopg2 && dnf clean all
+
+RUN pip install --upgrade pip &&  pip install 'Django==1.11'
 
 EXPOSE 80
 
