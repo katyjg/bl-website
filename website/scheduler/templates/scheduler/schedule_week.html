@@ -284,7 +284,7 @@
         s=checkTime(s);
         wkd=weekday[wkd];
         mon=month[mon];
-        document.getElementById("localtime").innerHTML=h+":"+m+":"+s+"&nbsp;&nbsp;&nbsp;&nbsp;"+wkd+", "+mon+" "+d+", "+y;
+        document.getElementById("localtime").innerHTML=h+":"+m+"&nbsp;&nbsp;&nbsp;&nbsp;"+wkd+", "+mon+" "+d+", "+y;
         t=setTimeout(function(){startTime()},500);
     }
     function checkTime(i) {

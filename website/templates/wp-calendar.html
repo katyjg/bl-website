@@ -11,6 +11,10 @@
     
         <div id="sidebar" class="calendar col-sm-3">
             <div class="row">
+                <div class="col-sm-12 hidden-xs">
+                    <h2>Local Time</h2>
+                    <span id="localtime" title="Local time in Saskatoon"></span>
+                </div>
                 <div class="{% if feincms_page.content.col3 %}col-xs-4{% else %}hidden-xs{% endif %} col-sm-12">
                     {% feincms_render_region feincms_page "col3" request %}
                 </div>
@@ -28,10 +32,6 @@
                 </div>
                 <div class="col-xs-{% if feincms_page.content.col3 %}4{% else %}6{% endif %} col-sm-12">
                     {% feincms_render_region feincms_page "col2" request %}
-                </div>
-                <div class="col-sm-12 hidden-xs">
-                    <h2>Local Time</h2>
-                    <span id="localtime" title="Local time in Saskatoon"></span>
                 </div>
             </div>
 	    </div>
