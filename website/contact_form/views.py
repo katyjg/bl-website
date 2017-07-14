@@ -5,10 +5,10 @@ View which can render and send email from a contact form.
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 
-from contact_form.forms import ContactForm
+from forms import ContactForm
 
 from feincms.content.application.models import app_reverse
 from django.views.decorators.csrf import csrf_protect
@@ -90,5 +90,6 @@ def contact_form(request, form_class=ContactForm,
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
 
-    return render_to_response(template_name,
-                              { 'form': form })
+    return render(request, template_name, {'form': form})
+    #return render_to_response(template_name,
+    #                          { 'form': form })

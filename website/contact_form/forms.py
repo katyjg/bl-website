@@ -198,9 +198,7 @@ class ContactForm(forms.Form):
         """
         if not self.is_valid():
             raise ValueError("Cannot generate Context from invalid contact form")
-        return RequestContext(self.request,
-                              dict(self.cleaned_data,
-                                   site=Site.objects.get_current()))
+        return dict(self.cleaned_data, site=Site.objects.get_current())
     
     def get_message_dict(self):
         """
