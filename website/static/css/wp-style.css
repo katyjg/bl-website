@@ -227,6 +227,11 @@ p.intro a {
 		margin-left: 3px;
 	}
 }
+@media (max-width: 768px) {
+	.slider-image {
+		padding-top: 20px;
+	}
+}
 
 .submit input, .button, .button-primary, .button-secondary, input[type=button], input[type=submit] {
 	font: normal 11px/16px "Open Sans Condensed", sans-serif;

@@ -3,6 +3,9 @@
         {% if post.highlight or post.publish %}
             <div class="slider-content">
                 {% ifnotequal post.image 'default' %}
+                    <div class="col-xs-12 visible-xs">
+                        <h1 class="title"><a href="/research-highlights/#{{ post.slug }}" title="View this Post">{{ post.title }}</a></h1>
+                    </div>
                     <div class="col-sm-5 col-xs-6">
                         <div class="slider-image">
                             <a href="/research-highlights/#{{ post.slug }}" title="View this Post">
@@ -11,7 +14,7 @@
                         </div>
                     </div>
                     <div class="col-sm-7 col-xs-6">
-                        <h1 class="title"><a href="/research-highlights/#{{ post.slug }}" title="View this Post">{{ post.title }}</a></h1>
+                        <h1 class="title hidden-xs"><a href="/research-highlights/#{{ post.slug }}" title="View this Post">{{ post.title }}</a></h1>
                         <span class="nav"></span>
                         <p><span>{{ post.tease|striptags|safe }}</span></p>
                         {% if post.link %}
