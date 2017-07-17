@@ -12,7 +12,7 @@
             {% feincms_nav feincms_page level=1 as toplevel %}
 
             <h2>{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}
-                {{ p.title }} &ndash;
+                <text class="hidden-xs">{{ p.title }} &ndash;</text>
                 {% endif %}{% endfor %}
                 <span>{{feincms_page.title}}</span>
             </h2>

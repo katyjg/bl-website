@@ -15,6 +15,7 @@
         			{{day.0|cut:"/"|slice:"-2:"}}, {{day.5|slice:":4"}}{% endif %}
         	{% endfor %}
         </span>
+        <span class="visible-xs"></span>
         <span>
             {% if admin %}
                 <a class="pull-right" href='{% url "admin-anyweek" day=next_week %}' title="Next Week">
