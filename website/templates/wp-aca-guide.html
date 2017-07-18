@@ -45,7 +45,7 @@
 	            		        {% if subsublevel %}
 	                			    {% for ssp in subsublevel %}
                         				{% if forloop.first %}
-                    			            {% ifnotequal subsublevel.count 0 %}{% ifnotequal subsublevel.count 1 %}
+                    			            {% ifnotequal subsublevel|length 0 %}{% ifnotequal subsublevel|length 1 %}
                                 				<div id="toc">
                                						<div id="toctitle"><h2>Page Contents</h2></div>
                                						<ul>
@@ -56,8 +56,8 @@
 	                               					{% endfor %}
                                						</ul>
                                                 </div>
-                        				    {% endifnotequal %}{% endifnotequal %}    
-                        				    {% feincms_render_region sp "col2" request %}   				
+                        				    {% endifnotequal %}{% endifnotequal %}
+                        				    {% feincms_render_region sp "col2" request %}
                         				{% endif %}
                            
 
@@ -125,7 +125,7 @@
 
        	<div class="col-9" id="bodyContent">
       	    {% feincms_nav feincms_page level=3 as sublevel %}
-            {% ifnotequal sublevel.count 0 %}
+            {% if sublevel|length > 1 %}
 	        	<table id="toc" class="toc" summary="Contents"><tr><td>
 	            	<div id="toctitle"><h2>Page Contents</h2></div>
                     <ul>
@@ -134,7 +134,7 @@
             		{% endfor %}
                     </ul>
 	        	</td></tr></table>
-            {% endifnotequal %}
+            {% endif %}
  	        {% feincms_nav feincms_page level=1 as toplevel %}
     	    {% for p in toplevel %}
 	        	{% feincms_nav p level=2 as sublevel %}

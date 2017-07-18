@@ -1,5 +1,6 @@
 {% extends "wp-root.html" %}
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load static %}
 
 <script language="JavaScript" type="Text/Javascript">
 jQuery.fn.fadeTo = function(speed,to,callback) { 
@@ -26,11 +27,11 @@ jQuery.fn.fadeTo = function(speed,to,callback) {
 {% endblock %}
 
 {% block extra-header %}
-    <link rel="stylesheet" type="text/css" href="/static/css/galleriffic/galleriffic-2.css" > 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/galleriffic/galleriffic-2.css' %}" >
 
-    <script type="text/javascript" src="/static/js/jquery-1.3.2.js"></script>
-	<script type="text/javascript" src="/static/js/jquery.galleriffic.js"></script>
-	<script type="text/javascript" src="/static/js/jquery.opacityrollover.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-1.3.2.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.galleriffic.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.opacityrollover.js' %}"></script>
 
         <script type="text/javascript">
                 jQuery(document).ready(function($) {

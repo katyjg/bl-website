@@ -227,6 +227,7 @@ p.intro a {
 		margin-left: 3px;
 	}
 }
+
 @media (max-width: 768px) {
 	.slider-image {
 		padding-top: 20px;

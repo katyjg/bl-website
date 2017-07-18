@@ -1,5 +1,6 @@
 {% extends "wp-root.html" %}
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load static %}
 
 {% block "page-content" %}
 
@@ -41,6 +42,6 @@
 {% endblock %}
 
 {% block extra-header %}
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" ></script>
-    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-datepicker.js' %}"></script>
 {% endblock %}

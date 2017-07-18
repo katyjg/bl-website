@@ -6,26 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 
-    {% load get_version %}  
+    {% load get_version static %}
     <title>{{ 'SITE_NAME_SHORT'|get_from_settings }} {% if title %}- {{ title }}{% endif %}</title>
     <meta name="generator" content="{{ 'SITE_NAME_SHORT'|get_from_settings }}-Web {{ 0|get_version }}" >
 
     <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Gentium+Basic|Open+Sans:400,600|Open+Sans+Condensed:300|Raleway|Archivo+Narrow" rel="stylesheet">
-    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link type="text/css" href="/static/css/fonts.css" rel="stylesheet" media="screen">
-    <link type="text/css" href="/static/css/wp-style.css" rel="stylesheet" media="screen">
-    <link type="text/css" href="/static/css/wp-style-print.css" rel="stylesheet" media="print">
-    <link rel="stylesheet" type="text/css" href="/static/css/themify-icons.css" media="all">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'css/fonts.css' %}" rel="stylesheet" media="screen">
+    <link type="text/css" href="{% static 'css/wp-style.css' %}" rel="stylesheet" media="screen">
+    <link type="text/css" href="{% static 'css/wp-style-print.css' %}" rel="stylesheet" media="print">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/themify-icons.css' %}" media="all">
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" ></script>
-    <script type="text/javascript" src="/static/js/jquery.scroll.pack.js"></script>
-    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'js/jquery.scroll.pack.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
     <link rel="shortcut icon" type="image/png" href="/favicon.ico?">
     <link rel="alternate" type="application/atom+xml"  href="/feeds/latest/" title="{{ 'SITE_NAME_LONG'|get_from_settings }}">
 
     <!--[if lt IE 8]>
-    <link type="text/css" href="/static/css/ie.css" rel="stylesheet">
+    <link type="text/css" href="{% static 'css/ie.css' %}" rel="stylesheet">
     <![endif]-->
 
     <script type="text/javascript">
@@ -70,7 +70,7 @@
         </div>
 
         <div id="header-print">
-            <img class="logo" src="/static/img/clslogo_print.png" alt="{{ 'SITE_NAME_LONG'|get_from_settings }}">
+            <img class="logo" src="{% static 'img/clslogo_print.png' %}" alt="{{ 'SITE_NAME_LONG'|get_from_settings }}">
         </div>
         {% if messages %}
             <script>
