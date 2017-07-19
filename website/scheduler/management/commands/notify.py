@@ -90,7 +90,7 @@ class Command(BaseCommand):
             template_name = self.template_name
             
         
-        return loader.render_to_string(template_name, dictionary={
+        return loader.render_to_string(template_name, {
                                             'print': self.pr,
                                             'data': self.data,
                                             'mod': self.mod,
@@ -105,7 +105,7 @@ class Command(BaseCommand):
         """
         now = datetime.now().date()
         date = now - timedelta(days=now.weekday())
-        subject = loader.render_to_string(self.subject_template_name, dictionary={
+        subject = loader.render_to_string(self.subject_template_name, {
                                             'print': self.pr,
                                             'date': date,
                                             'visit': self.visit})
