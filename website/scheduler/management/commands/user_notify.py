@@ -39,7 +39,7 @@ class Command(BaseCommand):
         else:
             template_name = self.template_name
             
-        return loader.render_to_string(template_name, dictionary={
+        return loader.render_to_string(template_name, {
                                             'visit': self.visit,
                                             'proposal': self.proposal,
                                             'type': self.type,
@@ -54,7 +54,7 @@ class Command(BaseCommand):
         """
         now = datetime.now().date()
         date = now - timedelta(days=now.weekday())
-        subject = loader.render_to_string(self.subject_template_name, dictionary={
+        subject = loader.render_to_string(self.subject_template_name, {
                                             'date': date,
                                             'visit': self.visit,
                                             'site': [self.url_root, self.site_name],

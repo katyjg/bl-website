@@ -140,7 +140,8 @@ div#header-print {
 	margin: 0 auto;
 	clear: left;
 	float: left;
-	background: url(/media/uploads/site-images/cls-logo-sm.png) top left no-repeat;
+	background: url(/static/img/cls_logo_white.svg) top left no-repeat;
+	background-size: cover;
     height: 50px;
 }
 
@@ -158,12 +159,13 @@ div#header-print {
 		height: 88px;
 	}
 	#header .facility-logo {
-		background: url(/media/uploads/site-images/cls-logo.png) top left no-repeat;
+		background: url(/static/img/cls_logo_white.svg) top left no-repeat;
+		background-size: cover;
 		height: 88px;
 		width: 88px;
 	}
 	#header .wrapper {
-		background: url(/media/uploads/site-images/overlay2.png) top right no-repeat;
+		background: url(/media/uploads/site-images/overlay.png) top right no-repeat;
 	}
 }
 
