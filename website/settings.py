@@ -33,6 +33,13 @@ SITE_ID = 1
 
 ALLOWED_HOSTS = ['*']
 
+DATABASES = {
+    'default': {
+        'NAME': os.path.join(BASE_DIR, 'local', 'website.db'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        }
+    }
+
 # Specific IP addresses or networks you want to have access to your internal pages
 # such as wiki/admin etc (eg. CLS network)
 INTERNAL_IPS = IPAddressList(
