@@ -45,7 +45,7 @@ span.modname {
 
 .breadcrumbs {
     width: 100%;
-    position: absolute;
+    position: relative;
 }
 
 .left-nav {
@@ -265,8 +265,12 @@ body, #changelist {
 
 .sidebar-space + #content {
     margin-left: 150px;
-    margin-top: 34px;
+
 }
+.dashboard #content {
+    margin-top: 0;
+}
+
 #header + .sidebar-space + #content {
 	//margin-top: -40px;
 }

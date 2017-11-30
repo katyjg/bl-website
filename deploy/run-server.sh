@@ -11,7 +11,7 @@ if [ ! -f /website/local/.dbinit ]; then
     su -s /bin/bash apache -c "/website/manage.py loaddata /website/website/fixtures/test-data.json"
     touch /website/local/.dbinit
 else
-    su -s /bin/bash apache -c "/website/manage.py migrate --noinput"
+    su -s /bin/bash apache -c "/website/manage.py migrate --fake-initial"
 fi
 
 exec /usr/sbin/httpd -D FOREGROUND

@@ -1,5 +1,6 @@
 {% extends "admin/base.html" %}
 {% load admin_static %}
+{% load static %}
 {% load get_version %}
 {% load i18n %}
 
@@ -41,7 +42,7 @@
               {% if item.separator %}
                   <li class="separator"></li>
               {% else %}
-                  <li><a href="{{ item.url }}" target="_blank"><i class="{% firstof item.icon 'icon-user' %}"></i>{% trans item.label|capfirst %}</a></li>
+                  <li><a href="{{ item.url }}" ><i class="{% firstof item.icon 'icon-user' %}"></i>{% trans item.label|capfirst %}</a></li>
               {% endif %}
           {% endif %}
         {% endfor %}
@@ -55,8 +56,8 @@
 {% endblock %}
 
 {% block extrastyle %}
-  <link rel="stylesheet" type="text/css" href="/static/css/admin-style.css" media="all">
-  <link rel="stylesheet" type="text/css" href="/static/css/themify-icons.css" media="all">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/admin-style.css' %}" media="all">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/themify-icons.css' %}" media="all">
 {% endblock %}
 
 
