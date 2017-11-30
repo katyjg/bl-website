@@ -6,7 +6,7 @@ Before your beamtime, please be sure to complete safety training as per the User
 	- shipping samples,
 	- hard drive requirements,
 	- using MxLIVE for shipment tracking and sample management, and
-	- sample requirements if you plan to use the automounter.
+	- sample requirements.
 
 	http://cmcf.lightsource.ca/user-guide
 
