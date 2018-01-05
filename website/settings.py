@@ -7,7 +7,7 @@ SITE_NAME_SHORT = ''
 BEAMLINE_ACRONYM = ''
 
 #USO_API = "http://uso-test.clsi.ca/api/v1/"
-USO_API = "http://uso.clsi.ca/api/v1/"
+USO_API = "http://user-portal.lightsource.ca/api/v1/"
 
 import os
 import sys

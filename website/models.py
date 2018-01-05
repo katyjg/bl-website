@@ -90,6 +90,17 @@ Page.register_templates({
     })
 
 Page.register_templates({
+    'key': 'wp-schedule',
+    'title': 'WP Schedule',
+    'path': 'wp-schedule.html',
+    'regions': (
+        ('col1', 'Main Column'),
+        ('col2', 'Sidebar Column'),
+        ('col3', 'Sidebar Top'),
+        ),
+    })
+
+Page.register_templates({
     'key': 'wp-7_5',
     'title': 'WP 2-Col. 7/5',
     'path': 'wp-7_5.html',
@@ -203,6 +214,7 @@ Page.create_content_type(VideoContent, POSITION_CHOICES=(
 
 Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('scheduler.urls',                     'Beamline Schedule'),
+    ('scheduler.import_urls',              'Imported Schedule'),
     ('scheduler.contacts_urls',            'Personnel List'),
     ('scheduler.oncall_urls',              'Local Contact Legend'),
     ('galleriffic.urls',                   'Photo Galleries'),

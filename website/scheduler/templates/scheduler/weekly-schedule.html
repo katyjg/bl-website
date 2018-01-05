@@ -1,0 +1,81 @@
+{% load static %}
+
+<link type="text/css" href="{% static 'css/schedule.css' %}" rel="stylesheet">
+
+{% autoescape off %}
+{{ template }}
+{% endautoescape %}
+
+{% for facility, visits in schedule.items %}
+<strong>{{ facility }}</strong>
+
+    <table>
+        <thead><tr>{% for k in visits.0.keys %}<th>{{ k }}</th>{% endfor %}</tr></thead>
+        <tbody>
+        {% for visit in visits %}
+            <tr>
+            <td>{{ visit.end|time:"H:i" }}
+                {% for v in visit.values %}
+                    {{ v }}</td><td>
+                {% endfor %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endfor %}
+
+<script type="text/javascript">
+    function initSchedule(bls) {
+
+        var schedule = {};
+        var modes;
+        $.each(bls, function(i, fac) {
+            $.ajax({
+                url: '{{ beam_url }}' + fac + '/',
+                data: {},
+                success: function (response) {
+                    schedule[fac] = response;
+                    updateSchedule(fac, schedule);
+                }
+            });
+        });
+        $.ajax({
+            url: '{{ mode_url }}',
+            data: {},
+            success: function (response) {
+                modes = response;
+                updateModes(modes);
+            }
+        })
+    }
+    var bls = {{ facilities }};
+    //initSchedule(bls);
+
+    function updateSchedule(schedule) {
+        $.each(schedule, function(_, visit) {
+            $.each(visit.shifts, function(_, shift) {
+                var td = $('div.cal-section-' + visit.section + ' div[data-shift-id=' + shift + ']');
+                td.html(visit.display);
+            })
+        });
+    }
+
+    function updateModes(modes) {
+        $.each(modes, function(_, mode) {
+            $.each(mode.shifts, function(_, shift) {
+                var td = $('div[data-shift-id=' + shift + ']').addClass(mode.kind);
+            });
+        });
+    }
+
+    $('div[data-shift-id').html('&nbsp;');
+    $.each(bls, function(i, fac) {
+        var schedule = {{ schedule }};
+        var facility_schedule = schedule[fac];
+        updateSchedule(facility_schedule);
+    });
+    updateModes({{ modes }});
+    updateSchedule({{ support }});
+</script>
+

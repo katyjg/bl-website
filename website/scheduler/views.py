@@ -4,17 +4,23 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.utils.encoding import smart_str
+from django.utils import timezone
 from django.core.management import call_command
 from django.contrib import messages
+from django.views.generic import TemplateView
+from django.utils.safestring import mark_safe
+import pytz
 
 from datetime import datetime, date, timedelta, time
 
 import string
+import requests
 from django.conf import settings
 
 from scheduler.models import Visit, Stat, OnCall, SupportPerson, Beamline, Proposal
 
 WARNING = "This is a last-minute change. It will take a few moments to send a notification e-mail to the Users Office and to beamline staff."
+
 
 def staff_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME):
     """
@@ -29,12 +35,15 @@ def staff_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME)
         return actual_decorator(function)
     return actual_decorator
 
+
 def staff_calendar(request, day=None, template='scheduler/admin_schedule_week.html'):
     return current_week(request, day, template, staff=True)
+
 
 @staff_login_required
 def admin_scheduler(request, day=None, template='scheduler/admin_schedule_week.html'):
     return current_week(request, day, template, staff=True, admin=True, title="Beamtime Scheduler")
+
 
 @staff_login_required
 def edit_visit(request, pk, model, form, template='wp-root.html'):
@@ -78,7 +87,8 @@ def edit_visit(request, pk, model, form, template='wp-root.html'):
         'info': form_info, 
         'form' : frm,
         })
-    
+
+
 @staff_login_required
 def delete_object(request, pk, model, form, template='wp-root.html'):
     obj = model.objects.get(pk__exact=pk)
@@ -189,6 +199,7 @@ def combine_shifts(shifts, ids=False):
         for i in range(3):
             new_shifts[i] = ','.join(new_shifts[i])
     return new_shifts
+
 
 def current_week(request, day=None, template='scheduler/schedule_week.html', admin=False, staff=False, title=''):
     today = datetime.now()
@@ -317,3 +328,81 @@ def get_shift_breakdown(request, start, end, template=''):
             { 'info': info,
               'date': (start, end),
             })
+
+
+def format_localtime(dt):
+    return datetime.strftime(timezone.localtime(pytz.utc.localize(dt)), '%Y-%m-%dT%H')
+
+
+class WeeklySchedule(TemplateView):
+    template_name = "scheduler/weekly-schedule.html"
+
+    def get_context_data(self, **kwargs):
+        c = super(WeeklySchedule, self).get_context_data(**kwargs)
+        c['schedule'] = {}
+        c['support'] = []
+        c['modes'] = []
+        bls = getattr(settings, 'USO_BEAMLINES', [getattr(settings, 'USO_BEAMLINE')])
+        url = getattr(settings, 'USO_API') + 'schedule/template/week/8?sections={},Staff'.format(','.join(bls))
+        r = requests.get(url)
+        if r.status_code == 200:
+            template = r.content
+
+        """This section could be removed if Access-Control-Allow-Origin header added to api resource"""
+        # Import Facility Schedule(s)
+        for fac in bls:
+            url = getattr(settings, 'USO_API') + 'schedule/beamtime/' + fac + '/'
+            r = requests.get(url)
+            if r.status_code == 200:
+                c['schedule'][fac] = []
+                for shift in r.json():
+                    shift_info = {
+                        'shifts': [],
+                        'display': str(shift['display']),
+                        'section': str(shift['section']),
+                        'cancelled': 1 if shift['cancelled'] else 0
+                    }
+                    start = datetime.strptime(shift['start'], '%Y-%m-%dT%H:%M:%SZ')
+                    while start < datetime.strptime(shift['end'], '%Y-%m-%dT%H:%M:%SZ'):
+                        shift_info['shifts'].append(format_localtime(start))
+                        start += timedelta(hours=8)
+                    c['schedule'][fac].append(shift_info)
+        # Import Modes
+        url = getattr(settings, 'USO_API') + 'schedule/modes'
+        r = requests.get(url)
+        if r.status_code == 200:
+            for mode in r.json():
+                mode_info = {
+                    'shifts': [],
+                    'kind': str(mode['kind']),
+                    'cancelled': 1 if mode['cancelled'] else 0
+                }
+                start = datetime.strptime(mode['start'], '%Y-%m-%dT%H:%M:%SZ')
+                while start < datetime.strptime(mode['end'], '%Y-%m-%dT%H:%M:%SZ'):
+                    mode_info['shifts'].append(format_localtime(start))
+                    start += timedelta(hours=8)
+                c['modes'].append(mode_info)
+        # Import Support
+        url = getattr(settings, 'USO_API') + 'schedule/support/' + getattr(settings, 'USO_BEAMLINE')
+        r = requests.get(url)
+        if r.status_code == 200:
+            for support in r.json():
+                support_info = {
+                    'shifts': [],
+                    'section': str(support['section']),
+                    'display': str(support['display'])
+                }
+                start = datetime.strptime(support['start'], '%Y-%m-%dT%H:%M:%SZ')
+                while start < datetime.strptime(support['end'], '%Y-%m-%dT%H:%M:%SZ'):
+                    support_info['shifts'].append(format_localtime(start))
+                    start += timedelta(hours=8)
+                c['support'].append(support_info)
+        c['facilities'] = mark_safe(bls)
+        c['schedule'] = mark_safe(c['schedule'])
+        c['support'] = mark_safe(c['support'])
+        c['modes'] = mark_safe(c['modes'])
+        c['template'] = template
+        c['mode_url'] = getattr(settings, 'USO_API') + 'schedule/modes'
+        c['beam_url'] = getattr(settings, 'USO_API') + 'schedule/beamtime/'
+        return c
+
