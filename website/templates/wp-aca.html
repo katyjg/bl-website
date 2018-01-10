@@ -1,6 +1,6 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
 {% load get_version static %}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 
 <html dir="ltr" lang="en">
 
@@ -12,7 +12,7 @@
     <title>ACA CanDiv - {{ feincms_page.title }}</title>
     <meta name="description" content="{{ 'SITE_DESCRIPTION'|get_from_settings }}" >
     <meta name="keywords" content="{{ 'SITE_KEYWORDS'|get_from_settings }}" >
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,400,700|Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
     <link type="text/css" href="{% static 'css/wp-style.css' %}" rel="stylesheet">
 
     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
@@ -92,10 +92,10 @@
 	<div class="wrapper">
         <span id="something">{% get_fragment request "something" %}</span>
 		<p> 
-			<a href="http://www.canadiancrystallography.ca" title="Canadian National Committee for Crystallography">CNCC</a> | 
-			<a href="http://www.iucr.org/" title="International Union of Crystallography">IUCr</a> |
-            <a href="http://www.amercrystalassn.org/" title="American Crystallographic Association">ACA</a> |
-            <a href="http://www.lightsource.ca/" title="Canadian Light Source">CLS</a> |
+			<a href="//www.canadiancrystallography.ca" title="Canadian National Committee for Crystallography">CNCC</a> |
+			<a href="//www.iucr.org/" title="International Union of Crystallography">IUCr</a> |
+            <a href="//www.amercrystalassn.org/" title="American Crystallographic Association">ACA</a> |
+            <a href="//www.lightsource.ca/" title="Canadian Light Source">CLS</a> |
             <a href="/aca/about-aca-candiv/candiv-logo">About our Logo</a> |
             <a href="/aca/contacting-candiv/#webmaster">Contact the Webmaster</a> 
 		</p>
