@@ -34,7 +34,7 @@
                         {% endif %}
                     </h3>
 	                Posted on {{ post.publish|date:"F d, Y" }} <br>			
-                    {{ post.body|striptags|safe }}
+                    {{ post.body|safe }}
 	                {% ifnotequal post.citation "Click for full story..." %}<p class="link">
                         <a href="{{ post.link }}" title="{% trans "Go to Original Publication" %}">
                             {{ post.citation|striptags|safe }}
