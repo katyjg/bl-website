@@ -13,7 +13,8 @@ from django.template import loader
 from django.template import RequestContext
 from django.contrib.sites.models import Site
 
-from captcha.fields import ReCaptchaField
+from recaptcha2.fields import ReCaptchaField
+from recaptcha2.widgets import ReCaptchaWidget
 
 # I put this on all required fields, because it's easier to pick up
 # on them with CSS or JavaScript if they have a class of "required"
@@ -148,7 +149,8 @@ class ContactForm(forms.Form):
                              required=False)
     body = forms.CharField(widget=forms.Textarea(attrs=attrs_dict),
                            label=u'Comment')
-    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean'})
+    captcha = ReCaptchaField(label=u'', widget=ReCaptchaWidget(attrs={'theme': 'clean'}))
+
     
     
     from_email = settings.DEFAULT_FROM_EMAIL

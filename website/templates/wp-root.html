@@ -1,6 +1,7 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
 {% load get_version %}
 {% load static %}
+{% load recaptcha2 %}
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -40,6 +41,7 @@
         }
     </script>
 
+    {% recaptcha_init 'en' %}
 	{% if "GCSE_ID"|get_from_settings %}
 	<!-- Put the following javascript before the closing </head> tag. -->
 	<script>

@@ -145,7 +145,7 @@ INSTALLED_APPS = (
     'simplewiki',
 
     'mptt',
-    'captcha',
+    'recaptcha2',
     'crispy_forms',
     'objlist',
     'tasklist',

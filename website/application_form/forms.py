@@ -6,7 +6,8 @@ from django.template import loader
 from django.template import RequestContext
 from django.contrib.sites.models import Site
 
-from captcha.fields import ReCaptchaField
+from recaptcha2.fields import ReCaptchaField
+from recaptcha2.widgets import ReCaptchaWidget
 from application_form.models import Application, Registration
 
 # I put this on all required fields, because it's easier to pick up
@@ -81,7 +82,7 @@ class ApplicationForm(forms.Form):
     benefit = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=27)))
     experience = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=experience_choices)
 
-    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 28})
+    captcha = ReCaptchaField(label=u'', widget=ReCaptchaWidget(attrs={'theme' : 'clean','tabindex': 28}))
     
     from_email = settings.FROM_EMAIL
     
@@ -262,8 +263,8 @@ class RegistrationForm(forms.Form):
     affiliations = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs=dict(attrs_dict, tabindex=29)))
     abstract = forms.CharField(widget=forms.Textarea(attrs=dict(attrs_dict, tabindex=30)), required=False)
 
-    captcha = ReCaptchaField(label=u'',attrs={'theme' : 'clean','tabindex': 31})
-    
+    captcha = ReCaptchaField(label=u'', widget=ReCaptchaWidget(attrs={'theme': 'clean', 'tabindex': 31}))
+
     from_email = settings.CONF_FROM_EMAIL
     
     recipient_list = [mail_tuple[1] for mail_tuple in settings.CONF_MANAGERS]
