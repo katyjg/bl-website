@@ -6,12 +6,15 @@
     {% for person in contact_list %}{% ifequal person.category category.0 %}
     <div class="contacts">
             {% if person.image %}<img src="{{person.image.url}}" alt="" >{% endif %}
-            <p><a name="{{person.first_name}}-{{person.last_name}}" href="javascript:contact_staff('{{person.email|email_part:1}}','{{person.email|email_part:0}}');">{{person.first_name}} {{person.last_name}}</a>
-            <br>
+            <h4 style="margin-bottom: 0.25em; font-size: 115%;">
+                <a name="{{person.first_name}}-{{person.last_name}}"
+                   {% if person.email %}href="javascript:contact_staff('{{person.email|email_part:1}}','{{person.email|email_part:0}}');"{% endif %}>
+                    <strong>{{person.first_name}} {{person.last_name}}</strong></a></h4>
+            <p>
             {{person.position}}<br>
             Office Location: {{person.office}}<br>
             {% if person.phone_number %}Tel. &nbsp;{{person.phone_number}}<br>{% endif %}
-            Fax. &nbsp;306-657-3535<br></p>
+            <br></p>
             {% if not person.phone_number %}<br>{% endif %}
     </div>
     {% endifequal %}{% endfor %}

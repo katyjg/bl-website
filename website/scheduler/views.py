@@ -280,7 +280,7 @@ def contact_list(request):
     categories = []
     for category in SupportPerson.STAFF_CHOICES:
         categories.append(category)
-    for person in SupportPerson.objects.all():
+    for person in SupportPerson.objects.order_by('display_order'):
             support_list.append(person)
 
     return render_to_response(     
@@ -342,8 +342,18 @@ class WeeklySchedule(TemplateView):
         c['schedule'] = {}
         c['support'] = []
         c['modes'] = []
+
+        today = datetime.now()
+        if kwargs.get('day'):
+            dt = datetime.strptime(kwargs.get('day'), '%Y-%m-%d').date()
+        else:
+            dt = today.date()
+
+        start = dt - timedelta(days=dt.isoweekday())
+        end = start + timedelta(days=8)
+        api = getattr(settings, 'USO_API')
         bls = getattr(settings, 'USO_BEAMLINES', [getattr(settings, 'USO_BEAMLINE')])
-        url = getattr(settings, 'USO_API') + 'schedule/template/week/8?sections={},Staff'.format(','.join(bls))
+        url = "{}schedule/template/week/8?sections={},Staff&date={}".format(api, ','.join(bls), start)
         r = requests.get(url)
         if r.status_code == 200:
             template = r.content
@@ -351,7 +361,7 @@ class WeeklySchedule(TemplateView):
         """This section could be removed if Access-Control-Allow-Origin header added to api resource"""
         # Import Facility Schedule(s)
         for fac in bls:
-            url = getattr(settings, 'USO_API') + 'schedule/beamtime/' + fac + '/'
+            url = "{}schedule/beamtime/{}/?start={}&end={}".format(getattr(settings, 'USO_API'), fac, start, end)
             r = requests.get(url)
             if r.status_code == 200:
                 c['schedule'][fac] = []
@@ -362,13 +372,13 @@ class WeeklySchedule(TemplateView):
                         'section': str(shift['section']),
                         'cancelled': 1 if shift['cancelled'] else 0
                     }
-                    start = datetime.strptime(shift['start'], '%Y-%m-%dT%H:%M:%SZ')
-                    while start < datetime.strptime(shift['end'], '%Y-%m-%dT%H:%M:%SZ'):
-                        shift_info['shifts'].append(format_localtime(start))
-                        start += timedelta(hours=8)
+                    st = datetime.strptime(shift['start'], '%Y-%m-%dT%H:%M:%SZ')
+                    while st < datetime.strptime(shift['end'], '%Y-%m-%dT%H:%M:%SZ'):
+                        shift_info['shifts'].append(format_localtime(st))
+                        st += timedelta(hours=8)
                     c['schedule'][fac].append(shift_info)
         # Import Modes
-        url = getattr(settings, 'USO_API') + 'schedule/modes'
+        url = "{}schedule/modes/?start={}&end={}".format(api, start, end)
         r = requests.get(url)
         if r.status_code == 200:
             for mode in r.json():
@@ -377,13 +387,14 @@ class WeeklySchedule(TemplateView):
                     'kind': str(mode['kind']),
                     'cancelled': 1 if mode['cancelled'] else 0
                 }
-                start = datetime.strptime(mode['start'], '%Y-%m-%dT%H:%M:%SZ')
-                while start < datetime.strptime(mode['end'], '%Y-%m-%dT%H:%M:%SZ'):
-                    mode_info['shifts'].append(format_localtime(start))
-                    start += timedelta(hours=8)
+                st = datetime.strptime(mode['start'], '%Y-%m-%dT%H:%M:%SZ')
+                while st < datetime.strptime(mode['end'], '%Y-%m-%dT%H:%M:%SZ'):
+                    mode_info['shifts'].append(format_localtime(st))
+                    st += timedelta(hours=8)
                 c['modes'].append(mode_info)
         # Import Support
         url = getattr(settings, 'USO_API') + 'schedule/support/' + getattr(settings, 'USO_BEAMLINE')
+        url = "{}schedule/support/{}?start={}&end={}".format(api, getattr(settings, 'USO_BEAMLINE'), start, end)
         r = requests.get(url)
         if r.status_code == 200:
             for support in r.json():
@@ -392,17 +403,28 @@ class WeeklySchedule(TemplateView):
                     'section': str(support['section']),
                     'display': str(support['display'])
                 }
-                start = datetime.strptime(support['start'], '%Y-%m-%dT%H:%M:%SZ')
-                while start < datetime.strptime(support['end'], '%Y-%m-%dT%H:%M:%SZ'):
-                    support_info['shifts'].append(format_localtime(start))
-                    start += timedelta(hours=8)
+                st = datetime.strptime(support['start'], '%Y-%m-%dT%H:%M:%SZ')
+                while st < datetime.strptime(support['end'], '%Y-%m-%dT%H:%M:%SZ'):
+                    support_info['shifts'].append(format_localtime(st))
+                    st += timedelta(hours=8)
                 c['support'].append(support_info)
-        c['facilities'] = mark_safe(bls)
-        c['schedule'] = mark_safe(c['schedule'])
-        c['support'] = mark_safe(c['support'])
-        c['modes'] = mark_safe(c['modes'])
-        c['template'] = template
-        c['mode_url'] = getattr(settings, 'USO_API') + 'schedule/modes'
-        c['beam_url'] = getattr(settings, 'USO_API') + 'schedule/beamtime/'
+        c.update({
+            'facilities': mark_safe(bls),
+            'schedule': mark_safe(c['schedule']),
+            'support': mark_safe(c['support']),
+            'modes': mark_safe(c['modes']),
+            'template': template,
+            'weeks': [datetime.strftime(dt - timedelta(days=7), '%Y-%m-%d'),
+                      datetime.strftime(dt + timedelta(days=7), '%Y-%m-%d')],
+            'sundays': [datetime.strftime(start, '%Y-%m-%d'), datetime.strftime(start + timedelta(days=7), '%Y-%m-%d')],
+            'suntext': [datetime.strftime(start, '%b %d').replace(" 0", " "),
+                        datetime.strftime(start + timedelta(days=7), '%b %d').replace(" 0", " ")],
+            'week_of': "{} - {}".format(datetime.strftime(start + timedelta(days=1), '%b %d').replace(" 0", ' '),
+                                        datetime.strftime(start + timedelta(days=7), '%d, %Y'
+                                        if (start + timedelta(days=1)).month == (start + timedelta(days=7)).month
+                                        else '%b %d, %Y').replace(' 0', ' ')),
+            'calendar': [datetime.strftime(start + timedelta(days=i), '%Y-%m-%d') for i in range(1,8)]
+        })
+
         return c
 

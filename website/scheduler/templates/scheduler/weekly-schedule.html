@@ -1,10 +1,42 @@
 {% load static %}
+{% load applicationcontent_tags %}
+{% load schedule_extras %}
 
 <link type="text/css" href="{% static 'css/schedule.css' %}" rel="stylesheet">
+<link href="/static/bootstrap/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
+
+<h2>
+    <span>Week of {{ week_of }}</span>
+    <span class="visible-xs"></span>
+    <span>
+        <a class="pull-right" href='{% app_reverse "uso-schedule-anyweek" "scheduler.import_urls" day=weeks.1 %}' title="Next Week">
+            <button type="button" class="btn btn-default" aria-label="Next Week">
+                <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            </button>
+        </a>
+        <a class="pull-right datepicker" title="Select date">
+            <input type='hidden' class="form-control" />
+            <button type="button" class="btn btn-default" aria-label="Select date">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+            </button>
+        </a>
+        <a class="pull-right" href='{% app_reverse "uso-schedule" "scheduler.import_urls" %}' title="Back to Current Week">
+            <button type="button" class="btn btn-default" aria-label="Back to Current Week">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+            </button>
+        </a>
+        <a class="pull-right" href='{% app_reverse "uso-schedule-anyweek" "scheduler.import_urls" day=weeks.0 %}' title="Previous Week">
+            <button type="button" class="btn btn-default" aria-label="Previous Week">
+                <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </button>
+        </a>
+    </span>
+</h2>
 
 {% autoescape off %}
 {{ template }}
 {% endautoescape %}
+
 
 {% for facility, visits in schedule.items %}
 <strong>{{ facility }}</strong>
@@ -26,32 +58,21 @@
 {% endfor %}
 
 <script type="text/javascript">
-    function initSchedule(bls) {
 
-        var schedule = {};
-        var modes;
-        $.each(bls, function(i, fac) {
-            $.ajax({
-                url: '{{ beam_url }}' + fac + '/',
-                data: {},
-                success: function (response) {
-                    schedule[fac] = response;
-                    updateSchedule(fac, schedule);
-                }
-            });
-        });
-        $.ajax({
-            url: '{{ mode_url }}',
-            data: {},
-            success: function (response) {
-                modes = response;
-                updateModes(modes);
-            }
-        })
-    }
     var bls = {{ facilities }};
-    //initSchedule(bls);
+    var ext = {% app_reverse "uso-schedule" "scheduler.import_urls" %};
 
+    $('.datepicker').datepicker({
+        maxViewMode: 2,
+        format: "yyyy-mm-dd",
+        orientation: "bottom right",
+        autoclose: true,
+        todayHighlight: true,
+        weekStart: 1,
+    }).datepicker('update', {% for day in calendar %}'{{ day }}'{% if not forloop.last %},{%  endif %}{% endfor %}).on('changeDate', function(e) {
+        var new_date = e.date.toISOString().split('T')[0];
+        window.location['pathname'] = ext + new_date + '/';
+    });
     function updateSchedule(schedule) {
         $.each(schedule, function(_, visit) {
             $.each(visit.shifts, function(_, shift) {
@@ -69,7 +90,26 @@
         });
     }
 
-    $('div[data-shift-id').html('&nbsp;');
+
+    function moveSunday(start, end) {
+        var sun = $('tr.cal-sun-row');
+        sun.find('.cal-header text').html(sun.find('.cal-header text').html().replace("{{ suntext.0 }}", "{{ suntext.1 }}"));
+        $.each(sun.find($('td.cal-day')), function(e, td) {
+            $(td).attr('id', $(td).attr('id').replace(start, end));
+        });
+        $.each(sun.find($('div[data-shift-id^="'+start+'"]')), function(e, div) {
+            $(div).attr({
+                'data-shift-id': $(div).attr('data-shift-id').replace(start, end),
+                'data-default-class': $(div).attr('data-default-class').replace(start, end),
+                'class': $(div).attr('class').replace(start, end)
+            });
+        });
+        sun.remove();
+        sun.insertAfter($('tr.cal-sat-row'));
+    }
+
+    moveSunday("{{ sundays.0 }}", "{{ sundays.1 }}");
+    $('div[data-shift-id]').html('&nbsp;');
     $.each(bls, function(i, fac) {
         var schedule = {{ schedule }};
         var facility_schedule = schedule[fac];

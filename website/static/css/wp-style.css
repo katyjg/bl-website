@@ -913,6 +913,7 @@ hr { border: none; border-top: 1px solid #dfdfdf; }
     float: right;
     height: 100px !important;
     padding: 5px;
+	padding-top: 0px;
     margin: 0;
 	width: auto !important;
 }

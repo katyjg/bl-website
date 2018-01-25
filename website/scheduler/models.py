@@ -76,14 +76,15 @@ class SupportPerson(models.Model):
         (1, u'Students and Postdocs'),
         (2, u'CLS Technical Support'),
         (3, u'User Support'),
+        (4, u'Past Members'),
     )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     position = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(blank=True, null=True)
     phone_number = models.CharField(max_length=20, help_text="Ten digit number", blank=True)
     image = models.ImageField(_('image'), blank=True, upload_to=get_storage_path)
-    #display_order = models.IntegerField(default=0)
+    display_order = models.IntegerField(default=0)
     #image = FilerImageField(blank=True, null=True)
     office = models.CharField(blank=True, max_length=50)
     category = models.IntegerField(blank=False, choices=STAFF_CHOICES)
