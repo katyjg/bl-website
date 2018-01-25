@@ -32,12 +32,11 @@ def publication_list(request, **kwargs):
             'categories': categories},)
 
 def publications_brief(request):
-    r = requests.get('%spublications/%s/latest/' % (settings.USO_API, settings.BEAMLINE_ACRONYM))
+    r = requests.get('{}publications/{}/latest/'.format(settings.USO_API, settings.BEAMLINE_ACRONYM))
     if r.status_code == requests.codes.ok:
-        pub_list = [d['cite'] for d in r.json()['results']]
+        pub_list = [d['cite'] for d in r.json()['results']][:3]
     else:
         pub_list = []
-        print r.status_code
 
     return render_to_response(
         'publications/publications_brief.html', 
