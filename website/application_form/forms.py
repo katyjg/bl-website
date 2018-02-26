@@ -304,10 +304,6 @@ class RegistrationForm(forms.Form):
             return None
         return data
 
-    def clean_title(self):
-        data = self.cleaned_data['title']
-        return data and Registration.TITLE_CHOICES[int(data)][1] or data
-    
     def clean(self):
         data = self.cleaned_data
         if data['talk'] or data['poster']:
