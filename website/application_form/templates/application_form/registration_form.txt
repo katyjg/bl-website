@@ -2,7 +2,7 @@ Thank you for registering for the Protein Structure, Function and Malfunction Me
 
 PERSONAL INFORMATION:
 
-Name: {{title}} {{first_name}} {{last_name}} 
+Name: {{first_name}} {{last_name}}
 Email: {{email}}
 Phone: {{phone}}
 Institution: {{institution}}
