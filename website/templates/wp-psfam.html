@@ -1,5 +1,6 @@
 {% load applicationcontent_tags feincms_tags feincms_page_tags %}
-{% load get_version static %}
+{% load get_version %}
+{% load static %}
 {% load recaptcha2 %}
 
 <!DOCTYPE html>
@@ -46,6 +47,8 @@
             document.location = "mailto:" + email + '@' + domain ;
         } 
     </script>
+
+    {% recaptcha_init 'en' %}
 	<!-- Put the following javascript before the closing </head> tag. -->
 	<script>
 	  (function() {
