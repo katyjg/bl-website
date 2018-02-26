@@ -4,12 +4,14 @@ from django.conf import settings
 
 import requests
 
+
 def categories_list():
     r = requests.get('%scategories/%s/' % (settings.USO_API, settings.BEAMLINE_ACRONYM))
     if r.status_code == requests.codes.ok:
         return r.json()
     else:
         return False
+
 
 def publication_list(request, **kwargs):
     categories = categories_list()
@@ -30,6 +32,7 @@ def publication_list(request, **kwargs):
             'publication_list': pub_list, 
             'category': category['display'],
             'categories': categories},)
+
 
 def publications_brief(request):
     r = requests.get('{}publications/{}/latest/'.format(settings.USO_API, settings.BEAMLINE_ACRONYM))
