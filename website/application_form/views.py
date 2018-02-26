@@ -50,7 +50,9 @@ def application_form(request, form_class=ApplicationForm, model=Application,
             form.save(fail_silently=fail_silently)
             return HttpResponseRedirect(success_url)
         else:
-            return render_to_response(template_retry, {'form': form})
+            return render(request, template_retry,
+                                      {'form': form},
+                                      )
     else:
         form = form_class(request=request)
 
@@ -60,7 +62,9 @@ def application_form(request, form_class=ApplicationForm, model=Application,
     for key, value in extra_context.items():
         context[key] = callable(value) and value() or value
 
-    return render_to_response(template_name, {'form': form})
+    return render(request, template_name,
+                              { 'form': form },
+                              )
 
 @staff_login_required
 def applicant_list(request):

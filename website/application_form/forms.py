@@ -289,9 +289,8 @@ class RegistrationForm(forms.Form):
     def get_context(self):
         if not self.is_valid():
             raise ValueError("Cannot generate Context from invalid contact form")
-        return RequestContext(self.request,
-                              dict(self.cleaned_data,
-                                   site=Site.objects.get_current()))
+        return dict(self.cleaned_data,
+                    site=Site.objects.get_current())
 
     def clean_recipients(self):
         data = self.cleaned_data['email']
