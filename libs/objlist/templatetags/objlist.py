@@ -76,7 +76,7 @@ def get_object_fields(context, obj, view):
         else:
             field_val = getattr(obj, f.attname)
             if field_name in view.list_transforms:
-                result_repr = mark_safe(view.list_transforms[field_name](field_val, obj))
+                result_repr = mark_safe(view.list_transforms[field_name](field_val))
             elif isinstance(f.rel, models.ManyToOneRel):
                 if field_val is not None:
                     try:

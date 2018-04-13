@@ -41,6 +41,7 @@ class IssueForm(forms.ModelForm):
             Field('submitter', type="hidden"),                        
         ) 
 
+
 class MaintenanceForm(forms.ModelForm):
     class Meta:
         model = models.Issue
@@ -52,6 +53,7 @@ class MaintenanceForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "issue-form"
         self.helper.layout = Layout(
+            'kind',
             Div(
                 Div(Field('title', required=True),  css_class='col-sm-12'),
                 Div(Field('description', required=True), css_class='col-sm-12'),
@@ -77,7 +79,7 @@ class MaintenanceForm(forms.ModelForm):
         if not data['due_date']:
             data['due_date'] = datetime.today() + timedelta(days=data['frequency']*30)
         return data
-    
+
 class CommentForm(forms.ModelForm):
     issue_kind = forms.ChoiceField(label="Type", required=False, choices=models.Issue.TYPES)
     issue_status = forms.ChoiceField(label="Status", required=False, choices=models.Issue.STATES)
