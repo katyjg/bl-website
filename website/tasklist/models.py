@@ -220,5 +220,6 @@ class Comment(TimeStampedModel):
 
     class Meta:
         get_latest_by = "created"
+        ordering = ('created',)
 
 
