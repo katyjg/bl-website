@@ -18,8 +18,8 @@
 
     <link href="//fonts.googleapis.com/css?family=Great+Vibes|Gentium+Basic|Open+Sans:400,600|Open+Sans+Condensed:300|Raleway|Archivo+Narrow" rel="stylesheet">
     <link type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link type="text/css" href="{% static 'css/fonts.css' %}" rel="stylesheet" media="screen">
-    <link type="text/css" href="{% static 'css/wp-style.css' %}" rel="stylesheet" media="screen">
+    <link type="text/css" href="{% static 'css/fonts.css' %}" rel="stylesheet" media="all">
+    <link type="text/css" href="{% static 'css/wp-style.css' %}" rel="stylesheet" media="all">
     <link type="text/css" href="{% static 'css/wp-style-print.css' %}" rel="stylesheet" media="print">
     <link type="text/css" href="{% static 'css/themify-icons.css' %}" rel="stylesheet" media="all">
 
@@ -80,7 +80,7 @@
 
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
 <div id="main-wrapper">
 
 <div id="header">

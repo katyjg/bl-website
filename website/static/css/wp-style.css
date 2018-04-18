@@ -1614,6 +1614,7 @@ font-weight: bold;
 	white-space: -o-pre-wrap; /* Opera 7 */
 	/*messes up flow* width: 99%; /* remove horizontal scroll-bar when viewing in IE7 */
 	word-wrap: break-word; /* Internet Explorer 5.5+ */
+	word-break: break-word;
 }
 
 textarea {
