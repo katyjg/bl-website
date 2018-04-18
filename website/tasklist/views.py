@@ -175,7 +175,7 @@ class ProjectMaintenance(ProjectDetail):
             self.project = models.Project.objects.get(pk=self.kwargs.get('pk'))
         except models.Project.DoesNotExist:
             raise http.Http404("Project does not exist")
-        self.queryset = self.project.issues.maintenance()
+        self.queryset = self.project.issues.maintenance().exclude(status=models.Issue.STATES.wontfix)
         return super(ProjectDetail, self).get_queryset()
         
 class IssueList(FilteredListView):
