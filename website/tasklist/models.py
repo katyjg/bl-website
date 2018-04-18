@@ -44,7 +44,7 @@ class IssueQuerySet(QuerySet):
         return self.filter(status__in=[Issue.STATES.new, Issue.STATES.started, Issue.STATES.pending]).exclude(kind=Issue.TYPES.maintenance)
 
     def maintenance(self):
-        return self.filter(kind__in=[Issue.TYPES.maintenance])
+        return self.filter(kind__in=[Issue.TYPES.maintenance]).exclude(status__in=[Issue.STATES.fixed, Issue.STATES.wontfix])
 
     def bugs(self):
         return self.filter(kind__in=[Issue.TYPES.bug])
