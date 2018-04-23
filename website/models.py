@@ -194,6 +194,19 @@ Page.register_templates({
     'title': 'Monitor Display',
     'path': 'wp-monitor.html',
     'regions': (
+        ('topleft', 'Top Left', 'inherited'),
+        ('topright', 'Top Right', 'inherited'),
+        ('bottomleft', 'Bottom Left', 'inherited'),
+        ('bottomright', 'Bottom Right', 'inherited'),
+        ('bottommiddle', 'Bottom Middle', 'inherited'),
+        ),
+    })
+
+Page.register_templates({
+    'key': 'wp-monitor-dynamic',
+    'title': 'Monitor Display',
+    'path': 'wp-monitor-dynamic.html',
+    'regions': (
         ('main', 'Main', 'inherited'),
         ('thumbnail', 'Thumbnail'),
         ),
