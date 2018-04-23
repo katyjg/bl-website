@@ -196,9 +196,7 @@ Page.register_templates({
     'regions': (
         ('topleft', 'Top Left', 'inherited'),
         ('topright', 'Top Right', 'inherited'),
-        ('bottomleft', 'Bottom Left', 'inherited'),
-        ('bottomright', 'Bottom Right', 'inherited'),
-        ('bottommiddle', 'Bottom Middle', 'inherited'),
+        ('bottom', 'Bottom', 'inherited'),
         ),
     })
 
