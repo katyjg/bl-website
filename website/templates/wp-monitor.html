@@ -22,6 +22,7 @@
     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
     <script type="text/javascript" src=" {% static 'js/jquery.scroll.pack.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-datepicker.js' %}"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/liquid-slider.css' %}">
 
@@ -32,7 +33,12 @@
 
     {% block extra-header %}
         <style>
-
+            .monitor-display #schedule {
+                padding: 30px;
+            }
+            .monitor-display #schedule h2 {
+                display: none;
+            }
             .monitor-display .liquid-slider {
                 max-height: none;
             }
@@ -123,8 +129,11 @@
             $('.liquid-slider').css('height', topheight * 3/4);
             var bottomheight = $(window).height() - topheight;
             $('.bottom').css('height', bottomheight);
-
+            setTimeout(function() {
+              location.reload();
+            }, 150000);
 		});
+
 	 </script>
 
 </head>

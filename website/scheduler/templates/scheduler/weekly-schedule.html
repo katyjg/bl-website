@@ -5,6 +5,8 @@
 <link type="text/css" href="{% static 'css/schedule.css' %}" rel="stylesheet">
 <link href="/static/bootstrap/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
 
+
+<div id="schedule">
 <h2>
     <span>Week of {{ week_of }}</span>
     <span class="visible-xs"></span>
@@ -33,6 +35,7 @@
     </span>
 </h2>
 
+
 {% autoescape off %}
 {{ template }}
 {% endautoescape %}
@@ -56,7 +59,7 @@
     </table>
 
 {% endfor %}
-
+</div>
 <script type="text/javascript">
 
     var bls = {{ facilities }};
@@ -89,7 +92,6 @@
             });
         });
     }
-
 
     function moveSunday(start, end) {
         var sun = $('tr.cal-sun-row');
