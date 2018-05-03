@@ -11,6 +11,7 @@ from application_form.models import Application, Registration
 
 from django.views.decorators.csrf import csrf_protect
 
+
 @csrf_protect
 def application_form(request, form_class=ApplicationForm, model=Application,
                  template_name='application_form/application_form.html',
@@ -79,6 +80,7 @@ def applicant_list(request):
         },
         )
 
+@staff_login_required
 def participant_list(request, template='application_form/participant_list.html'):
     regs = Registration.objects.exclude(abstract__exact='').order_by('last_name')
     return render_to_response(template,
