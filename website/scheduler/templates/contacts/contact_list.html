@@ -12,7 +12,7 @@
                     <strong>{{person.first_name}} {{person.last_name}}</strong></a></h4>
             <p>
             {{person.position}}<br>
-            Office Location: {{person.office}}<br>
+            {{person.office}}<br>
             {% if person.phone_number %}Tel. &nbsp;{{person.phone_number}}<br>{% endif %}
             <br></p>
             {% if not person.phone_number %}<br>{% endif %}
