@@ -13,9 +13,8 @@
             <p>
             {{person.position}}<br>
             {{person.office}}<br>
-            {% if person.phone_number %}Tel. &nbsp;{{person.phone_number}}<br>{% endif %}
+            {% if person.phone_number %}Tel. &nbsp;{{person.phone_number}}{% endif %}<br>
             <br></p>
-            {% if not person.phone_number %}<br>{% endif %}
     </div>
     {% endifequal %}{% endfor %}
 {% endfor %}
