@@ -22,7 +22,7 @@ class DeleteOnCallForm(DeleteForm):
         
 class AdminOnCallForm(forms.ModelForm):
     date = forms.DateField(widget=forms.HiddenInput)
-    local_contact = forms.ModelChoiceField(queryset=SupportPerson.objects.all(), required=True)
+    local_contact = forms.ModelChoiceField(queryset=SupportPerson.objects.exclude(category=4), required=True)
     
     class Meta:
         model = OnCall
