@@ -3,7 +3,7 @@ MAINTAINER Kathryn Janzen <kathryn.janzen@lightsource.ca>
 
 RUN dnf -y update
 RUN dnf -y install httpd python-django mod_ssl mod_wsgi python-ipaddr python-pillow  python-dateutil python-markdown python-unicodecsv && dnf clean all
-RUN dnf -y install python-psycopg2 && dnf clean all
+RUN dnf -y install python-psycopg2 certbot-apache && dnf clean all
 
 RUN pip install --upgrade pip &&  pip install 'Django==1.11'
 
