@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from dateutil import rrule
 from datetime import datetime, date, timedelta
 from django.utils.translation import ugettext_lazy as _
@@ -413,7 +414,47 @@ def get_shift_lists(blname='08B1-1', first_date=datetime.now(), last_date=dateti
 
 def get_shift_mode(dt, shift):
     """Get all shifts for given date"""
-    stats = Stat.objects.filter(start_date__lte=dt).filter(end_date__gte=dt).filter(first_shift__lte=shift).filter(last_shift__gte=shift)
+    stats = Stat.objects.filter(Q(start_date__lt=dt) | Q(start_date=dt, first_shift__lte=shift)).filter(Q(end_date__gt=dt) | Q(end_date=dt, last_shift__gte=shift))
     shift = len(stats) and stats[0].mode or None
     return shift
     
+
+def get_cycle_stats(start_cycle, end_cycle):
+    c = start_cycle
+    # Cycle 22 dates
+    start = datetime.date(2015, 7, 1)
+    end = datetime.date(2016, 1, 1)
+
+    while c <= end_cycle:
+        shifts = []
+        print("\nCycle {}\n------------------".format(c))
+        print(start, "-", end)
+        d = start
+        bm = 0
+        id = 0
+        for v in Visit.objects.filter(start_date__gte=start).filter(end_date__lt=end):
+            if v.beamline.name=="08B1-1":
+                bm += v.get_num_shifts()
+            elif v.beamline.name == "08ID-1":
+                id += v.get_num_shifts()
+        while d < end:
+            for i in [0,1,2]:
+                s = shift_by_date(d, i)
+                if len(s):
+                    shifts.append(s[0].mode)
+                if len(s) > 1:
+                    print(d, i, s)
+            d += timedelta(days=1)
+        c += 1
+        orig_start = start
+        start = end
+        if c <= 24:
+            end = orig_start + timedelta(days=366)
+        else:
+            end = orig_start + timedelta(days=365)
+        for e in set(shifts):
+            print(e, shifts.count(e))
+        total_n = max(1, shifts.count("NormalMode"))
+        print("----------------------------\n{} Normal Shifts\n-----------------------------".format(total_n))
+        print("BM Usage:\t{}\t{}%".format(bm, 100 * bm/float(total_n)))
+        print("ID Usage:\t{}\t{}%".format(id, 100 * id/float(total_n)))
