@@ -1,11 +1,9 @@
 from django.shortcuts import render_to_response, render
-from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.utils.encoding import smart_str
 from django.utils import timezone
-from django.core.management import call_command
 from django.contrib import messages
 from django.views.generic import TemplateView
 from django.utils.safestring import mark_safe
@@ -19,7 +17,7 @@ from django.conf import settings
 
 from scheduler.models import Visit, Stat, OnCall, SupportPerson, Beamline, Proposal
 
-WARNING = "This is a last-minute change. It will take a few moments to send a notification e-mail to the Users Office and to beamline staff."
+WARNING = "This is a last-minute change."
 
 
 def staff_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME):
@@ -52,26 +50,12 @@ def edit_visit(request, pk, model, form, template='wp-root.html'):
                  'save_label': 'Save',
                  'enctype' : 'multipart/form-data',
                  }
-    today = datetime.now().date()
-    this_monday = today - timedelta(days=datetime.now().date().weekday())
-    next_monday = this_monday + timedelta(days=7)
-    etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
-    
+
     visit = Visit.objects.get(pk__exact=pk)
-    mod_msg = ''
     if request.method == 'POST':
-        if visit.start_date <= next_monday and visit.start_date >= today:
-            for field in ['proposal', 'start_date', 'end_date', 'first_shift', 'last_shift', 'beamline']:
-                if str(request.POST.get(field, None)) != str(visit.__dict__[((field == 'proposal' or field == 'beamline') and '%s_id' % field) or field]):
-                    msg = string.capwords(field.replace('_', ' '))
-                    mod_msg = mod_msg and '%s AND %s' % (mod_msg, msg) or msg
-        firstdate = visit.start_date
         frm = form(request.POST, instance=visit)
         if frm.is_valid():
             frm.save()
-            if mod_msg and visit.modified > etime:
-                mod_msg = firstdate != visit.start_date and 'This change affects %s and %s' % (firstdate.strftime('%a, %b %d'), visit.start_date.strftime('%a, %b %d')) or 'Changed %s' % mod_msg
-                call_command('notify', visit.pk, 'MODIFIED: ', mod_msg) 
             message =  '%(name)s modified' % {'name': smart_str(model._meta.verbose_name)}
             messages.add_message(request, messages.INFO, message)
             return render(request, 'scheduler/refresh.html')
@@ -81,6 +65,10 @@ def edit_visit(request, pk, model, form, template='wp-root.html'):
             'form' : frm, 
             })
     else:
+        today = datetime.now().date()
+        this_monday = today - timedelta(days=datetime.now().date().weekday())
+        next_monday = this_monday + timedelta(days=7)
+        etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
         form.warning_message = (visit.start_date <= next_monday and visit.start_date >= today and datetime.now() > etime and  WARNING) or None
         frm = form(instance=visit, initial=dict(request.GET.items())) # casting to a dict pulls out first list item in each value list
         return render(request, template, {
@@ -131,10 +119,7 @@ def add_object(request, model, form, template='wp-root.html'):
                  'save_label': 'Submit',
                  'enctype' : 'multipart/form-data',
                  }
-    today = datetime.now().date()
-    this_monday = today - timedelta(days=datetime.now().date().weekday())
-    next_monday = this_monday + timedelta(days=7)
-    etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
+
 
     if request.method == 'POST':
         frm = form(request.POST)
@@ -153,10 +138,6 @@ def add_object(request, model, form, template='wp-root.html'):
                 new_obj.last_shift = ( first_shift + ns - 1 ) % 3                  
                 new_obj.end_date = end_date.date()
                 new_obj.save()
-                if model == Visit:
-                    if new_obj.start_date <= next_monday and new_obj.start_date >= today and new_obj.modified > etime:
-                        dates = '%s%s' % (new_obj.start_date.strftime('%A, %b %d'), new_obj.start_date != new_obj.end_date and (' - %s' % new_obj.end_date.strftime('%A, %b %d')) or '')  
-                        call_command('notify', new_obj.pk, 'ADDED: ', 'This change affects %s' % dates)
             message =  'New %(name)s added' % {'name': smart_str(model._meta.verbose_name)}
             messages.add_message(request, messages.INFO, message)
             return render(request, 'scheduler/refresh.html')
@@ -166,6 +147,10 @@ def add_object(request, model, form, template='wp-root.html'):
                 'form': frm,
                 })
     else:
+        today = datetime.now().date()
+        this_monday = today - timedelta(days=datetime.now().date().weekday())
+        next_monday = this_monday + timedelta(days=7)
+        etime = datetime(this_monday.year, this_monday.month, this_monday.day, 13, 30)
         frm = form(initial=request.GET.items())
         if model in [Visit, Stat]:
             start_date = datetime.strptime(str(request.GET.get('start_date')), '%Y-%m-%d').date()
@@ -428,3 +413,35 @@ class WeeklySchedule(TemplateView):
 
         return c
 
+
+# Utility function that can be used from the django shell.
+def show_usage_breakdown(start, end):
+    start = start or datetime(2010,01,01)
+    end = end or datetime(2011,01,01)
+    info = {}
+    fields = ['total', 'Local', 'Remote', 'MailIn']
+    bls = Beamline.objects.all()
+    while start <= datetime.now():
+        info[start.year] = {}
+        for bl in bls:
+            visits = Visit.objects.filter(start_date__lte=end).filter(end_date__gte=start).filter(beamline=bl)
+            info[start.year][bl.name] = {k: 0 for k in fields}
+            for v in visits:
+                if not v.maintenance:
+                    n = v.get_num_shifts()
+                    if v.mail_in: info[start.year][bl.name]['MailIn'] += n
+                    elif v.remote: info[start.year][bl.name]['Remote'] += n
+                    else: info[start.year][bl.name]['Local'] += n
+                    info[start.year][bl.name]['total'] += n
+        start = datetime(start.year+1, 1, 1)
+        end = datetime(end.year+1, 1, 1)
+    for bl in bls:
+        print('\n')
+        print("{} Usage".format(bl.name))
+        print("\t"+"\t".join([str(k) for k in sorted(info.keys())]))
+        print("--------------------------------------------------------------")
+        for f in ['Local', 'Remote', 'MailIn']:
+            print("{}:\t{}".format(f, "\t".join(
+                "{0:.1f}%".format(info[k][bl.name][f] * 100. / info[k][bl.name]['total']) for k in sorted(info.keys()))))
+        print("{}:\t{}".format('Total', "\t".join(
+                "{}".format(info[k][bl.name]['total']) for k in sorted(info.keys()))))
