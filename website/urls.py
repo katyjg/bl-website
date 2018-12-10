@@ -1,4 +1,3 @@
-
 from blog.feeds import LatestEntries
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,7 +26,7 @@ urlpatterns = [
 
     url(r'^feeds/(?P<url>.*)/$', LatestEntries()),
 
-    url(r'^wiki/', include('simplewiki.urls')),
+    url(r'^{}'.format(getattr(settings, 'SIMPLE_WIKI_URL', 'wiki/')), include('simplewiki.urls')),
     url(r'^beamtime/', include('scheduler.admin_urls')),
     url(r'^pubs/', include('publications.urls')),
     url(r'^issues/', include('tasklist.urls')),

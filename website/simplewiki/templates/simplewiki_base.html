@@ -86,7 +86,7 @@
 <body  class="{% block body_class %}{% endblock %}">
   <div class="content main-content">
 	  <div class="fixed-banner wiki" id="header">
-		<div class="banner-heading pull-left"><a title="Wiki Homepage" href="/wiki/"><i class="fa fa-lightbulb-o"></i> 
+		<div class="banner-heading pull-left"><a title="Wiki Homepage" href="{% url 'wiki_root' %}"><i class="fa fa-lightbulb-o"></i>
 			<strong class="hidden-xs">{% site_name %} Wiki:</strong></a>
 		</div>
 		<div class="pull-left"><h2><strong>{% if wiki_article.locked %}<i class="fa fa-lock fa-fw" title="{% trans 'This article has been locked' %}"></i>{% endif %}
