@@ -1,25 +1,27 @@
-FROM fedora:26
-MAINTAINER Kathryn Janzen <kathryn.janzen@lightsource.ca>
+# Use an official Python runtime as a parent image
+FROM python:3.7
+LABEL maintainer="hello@wagtail.io"
 
-RUN dnf -y update
-RUN dnf -y install httpd python-django mod_ssl mod_wsgi python-ipaddr python-pillow  python-dateutil python-markdown python-unicodecsv && dnf clean all
-RUN dnf -y install python-psycopg2 certbot-apache && dnf clean all
+# Set environment varibles
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_ENV dev
 
-RUN pip install --upgrade pip &&  pip install 'Django==1.11'
+COPY ./requirements.txt /code/requirements.txt
+RUN pip install --upgrade pip
+# Install any needed packages specified in requirements.txt
+RUN pip install -r /code/requirements.txt
+RUN pip install gunicorn
 
-EXPOSE 443
+# Copy the current directory contents into the container at /code/
+COPY . /code/
+# Set the working directory to /code/
+WORKDIR /code/
 
-# Simple startup script to avoid some issues observed with container restart 
-ADD . /website
-ADD ./local /website/local
-ADD deploy/run-server.sh /run-server.sh
-RUN chmod -v +x /run-server.sh
+RUN python manage.py migrate
 
-RUN /bin/cp /website/deploy/website.conf /etc/httpd/conf.d/
-RUN /bin/mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/zzzssl.conf
-RUN /website/manage.py collectstatic --noinput
+RUN useradd wagtail
+RUN chown -R wagtail /code
+USER wagtail
 
-VOLUME ["/website/local"]
-
-CMD ["/run-server.sh"]
-
+EXPOSE 8000
+CMD exec gunicorn beamonline.wsgi:application --bind 0.0.0.0:8000 --workers 3

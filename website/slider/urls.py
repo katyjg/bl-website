@@ -1,1 +1,0 @@
-../blog/slider_urls.py

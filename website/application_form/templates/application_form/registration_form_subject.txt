@@ -1,1 +1,0 @@
-PSFaM Meeting Registration - {{first_name}} {{last_name}}
