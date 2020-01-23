@@ -1,0 +1,47 @@
+{% extends "wp-root.html" %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load static %}
+
+{% block "page-content" %}
+
+<div id="pagebody">
+    <div id="bodyContent" class="wrapper">
+       	<div id="schedule" class="col-sm-9">
+            {% feincms_render_region feincms_page "col1" request %}        
+        </div>
+    
+        <div id="sidebar" class="calendar col-sm-3">
+            <div class="row">
+                <div class="col-sm-12 hidden-xs">
+                    <h2>Local Time</h2>
+                    <span id="localtime" title="Local time in Saskatoon"></span>
+                </div>
+                <div class="{% if feincms_page.content.col3 %}col-xs-4{% else %}hidden-xs{% endif %} col-sm-12">
+                    {% feincms_render_region feincms_page "col3" request %}
+                </div>
+
+                <div class="col-xs-{% if feincms_page.content.col3 %}4{% else %}6{% endif %} col-sm-12">
+                    <h2><span>Colour Legend</span></h2>
+                    <table class="legend">
+                        <tr><td class="NormalMode">User Beamtime</td></tr>
+                        <tr><td class="Maintenance">Maintenance</td></tr>
+                        <tr><td class="Development">Development/Commissioning</td></tr>
+                        <tr><td class="Shutdown">Shutdown</td></tr>
+                        <tr><td class="Special">Special Beam Requests</td></tr>
+                        <tr><td>TBA</td></tr>
+                    </table>
+                </div>
+                <div class="col-xs-{% if feincms_page.content.col3 %}4{% else %}6{% endif %} col-sm-12">
+                    {% feincms_render_region feincms_page "col2" request %}
+                </div>
+            </div>
+	    </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra-header %}
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-datepicker.js' %}"></script>
+{% endblock %}

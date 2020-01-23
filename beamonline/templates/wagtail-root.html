@@ -1,0 +1,126 @@
+{% load wagtailimages_tags %}
+{% load get_version %}
+{% load static %}
+
+{% with page.get_site.root_page.specific as home %}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="h-100">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+    <title>{{ home.name_short }} - {{ page.title }}</title>
+    <meta name="description" content="{{ home.meta_description }}" >
+    <meta name="keywords" content="{{ home.meta_keywords }}" >
+    <meta name="generator" content="{{ home.name_short }}-Web {{ 0|get_version }}" >
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+
+    {% block site_css %}
+        <link rel="stylesheet" href="{% static "themify-icons/themify-icons.css" %}">
+        <link type="text/css" href="{% static 'css/beamonline.min.css' %}" rel="stylesheet" media="all">
+    {% endblock %}
+    {% block extra_css %}{% endblock %}
+
+    <script src="{% static "js/jquery/jquery-3.4.1.min.js" %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <link rel="shortcut icon" type="image/png" href="/favicon.ico?">
+
+    {% block extra-header %}{% endblock %}
+
+    <link rel="shortcut icon" type="image/png" href="/favicon.ico?">
+
+    {% if "GA_ID"|get_from_settings %}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ "GA_ID"|get_from_settings }}']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    {% endif %}
+
+    {% block pre_js %}{% endblock %}
+
+</head>
+
+<body class="d-flex flex-column h-100 {% block body_class %}{% endblock %}">
+    <div id="header">
+        <div class="row wrapper-row h-100">
+            <div class="d-flex w-100">
+
+                <div class="align-self-start grow">
+                    <div class="site-name h-100"><a href="/" title="{{ home.name_short }} Home Page">
+                        <span class="d-sm-block d-none">{{ home.name_long }}</span>
+                        <span class="d-sm-none">{{ home.name_short }}</span></a>
+                    </div>
+                </div>
+
+                <div class="align-self-end">
+                    <nav class="navbar navbar-expand-md navbar-dark">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#collapsibleNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Link</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Link</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Link</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="{% block page-title-class %}headline{% endblock %}">
+        <div class="row wrapper-row h-100">
+            <div class="col-12">
+                <h2>{% block page-title %}{% endblock %}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="main" class="grow">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div id="footer">
+        <div class="row wrapper-row h-100">
+            <div class="col-sm-4">
+                {{ home.footer1|safe }}
+            </div>
+            <div class="col-sm-4">
+                {% image home.org_img width-800 as org_img %}
+                <a class="facility-logo" target="_blank" href="{{ home.org_url }}"
+                   title="{{ home.organization }}" style="background-image: url('{{ org_img.url }}');"></a>
+            </div>
+            <div class="col-sm-4 text-right">
+                {{ home.footer2|safe }}{{ page.p }}
+            </div>
+        </div>
+    </div>
+    <div class="site-footer">
+        <div class="footer-item">&#9400; 2010&ndash;{% now "Y" %}</div>
+    </div>
+
+    {% block post_js %}{% endblock post_js %}
+</body>
+</html>
+
+{% endwith %}

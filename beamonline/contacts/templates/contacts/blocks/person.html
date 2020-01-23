@@ -1,0 +1,8 @@
+{% load wagtailimages_tags %}
+{% image self.image original as photo %}
+<img class="contact-img" alt="{{ photo.alt }}" src="{{ photo.url }}">
+
+<h4>{{ self.name }}</h4>
+<p>{{ self.position }}</p>
+<p>{{ self.office }}</p>
+<p><strong>{{ self.phone }}</strong></p>

@@ -1,0 +1,14 @@
+{% extends "wp-root.html" %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+
+{% block "page-content" %}
+
+<div id="pagebody">
+	<div id="bodyContent" class="wrapper">
+        <div class="col-xs-12">
+        {% feincms_render_region feincms_page "main" request %}
+        </div>
+	</div>
+</div>
+
+{% endblock %}

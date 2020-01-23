@@ -1,0 +1,12 @@
+{%  extends "wagtail-root.html" %}
+{% load wagtailcore_tags %}
+
+{% block page-title %}<h2>{{ page.title }}</h2>{% endblock %}
+
+{% block content %}
+
+    {{ page.body|richtext }}
+
+    <p><a href="{{ page.get_parent.url }}">Return to news</a></p>
+
+{% endblock %}

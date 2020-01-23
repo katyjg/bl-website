@@ -1,0 +1,23 @@
+{% extends "wp-root.html" %}
+
+{% block "page-title" %}
+    <h2>How embarrassing... </h2>
+{% endblock %}
+
+{% block "page-content" %}
+
+<div id="pagebody">
+	<div id="bodyContent" class="wrapper">
+        <div class="col-xs-12">
+            <h2>We've encountered an Internal Server Error.</h2>
+            <p>Sorry for the inconvenience!</p>
+            <ul>
+                <li>A notification has been sent, and we will try to sort out the problem as soon as possible.</li>
+                <li>For now, you can jump back to our <a href="/">home page</a>, or use our search tool to get back to business:</li>
+            </ul>
+            <div style="max-width: 400px;"><gcse:searchbox-only></gcse:searchbox-only></div>
+        </div>
+	</div>
+</div>
+
+{% endblock %}

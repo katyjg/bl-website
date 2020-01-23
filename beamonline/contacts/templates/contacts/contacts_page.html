@@ -1,0 +1,21 @@
+{% extends "wagtail-2col.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block page-title %}{{ page.title }}{% endblock %}
+
+{% block main %}
+    {% with blocks=page.personnel %}
+        {% for block in blocks %}
+            {% if block.block_type == 'heading' %}
+                <h2>{{ block.value }}</h2>
+            {% else %}
+                {{ block }}
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+{% endblock %}
+
+{% block sidebar %}
+    {{ page.sidebar|richtext }}
+{% endblock %}

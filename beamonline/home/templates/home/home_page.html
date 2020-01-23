@@ -1,0 +1,75 @@
+{% extends "wagtail-root.html" %}
+{% load static %}
+{% load publications %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+
+
+{% block body_class %}homepage{% endblock %}
+
+{% block pre_js %}
+    <script src="{% static "js/simple-slider.js" %}"></script>
+{% endblock pre_js %}
+
+{% block page-title-class %}d-none{% endblock page-title-class %}
+
+{% block content %}
+
+<div class="row mr-0 h-100">
+    <div id="home" class="row no-margin w-100">
+        <div class="col-md-4 h-100 d-flex flex-column sidebar">
+            <div class="news-highlights">
+                <div id="slider">
+                  <a href="#" class="control_next">></a>
+                  <a href="#" class="control_prev"><</a>
+                  <ul>
+                    {% for post in page.news %}
+                        {% image post.image width-800 as img %}
+                        <li style="background-image: url('{{ img.url }}');">
+                            <a class="title-box"  href="{{ post.url }}" title="Read More">
+                                <p class="title">
+                                    <h3>{{ post.title }}</h3>
+                                    {% if post.subtitle %}<p>{{ post.subtitle }}</p>{% endif %}
+                                </p>
+                            </a>
+                        </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+            </div>
+            <div class="latest-results">
+                <div id="results">
+                    <h3>Latest Publications</h3>
+                    <ul class="hr-list">{%  recent_publications %}</ul>
+                </div>
+            </div>
+        </div>
+        <div class="h-100 col-md-8 main d-flex flex-column">
+            <div class="row">
+                <div class="col-md-8 col-lg-7">
+                    <div class="jumbotron">
+                        {{ page.call|richtext }}
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-5">
+                    <div class="beamline-status d-flex flex-column h-100">
+                        {% for beamline in page.beamlines %}
+                            <div class="beamline-item p-3 flex-fill grow">
+                                <a class="float-left" href="{{ beamline.url }}"><h3>{{ beamline.title }}</h3></a>
+                                <span class="float-right badge badge-{{ beamline.status_color }}">{{ beamline.get_status_color_display }}</span>
+                                {% image beamline.schematic original as img %}
+                                <img src="{{ img.url }}" style="max-width: 100%;"/>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="announcement">{% if page.announcements %}{{ page.announcements|richtext }}{% endif %}</div>
+            <div class="row lower grow">
+                <div class="col-md-6">{{ page.column1|richtext }}</div>
+                <div class="col-md-6">{{ page.column2|richtext }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,20 @@
+{%  extends "wagtail-root.html" %}
+{% load wagtailcore_tags %}
+
+{% block page-title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+
+    <div id="pagebody">
+        <div class="wrapper">
+            <div class="col-12">
+                <div class="intro">{{ page.description }}</div>
+                {% for post in page.get_children %}
+                    <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

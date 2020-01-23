@@ -1,0 +1,80 @@
+{% extends "wp-root.html" %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+{% load get_version %}
+
+{% block body_class %}user-guide{% endblock %}
+
+{% block "page-title" %}
+
+    {% feincms_nav feincms_page level=2 as midlevel %}
+
+	{% for ml in midlevel %}
+	    {% if ml|is_equal_or_parent_of:feincms_page %}
+
+            {% feincms_nav feincms_page level=1 as toplevel %}
+
+            <h2>{% for p in toplevel %}{% if p|is_equal_or_parent_of:feincms_page %}
+                <text class="hidden-xs">{{ p.title }} &ndash;</text>
+                {% endif %}{% endfor %}
+                <span>{{feincms_page.title}}</span>
+            </h2>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block "page-content" %}
+
+    {% feincms_nav feincms_page level=2 as midlevel %}
+
+	{% for ml in midlevel %}
+	    {% if ml|is_equal_or_parent_of:feincms_page %}
+			
+            {% feincms_nav feincms_page level=3 as sublevel %}
+
+			<div id="pagebody">
+			    <div class="wrapper">
+			        <div class="col-sm-9" id="bodyContent">
+			            {% ifnotequal sublevel|length 0 %}
+			                <table id="toc" class="toc hidden-xs" summary="Contents"><tr><td>
+			                    <div id="toctitle"><h2>Page Contents</h2></div>
+			                    <ul>
+			                    {% for sp in sublevel %}{% if sp.content.col2 %}
+			                        <li{% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
+			                            <a href="#{{ sp.slug }}">{{ sp.title }}</a>
+			                        </li>
+			                    {% endif %}{% endfor %}
+			                    </ul>
+			                </td></tr></table>
+			            {% endifnotequal %}
+			            {% feincms_render_region feincms_page "col2" request %}
+			            
+			            
+			            {% for sp in sublevel %}{% if sp.content.col2 %}
+			                <h2><a name={{sp.slug}}></a><span>{{ sp.title }}</span></h2>
+			                {% feincms_render_region sp "col2" request %}
+			            {% endif %}{% endfor %}
+			        </div>
+			
+			        <div class="col-sm-3">
+			          	{% feincms_nav feincms_page level=2 as sublevel %}
+			            <ul class="submenu" >
+                            <li><!-- Place this tag where you want the search box to render -->
+                                <gcse:searchbox-only></gcse:searchbox-only></li>
+			      	    {% for sp in sublevel %}
+			      	      {% ifnotequal sp.title "Search Results" %}
+			         	    <li {% if sp|is_equal_or_parent_of:feincms_page %}class="current"{% endif %}>
+   			                    <a href="{{ sp.get_absolute_url }}">{{ sp.title }}</a>
+			        	    </li>
+                          {% endifnotequal %}				        	
+			        	{% endfor %}
+			            </ul>
+			        </div>
+			
+			    </div>
+			</div>
+	
+	    {% endif %}
+	{% endfor %}
+
+{% endblock %}
