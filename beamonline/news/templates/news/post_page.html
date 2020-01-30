@@ -1,12 +1,20 @@
-{%  extends "wagtail-root.html" %}
+{%  extends "wagtail-1-col.html" %}
 {% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
 
-{% block page-title %}<h2>{{ page.title }}</h2>{% endblock %}
+{% block page-title %}<h2><a href="{{ page.get_parent.url }}">{{ page.get_parent }}</a> | {{ page.title }}</h2>{% endblock %}
 
-{% block content %}
-
-    {{ page.body|richtext }}
-
-    <p><a href="{{ page.get_parent.url }}">Return to news</a></p>
+{% block main %}
+    {% image page.image width-800 as img %}
+    <h3>{{ page.subtitle }}</h3>
+    <h4 class="text-muted">{{ page.date }}</h4>
+    <div class="row">
+        <div class="col-md-9">
+        {{ page.body|richtext }}
+        </div>
+        <div class="col-md-3">
+            <img src="{{ img.url }}" />
+        </div>
+    </div>
 
 {% endblock %}

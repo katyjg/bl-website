@@ -14,11 +14,13 @@ class NewsPage(Page):
         FieldPanel('description', classname="full")
     ]
 
+    subpage_types = ['PostPage']
+
 
 class PostPage(Page):
     subtitle = models.CharField(max_length=255, blank=True)
     body = RichTextField(blank=True)
-    date = models.DateField(default=timezone.now())
+    date = models.DateField()
     image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
 
     content_panels = Page.content_panels + [
@@ -27,3 +29,5 @@ class PostPage(Page):
         FieldPanel('date', classname="full"),
         ImageChooserPanel('image'),
     ]
+
+    parent_page_types = ['NewsPage']

@@ -1,20 +1,39 @@
 {%  extends "wagtail-root.html" %}
 {% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
 
 {% block page-title %}{{ page.title }}{% endblock %}
 
 {% block content %}
 
-    <div id="pagebody">
-        <div class="wrapper">
-            <div class="col-12">
-                <div class="intro">{{ page.description }}</div>
-                {% for post in page.get_children %}
-                    <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-                {% endfor %}
-            </div>
-
+    <div class="row">
+        <div class="col-12 px-5 pt-3">
+            <div class="intro">{{ page.description }}</div>
         </div>
+    </div>
+    <div class="row m-3 py-3">
+        {% for post in page.get_children.specific %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                {% image post.image original as img %}
+                <div class="card raised-card d-flex flex-column">
+                    <div class="card-img square" style="background-image: url('{{ img.url }}');">
+                        {% if post.subtitle %}<div class="card-img-text ellipsis-single">{{ post.subtitle }}</div>{% endif %}
+                    </div>
+
+                    <div class="card-body grow">
+                        <div class="d-flex flex-column h-100">
+                            <div class="card-title ellipsis-single text-uppercase">
+                                <a href="{% pageurl post %}">{{ post.title }}</a>
+                            </div>
+                            <div class="card-text text-muted ellipsis-single">
+                                {{ post.date }}
+                            </div>
+                            <div class="ellipsis-multi grow">{{ post.body|striptags }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
 {% endblock %}

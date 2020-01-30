@@ -11,12 +11,13 @@
             <h2>{{ page.name }}</h2>
 
             <div class="status-bar">
-                <h4><span class="badge badge-{{ page.status_color }}">{{ page.get_status_color_display }}</span></h4>
+                <h4><span class="badge status-badge" style="background-color: {{ page.status_color }};">&nbsp;</span>
+                    <span class="status-text">{{ page.status }}</span></h4>
             </div>
             <div class="intro">{{ page.description|richtext }}</div>
 
             {% if page.schematic %}
-                <h4>Schematic</h4>
+                <h2>Schematic</h2>
                 {% image page.schematic original as schematic %}
                 <img class="w-100" src="{{ schematic.url }}" title="{{ schematic.alt }}" />
             {% endif %}

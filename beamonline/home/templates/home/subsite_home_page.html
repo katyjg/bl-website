@@ -3,7 +3,7 @@
 {% load static %}
 {% load menu_tags %}
 
-{% with page.get_site.root_page.specific as home %}
+{% with page.subsite_home as home %}
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en" class="h-100">
@@ -22,6 +22,12 @@
         <link rel="stylesheet" href="{% static "themify-icons/themify-icons.css" %}">
         <link type="text/css" href="{% static 'css/beamonline.min.css' %}" rel="stylesheet" media="all">
     {% endblock %}
+
+    <style>
+        #header .navbar { background-color: {{ home.header_color }}de !important; }
+        #footer .row { background-color: {{ home.footer_color }}de; }
+        .site-footer { background-color: {{ home.footer_color }}; }
+    </style>
     {% block extra_css %}{% endblock %}
 
     <script src="{% static "js/jquery/jquery-3.4.1.min.js" %}"></script>
@@ -55,7 +61,7 @@
     <div id="header">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark wrapper-row">
           <!-- Brand -->
-          <a class="site-name" href="/" title="{{ home.name_short }} Home Page">
+          <a class="site-name" href="{{ home.url }}" title="{{ home.name_short }} Home Page">
                 <span class="d-md-block d-none">{{ home.name_long }}</span>
                 <span class="d-md-none">{{ home.name_short }}</span></a>
           </a>
@@ -67,22 +73,28 @@
 
           <!-- Navbar links -->
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            {% main_menu template="main_menu.html" %}
+            {% children_menu home max_levels=1 template="main_menu.html" %}
           </div>
         </nav>
 
     </div>
 
     <div class="{% block page-title-class %}headline{% endblock %}">
-        <div class="row wrapper-row">
+        <div class="row wrapper-row h-100">
             <div class="col-12">
-                <h2>{% block page-title %}{% endblock %}</h2>
+                <h2>{% block page-title %}{{ home.title }}{% endblock %}</h2>
             </div>
         </div>
     </div>
 
     <div id="main" class="grow">
-        {% block content %}{% endblock %}
+        {% block content %}
+            <div class="row px-5 py-3">
+                <div class="col-12">
+                    {{ home.body }}
+                </div>
+            </div>
+        {% endblock %}
     </div>
 
     <div id="footer">

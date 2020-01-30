@@ -1,8 +1,25 @@
 {% load wagtailimages_tags %}
-{% image self.image original as photo %}
-<img class="contact-img" alt="{{ photo.alt }}" src="{{ photo.url }}">
 
-<h4>{{ self.name }}</h4>
-<p>{{ self.position }}</p>
-<p>{{ self.office }}</p>
-<p><strong>{{ self.phone }}</strong></p>
+{% image person.image original as photo %}
+
+{% if photo %}
+
+<a class="card" href="mailto:{{ person.email|urlencode }}">
+
+    <div class="card-body h-100">
+        <div class="card-img" style="background-image: url('{{ photo.url }}');" title="{{ photo.alt }}"></div>
+        <h3 class="card-title text-uppercase ellipsis-single">{{ person.name }}</h3>
+        <p class="card-text text-muted ellipsis-single">{{ person.position }}</p>
+        {% if person.office %}<p class="card-text contact-location ellipsis-single">{{ person.office }}</p>{% endif %}
+        {% if person.phone %}<p class="card-text contact-phone ellipsis-single">{{ person.phone }}</p>{% endif %}
+    </div>
+</a>
+{% else %}
+    <p>
+        <span class="card-title text-uppercase">{{ person.name }}</span> |
+        <span class="card-text text-muted">{{ person.position }}</span>
+    </p>
+
+    {% if person.office %}<p class="card-text contact-location">{{ person.office }}</p>{% endif %}
+    {% if person.phone %}<p class="card-text contact-phone">{{ person.phone }}</p>{% endif %}
+{% endif %}
