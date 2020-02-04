@@ -6,7 +6,10 @@
 {% block page-title-class %}headline sidebar-nav-sm{% endblock %}
 
 {% block page-title %}
-    <span class="d-none d-md-block">{{ page.title }}</span>
+    <span class="d-none d-md-block">
+        {% if page.user_guide_main != page %}
+            <span class="headline-link"><a href="{{ page.user_guide_main.url }}">{{ page.user_guide_main }}</a> |</span>
+        {% endif %} {{ page.title }}</span>
     <nav class="d-block d-md-none navbar">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         {{ page.title }} <span class="ti ti-angle-down"></span>

@@ -65,7 +65,7 @@ class HomePage(Page):
 
 
     def news(self):
-        return PostPage.objects.order_by('date')
+        return PostPage.objects.filter(highlight=True).order_by('date')
 
     def beamlines(self):
         return BeamlinePage.objects.all()
@@ -171,7 +171,7 @@ class SubsiteHomePage(Page):
         ObjectList(Page.settings_panels, heading='Settings', classname="settings"),
     ])
 
-    parent_page_types = ['HomePage']
+    parent_page_types = ['wagtailcore.Page']
     subpage_types = ['SubsitePage',]
 
     def subsite_home(self):

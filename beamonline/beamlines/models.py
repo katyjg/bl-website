@@ -101,3 +101,7 @@ class UserGuidePage(Page):
     ]
 
     subpage_types = ['UserGuidePage']
+
+    def user_guide_main(self, inclusive=True):
+        return Page.objects.ancestor_of(self, inclusive).type(UserGuidePage).order_by('depth').first().specific
+

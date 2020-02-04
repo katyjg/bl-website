@@ -3,13 +3,13 @@ from django.db import models
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, TabbedInterface, ObjectList
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 
 class PersonnelBlock(blocks.StructBlock):
     image = ImageChooserBlock(required=False)
+    hover_image = ImageChooserBlock(required=False)
     name = blocks.TextBlock()
     position = blocks.TextBlock(required=False)
     email = blocks.EmailBlock(required=False)

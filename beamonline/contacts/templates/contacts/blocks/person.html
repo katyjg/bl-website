@@ -1,19 +1,29 @@
 {% load wagtailimages_tags %}
 
-{% image person.image original as photo %}
+{% image person.image width-170 as photo %}
+{% image person.hover_image width-170 as hover %}
 
 {% if photo %}
 
-<a class="card" href="mailto:{{ person.email|urlencode }}">
+<div class="card">
 
     <div class="card-body h-100">
-        <div class="card-img" style="background-image: url('{{ photo.url }}');" title="{{ photo.alt }}"></div>
-        <h3 class="card-title text-uppercase ellipsis-single">{{ person.name }}</h3>
+        <div class="card-img" style="background-image: url('{{ photo.url }}');" title="{{ photo.alt }}">
+             {% if hover %}
+                <div class="card-img-hover"
+                     style="background-image: url('{{ hover.url }}');"
+                     title="{{ hover.alt }}"></div>
+             {% endif %}
+        </div>
+
+        <h3 class="card-title text-uppercase ellipsis-single">
+            <a href="mailto:{{ person.email|urlencode }}" title="Contact {{ person.name }}">{{ person.name }}</a>
+        </h3>
         <p class="card-text text-muted ellipsis-single">{{ person.position }}</p>
         {% if person.office %}<p class="card-text contact-location ellipsis-single">{{ person.office }}</p>{% endif %}
         {% if person.phone %}<p class="card-text contact-phone ellipsis-single">{{ person.phone }}</p>{% endif %}
     </div>
-</a>
+</div>
 {% else %}
     <p>
         <span class="card-title text-uppercase">{{ person.name }}</span> |
