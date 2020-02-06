@@ -24,4 +24,4 @@ RUN chown -R wagtail /code
 USER wagtail
 
 EXPOSE 8000
-CMD exec gunicorn beamonline.wsgi:application --bind 0.0.0.0:8000 --workers 3
+CMD exec gunicorn beamol.wsgi:application --bind 0.0.0.0:8000 --workers 3

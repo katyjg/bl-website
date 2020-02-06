@@ -1,0 +1,50 @@
+{%  extends "wagtail-2-col.html" %}
+{% load wagtailcore_tags wagtailimages_tags wagtailroutablepage_tags %}
+
+{% block page-title %}
+    {% if search_term %}
+        <a href="{{ page.url }}">{{ page.title }}</a> | <span class="headline-sub">{{ search_term }}</span>
+    {% else %}
+        {{ page.title }}
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    <ul class="nav flex-column sidebar-nav no-bullets">
+        {% for category in page.get_categories %}
+            <li class="nav-item px-3 py-2">
+                <a class="nav-link ellipsis-single" href="{% routablepageurl page "post_by_category" category.slug %}">
+                    {{ category }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block main %}
+    <div class="row py-4 pl-2">
+        {% for post in page.get_posts %}
+            <div class="col-12 col-sm-6 col-lg-4 col-lg-4">
+                {% image post.image width-400 as img %}
+                <div class="card raised-card d-flex flex-column">
+                    <div class="card-img square" style="background-image: url('{{ img.url }}');">
+                        {% if post.subtitle %}<div class="card-img-text ellipsis-single">{{ post.subtitle }}</div>{% endif %}
+                    </div>
+
+                    <div class="card-body grow">
+                        <div class="d-flex flex-column h-100">
+                            <div class="card-title ellipsis-single text-uppercase">
+                                <a href="{% pageurl post %}">{{ post.title }}</a>
+                            </div>
+                            <div class="card-text text-muted ellipsis-single">
+                                {{ post.date }}
+                            </div>
+                            <div class="ellipsis-multi grow text-sm">{{ post.body|striptags }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

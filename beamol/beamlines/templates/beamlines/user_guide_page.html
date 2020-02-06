@@ -1,0 +1,72 @@
+{% extends "wagtail-2-col.html" %}
+
+{% load wagtailcore_tags %}
+{% load menu_tags %}
+
+{% block page-title-class %}headline sidebar-nav-sm{% endblock %}
+
+{% block page-title %}
+    <span class="d-none d-md-block">
+        {% if page.user_guide_main != page %}
+            <span class="headline-link"><a href="{{ page.user_guide_main.url }}">{{ page.user_guide_main }}</a> |</span>
+        {% endif %} {% if page.icon %}<span class="ti {{ page.icon }}"></span>{% endif %} {{ page.title }}</span>
+    <nav class="d-block d-md-none navbar">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        {{ page.title }} <span class="ti ti-angle-down"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        {% if page.get_parent.get_parent == page.get_site.root_page %}
+            {% children_menu page.get_parent max_levels=1 template="menus/main_menu.html" apply_active_classes=True %}
+        {% elif page.get_parent == page.get_site.root_page %}
+            {% children_menu page max_levels=1 template="menus/main_menu.html" apply_active_classes=True %}
+        {% endif %}
+      </div>
+    </nav>
+{% endblock %}
+
+{% block body_class %}user-guide{% endblock %}
+
+{% block main %}
+    <div id="subnav-container" class="col-12 col-md-6 px-0 px-md-3 float-md-right">
+        <div class="card card-subnav mb-3" style="display: none;">
+            <div class="card-header">In this article... {{ page.edited }}</div>
+            <ul id="subnav" class="list-group list-group-flush"></ul>
+        </div>
+    </div>
+    {% with blocks=page.body %}
+        {% for block in blocks %}
+            {% if block.block_type == 'heading' %}
+                <h2>{{ block.value }}</h2>
+            {% else %}
+                {{ block }}
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+{% endblock %}
+
+{% block sidebar %}
+    {% if page.get_parent.get_parent == page.get_site.root_page %}
+        {% children_menu page.get_parent max_levels=1 template="menus/children_menu.html" apply_active_classes=True %}
+    {% elif page.get_parent == page.get_site.root_page %}
+        {% children_menu page max_levels=1 template="menus/children_menu.html" apply_active_classes=True %}
+    {% endif %}
+{% endblock %}
+
+{% block pre_js %}
+<script>
+    $(document).ready(function () {
+        var arr = [];
+        $("#main h2").each(function(){
+            var id = $(this).html();
+            $(this).attr("id", id);
+            arr.push($(this).attr('id'));
+        });
+        if (arr.length != 0) {
+            $('.card-subnav').css('display', 'block');
+            for (i in arr) {
+                $('ul#subnav').append('<a  class="list-group-item" href="#' + arr[i] + '">' + arr[i] + '</a>');
+            }
+        }
+    });
+</script>
+{% endblock pre_js %}

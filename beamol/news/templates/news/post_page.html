@@ -1,0 +1,40 @@
+{%  extends "wagtail-1-col.html" %}
+{% load wagtailcore_tags wagtailroutablepage_tags %}
+{% load wagtailimages_tags %}
+
+{% block page-title %}
+    {{ page.get_parent }}
+{% endblock %}
+
+{% block main %}
+    {% image page.image width-800 as img %}
+    <h2 class="mb-0 mt-3">
+        <span class="heading-breakout">
+            {% for category in page.categories.all %}
+                <a class=headline-link href='{% routablepageurl news_page "post_by_category" category.slug %}'>
+                    {{ category.name }}
+                </a> {% if not forloop.last %} / {% endif %}
+            {% endfor %}
+            {% if page.categories.all.count %} | {% endif %}
+        {{ page.title }}
+    </span></h2>
+
+    <div class="row">
+        <div class="col-md-9">
+            <h4 class="mt-3">{{ page.subtitle }}</h4>
+            <h4 class="text-muted">{{ page.date }}</h4>
+            {% if page.tags.all.count %}
+                <div class="tags">
+                    {% for tag in page.tags.all %}
+                        <a class="tag" href="{% routablepageurl news_page 'post_by_tag' tag.slug %}">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {{ page.body|richtext }}
+        </div>
+        <div class="col-md-3">
+            <img src="{{ img.url }}" />
+        </div>
+    </div>
+
+{% endblock %}

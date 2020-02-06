@@ -1,0 +1,12 @@
+{% extends "wagtail-root.html" %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+
+{% block page-title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+    <div class="row h-100 grow">
+        <div class="col-md-9 px-5 py-3">{% block main %}{{ page.body }}{% endblock %}</div>
+        <div class="col-md-3 px-3 pt-3 dark-sidebar">{% block sidebar %}<div class="col-12 p-3">{{ page.sidebar }}</div>{% endblock %}</div>
+    </div>
+{% endblock %}

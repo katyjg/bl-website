@@ -1,0 +1,16 @@
+{% extends "wagtail-root.html" %}
+
+{% block page-title %}Sorry, we couldn't find <strong>{{ request.path }}</strong>{% endblock %}
+
+{% block content %}
+    <div class="row h-100">
+        <div class="col-12 px-5 py-3">
+            <p>Here are some things you can try:</p>
+            <ul>
+                <li>Check that the URL you entered is correct.</li>
+                <li>Return to our <a href="/">home page</a> and use the navigation menu to find what you need.</li>
+                <li><a href="/contact-us/">Contact us</a> and we'll see if we can point you in the right direction</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
