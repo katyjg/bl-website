@@ -2,7 +2,7 @@ from django.conf import settings
 from django import template
 from django.utils.html import format_html_join, mark_safe
 
-from beamlines.models import PublicationsPage
+from beamol.beamlines.models import PublicationsPage
 
 register = template.Library()
 

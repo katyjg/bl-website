@@ -11,8 +11,8 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
 
 from colorfield.fields import ColorField
-from news.models import PostPage
-from beamlines.models import BeamlinePage
+from beamol.news.models import PostPage
+from beamol.beamlines.models import BeamlinePage
 
 
 class HomePage(Page):

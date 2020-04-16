@@ -14,8 +14,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import sys
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
+LOCAL_DIR = os.path.join(BASE_DIR, 'local')
 
 sys.path.extend([PROJECT_DIR, BASE_DIR, os.path.join(BASE_DIR, 'libs'), os.path.join(BASE_DIR, 'local')])
 
@@ -57,9 +59,9 @@ INSTALLED_APPS = [
     'debug_toolbar',
 
     'colorfield',
-    'news',
-    'beamlines',
-    'contacts',
+    'beamol.news',
+    'beamol.beamlines',
+    'beamol.contacts',
 ]
 
 MIDDLEWARE = [
@@ -105,7 +107,7 @@ WSGI_APPLICATION = 'beamol.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(LOCAL_DIR, 'website/db.sqlite3'),
     }
 }
 
@@ -180,3 +182,8 @@ if os.path.exists(_version_file):
     VERSION = (file(_version_file)).readline().strip()
 else:
     VERSION = '- Development -'
+
+try:
+    from local.settings import *
+except ImportError:
+    pass
