@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.loader import render_to_string
 
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
