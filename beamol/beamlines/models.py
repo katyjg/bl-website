@@ -129,7 +129,7 @@ class PublicationsPage(RoutablePageMixin, Page):
     content_panels = Page.content_panels + [
         FieldPanel('api', classname="full"),
         FieldPanel('acronym', classname="full"),
-        FieldPanel('body', classname="full"),
+        StreamFieldPanel('body', classname="full"),
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -155,3 +155,23 @@ class PublicationsPage(RoutablePageMixin, Page):
     def publications_by_category(self, request, category, *args, **kwargs):
         self.kind = category
         return render(request, "beamlines/blocks/publications.html", self.get_context(request, *args, **kwargs) )
+
+
+class EmbedPage(Page):
+    embed = models.URLField(blank=True)
+
+    body = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('table', TableBlock()),
+        ('image', ImageChooserBlock(icon="image")),
+        ('embedded_video', EmbedBlock(icon="media")),
+    ], blank=True)
+
+    subpage_types = []
+
+    content_panels = Page.content_panels + [
+        FieldPanel('embed', classname="full"),
+        StreamFieldPanel('body', classname="full"),
+    ]
+
