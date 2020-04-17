@@ -46,7 +46,11 @@
                                 Latest Publications
                             {% endif %}
                         </h3>
-                        <ul class="hr-list no-bullets">{% recent_publications publications.api publications.acronym %}</ul>
+                        <ul class="hr-list no-bullets">
+                            {% if publications %}
+                                {% recent_publications publications.api publications.acronym %}
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
             </div>
