@@ -51,7 +51,7 @@ class BeamlinePage(Page):
     ], null=True, blank=True)
 
     body = StreamField([
-        ('heading', blocks.CharBlock(classname="full title")),
+        ('heading', blocks.CharBlock(classname="title")),
         ('paragraph', blocks.RichTextBlock()),
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
@@ -61,19 +61,19 @@ class BeamlinePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('name', classname="full"),
         FieldPanel('acronym', classname="full"),
-        FieldPanel('status', classname="half"),
-        FieldPanel('status_color', classname="half"),
+        FieldPanel('status', classname="full"),
+        FieldPanel('status_color', classname="full"),
         FieldPanel('description', classname="full"),
         FieldPanel('sidebar', classname="full"),
-        ImageChooserPanel('schematic'),
     ]
 
     gallery_panel = [
-        StreamFieldPanel('gallery', classname="full"),
+        StreamFieldPanel('gallery'),
     ]
 
     specs_panel = [
-        StreamFieldPanel('body', classname="full"),
+        ImageChooserPanel('schematic'),
+        StreamFieldPanel('body'),
     ]
     snippet_panel = [
         FieldPanel('snippet', classname='full'),
@@ -101,7 +101,7 @@ class UserGuidePage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('icon', classname="full"),
-        StreamFieldPanel('body', classname="full"),
+        StreamFieldPanel('body'),
     ]
 
     subpage_types = ['UserGuidePage']
@@ -129,7 +129,7 @@ class PublicationsPage(RoutablePageMixin, Page):
     content_panels = Page.content_panels + [
         FieldPanel('api', classname="full"),
         FieldPanel('acronym', classname="full"),
-        StreamFieldPanel('body', classname="full"),
+        StreamFieldPanel('body'),
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -172,6 +172,6 @@ class EmbedPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('embed', classname="full"),
-        StreamFieldPanel('body', classname="full"),
+        StreamFieldPanel('body'),
     ]
 

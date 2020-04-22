@@ -85,7 +85,7 @@ class OneColumnPage(Page):
     ], blank=True)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body', classname="full"),
+        StreamFieldPanel('body'),
     ]
 
     template = "wagtail-1-col.html"
@@ -108,10 +108,10 @@ class TwoColumnPage(Page):
     ], blank=True)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body', classname="full"),
+        StreamFieldPanel('body'),
     ]
     sidebar_panel = [
-        StreamFieldPanel('sidebar', classname="full"),
+        StreamFieldPanel('sidebar'),
     ]
 
     edit_handler = TabbedInterface([

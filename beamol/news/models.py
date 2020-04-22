@@ -71,6 +71,7 @@ class PostPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('subtitle', classname="full"),
         FieldPanel('body', classname="full"),
+        FieldPanel('highlight'),
         FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
         FieldPanel('tags'),
         FieldPanel('date', classname="full"),

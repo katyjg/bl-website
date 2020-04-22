@@ -29,7 +29,7 @@ class ContactsPage(Page):
     sidebar = RichTextField(blank=True)
 
     personnel_panel = Page.content_panels + [
-        StreamFieldPanel('personnel', classname="full"),
+        StreamFieldPanel('personnel'),
     ]
 
     sidebar_panel = [
