@@ -15,9 +15,9 @@
         {{ page.title }} <span class="ti ti-angle-down"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
-        {% if page.get_parent.get_parent == page.get_site.root_page %}
+        {% if page.get_parent.content_type == page.content_type %}
             {% children_menu page.get_parent max_levels=1 template="menus/main_menu.html" apply_active_classes=True %}
-        {% elif page.get_parent == page.get_site.root_page %}
+        {% else %}
             {% children_menu page max_levels=1 template="menus/main_menu.html" apply_active_classes=True %}
         {% endif %}
       </div>
@@ -45,9 +45,9 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% if page.get_parent.get_parent == page.get_site.root_page %}
+    {% if page.get_parent.content_type == page.content_type %}
         {% children_menu page.get_parent max_levels=1 template="menus/children_menu.html" apply_active_classes=True %}
-    {% elif page.get_parent == page.get_site.root_page %}
+    {% else %}
         {% children_menu page max_levels=1 template="menus/children_menu.html" apply_active_classes=True %}
     {% endif %}
 {% endblock %}
