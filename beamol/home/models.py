@@ -151,7 +151,7 @@ class SubsiteHomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('name_long', classname="full"),
         FieldPanel('name_short', classname="full"),
-        StreamFieldPanel('body', classname="full"),
+        StreamFieldPanel('body'),
     ]
 
     footer_content_panels = [
@@ -167,6 +167,7 @@ class SubsiteHomePage(Page):
         FieldPanel('meta_keywords', classname="full"),
         FieldPanel('header_color', classname="full"),
         FieldPanel('footer_color', classname="full"),
+        ImageChooserPanel('background'),
     ]
 
     edit_handler = TabbedInterface([
@@ -192,7 +193,12 @@ class SubsitePage(Page):
         ('embedded_video', EmbedBlock(icon="media")),
     ], blank=True)
 
-    parent_page_types = ['SubsiteHomePage', ]
+    parent_page_types = ['SubsiteHomePage', 'SubsitePage']
+    subpage_types = ['SubsitePage',]
+
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('body'),
+    ]
 
     def subsite_home(self, inclusive=True):
         return Page.objects.ancestor_of(self, inclusive).filter(depth=3).first().specific

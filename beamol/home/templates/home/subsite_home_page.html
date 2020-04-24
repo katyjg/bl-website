@@ -4,6 +4,7 @@
 {% load menu_tags %}
 
 {% with page.subsite_home as home %}
+{% image home.background original as background %}
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en" class="h-100">
@@ -58,7 +59,7 @@
 </head>
 
 <body class="d-flex flex-column {% block body_class %}{% endblock %}">
-    <div id="header">
+    <div id="header" style="background-image: url('{{ background.url }}');">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark wrapper-row">
           <!-- Brand -->
           <a class="site-name" href="{{ home.url }}" title="{{ home.name_short }} Home Page">
@@ -73,13 +74,12 @@
 
           <!-- Navbar links -->
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            {% children_menu home max_levels=1 template="menus/main_menu.html" %}
+            {% children_menu home max_levels=2 template="menus/main_menu.html" %}
           </div>
         </nav>
 
     </div>
-
-    <div class="{% block page-title-class %}headline{% endblock %}">
+    <div class="{% block page-title-class %}headline{% endblock %}" style="background-image: url('{{ background.url }}');">
         <div class="row wrapper-row h-100">
             <div class="col-12">
                 <h2>{% block page-title %}{{ home.title }}{% endblock %}</h2>
@@ -97,7 +97,7 @@
         {% endblock %}
     </div>
 
-    <div id="footer">
+    <div id="footer" style="background-image: url('{{ background.url }}');">
         <div class="row wrapper-row h-100">
             <div class="col-sm-4 col-6">
                 {{ home.footer1|safe }}
