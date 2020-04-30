@@ -6,10 +6,6 @@
 
 {% block body_class %}homepage{% endblock %}
 
-{% block pre_js %}
-    <script src="{% static 'js/simple-slider.js' %}"></script>
-{% endblock pre_js %}
-
 {% block page-title-class %}d-none{% endblock page-title-class %}
 
 {% block content %}
@@ -17,31 +13,14 @@
     <div class="row mr-0 h-100 grow">
         <div id="home" class="row no-margin w-100 d-flex">
             <div class="col-md-4 d-flex flex-column sidebar">
-                <div class="news-highlights">
-                    <div id="slider">
-                      <a href="#" class="control_next">></a>
-                      <a href="#" class="control_prev"><</a>
-                      <ul class="no-bullets">
-                        {% for post in page.news %}
-                            {% image post.image width-800 as img %}
-                            <li style="background-image: url('{{ img.url }}');">
-                                <a class="title-box"  href="{{ post.url }}" title="Read More">
-                                    <p class="title">
-                                        <h3>{{ post.title }}</h3>
-                                        {% if post.subtitle %}<p>{{ post.subtitle }}</p>{% endif %}
-                                    </p>
-                                </a>
-                            </li>
-                        {% endfor %}
-                      </ul>
-                    </div>
-                </div>
+                {% include "news/blocks/news_highlights.html" %}
+
                 <div class="latest-results">
                     <div id="results">
                         <h3 class="mb-2">
                             {% publications_page as publications %}
                             {% if publications %}
-                                <a href="{{ publications.url }}" title="{{ publications.title }}">Latest Publications</a>
+                                <a href="{{ publications.url }}">Latest Publications</a>
                             {% else %}
                                 Latest Publications
                             {% endif %}

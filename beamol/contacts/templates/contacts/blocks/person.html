@@ -8,11 +8,10 @@
 <div class="card">
 
     <div class="card-body h-100">
-        <div class="card-img" style="background-image: url('{{ photo.url }}');" title="{{ photo.alt }}">
+        <div class="card-img" style="background-image: url('{{ photo.url }}');">
              {% if hover %}
                 <div class="card-img-hover"
-                     style="background-image: url('{{ hover.url }}');"
-                     title="{{ hover.alt }}"></div>
+                     style="background-image: url('{{ hover.url }}');"></div>
              {% endif %}
         </div>
 
