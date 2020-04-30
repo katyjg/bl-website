@@ -13,6 +13,7 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from colorfield.fields import ColorField
+from beamol.news.models import PostPage
 
 import requests
 
@@ -47,7 +48,7 @@ class BeamlinePage(Page):
     status = models.CharField(max_length=255, blank=True)
     status_color = ColorField(default='#00FF00')
     gallery = StreamField([
-        ('image', blocks.ListBlock(ImageCarouselBlock(), template='beamlines/blocks/carousel.html', icon="image")),
+        ('image', blocks.ListBlock(ImageCarouselBlock(), template='beamlines/blocks/gallery.html', icon="image")),
     ], null=True, blank=True)
 
     body = StreamField([
@@ -175,3 +176,25 @@ class EmbedPage(Page):
         StreamFieldPanel('body'),
     ]
 
+
+class BeamlineDisplayPage(Page):
+    body = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('table', TableBlock()),
+        ('image', ImageChooserBlock(icon="image")),
+        ('embedded_video', EmbedBlock(icon="media")),
+    ], blank=True)
+    background_url = models.URLField(blank=True)
+    gallery = StreamField([
+        ('image', ImageChooserBlock(icon="image")),
+    ], null=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('background_url', classname="full"),
+        StreamFieldPanel('body'),
+        StreamFieldPanel('gallery'),
+    ]
+
+    def news(self):
+        return PostPage.objects.filter(highlight=True).order_by('date')

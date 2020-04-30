@@ -40,39 +40,8 @@
 
         </div>
         <div class="col-md-5 col-lg-4 p-5 dark-sidebar">
-              {% if page.gallery %}
-                  {% for block in page.gallery %}
-                      <div class="polaroid">
-                      <div class="polaroid-wrapper">
-                        <div id="gallery" class="carousel slide" data-ride="carousel">
-
-                          <!-- The slideshow -->
-                          <div class="carousel-inner">
-                              {% for val in block.value %}
-                                {% image val.image original as photo %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}"
-                                    title="{{ val.caption }}">
-                                    <!--img alt="{{ photo.alt }}" src="{{ photo.url }}"-->
-                                    <div class="fill" style="background-image: url('{{ photo.url }}');"></div>
-                                    <div class="carousel-caption">{{ val.caption }}</div>
-                                </div>
-                              {% endfor %}
-                          </div>
-                          <!-- Left and right controls -->
-                          <a class="carousel-control-prev" href="#gallery" data-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                          </a>
-                          <a class="carousel-control-next" href="#gallery" data-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                          </a>
-                        </div>
-                      </div>
-                      </div>
-                  {% endfor %}
-              {% endif %}
-
-              {{ page.sidebar|richtext }}
-
+            {{ page.gallery }}
+            {{ page.sidebar|richtext }}
         </div>
     </div>
 {% endblock %}
