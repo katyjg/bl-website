@@ -7458,9 +7458,12 @@ body {
 .news-highlights {
   width: 100%;
   min-height: 0;
-  padding-top: 100%;
+  padding-top: 80%;
   position: relative;
   background-color: #e9ecef; }
+  @media (min-width: 768px) and (max-width: 1199.98px) {
+    .news-highlights {
+      padding-top: 100%; } }
   .news-highlights #slider {
     position: absolute;
     top: 0;
@@ -7636,22 +7639,41 @@ table {
     margin-bottom: 1em;
     font-size: 20px;
     margin-bottom: 0; }
+  .raised-card .card-banner {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    background-color: #f0ad4e;
+    padding: 0.5em 1.0em 0.25em 1.0em;
+    margin-top: 0.5em;
+    height: 24px;
+    line-height: 13px;
+    color: #fff;
+    text-shadow: 0 1px 2px #c77c11;
+    font-size: 75%;
+    font-family: "Fira Sans Condensed";
+    text-transform: uppercase; }
+    .raised-card .card-banner::after {
+      background: transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 12px solid #f0ad4e;
+      border-top: 12px solid transparent;
+      content: '';
+      position: absolute;
+      right: -12px;
+      top: 0;
+      z-index: 3; }
 
 .square {
   height: 0;
-  padding-bottom: 100%;
+  padding-bottom: 75%;
   width: 100%;
   background: no-repeat center center;
   background-size: cover; }
-  @media (min-width: 768px) {
-    .square {
-      height: 0;
-      padding-bottom: 75%;
-      width: 100%; } }
   @media (min-width: 992px) {
     .square {
       height: 0;
-      padding-bottom: 50%;
+      padding-bottom: 66.66667%;
       width: 100%; } }
 
 .ellipsis-single {
@@ -7818,7 +7840,7 @@ table {
     padding: 4% 3%;
     width: auto;
     height: 100%;
-    background: #006eb6;
+    background: #333;
     color: #fff;
     font-weight: 600;
     font-size: 18px;

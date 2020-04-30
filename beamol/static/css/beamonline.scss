@@ -467,9 +467,13 @@ body {
 .news-highlights {
   width: 100%;
   min-height: 0;
-  padding-top: 100%;
+  padding-top: 80%;
   position: relative;
   background-color: $gray;
+
+  @include media-breakpoint-between(md, lg) {
+    padding-top: 100%;
+  }
 
   #slider {
     position: absolute;
@@ -659,16 +663,43 @@ table {
     font-size: 20px;
     margin-bottom: 0;
   }
+  .card-banner {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    background-color: $orange;
+    padding: 0.5em 1.0em 0.25em 1.0em;
+    margin-top: 0.5em;
+    height: 24px;
+    line-height: 13px;
+    color: $white;
+    text-shadow: 0 1px 2px darken($orange, 20%);
+    font-size: 75%;
+    font-family: $narrow-font;
+    text-transform: uppercase;
+
+    &::after {
+      background: transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 12px solid $orange;
+      border-top: 12px solid transparent;
+      content: '';
+      position: absolute;
+      right: -12px;
+      top: 0;
+      z-index: 3;
+    }
+
+
+
+  }
 }
 .square {
-  @include maintain-ratio(1 1);
+  @include maintain-ratio(4 3);
   @include cover-bg();
 
-  @include media-breakpoint-up(md) {
-    @include maintain-ratio(4 3);
-  }
   @include media-breakpoint-up(lg) {
-    @include maintain-ratio(2 1);
+    @include maintain-ratio(3 2);
   }
 
 }
@@ -753,7 +784,7 @@ table {
     background: linear-gradient(-45deg, lighten($orange, 20%), $white, lighten($purple, 60%), lighten($gray, 5%), $white);
     background-size: 400% 400%;
     .card-title a {
-      color: $dark-gray
+      color: $dark-gray;
     }
     &:hover {
       animation: change 10s;
@@ -837,6 +868,7 @@ table {
       width: 500px;
       height: 100%;
 
+
       .title-box {
         background-color: $dark-gray;
         opacity: 0.80;
@@ -864,7 +896,7 @@ table {
     padding: 4% 3%;
     width: auto;
     height: 100%;
-    background: $blue;
+    background: $dark-gray;
     color: $white;
     font-weight: 600;
     font-size: 18px;
