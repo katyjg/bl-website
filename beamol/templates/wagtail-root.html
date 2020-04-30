@@ -54,7 +54,7 @@
 <body class="d-flex flex-column {% block body_class %}{% endblock %}">
     <div id="header" style="background-image: url('{{ background.url }}');">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark wrapper-row">
-          <a class="site-name" href="/" title="{{ home.name_short }} Home Page">
+          <a class="site-name" href="{{ home.url }}" title="{{ home.name_short }} Home Page">
                 <span class="d-md-block d-none">{{ home.name_long }}</span>
                 <span class="d-md-none">{{ home.name_short }}</span>
           </a>
@@ -104,6 +104,16 @@
     </div>
 
     {% block post_js %}{% endblock post_js %}
+    <script>
+        $(document).ready(function () {
+            // enable tooltips
+
+            $("[title]").not("[data-toggle]").tooltip({
+                container: 'body',
+                viewport: {selector: 'body', padding: 5}
+            });
+        });
+    </script>
 </body>
 </html>
 
