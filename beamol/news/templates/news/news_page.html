@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    <ul class="nav flex-column sidebar-nav no-bullets">
+    <ul class="nav flex-column sidebar-nav no-bullets d-none d-md-block">
         {% for category in page.get_categories %}
             <li class="nav-item px-3 py-2">
                 <a class="nav-link ellipsis-single" href="{% routablepageurl page "post_by_category" category.slug %}">
@@ -22,13 +22,28 @@
 {% endblock %}
 
 {% block main %}
+    <div class="d-xs-block d-md-none text-center" style="margin-left: -3em; margin-right: -3em;">
+        {% for category in page.get_categories %}
+            <a class="px-1 mx-1" href="{% routablepageurl page "post_by_category" category.slug %}">
+                {{ category }}
+            </a>
+            {% if not forloop.last %} | {% endif %}
+        {% endfor %}
+        <hr />
+    </div>
+
     <div class="row py-4 pl-2">
         {% for post in page.get_posts %}
-            <div class="col-12 col-sm-6 col-lg-4 col-lg-4">
+            <div class="col-12 col-sm-6 col-xl-4">
                 {% image post.image width-400 as img %}
                 <div class="card raised-card d-flex flex-column">
+                    <div class="card-banner">
+                        {% for category in post.categories.all %}
+                            {{ category }}{% if not forloop.last %} / {% endif %}
+                        {% endfor %}
+                    </div>
                     <div class="card-img square" style="background-image: url('{{ img.url }}');">
-                        {% if post.subtitle %}<div class="card-img-text ellipsis-single">{{ post.subtitle }}</div>{% endif %}
+                        {% if post.subtitle %}<div class="card-img-text ellipsis-single" title="{{ post.subtitle|safe|striptags }}">{{ post.subtitle|safe|striptags }}</div>{% endif %}
                     </div>
 
                     <div class="card-body grow">
