@@ -5,7 +5,7 @@ MAINTAINER Kathryn Janzen <kathryn.janzen@lightsource.ca>
 COPY requirements.txt /
 
 RUN apk add --no-cache --virtual .build-deps bash gcc linux-headers musl-dev postgresql-dev libpq libffi-dev \
-    jpeg-dev zlib-dev apache2-ssl apache2-mod-wsgi certbot-apache openssl openssl-dev python3-dev
+    jpeg-dev zlib-dev apache2-ssl apache2-mod-wsgi certbot-apache openssl openssl-dev python3-dev imagemagick
 
 #RUN pip install --upgrade pip
 # Install any needed packages specified in requirements.txt
