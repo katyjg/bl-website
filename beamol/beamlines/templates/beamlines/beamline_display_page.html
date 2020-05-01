@@ -61,24 +61,10 @@
                     <div class="h-100 w-100" style="background-size: cover; background-image: url('{{ el.url }}');">
                         <img src="{{ el.url }}" height="100%" style="display: none;"/>
                     </div>
-
                 {% endfor %}
             </div>
         </div>
 
-{% comment %}        <div class="row top">
-            <div class="col-sm-6 full-height left pr-0">
-                {% include "news/blocks/news_highlights.html" %}
-            </div>
-            <div class="col-sm-6 right h-100" style="background-image: url('http://ccd1608-301.clsi.ca/mjpg/video.mjpg');">
-                <img src="http://ccd1608-301.clsi.ca/mjpg/video.mjpg" alt="" style="height: 100% !important; width: auto;">
-            </div>
-        </div>
-        <div class=" row bottom">
-            <div class="col-sm-12">
-                {{ page.gallery }}
-            </div>
-        </div>{% endcomment %}
     </body>
 </html>
 
