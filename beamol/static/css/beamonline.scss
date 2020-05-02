@@ -325,13 +325,17 @@ body {
 }
 .heading-breakout {
   background-color: $orange;
-  padding: 0.5em 1.5em;
-  margin-left: -1.5em;
-  height: 52px;
-  line-height: 52px;
+  padding: 0.5em 1.25em 0.5em 1.75em;
+  margin-left: -1.75em;
+  height: 42px;
+  max-height: 42px;
+  overflow-y: hidden;
+  line-height: 42px;
   color: $white;
   position: relative;
   text-shadow: 0 1px 2px darken($orange, 20%);
+  white-space:normal !important;
+  word-wrap: break-word;
 
   a {
     color: white;
@@ -339,9 +343,9 @@ body {
 
   &::after {
     background: #fff;
-    border-bottom: 26px solid transparent;
-    border-left: 26px solid $orange;
-    border-top: 26px solid transparent;
+    border-bottom: 21px solid transparent;
+    border-left: 21px solid $orange;
+    border-top: 21px solid transparent;
     content: '';
     position: absolute;
     right: 0;

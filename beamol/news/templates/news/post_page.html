@@ -9,15 +9,14 @@
 {% block main %}
     {% image page.image width-800 as img %}
     <h2 class="mb-0 mt-3">
-        <span class="heading-breakout">
+        <span class="heading-breakout text-sm">
             {% for category in page.categories.all %}
                 <a class=headline-link href='{% routablepageurl news_page "post_by_category" category.slug %}'>
-                    {{ category.name }}
+                    {% if page.categories.count > 1 %}{{ category.name|truncatewords:1 }}{% else %}{{ category.name }}{% endif %}
                 </a> {% if not forloop.last %} / {% endif %}
             {% endfor %}
-            {% if page.categories.all.count %} | {% endif %}
-        {{ page.title }}
     </span></h2>
+    <h2 class="mt-3 mb-1">{{ page.title|upper }}</h2>
 
     <div class="row">
         <div class="col-md-9">
