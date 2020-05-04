@@ -30,7 +30,7 @@ $lt-gray: #ddd;
 }
 @mixin floating-bg() {
   background-attachment: fixed;
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-position: center;
   background-size: cover;
 }
@@ -325,8 +325,9 @@ body {
 }
 .heading-breakout {
   background-color: $orange;
-  padding: 0.5em 1.25em 0.5em 1.75em;
+  padding: 0.5em 0.75em 0.5em 1.75em;
   margin-left: -1.75em;
+  margin-right: 0px;
   height: 42px;
   max-height: 42px;
   overflow-y: hidden;
@@ -342,14 +343,15 @@ body {
   }
 
   &::after {
-    background: #fff;
+    background: $white;
     border-bottom: 21px solid transparent;
     border-left: 21px solid $orange;
     border-top: 21px solid transparent;
     content: '';
     position: absolute;
-    right: 0;
+    right: -15.5px;
     top: 0;
+    height: 42px;
   }
 
 }
@@ -511,7 +513,7 @@ body {
   display: inline-block;
   height: 20px;
   line-height: 20px;
-  padding: 0 20px 0 23px;
+  padding: 0 10px 0 23px;
   position: relative;
   margin: 0 10px 10px 0;
   text-decoration: none;
@@ -519,9 +521,8 @@ body {
   font-family: $narrow-font;
 
   &::before {
-    background: #fff;
+    background: $white;
     border-radius: 10px;
-    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
     content: '';
     height: 6px;
     left: 10px;
@@ -530,13 +531,14 @@ body {
     top: 7px;
   }
   &::after {
-    background: #fff;
+    background: $white;
     border-bottom: 10px solid transparent;
     border-left: 10px solid $info;
     border-top: 10px solid transparent;
     content: '';
     position: absolute;
-    right: 0;
+    right: -4px;
+    height: 20px;
     top: 0;
   }
 
