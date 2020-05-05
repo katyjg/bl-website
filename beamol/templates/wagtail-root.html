@@ -46,6 +46,31 @@
       })();
     </script>
     {% endif %}
+    <script type="text/javascript">
+        function GetIEVersion() {
+        var sAgent = window.navigator.userAgent;
+        var Idx = sAgent.indexOf("MSIE");
+
+        // If IE, return version number.
+        if (Idx > 0)
+        return parseInt(sAgent.substring(Idx + 5, sAgent.indexOf(".", Idx)));
+
+        // If IE 11 then look for Updated user agent string.
+        else if (!!navigator.userAgent.match(/Trident\/7\./))
+        return 11;
+
+        else
+        return 0; //It is not IE
+        }
+
+        $(document).ready(function() {
+            if (GetIEVersion() > 0) {
+                $('body').addClass('ie');
+                alert("Internet Explorer " + GetIEVersion() + " is not supported for this website. Please use a different browser, as some elements may not appear correctly on your screen.");
+            }
+        });
+
+    </script>
 
     {% block pre_js %}{% endblock %}
 
