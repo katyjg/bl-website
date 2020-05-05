@@ -19,8 +19,8 @@ To use it, extract deploy/skel.tar.gz in a directory of your choice.
  5. `./test-site.sh <BEAMLINE_NAME>`
      - follow prompts to create an administrator account
      - a basic set of web pages are created for testing
- 6. Find your new test website at https://<SERVER_NAME>
- 7. Sign in with your new administrator account at https://<SERVER_NAME>/admin
+ 6. Find your new test website at https://{SERVER_NAME}
+ 7. Sign in with your new administrator account at https://{SERVER_NAME}/admin
  
 **Deployment:**
 
