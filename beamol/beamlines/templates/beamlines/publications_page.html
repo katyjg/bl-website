@@ -1,0 +1,59 @@
+{%  extends "wagtail-2-col.html" %}
+
+{% load wagtailcore_tags wagtailroutablepage_tags %}
+
+{% block page-title %}
+    {{ page.title }} | <span class="headline-sub"><span class="category">{{ category }}</span> Entries</span>
+{% endblock %}
+
+{% block sidebar %}
+    <ul class="nav sidebar-nav no-bullets">
+      <li class="nav-item px-3 py-2 w-100">
+        <a href="#" class="nav-link" data-toggle="collapse" data-target="#year-list">
+            Jump to year  <span class="text-sm ti ti-angle-down"></span>
+        </a>
+        <ul id="year-list" class="list-group list-group-flush collapse">
+            {% for year in year_list %}
+              <li class="list-group-item bg-transparent py-1 px-4">
+                <a href="#{{ year }}"> {{ year }} </a>
+              </li>
+            {% endfor %}
+        </ul>
+      </li>
+      <li class="nav-item px-3 py-2 w-100">
+        <a href="#" class="nav-link" data-toggle="collapse" data-target="#category-list">
+            Select category <span class="text-sm ti ti-angle-down"></span>
+        </a>
+        <ul id="category-list" class="list-group list-group-flush collapse">
+            {% for cat in categories %}
+              <li class="list-group-item bg-transparent py-1 px-4">
+                  <a class="load-link" href="#" rel="{% routablepageurl page "publications_by_category" cat.kind %}">{{cat.display}}</a>
+              </li>
+            {% endfor %}
+        </ul>
+      </li>
+    </ul>
+{% endblock %}
+
+{% block main %}
+
+    {{ page.body }}
+    {% include "beamlines/blocks/publications.html" with publication_list=publication_list %}
+
+    <script>
+    $(document).ready(function() {
+        $('.load-link').click(function() {
+            var category = $(this).html();
+            $.ajax({
+                url: $(this).attr('rel'),
+                context: document.body,
+                success: function(d) {
+                    $(".publications-content").html(d);
+                    $(".category").html(category);
+                }
+            });
+        });
+    });
+    </script>
+
+{% endblock %}

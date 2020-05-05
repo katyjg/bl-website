@@ -1,0 +1,11 @@
+{% load wagtailcore_tags %}
+
+<div class="beamline-item p-3 flex-fill grow">
+    <a class="float-left float-md-none float-lg-left" href="{{ beamline.url }}"><h3>{{ beamline.title }}</h3></a>
+    <span class="float-right float-md-none float-lg-right">
+        <span class="badge status-badge" style="background-color: {{ beamline.status_color }};">&nbsp;</span>
+        <span class="status-text">{{ beamline.status }}</span>
+    </span>
+    <br class="mb-3">
+    {{ beamline.snippet|richtext }}
+</div>

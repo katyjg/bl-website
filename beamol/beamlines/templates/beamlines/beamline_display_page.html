@@ -1,0 +1,71 @@
+{% load wagtailimages_tags %}
+{% load get_version %}
+{% load static %}
+{% load menu_tags %}
+
+{% with page.get_site.root_page.specific as home %}
+{% image home.background original as background %}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="h-100">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+    <title>{{ home.name_short }} - {{ page.title }}</title>
+    <meta name="description" content="{{ home.meta_description }}" >
+    <meta name="keywords" content="{{ home.meta_keywords }}" >
+    <meta name="generator" content="{{ home.name_short }}-Web {{ 0|get_version }}" >
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+
+    <link rel="stylesheet" href="{% static 'themify-icons/themify-icons.css' %}">
+    <link type="text/css" href="{% static 'css/beamonline.min.css' %}" rel="stylesheet" media="all">
+
+    <script src="{% static 'js/jquery/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/beamonline.js' %}"></script>
+
+    <link rel="shortcut icon" type="image/png" href="/favicon.ico?">
+
+    {% if "GA_ID"|get_from_settings %}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ "GA_ID"|get_from_settings }}']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    {% endif %}
+
+</head>
+
+    <body class="monitor-display">
+        <div class="d-flex flex-column vh-100">
+            <div class="row d-flex">
+                <div class="col-5 pr-0">
+                    {% include "news/blocks/news_highlights.html" %}
+                </div>
+                <div class="col-7" style="background-size: cover; background-image: url('{{ page.background_url }}');">
+                    {{ page.body }}&nbsp;
+                </div>
+            </div>
+            <div class="d-flex flex-fill">
+
+                {% for img in page.gallery %}
+                    {% image img.value original as el %}
+                    <div class="h-100 w-100" style="background-size: cover; background-image: url('{{ el.url }}');">
+                        <img src="{{ el.url }}" height="100%" style="display: none;"/>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </body>
+</html>
+
+{% endwith %}

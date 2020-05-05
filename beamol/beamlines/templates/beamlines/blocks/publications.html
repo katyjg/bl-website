@@ -1,0 +1,11 @@
+<div class="publications-content">
+    {% for year, pubs in publication_list %}
+        <h3 class="mb-0 mt-3"><a name="{{ year }}"></a>{{ year }}</h3>
+        <ul class="hr-list no-bullets">
+        {% for pub in pubs %}
+            <li>{{ pub|safe }}</li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+

@@ -1,0 +1,33 @@
+{% extends "wagtail-root.html" %}
+{% load wagtailcore_tags %}
+
+{% block page-title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-7 px-5 py-3">
+            {% block main %}
+                {% with blocks=page.personnel %}
+                    {% for block in blocks %}
+                        {% if block.block_type == 'heading' %}
+                            <h2>{{ block.value }}</h2>
+                        {% else %}
+                            <div class="row contact-list">
+                            {% for person in block.value %}
+                                <div class="person col-12 col-xl-6 p-3">
+                                {% include "contacts/blocks/person.html" with person=person %}
+                                </div>
+                            {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            {% endblock %}
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-5 px-5 py-3 dark-sidebar">
+            {% block sidebar %}
+                {{ page.sidebar|richtext }}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

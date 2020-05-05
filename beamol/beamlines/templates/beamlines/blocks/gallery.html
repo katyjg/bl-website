@@ -1,0 +1,27 @@
+{% load wagtailimages_tags %}
+
+<div class="polaroid">
+  <div class="polaroid-wrapper">
+    <div id="gallery" class="carousel slide" data-ride="carousel">
+
+      <!-- The slideshow -->
+      <div class="carousel-inner">
+          {% for photo in self %}
+            {% image photo.image original as img %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}"
+                title="{{ photo.caption }}">
+                <div class="fill" style="background-image: url('{{ img.url }}');"></div>
+                <div class="carousel-caption">{{ photo.caption }}</div>
+            </div>
+          {% endfor %}
+      </div>
+      <!-- Left and right controls -->
+      <a class="carousel-control-prev" href="#gallery" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </a>
+      <a class="carousel-control-next" href="#gallery" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+    </div>
+  </div>
+</div>

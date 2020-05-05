@@ -1,0 +1,47 @@
+{%  extends "wagtail-root.html" %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+
+{% block page-title %}{{ page.acronym }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-7 col-lg-8 px-5 py-3">
+
+            <h2>{{ page.name }}</h2>
+
+            <div class="status-bar">
+                <h4><span class="badge status-badge" style="background-color: {{ page.status_color }};">&nbsp;</span>
+                    <span class="status-text">{{ page.status }}</span></h4>
+            </div>
+            <div class="intro">{{ page.description|richtext }}</div>
+
+            {% if page.schematic %}
+                <h2>Schematic</h2>
+                {% image page.schematic original as schematic %}
+                <img class="w-100" src="{{ schematic.url }}" title="{{ schematic.alt }}" />
+            {% endif %}
+            {% if page.body %}
+                {% with blocks=page.body %}
+                    {% for block in blocks %}
+                        {% if block.block_type == 'heading' %}
+                            <h2>{{ block.value }}</h2>
+                        {% elif block.block_type == 'paragraph' %}
+                           <section class="block-{{ block.block_type }}">
+                               {{ block }}
+                           </section>
+                        {% elif block.block_type == 'table' %}
+                            {{ block }}
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            {% endif %}
+
+
+        </div>
+        <div class="col-md-5 col-lg-4 p-5 dark-sidebar">
+            {{ page.gallery }}
+            {{ page.sidebar|richtext }}
+        </div>
+    </div>
+{% endblock %}

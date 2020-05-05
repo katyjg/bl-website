@@ -1,25 +1,24 @@
-FROM fedora:26
+FROM python:3.7-alpine
+
 MAINTAINER Kathryn Janzen <kathryn.janzen@lightsource.ca>
 
-RUN dnf -y update
-RUN dnf -y install httpd python-django mod_ssl mod_wsgi python-ipaddr python-pillow  python-dateutil python-markdown python-unicodecsv && dnf clean all
-RUN dnf -y install python-psycopg2 && dnf clean all
+COPY requirements.txt /
 
-RUN pip install --upgrade pip &&  pip install 'Django==1.11'
+RUN apk add --no-cache --virtual .build-deps bash gcc linux-headers musl-dev postgresql-dev libpq libffi-dev \
+    jpeg-dev zlib-dev apache2-ssl apache2-mod-wsgi certbot-apache openssl openssl-dev python3-dev imagemagick
+
+RUN set -ex && /usr/bin/pip3 install --upgrade pip && /usr/bin/pip3 install --no-cache-dir -r /requirements.txt
 
 EXPOSE 443
 
-# Simple startup script to avoid some issues observed with container restart 
 ADD . /website
 ADD ./local /website/local
-ADD deploy/run-server.sh /run-server.sh
-RUN chmod -v +x /run-server.sh
 
-RUN /bin/cp /website/deploy/website.conf /etc/httpd/conf.d/
-RUN /bin/mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/zzzssl.conf
-RUN /website/manage.py collectstatic --noinput
+COPY deploy/run-server.sh /
+COPY deploy/wait-for-it.sh /
+COPY deploy/website.conf /etc/apache2/conf.d/zzzwebsite.conf
 
-VOLUME ["/website/local"]
+RUN chmod -v +x /run-server.sh /wait-for-it.sh
+RUN /usr/bin/python3 website/manage.py collectstatic --noinput
 
-CMD ["/run-server.sh"]
-
+CMD /run-server.sh
