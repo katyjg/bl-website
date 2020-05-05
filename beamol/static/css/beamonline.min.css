@@ -7202,7 +7202,8 @@ body {
   background-position: center;
   background-size: cover;
   top: 0;
-  left: 0; }
+  left: 0;
+  height: 88px; }
   #header .site-name {
     font-weight: 700;
     font-family: "Fira Sans Condensed";
@@ -7216,6 +7217,7 @@ body {
     float: left; }
   #header .navbar {
     padding: 0;
+    height: 88px;
     background-color: rgba(36, 20, 70, 0.85) !important; }
   #header .navbar-toggler {
     border: none;
@@ -8069,3 +8071,32 @@ blockquote {
     flex: 0 0 100%; }
   .badge {
     border: none; } }
+
+@supports (-ms-ime-align: auto) {
+  .news-highlights {
+    padding-top: 40%; }
+    @media (max-width: 991.98px) {
+      .news-highlights {
+        padding-top: 30%; } }
+    @media (max-width: 767.98px) {
+      .news-highlights {
+        padding-top: 50%; } }
+  .latest-results {
+    overflow-y: hidden; }
+  @media (max-width: 767.98px) {
+    #home .sidebar {
+      height: 600px; } }
+  .sidebar-nav {
+    position: relative; }
+  .square {
+    width: 100%;
+    height: 200px;
+    background: no-repeat center center;
+    background-size: cover; } }
+
+.ie #main, .ie #home .lower, .ie .card-body.grow {
+  flex-basis: auto !important;
+  display: block !important; }
+
+.ie .latest-results {
+  overflow-y: hidden; }

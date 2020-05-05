@@ -154,6 +154,7 @@ body {
   @include floating-bg();
   top: 0;
   left: 0;
+  height: 88px;
 
   .site-name {
     @include heading();
@@ -167,6 +168,7 @@ body {
   }
   .navbar {
     padding: 0;
+    height: 88px;
     background-color: $header-layover !important;
   }
   .navbar-toggler {
@@ -707,8 +709,8 @@ table {
   @include media-breakpoint-up(lg) {
     @include maintain-ratio(3 2);
   }
-
 }
+
 @mixin multi-ellipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
   overflow: hidden;
   position: relative;
@@ -1147,5 +1149,47 @@ blockquote {
   }
   .badge {
     border: none;
+  }
+}
+
+// Microsoft Edge Support
+@supports (-ms-ime-align:auto) {
+  .news-highlights {
+    padding-top: 40%;
+
+    @include media-breakpoint-down(md) {
+      padding-top: 30%;
+    }
+    @include media-breakpoint-down(sm) {
+      padding-top: 50%;
+    }
+  }
+  .latest-results {
+    overflow-y: hidden;
+  }
+  #home .sidebar {
+    @include media-breakpoint-down(sm) {
+      height: 600px;
+    }
+  }
+  .sidebar-nav {
+    position: relative;
+  }
+  .square {
+    width: 100%;
+    height: 200px;
+    @include cover-bg();
+  }
+}
+
+// Microsoft Explorer (Basic) Support
+.ie {
+  #main, #home .lower, .card-body.grow {
+    flex-basis: auto !important;
+    display: block !important;
+  }
+
+  .latest-results {
+    overflow-y: hidden;
   }
 }
