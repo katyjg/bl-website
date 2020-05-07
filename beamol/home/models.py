@@ -69,7 +69,7 @@ class HomePage(Page):
 
 
     def news(self):
-        return PostPage.objects.filter(highlight=True).order_by('date')
+        return PostPage.objects.filter(highlight=True).order_by('-date')
 
     def beamlines(self):
         return BeamlinePage.objects.all()
