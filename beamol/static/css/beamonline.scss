@@ -30,7 +30,7 @@ $lt-gray: #ddd;
 }
 @mixin floating-bg() {
   background-attachment: fixed;
-  background-repeat: repeat-y;
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
@@ -154,7 +154,6 @@ body {
   @include floating-bg();
   top: 0;
   left: 0;
-  height: 88px;
 
   .site-name {
     @include heading();
@@ -165,10 +164,13 @@ body {
     width: auto;
     line-height: 26px;
     float: left;
+
+    span.d-md-block {
+      min-height: 52px;
+    }
   }
   .navbar {
     padding: 0;
-    height: 88px;
     background-color: $header-layover !important;
   }
   .navbar-toggler {

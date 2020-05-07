@@ -7198,12 +7198,11 @@ body {
 
 #header {
   background-attachment: fixed;
-  background-repeat: repeat-y;
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   top: 0;
-  left: 0;
-  height: 88px; }
+  left: 0; }
   #header .site-name {
     font-weight: 700;
     font-family: "Fira Sans Condensed";
@@ -7215,9 +7214,10 @@ body {
     width: auto;
     line-height: 26px;
     float: left; }
+    #header .site-name span.d-md-block {
+      min-height: 52px; }
   #header .navbar {
     padding: 0;
-    height: 88px;
     background-color: rgba(36, 20, 70, 0.85) !important; }
   #header .navbar-toggler {
     border: none;
@@ -7281,7 +7281,7 @@ body {
 
 #footer {
   background-attachment: fixed;
-  background-repeat: repeat-y;
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   color: #fff;
@@ -7310,7 +7310,7 @@ body {
 
 .headline {
   background-attachment: fixed;
-  background-repeat: repeat-y;
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   color: #fff;

@@ -4,7 +4,7 @@ Willow
 Wand
 Unidecode
 asgiref
-beautifulsoup4<4.6.1,>=4.5.1
+beautifulsoup4<4.9,>=4.8
 certifi
 chardet
 django-cogwheels
