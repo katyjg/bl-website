@@ -7715,6 +7715,9 @@ table {
 .text-sm {
   font-size: 80%; }
 
+.text-narrow {
+  font-family: "Fira Sans Condensed"; }
+
 .card-img {
   position: relative;
   border-radius: 0; }
@@ -8027,6 +8030,10 @@ blockquote {
   border-left-color: #f0ad4e; }
 
 @media print {
+  @page {
+    margin: 1cm; }
+  body {
+    min-width: 872px !important; }
   #header, #footer {
     display: none; }
   .site-footer, .headline .row {
@@ -8042,6 +8049,7 @@ blockquote {
       color: #000; }
   a:not(.mail-link):not(.headline-link):not(.tag)[href]:after {
     content: " (" attr(href) ")";
+    font-family: "Fira Sans Condensed";
     color: #333; }
   a.mail-link[href]:after {
     content: "\a" attr(rel);
@@ -8061,7 +8069,9 @@ blockquote {
         top: calc(-0.75rem - 1px); }
         .person .card-body .card-img .card-img-hover {
           display: block; }
-  .user-guide .dark-sidebar, .polaroid, .sidebar-nav {
+  .polaroid, .sidebar-nav {
+    display: none; }
+  .user-guide #subnav-container, .user-guide .dark-sidebar, .user-guide .headline-link {
     display: none; }
   .dark-sidebar {
     height: 100%;

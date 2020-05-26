@@ -77,6 +77,10 @@
 </head>
 
 <body class="d-flex flex-column {% block body_class %}{% endblock %}">
+    <div class="d-none d-print-block text-narrow text-muted text-right w-100">
+        {{ home.name_long|upper }}<br>
+        {{ page.get_site.root_url }}
+    </div>
     <div id="header" style="background-image: url('{{ background.url }}');">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark wrapper-row">
           <a class="site-name" href="{{ home.url }}" title="{{ home.name_short }} Home Page">

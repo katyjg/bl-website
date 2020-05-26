@@ -756,6 +756,9 @@ table {
 .text-sm {
   font-size: 80%;
 }
+.text-narrow {
+  font-family: $narrow-font;
+}
 .card-img {
   position: relative;
   border-radius: 0;
@@ -1095,6 +1098,12 @@ blockquote {
 
 // Printing
 @media print {
+  @page {
+    margin: 1cm;
+  }
+  body {
+    min-width: 872px !important;
+  }
   #header, #footer {
     display: none;
   }
@@ -1115,6 +1124,7 @@ blockquote {
   }
   a:not(.mail-link, .headline-link, .tag)[href]:after {
     content: " (" attr(href) ")";
+    font-family: $narrow-font;
     color: $dark-gray;
   }
   a.mail-link[href]:after {
@@ -1140,7 +1150,10 @@ blockquote {
       }
     }
   }
-  .user-guide .dark-sidebar, .polaroid, .sidebar-nav { display: none;}
+  .polaroid, .sidebar-nav { display: none;}
+  .user-guide {
+    #subnav-container, .dark-sidebar, .headline-link { display: none; }
+  }
   .dark-sidebar {
     height: 100%;
     float: right;
