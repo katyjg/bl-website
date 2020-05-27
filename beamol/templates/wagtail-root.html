@@ -78,8 +78,7 @@
 
 <body class="d-flex flex-column {% block body_class %}{% endblock %}">
     <div class="d-none d-print-block text-narrow text-muted text-right w-100">
-        {{ home.name_long|upper }}<br>
-        {{ page.get_site.root_url }}
+        {{ home.name_long|upper }}
     </div>
     <div id="header" style="background-image: url('{{ background.url }}');">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark wrapper-row">
@@ -129,7 +128,13 @@
         </div>
     </div>
     <div class="site-footer">
-        <div class="footer-item">&#9400; 2010&ndash;{% now "Y" %}</div>
+        <div class="footer-item">&#9400; 2010&ndash;{% now "Y" %}
+            <span class="d-none d-print-inline">
+                &middot; Printed {% now "F j, Y" %}
+                &middot; Please see <strong>{{ page.get_site.root_url }}</strong> for the most up-to-date information.
+            </span>
+        </div>
+
     </div>
 
     {% block post_js %}{% endblock post_js %}

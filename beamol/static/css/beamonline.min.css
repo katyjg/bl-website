@@ -8034,13 +8034,16 @@ blockquote {
     margin: 1cm; }
   body {
     min-width: 872px !important; }
+  .d-flex, #main > .row {
+    display: block !important;
+    flex: unset !important; }
   #header, #footer {
     display: none; }
   .site-footer, .headline .row {
     background-color: transparent;
     color: #000; }
-  .site-footer:after {
-    content: 'Please see our website for the most up-to-date information.'; }
+  .site-footer {
+    border-top: 1px solid #333; }
   .headline {
     background-image: none !important;
     border-bottom: 1px solid #333;
@@ -8058,6 +8061,9 @@ blockquote {
     font-weight: 500;
     font-size: 85%;
     margin-bottom: 0; }
+  h2, h3, h4 {
+    page-break-after: avoid;
+    break-after: avoid; }
   .person {
     max-width: 500px; }
     .person .card-body {

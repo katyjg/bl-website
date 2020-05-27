@@ -1104,6 +1104,10 @@ blockquote {
   body {
     min-width: 872px !important;
   }
+  .d-flex, #main > .row {
+    display: block !important;
+    flex: unset !important;
+  }
   #header, #footer {
     display: none;
   }
@@ -1111,8 +1115,8 @@ blockquote {
     background-color: transparent;
     color: $black;
   }
-  .site-footer:after {
-    content: 'Please see our website for the most up-to-date information.';
+  .site-footer {
+    border-top: 1px solid $dark-gray;
   }
   .headline {
     background-image: none !important;
@@ -1134,6 +1138,10 @@ blockquote {
     font-weight: 500;
     font-size: 85%;
     margin-bottom: 0;
+  }
+  h2, h3, h4 {
+    page-break-after: avoid;
+    break-after: avoid;
   }
   .person {
     max-width: 500px;
