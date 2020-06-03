@@ -20,6 +20,7 @@ Source code can be found at https://github.com/katyjg/bl-website.
    pages
    menus
    images
+   content
 
 .. toctree::
    :maxdepth: 2
