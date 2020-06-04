@@ -9,9 +9,9 @@ Dependencies
  - Docker Engine 1.13.0+
  - Docker Compose
 
-Testing
--------
- 1. Extract deploy/skel.tar.gz in a directory of your choice
+Testing Your Deployment
+-----------------------
+ 1. Extract ``deploy/skel.tar.gz`` in a directory of your choice
  2. Verify that the ``hostname`` and ``SERVER_NAME`` are correct in docker-compose.yml
  3. ``docker-compose pull``
  4. ``docker-compose up -d``
@@ -25,9 +25,6 @@ Testing
      - a basic set of web pages are created for testing
  6. Find your new test website at https://{SERVER_NAME}
  7. Sign in with your new administrator account at https://{SERVER_NAME}/admin
-
-Deployment
-----------
 
 The contents of the skel directory are::
 
