@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; CMCF Beamline Website 2.0.0.2 documentation</title>
+  <title>Getting Started &mdash; CMCF Beamline Website 2.0.0.3 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                2.0.0.2
+                2.0.0.3
               </div>
             
           
@@ -94,8 +94,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#deployment">Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-your-deployment">Testing Your Deployment</a></li>
 </ul>
 </li>
 </ul>
@@ -173,11 +172,11 @@ To use it, extract <code class="docutils literal notranslate"><span class="pre">
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="testing-your-deployment">
+<h2>Testing Your Deployment<a class="headerlink" href="#testing-your-deployment" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ol class="arabic">
-<li><p>Extract deploy/skel.tar.gz in a directory of your choice</p></li>
+<li><p>Extract <code class="docutils literal notranslate"><span class="pre">deploy/skel.tar.gz</span></code> in a directory of your choice</p></li>
 <li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">hostname</span></code> and <code class="docutils literal notranslate"><span class="pre">SERVER_NAME</span></code> are correct in docker-compose.yml</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">pull</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code></p>
@@ -201,9 +200,6 @@ To use it, extract <code class="docutils literal notranslate"><span class="pre">
 <li><p>Sign in with your new administrator account at <a class="reference external" href="https:/">https:/</a>/{SERVER_NAME}/admin</p></li>
 </ol>
 </div></blockquote>
-</div>
-<div class="section" id="deployment">
-<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
 <p>The contents of the skel directory are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── app-local                   # local directory
 │   ├── logs                    # location for apache logs
