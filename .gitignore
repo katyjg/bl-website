@@ -13,6 +13,8 @@ junk/
 website.db
 .settings
 settings_local.py
+/local/*
+/local/settings.py
 VERSION
 
 /docs/_build/

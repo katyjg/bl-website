@@ -160,6 +160,7 @@ class PublicationsPage(RoutablePageMixin, Page):
 
 class EmbedPage(Page):
     embed = models.URLField(blank=True)
+    height = models.IntegerField(blank=True, null=True, help_text="Height of target page, in pixels")
 
     body = StreamField([
         ('heading', blocks.CharBlock(classname="full title")),
@@ -173,6 +174,7 @@ class EmbedPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('embed', classname="full"),
+        FieldPanel('height', classname="full"),
         StreamFieldPanel('body'),
     ]
 

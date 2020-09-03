@@ -16,13 +16,15 @@
 {% endblock %}
 
 {% block content %}
+    {% if page.body %}
     <div class="row">
         <div class="col-12 px-5 pt-3">
             {{ page.body }}
         </div>
     </div>
+    {% endif %}
 
-    <iframe frameborder="0" src="{{page.embed}}"></iframe>
+    <iframe frameborder="0" src="{{page.embed}}" {% if page.height %}height="{{ page.height }}"{% endif %}></iframe>
 {% endblock %}
 
 {% block pre_js %}
