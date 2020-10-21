@@ -69,10 +69,10 @@ class HomePage(Page):
 
 
     def news(self):
-        return PostPage.objects.filter(highlight=True).order_by('-date')
+        return PostPage.objects.live().filter(highlight=True).order_by('-date')
 
     def beamlines(self):
-        return BeamlinePage.objects.all()
+        return BeamlinePage.objects.live()
 
 
 class OneColumnPage(Page):
@@ -83,9 +83,13 @@ class OneColumnPage(Page):
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
     ], blank=True)
+    submenu = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
+    ]
+    promote_panels = Page.promote_panels + [
+        FieldPanel('submenu')
     ]
 
     template = "wagtail-1-col.html"

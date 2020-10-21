@@ -26,5 +26,5 @@ setuptools
 six
 sqlparse
 urllib3
-wagtail==2.10.1
+wagtail==2.10.2
 wagtailmenus
