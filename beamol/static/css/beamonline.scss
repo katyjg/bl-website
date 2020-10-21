@@ -53,7 +53,20 @@ $lt-gray: #ddd;
 
   li:before {
     font-family: "Themify";
+    font-size: 75%;
     content: "\e649";
+    line-height: 1.75;
+    float: left;
+    width: 1.4em;
+  }
+}
+@mixin ti-checklist() {
+  list-style-type: none;
+  padding-left: 0;
+
+  li:before {
+    font-family: "Themify";
+    content: "\e64d";
     float: left;
     width: 1.4em;
   }

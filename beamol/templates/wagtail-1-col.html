@@ -4,10 +4,43 @@
 
 {% block page-title %}{{ page.title }}{% endblock %}
 
+{% block body_class %}{% if page.submenu %}user-guide{% endif %}{% endblock %}
+
 {% block content %}
     <div class="row h-100">
         <div class="col-12 px-5 py-3">
-            {% block main %}{{ page.body }}{% endblock %}
+            {% block main %}
+                {% if page.submenu %}
+                    <div id="subnav-container" class="col-12 col-md-5 px-0 px-md-3 float-md-right">
+                        <div class="card card-subnav mb-3" style="display: none;">
+                            <div class="card-header">In this article... </div>
+                            <ul id="subnav" class="list-group list-group-flush"></ul>
+                        </div>
+                    </div>
+                {% endif %}
+                {{ page.body }}
+            {% endblock %}
         </div>
     </div>
 {% endblock %}
+
+{% block pre_js %}
+    {% if page.submenu %}
+    <script>
+        $(document).ready(function () {
+            var arr = [];
+            $("#main h2").each(function(){
+                var id = $(this).html();
+                $(this).attr("id", id);
+                arr.push($(this).attr('id'));
+            });
+            if (arr.length != 0) {
+                $('.card-subnav').css('display', 'block');
+                for (i in arr) {
+                    $('ul#subnav').append('<a  class="list-group-item" href="#' + arr[i] + '">' + arr[i] + '</a>');
+                }
+            }
+        });
+    </script>
+    {% endif %}
+{% endblock pre_js %}
