@@ -13,6 +13,7 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from colorfield.fields import ColorField
+
 from beamol.news.models import PostPage
 
 import requests
@@ -198,5 +199,6 @@ class BeamlineDisplayPage(Page):
         StreamFieldPanel('gallery'),
     ]
 
-    def news(self):
+    @staticmethod
+    def news():
         return PostPage.objects.filter(highlight=True).order_by('date')

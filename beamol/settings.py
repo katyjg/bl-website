@@ -27,8 +27,6 @@ SECRET_KEY = 'q07g43gkbqfz7dc236tq0498764jd897ch3jk29q177d93982d'
 # Application definition
 
 INSTALLED_APPS = [
-    'beamol.home',
-    'beamol.search',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -58,9 +56,12 @@ INSTALLED_APPS = [
     'debug_toolbar',
 
     'colorfield',
+
     'beamol.news',
+    'beamol.search',
     'beamol.beamlines',
     'beamol.contacts',
+    'beamol.home',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -166,7 +168,6 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'local/media')
 MEDIA_URL = '/media/'
-
 
 # Wagtail settings
 

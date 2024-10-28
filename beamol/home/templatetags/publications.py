@@ -2,7 +2,6 @@ from django.conf import settings
 from django import template
 from django.utils.html import format_html_join, mark_safe
 
-from beamol.beamlines.models import PublicationsPage
 
 register = template.Library()
 
@@ -11,6 +10,7 @@ import requests
 
 @register.simple_tag
 def publications_page():
+    from beamol.beamlines.models import PublicationsPage
     return PublicationsPage.objects.live().first()
 
 

@@ -1,9 +1,7 @@
-from django.db import models
-
-from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField, StreamField
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, TabbedInterface, ObjectList
 from wagtail.core import blocks
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.core.models import Page
 from wagtail.images.blocks import ImageChooserBlock
 
 
@@ -18,7 +16,8 @@ class PersonnelBlock(blocks.StructBlock):
 
     class Meta:
         icon = 'user'
-        template='contacts/blocks/person.html'
+        template = 'contacts/blocks/person.html'
+
 
 class ContactsPage(Page):
     personnel = StreamField([

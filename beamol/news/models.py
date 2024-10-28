@@ -9,7 +9,7 @@ from wagtail.snippets.models import register_snippet
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.tags import ClusterTaggableManager
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase, Tag as TaggitTag
 
 import datetime
@@ -34,7 +34,6 @@ class NewsPage(RoutablePageMixin, Page):
     def get_categories(self):
         categories = PostCategory.objects.filter(pk__in=PostPage.objects.live().values_list('categories', flat=True))
         return categories
-
 
     def get_filters(self):
         return self.search_type and {self.search_type: self.search_term} or None
@@ -116,3 +115,4 @@ class PostTag(TaggedItemBase):
 class Tag(TaggitTag):
     class Meta:
         proxy = True
+
