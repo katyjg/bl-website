@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import sys
 
-#PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 LOCAL_DIR = os.path.join(BASE_DIR, 'local')
@@ -24,7 +23,7 @@ sys.path.extend([PROJECT_DIR, BASE_DIR, os.path.join(BASE_DIR, 'libs'), os.path.
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-
+SECRET_KEY = 'q07g43gkbqfz7dc236tq0498764jd897ch3jk29q177d93982d'
 # Application definition
 
 INSTALLED_APPS = [
@@ -177,13 +176,13 @@ WAGTAIL_SITE_NAME = "beamol"
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
 
-_version_file = os.path.join(BASE_DIR, 'VERSION')
-if os.path.exists(_version_file):
-    VERSION = (file(_version_file)).readline().strip()
-else:
-    VERSION = '- Development -'
-
 try:
     from local.settings import *
 except ImportError:
-    pass
+    print('No local settings found')
+
+try:
+    from beamol.version import get_version
+    VERSION = get_version()
+except (ImportError, RuntimeError):
+    VERSION = '-dev-'
