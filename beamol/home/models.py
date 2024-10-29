@@ -1,13 +1,12 @@
 from colorfield.fields import ColorField
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel, TabbedInterface, ObjectList, StreamFieldPanel
+from wagtail.admin.panels import FieldPanel, TabbedInterface, ObjectList
 from wagtail.contrib.table_block.blocks import TableBlock
-from wagtail.core import blocks
-from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.models import Page
+from wagtail import blocks
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Page
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
-from wagtail.images.edit_handlers import ImageChooserPanel
 
 from beamol.beamlines.models import BeamlinePage
 from beamol.news.models import PostPage
@@ -49,13 +48,13 @@ class HomePage(Page):
         FieldPanel('footer2', classname="full"),
         FieldPanel('organization', classname="full"),
         FieldPanel('org_url', classname="full"),
-        ImageChooserPanel('org_img'),
+        FieldPanel('org_img'),
     ]
 
     meta_content_panels = [
         FieldPanel('meta_description', classname="full"),
         FieldPanel('meta_keywords', classname="full"),
-        ImageChooserPanel('background'),
+        FieldPanel('background'),
     ]
 
     edit_handler = TabbedInterface([
@@ -82,11 +81,11 @@ class OneColumnPage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
     submenu = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
     promote_panels = Page.promote_panels + [
         FieldPanel('submenu')
@@ -102,20 +101,20 @@ class TwoColumnPage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
     sidebar = StreamField([
         ('heading', blocks.CharBlock(classname="full title")),
         ('paragraph', blocks.RichTextBlock()),
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
     sidebar_panel = [
-        StreamFieldPanel('sidebar'),
+        FieldPanel('sidebar'),
     ]
 
     edit_handler = TabbedInterface([
@@ -135,7 +134,7 @@ class SubsiteHomePage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
     name_short = models.CharField(max_length=40, blank=True, )
     name_long = models.CharField(max_length=100, blank=True, )
@@ -157,7 +156,7 @@ class SubsiteHomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('name_long', classname="full"),
         FieldPanel('name_short', classname="full"),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     footer_content_panels = [
@@ -165,7 +164,7 @@ class SubsiteHomePage(Page):
         FieldPanel('footer2', classname="full"),
         FieldPanel('organization', classname="full"),
         FieldPanel('org_url', classname="full"),
-        ImageChooserPanel('org_img'),
+        FieldPanel('org_img'),
     ]
 
     meta_content_panels = [
@@ -173,7 +172,7 @@ class SubsiteHomePage(Page):
         FieldPanel('meta_keywords', classname="full"),
         FieldPanel('header_color', classname="full"),
         FieldPanel('footer_color', classname="full"),
-        ImageChooserPanel('background'),
+        FieldPanel('background'),
     ]
 
     edit_handler = TabbedInterface([
@@ -197,13 +196,13 @@ class SubsitePage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
     parent_page_types = ['SubsiteHomePage', 'SubsitePage']
     subpage_types = ['SubsitePage', ]
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     def subsite_home(self, inclusive=True):

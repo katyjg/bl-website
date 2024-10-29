@@ -1,9 +1,9 @@
 from django.db import models
 from django import forms
 
-from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.models import Page
+from wagtail.fields import RichTextField
+from wagtail.admin.panels import FieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
@@ -74,7 +74,7 @@ class PostPage(Page):
         FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
         FieldPanel('tags'),
         FieldPanel('date', classname="full"),
-        ImageChooserPanel('image'),
+        FieldPanel('image'),
     ]
 
     parent_page_types = ['NewsPage']
