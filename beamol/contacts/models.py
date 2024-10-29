@@ -1,4 +1,4 @@
-from wagtail.admin.panels import FieldPanel, StreamFieldPanel, TabbedInterface, ObjectList
+from wagtail.admin.panels import FieldPanel, TabbedInterface, ObjectList
 from wagtail import blocks
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
