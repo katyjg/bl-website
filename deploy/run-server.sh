@@ -13,8 +13,15 @@ fi
 # if it thinks it is already running.
 rm -rf /run/httpd/* /tmp/httpd*
 
+# Wait for the database to be ready
 /wait-for-it.sh database:5432 -t 60 &&
 
+# Make sure the local directory is a Python package
+if [ ! -f /website/local/__init__.py ]; then
+    touch /website/local/__init__.py
+fi
+
+# Initialize database and adjust media directory permissions
 if [ ! -f /website/local/.dbinit ]; then
     for try in {1..5}; do
         /website/manage.py migrate --noinput &&
@@ -30,4 +37,5 @@ else
     done
 fi
 
+# Launch the server
 exec /usr/sbin/httpd -DFOREGROUND -e debug
