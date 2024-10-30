@@ -2,8 +2,8 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 import wagtail.images.blocks
 
 
@@ -20,8 +20,8 @@ class Migration(migrations.Migration):
             name='ContactsPage',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('personnel', wagtail.core.fields.StreamField([('heading', wagtail.core.blocks.CharBlock(classname='full title')), ('person', wagtail.core.blocks.ListBlock(wagtail.core.blocks.StructBlock([('image', wagtail.images.blocks.ImageChooserBlock(required=False)), ('hover_image', wagtail.images.blocks.ImageChooserBlock(required=False)), ('name', wagtail.core.blocks.TextBlock()), ('position', wagtail.core.blocks.TextBlock(required=False)), ('email', wagtail.core.blocks.EmailBlock(required=False)), ('phone', wagtail.core.blocks.TextBlock(required=False)), ('office', wagtail.core.blocks.TextBlock(required=False))]), icon='user'))], blank=True, null=True)),
-                ('sidebar', wagtail.core.fields.RichTextField(blank=True)),
+                ('personnel', wagtail.fields.StreamField([('heading', wagtail.blocks.CharBlock(classname='full title')), ('person', wagtail.blocks.ListBlock(wagtail.blocks.StructBlock([('image', wagtail.images.blocks.ImageChooserBlock(required=False)), ('hover_image', wagtail.images.blocks.ImageChooserBlock(required=False)), ('name', wagtail.blocks.TextBlock()), ('position', wagtail.blocks.TextBlock(required=False)), ('email', wagtail.blocks.EmailBlock(required=False)), ('phone', wagtail.blocks.TextBlock(required=False)), ('office', wagtail.blocks.TextBlock(required=False))]), icon='user'))], blank=True, null=True)),
+                ('sidebar', wagtail.fields.RichTextField(blank=True)),
             ],
             options={
                 'abstract': False,

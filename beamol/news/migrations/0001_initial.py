@@ -6,7 +6,7 @@ import django.db.models.deletion
 import modelcluster.contrib.taggit
 import modelcluster.fields
 import wagtail.contrib.routable_page.models
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
                 ('subtitle', models.CharField(blank=True, max_length=510)),
-                ('body', wagtail.core.fields.RichTextField(blank=True)),
+                ('body', wagtail.fields.RichTextField(blank=True)),
                 ('date', models.DateField(default=datetime.date.today)),
                 ('highlight', models.BooleanField(default=True)),
                 ('categories', modelcluster.fields.ParentalManyToManyField(blank=True, to='news.PostCategory')),

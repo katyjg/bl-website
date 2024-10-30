@@ -1,19 +1,15 @@
-from django.db import models
-from django.template.loader import render_to_string
-
-from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField, StreamField
-from wagtail.admin.edit_handlers import FieldPanel, TabbedInterface, ObjectList, StreamFieldPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.core import blocks, hooks
-
-from wagtail.contrib.table_block.blocks import TableBlock
-from wagtail.images.blocks import ImageChooserBlock
-from wagtail.embeds.blocks import EmbedBlock
-
 from colorfield.fields import ColorField
-from beamol.news.models import PostPage
+from django.db import models
+from wagtail.admin.panels import FieldPanel, TabbedInterface, ObjectList
+from wagtail.contrib.table_block.blocks import TableBlock
+from wagtail import blocks
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Page
+from wagtail.embeds.blocks import EmbedBlock
+from wagtail.images.blocks import ImageChooserBlock
+
 from beamol.beamlines.models import BeamlinePage
+from beamol.news.models import PostPage
 
 
 class HomePage(Page):
@@ -26,15 +22,17 @@ class HomePage(Page):
     column1 = RichTextField(blank=True)
     column2 = RichTextField(blank=True)
 
-    name_short = models.CharField(max_length=40, blank=True,)
-    name_long = models.CharField(max_length=100, blank=True,)
-    meta_description = models.CharField(max_length=500, blank=True,)
-    meta_keywords = models.CharField(max_length=255, blank=True,)
-    organization = models.CharField(max_length=100, blank=True,)
-    org_url = models.URLField('Organization link', blank=True,)
-    org_img = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    name_short = models.CharField(max_length=40, blank=True, )
+    name_long = models.CharField(max_length=100, blank=True, )
+    meta_description = models.CharField(max_length=500, blank=True, )
+    meta_keywords = models.CharField(max_length=255, blank=True, )
+    organization = models.CharField(max_length=100, blank=True, )
+    org_url = models.URLField('Organization link', blank=True, )
+    org_img = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,
+                                related_name='+')
 
-    background = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    background = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,
+                                   related_name='+')
 
     content_panels = Page.content_panels + [
         FieldPanel('name_long', classname="full"),
@@ -50,13 +48,13 @@ class HomePage(Page):
         FieldPanel('footer2', classname="full"),
         FieldPanel('organization', classname="full"),
         FieldPanel('org_url', classname="full"),
-        ImageChooserPanel('org_img'),
+        FieldPanel('org_img'),
     ]
 
     meta_content_panels = [
         FieldPanel('meta_description', classname="full"),
         FieldPanel('meta_keywords', classname="full"),
-        ImageChooserPanel('background'),
+        FieldPanel('background'),
     ]
 
     edit_handler = TabbedInterface([
@@ -67,11 +65,12 @@ class HomePage(Page):
         ObjectList(Page.settings_panels, heading='Settings', classname="settings"),
     ])
 
-
-    def news(self):
+    @staticmethod
+    def news():
         return PostPage.objects.live().filter(highlight=True).order_by('-date')
 
-    def beamlines(self):
+    @staticmethod
+    def beamlines():
         return BeamlinePage.objects.live()
 
 
@@ -82,11 +81,11 @@ class OneColumnPage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
     submenu = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
     promote_panels = Page.promote_panels + [
         FieldPanel('submenu')
@@ -102,20 +101,20 @@ class TwoColumnPage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
     sidebar = StreamField([
         ('heading', blocks.CharBlock(classname="full title")),
         ('paragraph', blocks.RichTextBlock()),
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
     sidebar_panel = [
-        StreamFieldPanel('sidebar'),
+        FieldPanel('sidebar'),
     ]
 
     edit_handler = TabbedInterface([
@@ -135,27 +134,29 @@ class SubsiteHomePage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
-    name_short = models.CharField(max_length=40, blank=True,)
-    name_long = models.CharField(max_length=100, blank=True,)
-    meta_description = models.CharField(max_length=500, blank=True,)
-    meta_keywords = models.CharField(max_length=255, blank=True,)
-    organization = models.CharField(max_length=100, blank=True,)
-    org_url = models.URLField('Organization link', blank=True,)
-    org_img = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    name_short = models.CharField(max_length=40, blank=True, )
+    name_long = models.CharField(max_length=100, blank=True, )
+    meta_description = models.CharField(max_length=500, blank=True, )
+    meta_keywords = models.CharField(max_length=255, blank=True, )
+    organization = models.CharField(max_length=100, blank=True, )
+    org_url = models.URLField('Organization link', blank=True, )
+    org_img = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,
+                                related_name='+')
 
     footer1 = RichTextField(blank=True)
     footer2 = RichTextField(blank=True)
 
     header_color = ColorField(default='#FF0000')
     footer_color = ColorField(default='#FF0000')
-    background = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    background = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,
+                                   related_name='+')
 
     content_panels = Page.content_panels + [
         FieldPanel('name_long', classname="full"),
         FieldPanel('name_short', classname="full"),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     footer_content_panels = [
@@ -163,7 +164,7 @@ class SubsiteHomePage(Page):
         FieldPanel('footer2', classname="full"),
         FieldPanel('organization', classname="full"),
         FieldPanel('org_url', classname="full"),
-        ImageChooserPanel('org_img'),
+        FieldPanel('org_img'),
     ]
 
     meta_content_panels = [
@@ -171,7 +172,7 @@ class SubsiteHomePage(Page):
         FieldPanel('meta_keywords', classname="full"),
         FieldPanel('header_color', classname="full"),
         FieldPanel('footer_color', classname="full"),
-        ImageChooserPanel('background'),
+        FieldPanel('background'),
     ]
 
     edit_handler = TabbedInterface([
@@ -182,7 +183,7 @@ class SubsiteHomePage(Page):
         ObjectList(Page.settings_panels, heading='Settings', classname="settings"),
     ])
 
-    subpage_types = ['SubsitePage',]
+    subpage_types = ['SubsitePage', ]
 
     def subsite_home(self):
         return self.specific
@@ -195,15 +196,14 @@ class SubsitePage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
     parent_page_types = ['SubsiteHomePage', 'SubsitePage']
-    subpage_types = ['SubsitePage',]
+    subpage_types = ['SubsitePage', ]
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     def subsite_home(self, inclusive=True):
         return Page.objects.ancestor_of(self, inclusive).filter(depth=3).first().specific
-

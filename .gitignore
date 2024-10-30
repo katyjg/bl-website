@@ -5,6 +5,8 @@
 *.bak
 *.cache
 .idea*
+/dev/
+
 uploads/
 attachments/
 junk/

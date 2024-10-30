@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export SERVER_NAME=${SERVER_NAME:-$(hostname --fqdn)}
 export CERT_PATH=${CERT_PATH:-/etc/letsencrypt/live/${SERVER_NAME}}
@@ -13,14 +13,29 @@ fi
 # if it thinks it is already running.
 rm -rf /run/httpd/* /tmp/httpd*
 
-./wait-for-it.sh website-db:5432 -t 60 &&
+# Wait for the database to be ready
+/wait-for-it.sh database:5432 -t 60 &&
 
-if [ ! -f /website/local/.dbinit ]; then
-    /usr/bin/python3 /website/manage.py migrate --noinput &&
-    touch /website/local/.dbinit
-    chown -R apache:apache /website/local/media
-else
-    /usr/bin/python3 /website/manage.py migrate --noinput
+# Make sure the local directory is a Python package
+if [ ! -f /website/local/__init__.py ]; then
+    touch /website/local/__init__.py
 fi
 
+# Initialize database and adjust media directory permissions
+if [ ! -f /website/local/.dbinit ]; then
+    for try in {1..5}; do
+        /website/manage.py migrate --noinput &&
+        chown -R apache:apache /website/local/media &&
+        touch /website/local/.dbinit &&
+        break
+        sleep 5
+    done
+else
+    for try in {1..5}; do
+        /website/manage.py migrate --noinput && break
+        sleep 5
+    done
+fi
+
+# Launch the server
 exec /usr/sbin/httpd -DFOREGROUND -e debug

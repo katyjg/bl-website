@@ -1,11 +1,10 @@
 from django.db import models
 from django.shortcuts import render
 
-from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField, StreamField
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, TabbedInterface, ObjectList
-from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.core import blocks, hooks
+from wagtail.models import Page
+from wagtail.fields import RichTextField, StreamField
+from wagtail.admin.panels import FieldPanel, TabbedInterface, ObjectList
+from wagtail import blocks, hooks
 
 from wagtail.contrib.table_block.blocks import TableBlock
 from wagtail.images.blocks import ImageChooserBlock
@@ -13,6 +12,7 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from colorfield.fields import ColorField
+
 from beamol.news.models import PostPage
 
 import requests
@@ -49,7 +49,7 @@ class BeamlinePage(Page):
     status_color = ColorField(default='#00FF00')
     gallery = StreamField([
         ('image', blocks.ListBlock(ImageCarouselBlock(), template='beamlines/blocks/gallery.html', icon="image")),
-    ], null=True, blank=True)
+    ], use_json_field=True, null=True, blank=True)
 
     body = StreamField([
         ('heading', blocks.CharBlock(classname="title")),
@@ -57,7 +57,7 @@ class BeamlinePage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ])
+    ], use_json_field=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('name', classname="full"),
@@ -69,12 +69,12 @@ class BeamlinePage(Page):
     ]
 
     gallery_panel = [
-        StreamFieldPanel('gallery'),
+        FieldPanel('gallery'),
     ]
 
     specs_panel = [
-        ImageChooserPanel('schematic'),
-        StreamFieldPanel('body'),
+        FieldPanel('schematic'),
+        FieldPanel('body'),
     ]
     snippet_panel = [
         FieldPanel('snippet', classname='full'),
@@ -98,11 +98,11 @@ class UserGuidePage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ])
+    ], use_json_field=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('icon', classname="full"),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     subpage_types = ['UserGuidePage']
@@ -121,7 +121,7 @@ class PublicationsPage(RoutablePageMixin, Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
     kind = 'article'
 
@@ -130,7 +130,7 @@ class PublicationsPage(RoutablePageMixin, Page):
     content_panels = Page.content_panels + [
         FieldPanel('api', classname="full"),
         FieldPanel('acronym', classname="full"),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -168,14 +168,14 @@ class EmbedPage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
 
     subpage_types = []
 
     content_panels = Page.content_panels + [
         FieldPanel('embed', classname="full"),
         FieldPanel('height', classname="full"),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
 
@@ -186,17 +186,18 @@ class BeamlineDisplayPage(Page):
         ('table', TableBlock()),
         ('image', ImageChooserBlock(icon="image")),
         ('embedded_video', EmbedBlock(icon="media")),
-    ], blank=True)
+    ], use_json_field=True, blank=True)
     background_url = models.URLField(blank=True)
     gallery = StreamField([
         ('image', ImageChooserBlock(icon="image")),
-    ], null=True, blank=True)
+    ], use_json_field=True, null=True, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('background_url', classname="full"),
-        StreamFieldPanel('body'),
-        StreamFieldPanel('gallery'),
+        FieldPanel('body'),
+        FieldPanel('gallery'),
     ]
 
-    def news(self):
+    @staticmethod
+    def news():
         return PostPage.objects.filter(highlight=True).order_by('date')

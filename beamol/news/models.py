@@ -1,15 +1,14 @@
 from django.db import models
 from django import forms
 
-from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.models import Page
+from wagtail.fields import RichTextField
+from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.tags import ClusterTaggableManager
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase, Tag as TaggitTag
 
 import datetime
@@ -34,7 +33,6 @@ class NewsPage(RoutablePageMixin, Page):
     def get_categories(self):
         categories = PostCategory.objects.filter(pk__in=PostPage.objects.live().values_list('categories', flat=True))
         return categories
-
 
     def get_filters(self):
         return self.search_type and {self.search_type: self.search_term} or None
@@ -75,7 +73,7 @@ class PostPage(Page):
         FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
         FieldPanel('tags'),
         FieldPanel('date', classname="full"),
-        ImageChooserPanel('image'),
+        FieldPanel('image'),
     ]
 
     parent_page_types = ['NewsPage']
@@ -116,3 +114,4 @@ class PostTag(TaggedItemBase):
 class Tag(TaggitTag):
     class Meta:
         proxy = True
+
