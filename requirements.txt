@@ -1,4 +1,4 @@
-Django==4.2
+Django==5.0.9
 wagtail>=6.2,<6.3
 wagtailmenus==4.0.1
 Pillow
