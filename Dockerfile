@@ -8,7 +8,6 @@ COPY deploy/wait-for-it.sh /
 COPY deploy/website.conf /etc/apache2/conf.d/zzzwebsite.conf
 
 ADD . /website
-ADD ./local/__init__.py /website/local/__init__.py
 
 RUN set -ex && \
     apk add --no-cache --virtual libpq apache2-ssl apache2-mod-wsgi \
@@ -16,6 +15,7 @@ RUN set -ex && \
     /usr/bin/python3 -m venv /venv && source /venv/bin/activate && \
     /venv/bin/pip3 install --no-cache-dir --upgrade pip && \
     /venv/bin/pip3 install --no-cache-dir -r /requirements.txt  && \
+    mkdir -p /website/local && \
     chmod -v +x /run-server.sh /wait-for-it.sh && \
     sed -i -E 's@#!/usr/bin/env python@#!/venv/bin/python3@' /website/manage.py && \
     /website/manage.py collectstatic --noinput
