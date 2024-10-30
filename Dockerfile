@@ -4,7 +4,7 @@ MAINTAINER Kathryn Janzen <kathryn.janzen@lightsource.ca>
 
 COPY requirements.txt /
 
-RUN apk add --no-cache --virtual libpq apache2-ssl apache2-mod-wsgi certbot-apache openssl sed py3-pip imagemagick
+RUN apk add --no-cache --virtual libpq apache2-ssl apache2-mod-wsgi certbot-apache openssl bash sed py3-pip imagemagick
 
 RUN set -ex && \
     /usr/bin/python3 -m venv /venv && source /venv/bin/activate && \
