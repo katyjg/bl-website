@@ -16,11 +16,18 @@ rm -rf /run/httpd/* /tmp/httpd*
 /wait-for-it.sh database:5432 -t 60 &&
 
 if [ ! -f /website/local/.dbinit ]; then
-    /website/manage.py migrate --noinput &&
-    touch /website/local/.dbinit
-    chown -R apache:apache /website/local/media
+    for try in {1..5}; do
+        /website/manage.py migrate --noinput &&
+        chown -R apache:apache /website/local/media &&
+        touch /website/local/.dbinit &&
+        break
+        sleep 5
+    done
 else
-    /website/manage.py migrate --noinput
+    for try in {1..5}; do
+        /website/manage.py migrate --noinput && break
+        sleep 5
+    done
 fi
 
 exec /usr/sbin/httpd -DFOREGROUND -e debug
